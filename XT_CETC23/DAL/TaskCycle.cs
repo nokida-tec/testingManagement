@@ -112,12 +112,9 @@ namespace XT_CETC23.DataCom
             DataTable dt = new DataTable();            
             while (true)
             {
-                
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
-                   
-
                     Thread.Sleep(100);
                     dt.Rows.Clear();
                     dt.Columns.Clear();
@@ -400,6 +397,7 @@ namespace XT_CETC23.DataCom
             string cordY = "";
             string cordU = "";
             dtr = new DataTable();
+            //db.DBDelete("delete from dbo.TaskRobot"); ;
             while (true)
             {
                 
@@ -516,7 +514,7 @@ namespace XT_CETC23.DataCom
         int a;
         private void Axlis7Task()
         {
-            dt7 = new DataTable();
+            //db.DBDelete("delete from dbo.TaskAxlis7");
             while (true)
             {
                 
@@ -524,37 +522,43 @@ namespace XT_CETC23.DataCom
                 while (PlcData.clearTask)
                 {
                 Axlis7TaskBegain:
-                    dt7.Rows.Clear();
-                    dt7.Columns.Clear();
-                    dt7 = db.DBQuery("select * from dbo.TaskAxlis7");
-                    if (dt7 != null && dt7.Rows.Count == 1)
+                    try
                     {
-                        a = Convert.ToInt32(dt7.Rows[0]["Axlis7Pos"]);
-                        plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(a) });
-                        while (PlcData._axlis7Status != (byte)55)
+                        DataTable dt7 = db.DBQuery("select * from dbo.TaskAxlis7");
+                        if (dt7 != null && dt7.Rows.Count == 1)
                         {
-                            if (Run.gSheduleExit == true)
+                            a = Convert.ToInt32(dt7.Rows[0]["Axlis7Pos"]);
+                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(a) });
+                            while (PlcData._axlis7Status != (byte)55)
                             {
-                                db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
-                                goto Axlis7TaskBegain;
-                            }  
-                            Thread.Sleep(100);
+                                if (Run.gSheduleExit == true)
+                                {
+                                    db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
+                                    goto Axlis7TaskBegain;
+                                }
+                                Thread.Sleep(100);
+                            }
+                            db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
+                            Thread.Sleep(2000);
+                            plc.DBWrite(100, 2, 1, new Byte[] { 0 });
+                            if (TaskCycle.actionType == "FrameToCabinet")
+                            {
+                                TaskCycle.PickStep = TaskCycle.PickStep + 10;
+                            }
+                            if (TaskCycle.actionType == "CabinetToFrame")
+                            {
+                                TaskCycle.PutStep = TaskCycle.PutStep + 10;
+                            }
                         }
-                        db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
-                        Thread.Sleep(2000);
-                        plc.DBWrite(100, 2, 1, new Byte[] { 0 });
-                        if (TaskCycle.actionType == "FrameToCabinet")
+                        else if (dtr != null && dtr.Rows.Count > 1)
                         {
-                            TaskCycle.PickStep = TaskCycle.PickStep + 10;
+                            Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
+                            MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                         }
-                        if (TaskCycle.actionType == "CabinetToFrame")
-                        {
-                            TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                        }
-                    }
-                    else if(dtr !=null && dtr.Rows.Count > 1)
+                    } 
+                    catch (Exception e)
                     {
-                        MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
+                        Logger.WriteLine(e);
                     }
                     
                     Thread.Sleep(100);
@@ -566,6 +570,7 @@ namespace XT_CETC23.DataCom
 
         private void Axlis2Task()
         {
+            //db.DBDelete("delete from dbo.TaskAxlis2");
             dt2 = new DataTable();
             while (true)
             {
@@ -694,6 +699,7 @@ namespace XT_CETC23.DataCom
                     }
                     else if(dtr.Rows.Count > 1)
                     {
+                        Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis2，正常情况下该表格中最多只有一条任务记录！");
                     }
 
