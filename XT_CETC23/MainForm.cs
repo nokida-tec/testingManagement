@@ -657,10 +657,10 @@ namespace XT_CETC23
                 {
                     if (ctrl is Panel)
                     {
-                        ctrl.Left = (int)(Size.Width * scale[i++]);
-                        ctrl.Top = (int)(Size.Height * scale[i++]);
-                        ctrl.Width = (int)(Size.Width / (float)scale[0] * ((Size)ctrl.Tag).Width);//!!!
-                        ctrl.Height = (int)(Size.Height / (float)scale[1] * ((Size)ctrl.Tag).Height);//!!!
+                    //    ctrl.Left = (int)(Size.Width * scale[i++]);
+                    //    ctrl.Top = (int)(Size.Height * scale[i++]);
+                    //    ctrl.Width = (int)(Size.Width / (float)scale[0] * ((Size)ctrl.Tag).Width);//!!!
+                    //    ctrl.Height = (int)(Size.Height / (float)scale[1] * ((Size)ctrl.Tag).Height);//!!!
                     }
                     else
                     {
