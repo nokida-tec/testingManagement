@@ -45,18 +45,25 @@ namespace XT_CETC23
                     + BeginTime + "','"
                     + EndTime + "','"
                     + checkResult + "')");
-                DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
-                    + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult"
-                    + " )values("
-                    + ID + ",'"
-                    + prodCode + "','"
-                    + prodType + "',"
-                    + trayNo + ","
-                    + pieceNo + ",'"
-                    + cabinetName + "','"
-                    + BeginTime + "','"
-                    + EndTime + "','"
-                    + checkResult + "')");
+                try
+                {
+                    DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
+                        + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult"
+                        + " )values("
+                        + ID + ",'"
+                        + prodCode + "','"
+                        + prodType + "',"
+                        + trayNo + ","
+                        + pieceNo + ",'"
+                        + cabinetName + "','"
+                        + BeginTime + "','"
+                        + EndTime + "','"
+                        + checkResult + "')");
+                }
+                catch (Exception e1)
+                {
+                    Logger.WriteLine(e1);
+                }
                 DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
             }
             catch (Exception e) 
