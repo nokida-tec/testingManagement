@@ -172,10 +172,17 @@ namespace XT_CETC23.DAL
         private bool taskExisting = false;
         public bool cmdStart(string productType, int taskId) 
         {
-            Logger.WriteLine("  ***   cmdStart：" + this.ID);
-            base.cmdStart(productType, taskId);
-            start();
-            return true;
+            Logger.WriteLine("  ***   cmdStart：" + this.ID + " Running:" + taskIsRunning + " productType：" + productType + " taskId：" + taskId);
+            lock (this)
+            {
+                if (task != null && task.ThreadState == ThreadState.Running && taskId == this.TaskID)
+                {
+                    Logger.WriteLine("重复任务，返回");
+                    return false;
+                }
+                base.cmdStart(productType, taskId);
+                return start();
+            }
         }
 
         public bool start()
@@ -185,9 +192,8 @@ namespace XT_CETC23.DAL
             {
                 if (task != null)
                 {
-                    int count = 50;
                     taskExisting = true;
-                    while (taskIsRunning && task.ThreadState != ThreadState.Stopped && count-- > 0)
+                    while (taskIsRunning && task.ThreadState != ThreadState.Stopped)
                     {   // 等待原有线程运行退出
                         taskExisting = true;
                         Logger.WriteLine("  ***   测试柜:" + this.ID + "在运行中 线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
@@ -197,7 +203,7 @@ namespace XT_CETC23.DAL
                     task.Abort();
                     task = null;
                  }
-                if (task == null && taskIsRunning == false)
+                if (task == null)
                 {
                     taskExisting = false;
                     task = new Thread(CabinetTest);
