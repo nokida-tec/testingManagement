@@ -266,7 +266,7 @@ namespace XT_CETC23.SonForm
         {
             try
             {
-                TransMessageToMain(message);
+                // TransMessageToMain(message);
             }
             catch (Exception e)
             {
