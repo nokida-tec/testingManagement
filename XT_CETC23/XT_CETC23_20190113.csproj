@@ -124,6 +124,7 @@
     <Compile Include="DAL\Frame.cs" />
     <Compile Include="DAL\MTR.cs" />
     <Compile Include="DAL\Plc.cs" />
+    <Compile Include="DAL\Rail.cs" />
     <Compile Include="DAL\Robot.cs" />
     <Compile Include="DAL\Run.cs" />
     <Compile Include="DAL\TaskCycle.cs" />
