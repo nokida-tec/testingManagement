@@ -135,6 +135,7 @@ namespace XT_CETC23.DataCom
                 }
                 catch (SqlException e)
                 {
+                    Logger.WriteLine(questr);
                     Logger.WriteLine(e);
                     //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                     return null;
@@ -157,6 +158,7 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException e)
             {
+                Logger.WriteLine(questr);
                 Logger.WriteLine(e);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return 0;
@@ -178,6 +180,7 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException e)
             {
+                Logger.WriteLine(questr);
                 Logger.WriteLine(e);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
@@ -199,6 +202,7 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException e)
             {
+                Logger.WriteLine(questr);
                 Logger.WriteLine(e);
                 return 0;
             }
