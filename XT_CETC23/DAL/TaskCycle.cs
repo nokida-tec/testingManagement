@@ -12,11 +12,30 @@ using XT_CETC23_GK.Task;
 using XT_CETC23.Common;
 using Excel;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace XT_CETC23.DataCom
 {
     class TaskCycle
     {
+        // 
+        [DllImport("user32.dll", EntryPoint = "FindWindowA", SetLastError = true)]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", EntryPoint = "FindWindowExA", SetLastError = true)]
+        private static extern IntPtr FindWindowEx(IntPtr hwndParent, uint hwndChildAfter, string lpszClass, string lpszWindow);
+
+        [DllImport("user32.dll", EntryPoint = "SendMessageA", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", EntryPoint = "PostMessageA", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern int PostMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
+
+        private const int WM_SETTEXT = 0x000C;
+        private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYUP = 0x0101;
+        private const int vbKeyReturn = 0x0D;
+
         Thread axlis2Task, axlis7Task, robotTask, cabinetTask;
         static TaskCycle taskCycle;
         static object lockTaskCycle = new object();
@@ -255,6 +274,7 @@ namespace XT_CETC23.DataCom
                 //    //设置MTR表格，指示测试完成
                 //    db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
                 //}
+                
                 #endregion
 
                 //=================================================模拟测试过程,最终放入测试进程中========================================
@@ -575,6 +595,38 @@ namespace XT_CETC23.DataCom
                 }
                 Thread.Sleep(100);
             }
+        }
+
+        int sendToU8 (string content)
+        {
+            IntPtr hwndWindow = FindWindow(null, "序列号专用解析方案"); // find u8 dialog
+
+            if (hwndWindow != IntPtr.Zero)
+            {
+                IntPtr hwndInput = FindWindowEx(hwndWindow, 0, "ThunderRT6TextBox", null);
+                if (hwndInput != IntPtr.Zero)
+                {
+                    IntPtr text = Marshal.StringToHGlobalAnsi(content);
+                    int ret = SendMessage(hwndInput, WM_SETTEXT, IntPtr.Zero, text);
+                    int errCode = Marshal.GetLastWin32Error();
+                    Console.WriteLine(new System.ComponentModel.Win32Exception(errCode).Message);
+                    Marshal.FreeCoTaskMem(text);
+                    ret = PostMessage(hwndInput, WM_KEYDOWN, (IntPtr)vbKeyReturn, IntPtr.Zero);
+                    ret = PostMessage(hwndInput, WM_KEYUP, (IntPtr)vbKeyReturn, IntPtr.Zero);
+                    return 1;
+                }
+                else
+                {
+                    Console.WriteLine("can't find the input box of U8");
+                    return -2;
+                }
+            }
+            else
+            {
+                Console.WriteLine("can't find the windows of U8");
+                return -1;
+            }
+            return 0;
         }
     }
 }
