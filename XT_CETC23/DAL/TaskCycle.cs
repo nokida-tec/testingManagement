@@ -255,7 +255,8 @@ namespace XT_CETC23.DataCom
                             if (Path.GetExtension(filePath[i]) == ".xls")
                             {
                                 string file = Path.GetFileName(filePath[i]);
-                                fileOp.FileDelet(file);
+                                File.Delete(file);
+//                                fileOp.FileDelet(file);
                             }
                             else
                             {
