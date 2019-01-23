@@ -73,9 +73,9 @@ namespace XT_CETC23.SonForm
             for(int i=0;i<40;i++)
             {
                 sort = dtFeedBin.Rows[i]["Sort"].ToString().Trim();
-                numRemain=(int)dtFeedBin.Rows[i]["NumRemain"];
-                numOK = (int)dtFeedBin.Rows[i]["ResultOK"];
-                numNG = (int)dtFeedBin.Rows[i]["ResultNG"];
+                numRemain = (int)Convert.ToDouble(dtFeedBin.Rows[i]["NumRemain"]);
+                numOK = (int)Convert.ToDouble(dtFeedBin.Rows[i]["ResultOK"]);
+                numNG = (int)Convert.ToDouble(dtFeedBin.Rows[i]["ResultNG"]);
 
                 int colNo = i / 8;
                 int rowNo = i % 8;

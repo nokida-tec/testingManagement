@@ -132,7 +132,7 @@ namespace XT_CETC23.DataCom
                         {
                             threadCab[i].Abort();
                         }
-                        int basicID = (int)dtc.Rows[i]["BasicID"];
+                        int basicID = (int)Convert.ToDouble(dtc.Rows[i]["BasicID"]);
                         paraCabTask.Add(order);
                         paraCabTask.Add(i);
                         paraCabTask.Add(basicID);

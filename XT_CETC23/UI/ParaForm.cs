@@ -72,9 +72,10 @@ namespace XT_CETC23.SonForm
                     {
                         cb[i].Text = dt.Rows[i]["sort"].ToString().Trim();
                         str[i]= dt.Rows[i]["sort"].ToString().Trim();
-                        bool tmpBool= (bool)dt.Rows[i]["status"];
-                        chb[i].Checked = (bool)dt.Rows[i]["status"];
-                        bl[i]= (bool)dt.Rows[i]["status"];
+                        //bool tmpBool= (bool)dt.Rows[i]["status"];
+                        bool status = (int)Convert.ToDouble(dt.Rows[i]["status"]) != 0;
+                        chb[i].Checked = status;
+                        bl[i] = status;
                     }
                     rform.getGrab(str);
                     rform.getStatus(bl);
