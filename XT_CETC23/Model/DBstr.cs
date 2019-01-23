@@ -9,7 +9,8 @@ namespace XT_CETC23.DataManager
     class DBstr
     {
 
-        static public string conn = "Server = localhost;Database = 23;User ID = zwl; Password =;Trusted_Connection = false;MultipleActiveResultSets=true;Integrated Security=true";//最后这个是采用windows登录的必要条件;Trusted_Connection = false;Integrated Security=,MultipleActiveResultSets=true允许多个readerAdapet同时访问
+        static public string conn1 = "Server = localhost;Database = 23;User ID = zwl; Password =;Trusted_Connection = false;MultipleActiveResultSets=true;Integrated Security=true";//最后这个是采用windows登录的必要条件;Trusted_Connection = false;Integrated Security=,MultipleActiveResultSets=true允许多个readerAdapet同时访问
+        static public string conn = "Server = 192.168.1.205;Database = db23;User ID = sa; Password = qwe123QWE;Trusted_Connection = false;MultipleActiveResultSets=true;Integrated Security=true";//最后这个是采用windows登录的必要条件;Trusted_Connection = false;Integrated Security=,MultipleActiveResultSets=true允许多个readerAdapet同时访问
         static public string QueryStr(string tableName)
         {
             return "select * from " + tableName + "";

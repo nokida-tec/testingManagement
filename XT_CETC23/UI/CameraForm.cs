@@ -23,7 +23,10 @@ namespace XT_CETC23.SonForm
         public CameraForm()
         {
             InitializeComponent();
-            Loadvpp();
+            if (Config.Config.ENABLED_VISIONPRO == true)
+            {
+                Loadvpp();
+            }
         }
         public void Loadvpp()
         {

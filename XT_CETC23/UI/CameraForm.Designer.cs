@@ -53,10 +53,14 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.SelectcomboBox1 = new System.Windows.Forms.ComboBox();
-            this.cogRecordDisplay1 = new Cognex.VisionPro.CogRecordDisplay();
+            this.cogRecordDisplay1 = null;
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).BeginInit();
+            if (Config.Config.ENABLED_VISIONPRO == true)
+            {
+                this.cogRecordDisplay1 = new Cognex.VisionPro.CogRecordDisplay();
+                ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).BeginInit();
+            }
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -65,7 +69,10 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cogRecordDisplay1, 0, 0);
+            if (Config.Config.ENABLED_VISIONPRO == true)
+            {
+                this.tableLayoutPanel1.Controls.Add(this.cogRecordDisplay1, 0, 0);
+            }
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -376,19 +383,22 @@
             // 
             // cogRecordDisplay1
             // 
-            this.cogRecordDisplay1.ColorMapLowerClipColor = System.Drawing.Color.Black;
-            this.cogRecordDisplay1.ColorMapLowerRoiLimit = 0D;
-            this.cogRecordDisplay1.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
-            this.cogRecordDisplay1.ColorMapUpperClipColor = System.Drawing.Color.Black;
-            this.cogRecordDisplay1.ColorMapUpperRoiLimit = 1D;
-            this.cogRecordDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cogRecordDisplay1.Location = new System.Drawing.Point(3, 3);
-            this.cogRecordDisplay1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
-            this.cogRecordDisplay1.MouseWheelSensitivity = 1D;
-            this.cogRecordDisplay1.Name = "cogRecordDisplay1";
-            this.cogRecordDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay1.OcxState")));
-            this.cogRecordDisplay1.Size = new System.Drawing.Size(1031, 721);
-            this.cogRecordDisplay1.TabIndex = 2;
+            if (Config.Config.ENABLED_VISIONPRO == true)
+            {
+                this.cogRecordDisplay1.ColorMapLowerClipColor = System.Drawing.Color.Black;
+                this.cogRecordDisplay1.ColorMapLowerRoiLimit = 0D;
+                this.cogRecordDisplay1.ColorMapPredefined = Cognex.VisionPro.Display.CogDisplayColorMapPredefinedConstants.None;
+                this.cogRecordDisplay1.ColorMapUpperClipColor = System.Drawing.Color.Black;
+                this.cogRecordDisplay1.ColorMapUpperRoiLimit = 1D;
+                this.cogRecordDisplay1.Dock = System.Windows.Forms.DockStyle.Fill;
+                this.cogRecordDisplay1.Location = new System.Drawing.Point(3, 3);
+                this.cogRecordDisplay1.MouseWheelMode = Cognex.VisionPro.Display.CogDisplayMouseWheelModeConstants.Zoom1;
+                this.cogRecordDisplay1.MouseWheelSensitivity = 1D;
+                this.cogRecordDisplay1.Name = "cogRecordDisplay1";
+                this.cogRecordDisplay1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("cogRecordDisplay1.OcxState")));
+                this.cogRecordDisplay1.Size = new System.Drawing.Size(1031, 721);
+                this.cogRecordDisplay1.TabIndex = 2;
+            }
             // 
             // CameraForm
             // 
@@ -403,7 +413,10 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).EndInit();
+            if (Config.Config.ENABLED_VISIONPRO == true)
+            {
+                ((System.ComponentModel.ISupportInitialize)(this.cogRecordDisplay1)).EndInit();
+            }
             this.ResumeLayout(false);
 
         }

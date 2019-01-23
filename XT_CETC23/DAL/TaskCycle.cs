@@ -163,117 +163,117 @@ namespace XT_CETC23.DataCom
             if(order=="Start")
             {
                 #region  真实代码 临时屏蔽
-                ////通知PLC连接测试件，关闭测试柜
-                //plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
+                //通知PLC连接测试件，关闭测试柜
+                plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
 
-                ////等待PLC允许测量
-                //while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
-                //{
-                //    Thread.Sleep(100);
-                //}
+                //等待PLC允许测量
+                while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
+                {
+                    Thread.Sleep(100);
+                }
 
-                //db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
-                //if (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault)) &&
-                //    !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
-                //{
-                //    //通知测试设备测试开始
-                //    cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Start));
-                //    //通知PLC测试开始了
-                //    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
-                //}
+                db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
+                if (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault)) &&
+                    !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                {
+                    //通知测试设备测试开始
+                    cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Start));
+                    //通知PLC测试开始了
+                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
+                }
 
-                ////等待测试完成    
-                //while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
-                //{
-                //    Thread.Sleep(100);
-                //}
+                //等待测试完成    
+                while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                {
+                    Thread.Sleep(100);
+                }
 
-                ////测试完成后，修改测试柜
-                //if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo))
-                //{
-                //    //db.DBDelete("delete from dbo.TaskCabinet");
-                //    //task[i].Dispose();
-                //    //task[i] = null;
-                //    while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault).ToString()) &&
-                //          !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.NG).ToString()) &&
-                //           !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.OK).ToString()))
-                //    { Thread.Sleep(100); }
+                //测试完成后，修改测试柜
+                if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo))
+                {
+                    //db.DBDelete("delete from dbo.TaskCabinet");
+                    //task[i].Dispose();
+                    //task[i] = null;
+                    while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault).ToString()) &&
+                          !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.NG).ToString()) &&
+                           !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.OK).ToString()))
+                    { Thread.Sleep(100); }
 
-                //    //处理结果
+                    //处理结果
 
-                //    //获取测量结果的excel源文件
-                //    String[] filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
-                //    string sourceFile = "";
-                //    if (filePath != null)
-                //    {
-                //        for (int i = 0; i < filePath.Length; i++)
-                //        {
-                //            if (Path.GetExtension(filePath[i]) == ".xls")
-                //            {
-                //                sourceFile = Path.GetFileName(filePath[i]);
-                //            }
-                //            else
-                //            {
-                //                return;
-                //            }
-                //        }
-                //    }
-                //    else
-                //    {
-                //        return;
-                //    }
+                    //获取测量结果的excel源文件
+                    String[] filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
+                    string sourceFile = "";
+                    if (filePath != null)
+                    {
+                        for (int i = 0; i < filePath.Length; i++)
+                        {
+                            if (Path.GetExtension(filePath[i]) == ".xls")
+                            {
+                                sourceFile = Path.GetFileName(filePath[i]);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
 
-                //    //读取excel表格判断测试OK，NG
-                //    bool testResult = excelOp.CheckTestResults(sourceFile);
+                    //读取excel表格判断测试OK，NG
+                    bool testResult = excelOp.CheckTestResults(sourceFile);
 
-                //    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.Fault))
-                //    //{
-                //    //    db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.Fault) + "'where BasicID= " + basicID);
-                //    //}
-                //    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.NG))
-                //    if (!testResult)
-                //    {
-                //        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.NG) + "'where BasicID= " + basicID);
-                //    }
-                //    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.OK))
-                //    if (testResult)
-                //    {
-                //        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.OK) + "'where BasicID= " + basicID);
-                //    }
+                    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.Fault))
+                    //{
+                    //    db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.Fault) + "'where BasicID= " + basicID);
+                    //}
+                    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.NG))
+                    if (!testResult)
+                    {
+                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.NG) + "'where BasicID= " + basicID);
+                    }
+                    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.OK))
+                    if (testResult)
+                    {
+                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.OK) + "'where BasicID= " + basicID);
+                    }
 
-                //    //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                //    dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
-                //    string targetFileName = dt.Rows[0]["ProductID"].ToString().Trim();
-                //    fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+                    //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
+                    dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
+                    string targetFileName = dt.Rows[0]["ProductID"].ToString().Trim();
+                    fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
 
-                //    //删除源文件                    
-                //    filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
-                //    if (filePath != null)
-                //    {
-                //        for (int i = 0; i < filePath.Length; i++)
-                //        {
-                //            if (Path.GetExtension(filePath[i]) == ".xls")
-                //            {
-                //                string file = Path.GetFileName(filePath[i]);
-                //                fileOp.FileDelet(file);
-                //            }
-                //            else
-                //            {
-                //                return;
-                //            }
-                //        }
-                //    }
+                    //删除源文件                    
+                    filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
+                    if (filePath != null)
+                    {
+                        for (int i = 0; i < filePath.Length; i++)
+                        {
+                            if (Path.GetExtension(filePath[i]) == ".xls")
+                            {
+                                string file = Path.GetFileName(filePath[i]);
+                                fileOp.FileDelet(file);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
 
-                //    //通知PLC测试完成，打开测试柜
-                //    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
-                //    //等待PLC允许取料
-                //    while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
-                //    {
-                //        Thread.Sleep(100);
-                //    }
-                //    //设置MTR表格，指示测试完成
-                //    db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
-                //}
+                    //通知PLC测试完成，打开测试柜
+                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
+                    //等待PLC允许取料
+                    while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    //设置MTR表格，指示测试完成
+                    db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                }
                 
                 #endregion
 

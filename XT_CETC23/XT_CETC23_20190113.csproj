@@ -113,6 +113,7 @@
     <Compile Include="Common\ExportExcel.cs" />
     <Compile Include="Common\snap7.net.cs" />
     <Compile Include="Common\StatusFeedBack.cs" />
+    <Compile Include="Config\Config.cs" />
     <Compile Include="DAL\ActualData.cs" />
     <Compile Include="DAL\Cabinet.cs" />
     <Compile Include="DAL\Camera.cs" />
@@ -232,6 +233,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CameraForm.resx">
       <DependentUpon>CameraForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DataForm.resx">
       <DependentUpon>DataForm.cs</DependentUpon>
