@@ -171,208 +171,210 @@ namespace XT_CETC23.DataCom
             db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo);
             if(order=="Start")
             {
-                #region  真实代码 临时屏蔽
-
-                //等待PLC允许测量
-                if (Config.Config.ENABLED_PLC)
+                if (Config.Config.ENABLED_DEBUG == false)
                 {
-                    //通知PLC连接测试件，关闭测试柜
+                    //等待PLC允许测量
+                    if (Config.Config.ENABLED_PLC)
+                    {
+                        //通知PLC连接测试件，关闭测试柜
+                        plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
+
+                        while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
+
+                    db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
+
+                    if (Config.Config.ENABLED_PLC)
+                    {
+                        if (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault)) &&
+                            !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                        {
+                            //通知测试设备测试开始
+                            cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Start));
+                            //通知PLC测试开始了
+                            plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
+                        }
+
+                        //等待测试完成    
+                        while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                        {
+                            Thread.Sleep(100);
+                        }
+                    }
+
+                    //测试完成后，修改测试柜
+                    if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo))
+                    {
+                        //db.DBDelete("delete from dbo.TaskCabinet");
+                        //task[i].Dispose();
+                        //task[i] = null;
+                        if (Config.Config.ENABLED_PLC)
+                        {
+                            while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault).ToString()) &&
+                                  !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.NG).ToString()) &&
+                                   !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.OK).ToString()))
+                            {
+                                Thread.Sleep(100);
+                            }
+                        }
+                        //处理结果
+
+                        //获取测量结果的excel源文件
+                        String[] filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
+                        string sourceFile = "";
+                        if (filePath != null)
+                        {
+                            for (int i = 0; i < filePath.Length; i++)
+                            {
+                                if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
+                                {
+                                    sourceFile = filePath[i];
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+
+                        //读取excel表格判断测试OK，NG
+
+                        bool testResult = true;
+                        if (Config.Config.ENABLED_PLC == true)
+                        {
+                            testResult = excelOp.CheckTestResults(sourceFile);
+                        }
+
+                        //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.Fault))
+                        //{
+                        //    db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.Fault) + "'where BasicID= " + basicID);
+                        //}
+                        //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.NG))
+                        if (!testResult)
+                        {
+                            db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.NG) + "'where BasicID= " + basicID);
+                        }
+                        //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.OK))
+                        if (testResult)
+                        {
+                            db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.OK) + "'where BasicID= " + basicID);
+                        }
+
+                        //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
+                        dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
+                        string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                        string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
+
+                        dt = db.DBQuery("select * from dbo.ProductDef where Type= '" + productType + "'");
+                        string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
+                        string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
+
+                        string[] strings = productID.Split(new char[2] { '$', '#' });
+                        string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
+
+                        string opName = "常温";
+                        try
+                        {
+                            DataBase dbOfU8 = DataBase.GetU8DBInstanse();
+                            dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
+                                + productSerial + "' and define22 = '" + defineID + "'");
+                            int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
+                            dt = db.DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
+                            opName = dt.Rows[0]["Name"].ToString().Trim();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+
+                        string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
+                        fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+
+                        //  record the scan barcode to logs file
+                        DateTime currentTime = DateTime.Now;
+                        StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
+                        sw.WriteLine(currentTime.ToString() + " \t" + productID);
+                        sw.Flush();
+                        sw.Close();
+
+                        // send scancode to U8
+                        sendToU8(productID);
+
+                        //删除源文件                    
+                        filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
+                        if (filePath != null)
+                        {
+                            for (int i = 0; i < filePath.Length; i++)
+                            {
+                                if (Path.GetExtension(filePath[i]) == ".xls")
+                                {
+                                    string file = Path.GetFileName(filePath[i]);
+                                    File.Delete(file);
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                        }
+
+                        if (Config.Config.ENABLED_PLC)
+                        {
+                            //通知PLC测试完成，打开测试柜
+                            plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
+                            //等待PLC允许取料
+                            while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
+                            {
+                                Thread.Sleep(100);
+                            }
+                        }
+                        //设置MTR表格，指示测试完成
+                        db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                    }
+
+                }
+                else
+                {
+                    //=================================================模拟测试过程,最终放入测试进程中========================================
+                    //通知PLC连接测试件，关闭测试柜                
                     plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
 
+                    //等待PLC允许测量
                     while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
                     {
                         Thread.Sleep(100);
                     }
-                }
 
-                db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
+                    //等待plc
+                    Thread.Sleep(20000);
+                    //通知PLC测试开始了
+                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
 
-                if (Config.Config.ENABLED_PLC)
-                {
-                    if (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault)) &&
-                        !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
-                    {
-                        //通知测试设备测试开始
-                        cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Start));
-                        //通知PLC测试开始了
-                        plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
-                    }
+                    //模拟测试
+                    Thread.Sleep(20000);
 
-                    //等待测试完成    
-                    while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                    db.DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + "OK" + "' where BasicID=" + basicID);
+
+                    //通知PLC测试完成，打开测试柜
+                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
+                    Thread.Sleep(100);
+
+                    //等待PLC允许取料
+                    while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
                     {
                         Thread.Sleep(100);
                     }
-                }
-
-                //测试完成后，修改测试柜
-                if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo))
-                {
-                    //db.DBDelete("delete from dbo.TaskCabinet");
-                    //task[i].Dispose();
-                    //task[i] = null;
-                    if (Config.Config.ENABLED_PLC)
-                    {
-                        while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault).ToString()) &&
-                              !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.NG).ToString()) &&
-                               !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.OK).ToString()))
-                        { 
-                            Thread.Sleep(100);
-                        }
-                    }
-                    //处理结果
-
-                    //获取测量结果的excel源文件
-                    String[] filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
-                    string sourceFile = "";
-                    if (filePath != null)
-                    {
-                        for (int i = 0; i < filePath.Length; i++)
-                        {
-                            if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
-                            {
-                                sourceFile = filePath[i];
-                            }
-                            else
-                            {
-                                return;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        return;
-                    }
-
-                    //读取excel表格判断测试OK，NG
-
-                    bool testResult = true;
-                    if (Config.Config.ENABLED_PLC == true)
-                    {
-                        testResult = excelOp.CheckTestResults(sourceFile);
-                    }
-
-                    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.Fault))
-                    //{
-                    //    db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.Fault) + "'where BasicID= " + basicID);
-                    //}
-                    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.NG))
-                    if (!testResult)
-                    {
-                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.NG) + "'where BasicID= " + basicID);
-                    }
-                    //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.OK))
-                    if (testResult)
-                    {
-                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.OK) + "'where BasicID= " + basicID);
-                    }
-
-                    //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                    dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
-                    string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
-                    string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
-
-                    dt = db.DBQuery("select * from dbo.ProductDef where Type= '" + productType + "'");
-                    string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
-                    string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
-
-                    string[] strings = productID.Split(new char[2] { '$', '#' });
-                    string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
-
-                    string opName = "常温";
-                    try
-                    {
-                        DataBase dbOfU8 = DataBase.GetU8DBInstanse();
-                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
-                            + productSerial + "' and define22 = '" + defineID + "'");
-                        int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
-                        dt = db.DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
-                        opName = dt.Rows[0]["Name"].ToString().Trim(); 
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-
-                    string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
-                    fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
-
-                    //  record the scan barcode to logs file
-                    DateTime currentTime = DateTime.Now;
-                    StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
-                    sw.WriteLine(currentTime.ToString() + " \t" + productID);
-                    sw.Flush();
-                    sw.Close();
-
-                    // send scancode to U8
-                    sendToU8(productID);
-
-                    //删除源文件                    
-                    filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
-                    if (filePath != null)
-                    {
-                        for (int i = 0; i < filePath.Length; i++)
-                        {
-                            if (Path.GetExtension(filePath[i]) == ".xls")
-                            {
-                                string file = Path.GetFileName(filePath[i]);
-                                File.Delete(file);
-                            }
-                            else
-                            {
-                                return;
-                            }
-                        }
-                    }
-
-                    if (Config.Config.ENABLED_PLC)
-                    {
-                        //通知PLC测试完成，打开测试柜
-                        plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
-                        //等待PLC允许取料
-                        while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
-                        {
-                            Thread.Sleep(100);
-                        }
-                    }
                     //设置MTR表格，指示测试完成
                     db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                    //=========================================================================================================================
                 }
-                
-                #endregion
-
-                //=================================================模拟测试过程,最终放入测试进程中========================================
-                //通知PLC连接测试件，关闭测试柜                
-                plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
-
-                //等待PLC允许测量
-                while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
-                {
-                    Thread.Sleep(100);
-                }
-
-                //等待plc
-                Thread.Sleep(20000);
-                //通知PLC测试开始了
-                plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
-                                
-                //模拟测试
-                Thread.Sleep(20000);
-
-                db.DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + "OK" + "' where BasicID=" + basicID);
-                
-                //通知PLC测试完成，打开测试柜
-                plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
-                Thread.Sleep(100);
-
-                //等待PLC允许取料
-                while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
-                {
-                    Thread.Sleep(100);
-                }
-                //设置MTR表格，指示测试完成
-                db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
-                //=========================================================================================================================
             }
             if(order=="Stop")
             {
