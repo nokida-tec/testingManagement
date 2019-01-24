@@ -153,6 +153,15 @@ namespace XT_CETC23.DataCom
             }
         }
 
+        public void Test()
+        {
+            ArrayList paraCabTask = new ArrayList();
+            paraCabTask.Add("Start");
+            paraCabTask.Add(2);
+            paraCabTask.Add(200);
+            CabinetTest(paraCabTask);
+        }
+
         private void CabinetTest(object list)
         {
             ArrayList myList=(ArrayList)list;
@@ -163,29 +172,37 @@ namespace XT_CETC23.DataCom
             if(order=="Start")
             {
                 #region  真实代码 临时屏蔽
-                //通知PLC连接测试件，关闭测试柜
-                plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
 
                 //等待PLC允许测量
-                while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
+                if (Config.Config.ENABLED_PLC)
                 {
-                    Thread.Sleep(100);
+                    //通知PLC连接测试件，关闭测试柜
+                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
+
+                    while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
+                    {
+                        Thread.Sleep(100);
+                    }
                 }
 
                 db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
-                if (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault)) &&
-                    !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
-                {
-                    //通知测试设备测试开始
-                    cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Start));
-                    //通知PLC测试开始了
-                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
-                }
 
-                //等待测试完成    
-                while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                if (Config.Config.ENABLED_PLC)
                 {
-                    Thread.Sleep(100);
+                    if (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault)) &&
+                        !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                    {
+                        //通知测试设备测试开始
+                        cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Start));
+                        //通知PLC测试开始了
+                        plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
+                    }
+
+                    //等待测试完成    
+                    while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Checking)))
+                    {
+                        Thread.Sleep(100);
+                    }
                 }
 
                 //测试完成后，修改测试柜
@@ -194,11 +211,15 @@ namespace XT_CETC23.DataCom
                     //db.DBDelete("delete from dbo.TaskCabinet");
                     //task[i].Dispose();
                     //task[i] = null;
-                    while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault).ToString()) &&
-                          !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.NG).ToString()) &&
-                           !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.OK).ToString()))
-                    { Thread.Sleep(100); }
-
+                    if (Config.Config.ENABLED_PLC)
+                    {
+                        while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Fault).ToString()) &&
+                              !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.NG).ToString()) &&
+                               !CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.OK).ToString()))
+                        { 
+                            Thread.Sleep(100);
+                        }
+                    }
                     //处理结果
 
                     //获取测量结果的excel源文件
@@ -299,12 +320,15 @@ namespace XT_CETC23.DataCom
                         }
                     }
 
-                    //通知PLC测试完成，打开测试柜
-                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
-                    //等待PLC允许取料
-                    while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
+                    if (Config.Config.ENABLED_PLC)
                     {
-                        Thread.Sleep(100);
+                        //通知PLC测试完成，打开测试柜
+                        plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
+                        //等待PLC允许取料
+                        while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
+                        {
+                            Thread.Sleep(100);
+                        }
                     }
                     //设置MTR表格，指示测试完成
                     db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
