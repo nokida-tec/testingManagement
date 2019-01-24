@@ -16,7 +16,6 @@ namespace XT_CETC23.DataCom
 {
    public  class Run
     {
-        CameraForm cf = new CameraForm();
         static Run run;
         public Robot robot;
         public Plc plc;
@@ -26,7 +25,8 @@ namespace XT_CETC23.DataCom
         IRunForm iRunForm;
         IAutoForm iAutoForm;
         IManulForm iManulForm;
-        CameraForm cFrom=new CameraForm();
+        ICameraForm iCameraForm;
+        
         delegate void getCabinetResult(int CabinetNum,string message);
         getCabinetResult GetCabinetResult;
         delegate void getCabinetStatus(int CabinetNum, string message);
@@ -50,6 +50,7 @@ namespace XT_CETC23.DataCom
         delegate void manulEnable(string mode,string status);
         manulEnable ManulEnable;
 
+        CameraForm cFrom;
         RunForm rForm;
         AutoForm aForm;
         ManulForm mForm;
@@ -69,11 +70,11 @@ namespace XT_CETC23.DataCom
         public static bool stepEnable = false;
         int preAlarmNo = 0;
 
-        static public Run GetInstanse(IRunForm iRunForm,IAutoForm iAutoForm,IMainForm iMainFrom,IManulForm iManulForm)
+        static public Run GetInstanse(IRunForm iRunForm,IAutoForm iAutoForm,IMainForm iMainFrom,IManulForm iManulForm, ICameraForm iCameraForm)
         {
             if(run==null)
             {
-                run = new Run(iRunForm, iAutoForm, iMainFrom, iManulForm);
+                run = new Run(iRunForm, iAutoForm, iMainFrom, iManulForm, iCameraForm);
             }
             return run;
         }
@@ -197,17 +198,19 @@ namespace XT_CETC23.DataCom
             }            
         }
 
-        private Run(IRunForm iRunForm, IAutoForm iAutoForm, IMainForm iMainForm, IManulForm iManulForm)
+        private Run(IRunForm iRunForm, IAutoForm iAutoForm, IMainForm iMainForm, IManulForm iManulForm, ICameraForm iCameraForm)
         {
             robot = Robot.GetInstanse();
             plc = Plc.GetInstanse();
             db = DataBase.GetInstanse();
             cabinet = Cabinet.GetInstanse();
             taskCycle = TaskCycle.GetInstanse();
-            
+
+            this.iCameraForm = iCameraForm;
             this.iRunForm = iRunForm;
             this.iAutoForm = iAutoForm;
             this.iManulForm = iManulForm;
+            cFrom = (CameraForm)this.iCameraForm;
             rForm = (RunForm)this.iRunForm;
             aForm = (AutoForm)this.iAutoForm;
             mForm = (ManulForm)this.iManulForm;
@@ -264,14 +267,14 @@ namespace XT_CETC23.DataCom
                     {
                         readPlcTh.Start();
                     }
-                    if (!readCabinetTh.IsAlive)
+                    if (readCabinetTh.ThreadState == ThreadState.Suspended)
                     {
-                        readCabinetTh.Start();
+                        readCabinetTh.Resume(); 
                     }
 
                     if (!robot.robotConnected && robot.robotInitialized && statusByPlc == "Initalized")
                     {
-                        robot.RobotSocketReconnect();
+                        //robot.RobotSocketReconnect();
                     }
 
                     if (modeByPlc == "Auto" && commandByPlc == "Start" && !mainStarting)
@@ -307,16 +310,22 @@ namespace XT_CETC23.DataCom
                     {                       
                         mForm.clearTask();
                         InitStatus = getInitResult();
-                        if (InitStatus)
+                        do
                         {
-                            Thread.Sleep(2000);
-                            plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 1 });
-                            SetProdType2Plc();
-                            TransMessage("初始化成功");
+                            Thread.Sleep(100);
+                        } while (!InitStatus || (statusByPlc != "Initalized"));
+                                                
+                        Thread.Sleep(1000);
+                        do
+                        {
+                            Thread.Sleep(100);
+                        } while(!plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 1 }));
+                        Thread.Sleep(1000);
+                        SetProdType2Plc();
+                        TransMessage("初始化成功");
                             initializing = true;
-                        }
-                        commandByPlc = "";
-                       
+                        
+                        commandByPlc = "";                      
                     }
 
                     if (stepEnable && mainSchedule.ThreadState == ThreadState.Running)
@@ -389,6 +398,12 @@ namespace XT_CETC23.DataCom
             {
                 //TransMessage("Robot初始化失败");
             }
+            
+            if (!readCabinetTh.IsAlive)
+            {
+                readCabinetTh.Start();
+            }
+
             for (int j = 13; j < 19;j++ )
             {
                 plc.DBWrite(PlcData.PlcWriteAddress, j, 1, new Byte[] { 0 });
@@ -477,6 +492,7 @@ namespace XT_CETC23.DataCom
 
                             //插入机器轨道任务
                             //插入机器人轨道任务：到测试柜
+                            //判断机器人是否在原点
                             db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
 
                             //等待机器人轨道到位
@@ -498,6 +514,7 @@ namespace XT_CETC23.DataCom
                             plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 8 });
 
                             //插入机器人轨道到料架任务
+                            //判断机器人是否在原点
                             db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");                        
 
                             //插入料架取料任务，取出托盘（要区分取出和放入）
@@ -601,6 +618,7 @@ namespace XT_CETC23.DataCom
 
                             //插入机器人轨道到料架任务
                             TaskCycle.PickStep = 0;
+                            //判断机器人是否在原点
                             db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
 
                             //等待机器人轨道到位
@@ -637,6 +655,7 @@ namespace XT_CETC23.DataCom
                             db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
 
                             //插入机器人轨道走位任务：到测试柜
+                            //判断机器人是否在原点
                             db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
 
                             //等待机器人轨道到位
@@ -742,6 +761,7 @@ namespace XT_CETC23.DataCom
 
                         //插入机器人轨道到料架任务
                         TaskCycle.PickStep = 0;
+                        //判断机器人是否在原点
                         db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
 
                         //等待机器人轨道到位
@@ -841,11 +861,13 @@ namespace XT_CETC23.DataCom
                                 {
                                     Thread.Sleep(100);
                                 } while (TaskCycle.PickStep != 30);
+                                TaskCycle.PickStep = 10;
                                 goto pickAnotherTray;               //换盘
                             }
-                            else
+                            if ((numRemain - 1) > 0)
                             {
                                 pieceNo = pieceNo + 1;              //换位置
+                                numRemain = numRemain - 1;
                                 db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
                                 goto shootAgain;
                             }
@@ -896,20 +918,21 @@ namespace XT_CETC23.DataCom
                             goto Redo;
                         }
 
-                        //读码成功
-                        Byte[] myCode = new Byte[50];
-                        myCode = plc.DbRead(104, 504, 50);
+                        //读码成功                       
+                        Byte[] myCode = plc.DbRead(104, 0, 556);
                         Thread.Sleep(2000);
                         plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
-                        int realLen = Convert.ToInt32(myCode[1]);
-                        prodCode = Encoding.Default.GetString(myCode, 2, realLen).Trim();
-                       
+                        int strLen = Convert.ToInt32(myCode[504]);
+                        int realLen = Convert.ToInt32(myCode[505]);
+                        prodCode = Encoding.Default.GetString(myCode, 506, realLen).Trim();
+                        
                         db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
                         //插入放回料盘任务
                         db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
 
                         //插入机器人轨道走位任务：到测试柜
+                        //判断机器人是否在原点
                         db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
 
                         //等待机器人轨道到位
