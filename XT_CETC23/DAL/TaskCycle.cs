@@ -243,8 +243,36 @@ namespace XT_CETC23.DataCom
 
                     //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
                     dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
-                    string targetFileName = dt.Rows[0]["ProductID"].ToString().Trim();
+                    string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                    string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
+
+                    dt = db.DBQuery("select * from dbo.ProductDef where Type= " + productType);
+                    string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
+                    string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
+
+                    string[] strings = productID.Split(new char[2] { '$', '#' });
+                    string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
+
+                    string opName = "常温";
+                    try
+                    {
+                        DataBase dbOfU8 = DataBase.GetU8DBInstanse();
+                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = "
+                            + productSerial + " and define22 = " + defineID);
+                        int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
+                        dt = db.DBQuery("select * from dbo.OperateDef where OpSeq= " + opMax);
+                        opName = dt.Rows[0]["Name"].ToString().Trim(); 
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
                     fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+
+                    // send scancode to U8
+                    sendToU8(productID);
 
                     //删除源文件                    
                     filePath = Directory.GetFiles(DataBase.sourcePath + @"\cabinet" + (cabinetNo + 1).ToString().Trim() + @"\");
@@ -256,7 +284,6 @@ namespace XT_CETC23.DataCom
                             {
                                 string file = Path.GetFileName(filePath[i]);
                                 File.Delete(file);
-//                                fileOp.FileDelet(file);
                             }
                             else
                             {

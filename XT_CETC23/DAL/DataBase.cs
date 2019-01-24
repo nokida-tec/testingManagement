@@ -13,6 +13,7 @@ namespace XT_CETC23.DataCom
         SqlConnection con;
         SqlCommand com;
         private static DataBase db = null;
+        private static DataBase dbOfU8 = null;
         delegate void DBMessage(string message);
         DBMessage dbMessage;
         DataTable dt ;
@@ -26,13 +27,22 @@ namespace XT_CETC23.DataCom
         object lockQuery = new object();
         public static DataBase GetInstanse()
         {
-
             if (db == null)
             {
                 db = new DataBase(DataManager.DBstr.conn);
             }
             return db;
         }
+
+        public static DataBase GetU8DBInstanse()
+        {
+            if (dbOfU8 == null)
+            {
+                dbOfU8 = new DataBase(Config.database.db_u8_conn);
+            }
+            return dbOfU8;
+        }
+
         private DataBase(string sqlcon)
         {
             //con.ConnectionString = sqlcon;
