@@ -685,7 +685,7 @@ namespace XT_CETC23
         {
             listBox_Alarm.Items.Add(message);
             byte[] fsByte = new byte[1000];
-            string path = DataBase.logPath;
+            string path = DataBase.logPath + "\\system.log";
             using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write))
             {
                 string str = "\r\n" + message + "\r\n";
