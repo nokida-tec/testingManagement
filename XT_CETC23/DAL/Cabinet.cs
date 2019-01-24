@@ -35,7 +35,7 @@ namespace XT_CETC23.DataCom
                     System.IO.Directory.CreateDirectory(path);
                 }
 
-                using (fsW[i] = new FileStream(CabinetData.pathCabinetOrder[i], FileMode.Open))
+                using (fsW[i] = new FileStream(CabinetData.pathCabinetOrder[i], FileMode.Append))
                 {
                     using (swrite[i] = new StreamWriter(fsW[i]))
                     {
@@ -51,22 +51,40 @@ namespace XT_CETC23.DataCom
             }
         }
 
-        public void ReadData(int i,ref string data)
+        public EnumC.Cabinet ReadData(int i)
         {
             //Directory.CreateDirectory(Path.GetDirectoryName(CabinetData.pathCabinetStatus[i]));
             //File.Create(CabinetData.pathCabinetStatus[i]).Dispose();
-            using (fsR[i] = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open))
+            FileStream fs = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs);
+            string line = null;
+            string lastline = null;
+            while ((line = sr.ReadLine()) != null)
             {
-                using (sread[i] = new StreamReader(fsR[i]))
+                lastline = line;
+            }
+            if (lastline != null) 
+            {
+                string[] orders = lastline.Split(new char[1] { ' ' });
+                switch (orders[orders.Length - 1])
                 {
-                    data = sread[i].ReadToEnd();
-                    fsR[i].Flush();
-                    sread[i].Close();
-                    fsR[i].Close();
-                    sread[i].Dispose();
-                    fsR[i].Dispose();
+                    case "30":
+                        return EnumC.Cabinet.Ready;
+                    case "31":
+                        return EnumC.Cabinet.Testing;
+                    case "32":
+                        return EnumC.Cabinet.Fault_Config;
+                    case "33":
+                        return EnumC.Cabinet.Fault_Control;
+                    case "34":
+                        return EnumC.Cabinet.Fault_Report;
+                    case "40":
+                        return EnumC.Cabinet.Finished;
+                    default:
+                        break;
                 }
-            }                        
+            }
+            return EnumC.Cabinet.Ready;
         }
     }
 }

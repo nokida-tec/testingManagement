@@ -1051,7 +1051,7 @@ namespace XT_CETC23.DataCom
             {
                 for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                 {
-                    if (CabinetData.cabinetStatus[i] == EnumHelper.GetDescription(EnumC.Cabinet.Testing))
+                    if (CabinetData.cabinetStatus[i] == EnumC.Cabinet.Testing)
                     {
 
                     }
@@ -1077,11 +1077,11 @@ namespace XT_CETC23.DataCom
             {
                 for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                 {
-                    cabinet.ReadData(i, ref readCabinet[i]);
+                    EnumC.Cabinet cabinetStatus = cabinet.ReadData(i);
                     Thread.Sleep(100);
                     GetCabinetResult(i + 1, readCabinet[i]);
                     Thread.Sleep(100);
-                    CabinetData.cabinetStatus[i] = readCabinet[i];
+                    CabinetData.cabinetStatus[i] = cabinetStatus;
                     Thread.Sleep(100);
                 }
                 Thread.Sleep(100);

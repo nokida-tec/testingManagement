@@ -193,8 +193,7 @@ namespace XT_CETC23.DataCom
 
                     if (Config.Config.ENABLED_PLC)
                     {
-                        if (CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Ready))
-                            || CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Finished)))
+                        if (CabinetData.cabinetStatus[cabinetNo] == EnumC.Cabinet.Ready)
                         {
                             DateTime currentTime = DateTime.Now;
 
@@ -204,14 +203,13 @@ namespace XT_CETC23.DataCom
                             cabinet.WriteData(cabinetNo, currentTime.ToString() + "   " + command);
                             //通知PLC测试开始了
                             plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
-                            Thread.Sleep(2000);
                         }
 
                         // 等待测试begin   
-                        while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Testing)))
-                        {
-                            Thread.Sleep(100);
-                        }
+                        //while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Testing)))
+                        //{
+                        //    Thread.Sleep(100);
+                        //}
                     }
 
                     // 测试完成后，修改测试柜
@@ -221,7 +219,7 @@ namespace XT_CETC23.DataCom
                         //task[i] = null;
                         if (Config.Config.ENABLED_PLC)
                         {
-                            while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Finished).ToString()))
+                            while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Finished)
                             {
                                 Thread.Sleep(100);
                             }
@@ -320,6 +318,7 @@ namespace XT_CETC23.DataCom
                         }
                         //设置MTR表格，指示测试完成
                         db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                        CabinetData.cabinetStatus[cabinetNo] = EnumC.Cabinet.Ready;
                     }
 
                 }
@@ -363,12 +362,12 @@ namespace XT_CETC23.DataCom
             {
                 if (Config.Config.ENABLED_DEBUG == false)
                 {
-                    if (!(CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Ready))
-                            || CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Finished))))
+                    if (!(CabinetData.cabinetStatus[cabinetNo] == EnumC.Cabinet.Ready
+                            || CabinetData.cabinetStatus[cabinetNo] == EnumC.Cabinet.Finished))
                     {
                         cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Stop));
                     }
-                    while (CabinetData.cabinetStatus[cabinetNo] != EnumHelper.GetDescription(EnumC.Cabinet.Finished))
+                    while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Finished)
                     {
                         Thread.Sleep(100);
                     }
