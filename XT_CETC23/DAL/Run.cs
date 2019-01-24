@@ -1051,7 +1051,7 @@ namespace XT_CETC23.DataCom
             {
                 for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                 {
-                    if (CabinetData.cabinetStatus[i] == EnumHelper.GetDescription(EnumC.Cabinet.Checking))
+                    if (CabinetData.cabinetStatus[i] == EnumHelper.GetDescription(EnumC.Cabinet.Testing))
                     {
 
                     }

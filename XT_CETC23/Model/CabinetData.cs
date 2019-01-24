@@ -9,20 +9,7 @@ namespace XT_CETC23.DataManager
 {
     class CabinetData
     {
-        public static string pathRead1;
-        public static string pathRead2;
-        public static string pathRead3;
-        public static string pathRead4;
-        public static string pathRead5;
-        public static string pathRead6;
         public static string[] pathCabinetStatus; //= new string[6] { pathRead1, pathRead2, pathRead3, pathRead4, pathRead5, pathRead6 };
-
-        public static string pathWrite1;
-        public static string pathWrite2;
-        public static string pathWrite3;
-        public static string pathWrite4;
-        public static string pathWrite5;
-        public static string pathWrite6;
         public static string[] pathCabinetOrder;// = new string[6] { pathWrite1, pathWrite2, pathWrite3, pathWrite4, pathWrite5, pathWrite6 };
         public static string[] cabinetStatus = new string[6];
         public static string getOrder(int order)
