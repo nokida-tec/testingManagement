@@ -271,6 +271,13 @@ namespace XT_CETC23.DataCom
                     string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
                     fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
 
+                    //  record the scan barcode to logs file
+                    DateTime currentTime = DateTime.Now;
+                    StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
+                    sw.WriteLine(currentTime.ToString() + " \t" + productID);
+                    sw.Flush();
+                    sw.Close();
+
                     // send scancode to U8
                     sendToU8(productID);
 
