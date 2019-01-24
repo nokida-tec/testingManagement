@@ -8,6 +8,6 @@ namespace XT_CETC23.Config
 {
     class Config
     {
-        static public bool ENABLED_VISIONPRO = false;
+        static public bool ENABLED_VISIONPRO = true;
     }
 }
