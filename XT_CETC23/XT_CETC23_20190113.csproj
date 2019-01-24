@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>XT_CETC23</RootNamespace>
     <AssemblyName>XT_CETC23</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -27,6 +27,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -114,6 +115,7 @@
     <Compile Include="Common\snap7.net.cs" />
     <Compile Include="Common\StatusFeedBack.cs" />
     <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\Database.cs" />
     <Compile Include="DAL\ActualData.cs" />
     <Compile Include="DAL\Cabinet.cs" />
     <Compile Include="DAL\Camera.cs" />

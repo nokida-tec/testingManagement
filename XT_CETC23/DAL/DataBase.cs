@@ -38,7 +38,7 @@ namespace XT_CETC23.DataCom
         {
             if (dbOfU8 == null)
             {
-                dbOfU8 = new DataBase(Config.database.db_u8_conn);
+                dbOfU8 = new DataBase(Config.Database.db_u8_conn);
             }
             return dbOfU8;
         }
