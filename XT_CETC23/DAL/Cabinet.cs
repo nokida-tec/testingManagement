@@ -53,6 +53,8 @@ namespace XT_CETC23.DataCom
 
         public void ReadData(int i,ref string data)
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(CabinetData.pathCabinetStatus[i]));
+            File.Create(CabinetData.pathCabinetStatus[i]).Dispose();
             using (fsR[i] = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open))
             {
                 using (sread[i] = new StreamReader(fsR[i]))
