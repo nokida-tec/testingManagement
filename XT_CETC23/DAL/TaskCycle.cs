@@ -158,7 +158,7 @@ namespace XT_CETC23.DataCom
             ArrayList paraCabTask = new ArrayList();
             paraCabTask.Add("Start");
             paraCabTask.Add(2);
-            paraCabTask.Add(200);
+            paraCabTask.Add(2000);
             CabinetTest(paraCabTask);
         }
 
@@ -229,9 +229,9 @@ namespace XT_CETC23.DataCom
                     {
                         for (int i = 0; i < filePath.Length; i++)
                         {
-                            if (Path.GetExtension(filePath[i]) == ".xls")
+                            if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
                             {
-                                sourceFile = Path.GetFileName(filePath[i]);
+                                sourceFile = filePath[i];
                             }
                             else
                             {
@@ -245,7 +245,12 @@ namespace XT_CETC23.DataCom
                     }
 
                     //读取excel表格判断测试OK，NG
-                    bool testResult = excelOp.CheckTestResults(sourceFile);
+
+                    bool testResult = true;
+                    if (Config.Config.ENABLED_PLC == true)
+                    {
+                        testResult = excelOp.CheckTestResults(sourceFile);
+                    }
 
                     //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.Fault))
                     //{
@@ -267,7 +272,7 @@ namespace XT_CETC23.DataCom
                     string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
                     string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
 
-                    dt = db.DBQuery("select * from dbo.ProductDef where Type= " + productType);
+                    dt = db.DBQuery("select * from dbo.ProductDef where Type= '" + productType + "'");
                     string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
                     string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
 
@@ -278,10 +283,10 @@ namespace XT_CETC23.DataCom
                     try
                     {
                         DataBase dbOfU8 = DataBase.GetU8DBInstanse();
-                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = "
-                            + productSerial + " and define22 = " + defineID);
+                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
+                            + productSerial + "' and define22 = '" + defineID + "'");
                         int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
-                        dt = db.DBQuery("select * from dbo.OperateDef where OpSeq= " + opMax);
+                        dt = db.DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
                         opName = dt.Rows[0]["Name"].ToString().Trim(); 
                     }
                     catch (Exception e)
