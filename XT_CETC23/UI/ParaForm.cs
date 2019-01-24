@@ -121,7 +121,26 @@ namespace XT_CETC23.SonForm
                 filePath = tmpPath + "order.txt";
                 CabinetData.pathWrite6 = filePath;
                 File.Create(filePath);
-            }            
+                CabinetData.pathCabinetStatus = new string[6] { CabinetData.pathRead1, CabinetData.pathRead2, CabinetData.pathRead3, CabinetData.pathRead4, CabinetData.pathRead5, CabinetData.pathRead6 };
+                CabinetData.pathCabinetOrder = new string[6] { CabinetData.pathWrite1, CabinetData.pathWrite2, CabinetData.pathWrite3, CabinetData.pathWrite4, CabinetData.pathWrite5, CabinetData.pathWrite6 };
+            } 
+            else
+            {
+                CabinetData.pathRead1 = cPath + @"\cabinet1\status.txt";
+                CabinetData.pathWrite1 = cPath + @"\cabinet1\order.txt";
+                CabinetData.pathRead2 = cPath + @"\cabinet2\status.txt";
+                CabinetData.pathWrite2 = cPath + @"\cabinet2\order.txt";
+                CabinetData.pathRead3 = cPath + @"\cabinet3\status.txt";
+                CabinetData.pathWrite3 = cPath + @"\cabinet3\order.txt";
+                CabinetData.pathRead4 = cPath + @"\cabinet4\status.txt";
+                CabinetData.pathWrite4 = cPath + @"\cabinet4\order.txt";
+                CabinetData.pathRead5 = cPath + @"\cabinet5\status.txt";
+                CabinetData.pathWrite5 = cPath + @"\cabinet5\order.txt";
+                CabinetData.pathRead6 = cPath + @"\cabinet6\status.txt";
+                CabinetData.pathWrite6 = cPath + @"\cabinet6\order.txt";
+                CabinetData.pathCabinetStatus = new string[6] { CabinetData.pathRead1, CabinetData.pathRead2, CabinetData.pathRead3, CabinetData.pathRead4, CabinetData.pathRead5, CabinetData.pathRead6 };
+                CabinetData.pathCabinetOrder = new string[6] { CabinetData.pathWrite1, CabinetData.pathWrite2, CabinetData.pathWrite3, CabinetData.pathWrite4, CabinetData.pathWrite5, CabinetData.pathWrite6 };
+            }
             DataBase.sourcePath = dt.Rows[2]["pathName"].ToString().Trim();
             txtSource.Text = DataBase.sourcePath;
             if (!Directory.Exists(DataBase.sourcePath))
