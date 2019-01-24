@@ -44,11 +44,11 @@ namespace XT_CETC23.SonForm
                 tool.Inputs["InputImage"].Value = Camera.CCD.OutputImage;
             }
             else
-            {
-                return;
+            {                
                 X = "-1";
                 Y = "-1";
                 CCDDone = -1;
+                return;
             }
             tool.Inputs["ChooseNumA"].Value = (double)number;
             tool.Run();

@@ -28,9 +28,11 @@ namespace XT_CETC23
         RunForm rForm;
         UserForm uForm;
         StepForm sForm;
+        DataBase db;
 
         public MainForm()
-        {         
+        {
+            db = DataBase.GetInstanse();
             InitializeComponent();
             InitForm();
             InitFormEvent();       
@@ -217,13 +219,16 @@ namespace XT_CETC23
         {
             if (!sForm.IsDisposed)
             {
-                panel_Load.Controls.Clear();
-                sForm.TopLevel = false;
-                sForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(sForm);
-                mForm.clearTask();
-                Run.stepEnable = true;
-                sForm.Show();
+                if (MessageBox.Show("单步控制与主调度流程是互斥的，将会挂起主调度流程，请确认主调度流程动作已经完成！", "Information", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    panel_Load.Controls.Clear();
+                    sForm.TopLevel = false;
+                    sForm.Dock = DockStyle.Fill;
+                    panel_Load.Controls.Add(sForm);
+                    mForm.clearTask();
+                    Run.stepEnable = true;
+                    sForm.Show();
+                }
             }
         }
 
@@ -650,7 +655,7 @@ namespace XT_CETC23
             {
                 pB_manul.Enabled = true;
                 pB_para.Enabled = true;
-                pB_step.Enabled = true;
+                pB_step.Enabled = false;
             }
 
             if (status == "AutoRunning")
@@ -683,17 +688,30 @@ namespace XT_CETC23
 
         private void log(string message)
         {
-            listBox_Alarm.Items.Add(message);
-            byte[] fsByte = new byte[1000];
-            string path = DataBase.logPath + "\\system.log";
-            using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write))
-            {
-                string str = "\r\n" + message + "\r\n";
-                int len = str.Length;
-                fsByte = Encoding.Default.GetBytes(str);
-                fs.Write(fsByte, 0, len);
-            }
 
+            try
+            {
+                listBox_Alarm.Items.Add(message);
+                byte[] fsByte = new byte[1000];
+                string path = DataBase.logPath+@"\log.txt";
+                using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write))
+                {
+                    string str = "\r\n" + message + "\r\n";
+                    int len = str.Length;
+                    fsByte = Encoding.Default.GetBytes(str);
+                    fs.Write(fsByte, 0, len);
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
+
+        private void btn_test_Click(object sender, EventArgs e)
+        {
+            TaskCycle taskCycle = TaskCycle.GetInstanse();
+            taskCycle.Test();
         }
     }
 }

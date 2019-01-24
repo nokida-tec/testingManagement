@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using XT_CETC23.INTransfer;
 using XT_CETC23.DataCom;
 using XT_CETC23.DataManager;
@@ -39,27 +40,104 @@ namespace XT_CETC23.SonForm
             InitData();
             sortAdd1 = new UserForms.SortAdd(this);
             plc = Plc.GetInstanse();
-        }
-        private void ParaForm_Load(object sender, EventArgs e)
-        {
+
             db = DataBase.GetInstanse();
             dt = db.DBQuery("select * from dbo.Path");
-            for(int i=0;i<4;i++)
+            for (int i = 0; i < 4; i++)
             {
-                if(dt.Rows[0]["pathName"].ToString().Trim()==null)
+                if (dt.Rows[0]["pathName"].ToString().Trim() == null)
                 {
                     MessageBox.Show("系统所需文件目录配置信息不完整，请通过参数配置页面配置完整！");
                     return;
                 }
             }
-            DataBase .logPath= dt.Rows[0]["pathName"].ToString().Trim();
-            txtLog.Text = DataBase.logPath;            
-            DataBase.cmdPath= dt.Rows[1]["pathName"].ToString().Trim();
+            DataBase.logPath = dt.Rows[0]["pathName"].ToString().Trim();
+            txtLog.Text = DataBase.logPath;
+            if (!Directory.Exists(DataBase.logPath))
+            {
+                Directory.CreateDirectory(DataBase.logPath);
+                string filePath = DataBase.logPath + @"\log.txt";
+                File.Create(filePath);
+            }
+            else
+            {
+                string filePath = DataBase.logPath + @"\log.txt";
+                if (!File.Exists(filePath))
+                {
+                    File.Create(filePath);
+                }
+            }
+            DataBase.cmdPath = dt.Rows[1]["pathName"].ToString().Trim();
             txtCmd.Text = DataBase.cmdPath;
-            DataBase.sourcePath= dt.Rows[2]["pathName"].ToString().Trim();
+            string cPath = DataBase.cmdPath + @"\Cabinet";
+            if (!Directory.Exists(cPath))
+            {
+                Directory.CreateDirectory(DataBase.cmdPath);
+                string tmpPath = cPath + @"\cabinet1\";
+                Directory.CreateDirectory(tmpPath);
+                string filePath = tmpPath + "status.txt";
+                CabinetData.pathRead1 = filePath;
+                File.Create(filePath);               
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite1 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet2\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead2 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite2 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet3\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead3 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite3 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet4\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead4 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite4 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet5\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead5 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite5 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet6\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead6 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite6 = filePath;
+                File.Create(filePath);
+            }            
+            DataBase.sourcePath = dt.Rows[2]["pathName"].ToString().Trim();
             txtSource.Text = DataBase.sourcePath;
-            DataBase.sourcePath= dt.Rows[3]["pathName"].ToString().Trim();
-            txtTarget.Text = DataBase.sourcePath;
+            if (!Directory.Exists(DataBase.sourcePath))
+            {
+                Directory.CreateDirectory(DataBase.sourcePath);
+            }
+            DataBase.targetPath = dt.Rows[3]["pathName"].ToString().Trim();
+            txtTarget.Text = DataBase.targetPath;
+            if (!Directory.Exists(DataBase.targetPath))
+            {
+                Directory.CreateDirectory(DataBase.targetPath);
+            }
+        }
+        private void ParaForm_Load(object sender, EventArgs e)
+        {
+            
         }
         void InitData()
         {
@@ -241,21 +319,93 @@ namespace XT_CETC23.SonForm
         private void btnLogSave_Click(object sender, EventArgs e)
         {
             db.DBUpdate("update dbo.Path set pathName='" + txtLog.Text.Trim() + "'where PathID=" + 1);
+            DataBase.logPath = txtLog.Text.Trim();
+            if (!Directory.Exists(DataBase.logPath))
+            {
+                Directory.CreateDirectory(DataBase.logPath);
+                string filePath = DataBase.logPath + "log.txt";
+                File.Create(filePath);
+            }
+            
         }
 
         private void btnCmdSave_Click(object sender, EventArgs e)
         {
             db.DBUpdate("update dbo.Path set pathName='" + txtCmd.Text.Trim() + "'where PathID=" + 2);
+            DataBase.cmdPath = txtCmd.Text.Trim();
+            string cPath=DataBase.cmdPath+@"\Cabinet";
+            if (!Directory.Exists(cPath))
+            {
+                Directory.CreateDirectory(DataBase.cmdPath);
+                string tmpPath = cPath + @"\cabinet1\";
+                Directory.CreateDirectory(tmpPath);
+                string filePath = tmpPath + "status.txt";
+                CabinetData.pathRead1 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite1 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet2\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead2 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite2 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet3\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead3 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite3 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet4\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead4 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite4 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet5\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead5 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite5 = filePath;
+                File.Create(filePath);
+                tmpPath = cPath + @"\cabinet6\";
+                Directory.CreateDirectory(tmpPath);
+                filePath = tmpPath + "status.txt";
+                CabinetData.pathRead6 = filePath;
+                File.Create(filePath);
+                filePath = tmpPath + "order.txt";
+                CabinetData.pathWrite6 = filePath;
+                File.Create(filePath);
+            }                       
         }
 
         private void btnSourceSave_Click(object sender, EventArgs e)
         {
             db.DBUpdate("update dbo.Path set pathName='" + txtSource.Text.Trim() + "'where PathID=" + 3);
+            DataBase.sourcePath = txtSource.Text.Trim();
+            if (!Directory.Exists(DataBase.sourcePath))
+            {
+                Directory.CreateDirectory(DataBase.sourcePath);
+            }           
         }
 
         private void btnTargetSave_Click(object sender, EventArgs e)
         {
             db.DBUpdate("update dbo.Path set pathName='" + txtTarget.Text.Trim() + "'where PathID=" + 4);
+            DataBase.targetPath = txtTarget.Text.Trim();
+            if (!Directory.Exists(DataBase.targetPath))
+            {
+                Directory.CreateDirectory(DataBase.targetPath);
+            }
         }
     }
 }

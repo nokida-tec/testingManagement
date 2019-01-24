@@ -42,8 +42,10 @@ namespace XT_CETC23.DataCom
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
+                Thread.Sleep(1000);
                 socketClient.Connect(iEndPoint);
-               if(!dThread.IsAlive)
+                Thread.Sleep(1000);
+                if(!dThread.IsAlive)
                 {
                     dThread.Start();                    
                 }
@@ -59,10 +61,19 @@ namespace XT_CETC23.DataCom
 
         public void RobotSocketReconnect()
         {
+            socketClient.Close();
+            socketClient.Dispose();
+            dThread.Abort();
+            Thread.Sleep(200);
             ip = IPAddress.Parse("192.168.10.1");
             iEndPoint = new IPEndPoint(ip, 1000);
             socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socketClient.Connect(iEndPoint);
+            Thread.Sleep(200);
+            if (!dThread.IsAlive)
+            {
+                dThread.Start();
+            }
         }
 
         private void DataStream()
@@ -80,8 +91,7 @@ namespace XT_CETC23.DataCom
                 else
                 {
                     robotConnected = false;
-                    socketClient.Close();
-                    socketClient.Dispose();             
+                    //RobotSocketReconnect();            
                 }
                 Thread.Sleep(100);
             }

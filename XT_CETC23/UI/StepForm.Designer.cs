@@ -49,6 +49,19 @@
             this.manul_btnStartT = new System.Windows.Forms.Button();
             this.manul_cbCabineit = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.manul_gbRobt = new System.Windows.Forms.GroupBox();
+            this.ckbAxis7Alone = new System.Windows.Forms.CheckBox();
+            this.manul_cbTrayNo = new System.Windows.Forms.ComboBox();
+            this.manul_cbProductNum = new System.Windows.Forms.ComboBox();
+            this.manul_btnStart1 = new System.Windows.Forms.Button();
+            this.manul_cbProductSort = new System.Windows.Forms.ComboBox();
+            this.manul_cbGoalPos = new System.Windows.Forms.ComboBox();
+            this.manul_lbGoalPos1 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.manul_cbCommand = new System.Windows.Forms.ComboBox();
+            this.manul_lbProductSort = new System.Windows.Forms.Label();
+            this.manul_lbCommand1 = new System.Windows.Forms.Label();
             this.manul_gbFrame = new System.Windows.Forms.GroupBox();
             this.manul_btnStartScan = new System.Windows.Forms.Button();
             this.manul_btnStart2 = new System.Windows.Forms.Button();
@@ -57,22 +70,11 @@
             this.manul_lbCommand2 = new System.Windows.Forms.Label();
             this.manul_lbGoalPos2 = new System.Windows.Forms.Label();
             this.auto_lbName = new System.Windows.Forms.Label();
-            this.manul_lbCommand1 = new System.Windows.Forms.Label();
-            this.manul_lbProductSort = new System.Windows.Forms.Label();
-            this.manul_cbCommand = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.manul_lbGoalPos1 = new System.Windows.Forms.Label();
-            this.manul_cbGoalPos = new System.Windows.Forms.ComboBox();
-            this.manul_cbProductSort = new System.Windows.Forms.ComboBox();
-            this.manul_btnStart1 = new System.Windows.Forms.Button();
-            this.manul_cbProductNum = new System.Windows.Forms.ComboBox();
-            this.ckbAxis7Alone = new System.Windows.Forms.CheckBox();
-            this.manul_gbRobt = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.manul_gbFrame.SuspendLayout();
             this.manul_gbRobt.SuspendLayout();
+            this.manul_gbFrame.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -382,6 +384,205 @@
             this.label6.TabIndex = 2;
             this.label6.Text = "产品类型：";
             // 
+            // manul_gbRobt
+            // 
+            this.manul_gbRobt.Controls.Add(this.ckbAxis7Alone);
+            this.manul_gbRobt.Controls.Add(this.manul_cbTrayNo);
+            this.manul_gbRobt.Controls.Add(this.manul_cbProductNum);
+            this.manul_gbRobt.Controls.Add(this.manul_btnStart1);
+            this.manul_gbRobt.Controls.Add(this.manul_cbProductSort);
+            this.manul_gbRobt.Controls.Add(this.manul_cbGoalPos);
+            this.manul_gbRobt.Controls.Add(this.manul_lbGoalPos1);
+            this.manul_gbRobt.Controls.Add(this.label8);
+            this.manul_gbRobt.Controls.Add(this.label7);
+            this.manul_gbRobt.Controls.Add(this.manul_cbCommand);
+            this.manul_gbRobt.Controls.Add(this.manul_lbProductSort);
+            this.manul_gbRobt.Controls.Add(this.manul_lbCommand1);
+            this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_gbRobt.Location = new System.Drawing.Point(18, 255);
+            this.manul_gbRobt.Name = "manul_gbRobt";
+            this.manul_gbRobt.Size = new System.Drawing.Size(690, 319);
+            this.manul_gbRobt.TabIndex = 36;
+            this.manul_gbRobt.TabStop = false;
+            this.manul_gbRobt.Text = "机器人取放料";
+            // 
+            // ckbAxis7Alone
+            // 
+            this.ckbAxis7Alone.AutoSize = true;
+            this.ckbAxis7Alone.Location = new System.Drawing.Point(475, 243);
+            this.ckbAxis7Alone.Name = "ckbAxis7Alone";
+            this.ckbAxis7Alone.Size = new System.Drawing.Size(196, 22);
+            this.ckbAxis7Alone.TabIndex = 8;
+            this.ckbAxis7Alone.Text = "机器人轨道独立运动";
+            this.ckbAxis7Alone.UseVisualStyleBackColor = true;
+            // 
+            // manul_cbTrayNo
+            // 
+            this.manul_cbTrayNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manul_cbTrayNo.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_cbTrayNo.FormattingEnabled = true;
+            this.manul_cbTrayNo.Items.AddRange(new object[] {
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "B1",
+            "B2",
+            "B3",
+            "B4",
+            "B5",
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "D1",
+            "D2",
+            "D3",
+            "D4",
+            "D5",
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5",
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "G1",
+            "G2",
+            "G3",
+            "G4",
+            "G5",
+            "H1",
+            "H2",
+            "H3",
+            "H4",
+            "H5"});
+            this.manul_cbTrayNo.Location = new System.Drawing.Point(238, 212);
+            this.manul_cbTrayNo.Name = "manul_cbTrayNo";
+            this.manul_cbTrayNo.Size = new System.Drawing.Size(162, 32);
+            this.manul_cbTrayNo.TabIndex = 7;
+            // 
+            // manul_cbProductNum
+            // 
+            this.manul_cbProductNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manul_cbProductNum.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_cbProductNum.FormattingEnabled = true;
+            this.manul_cbProductNum.Location = new System.Drawing.Point(238, 271);
+            this.manul_cbProductNum.Name = "manul_cbProductNum";
+            this.manul_cbProductNum.Size = new System.Drawing.Size(162, 32);
+            this.manul_cbProductNum.TabIndex = 7;
+            // 
+            // manul_btnStart1
+            // 
+            this.manul_btnStart1.BackColor = System.Drawing.Color.PowderBlue;
+            this.manul_btnStart1.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_btnStart1.Location = new System.Drawing.Point(475, 79);
+            this.manul_btnStart1.Name = "manul_btnStart1";
+            this.manul_btnStart1.Size = new System.Drawing.Size(146, 141);
+            this.manul_btnStart1.TabIndex = 6;
+            this.manul_btnStart1.Text = "机器人取料/放料";
+            this.manul_btnStart1.UseVisualStyleBackColor = false;
+            this.manul_btnStart1.Click += new System.EventHandler(this.manul_btnStart1_Click);
+            // 
+            // manul_cbProductSort
+            // 
+            this.manul_cbProductSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manul_cbProductSort.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_cbProductSort.FormattingEnabled = true;
+            this.manul_cbProductSort.Location = new System.Drawing.Point(238, 35);
+            this.manul_cbProductSort.Name = "manul_cbProductSort";
+            this.manul_cbProductSort.Size = new System.Drawing.Size(162, 32);
+            this.manul_cbProductSort.TabIndex = 5;
+            this.manul_cbProductSort.SelectedIndexChanged += new System.EventHandler(this.manul_cbProductSort_SelectedIndexChanged);
+            this.manul_cbProductSort.Click += new System.EventHandler(this.manul_cbProductSort_Click);
+            // 
+            // manul_cbGoalPos
+            // 
+            this.manul_cbGoalPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manul_cbGoalPos.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_cbGoalPos.FormattingEnabled = true;
+            this.manul_cbGoalPos.Items.AddRange(new object[] {
+            "料架位",
+            "1#测试位",
+            "2#测试位",
+            "3#测试位",
+            "4#测试位",
+            "5#测试位",
+            "6#测试位"});
+            this.manul_cbGoalPos.Location = new System.Drawing.Point(238, 153);
+            this.manul_cbGoalPos.Name = "manul_cbGoalPos";
+            this.manul_cbGoalPos.Size = new System.Drawing.Size(162, 32);
+            this.manul_cbGoalPos.TabIndex = 3;
+            this.manul_cbGoalPos.SelectedIndexChanged += new System.EventHandler(this.manul_cbGoalPos_SelectedIndexChanged);
+            // 
+            // manul_lbGoalPos1
+            // 
+            this.manul_lbGoalPos1.AutoSize = true;
+            this.manul_lbGoalPos1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbGoalPos1.Location = new System.Drawing.Point(52, 155);
+            this.manul_lbGoalPos1.Name = "manul_lbGoalPos1";
+            this.manul_lbGoalPos1.Size = new System.Drawing.Size(152, 28);
+            this.manul_lbGoalPos1.TabIndex = 0;
+            this.manul_lbGoalPos1.Text = "轨道位置：";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(52, 213);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(124, 28);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "料盘号：";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(52, 271);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(124, 28);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "位置号：";
+            // 
+            // manul_cbCommand
+            // 
+            this.manul_cbCommand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manul_cbCommand.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_cbCommand.FormattingEnabled = true;
+            this.manul_cbCommand.Items.AddRange(new object[] {
+            "取料",
+            "放料"});
+            this.manul_cbCommand.Location = new System.Drawing.Point(238, 94);
+            this.manul_cbCommand.Name = "manul_cbCommand";
+            this.manul_cbCommand.Size = new System.Drawing.Size(162, 32);
+            this.manul_cbCommand.TabIndex = 4;
+            // 
+            // manul_lbProductSort
+            // 
+            this.manul_lbProductSort.AutoSize = true;
+            this.manul_lbProductSort.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbProductSort.Location = new System.Drawing.Point(38, 37);
+            this.manul_lbProductSort.Name = "manul_lbProductSort";
+            this.manul_lbProductSort.Size = new System.Drawing.Size(166, 28);
+            this.manul_lbProductSort.TabIndex = 2;
+            this.manul_lbProductSort.Text = " 产品类型：";
+            // 
+            // manul_lbCommand1
+            // 
+            this.manul_lbCommand1.AutoSize = true;
+            this.manul_lbCommand1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbCommand1.Location = new System.Drawing.Point(52, 97);
+            this.manul_lbCommand1.Name = "manul_lbCommand1";
+            this.manul_lbCommand1.Size = new System.Drawing.Size(152, 28);
+            this.manul_lbCommand1.TabIndex = 1;
+            this.manul_lbCommand1.Text = "动作类型：";
+            // 
             // manul_gbFrame
             // 
             this.manul_gbFrame.Controls.Add(this.manul_btnStartScan);
@@ -418,7 +619,7 @@
             this.manul_btnStart2.Name = "manul_btnStart2";
             this.manul_btnStart2.Size = new System.Drawing.Size(146, 88);
             this.manul_btnStart2.TabIndex = 6;
-            this.manul_btnStart2.Text = "G O";
+            this.manul_btnStart2.Text = "货架取料/放料";
             this.manul_btnStart2.UseVisualStyleBackColor = false;
             this.manul_btnStart2.Click += new System.EventHandler(this.manul_btnStart2_Click);
             // 
@@ -517,141 +718,6 @@
             this.auto_lbName.TabIndex = 3;
             this.auto_lbName.Text = "单步控制";
             // 
-            // manul_lbCommand1
-            // 
-            this.manul_lbCommand1.AutoSize = true;
-            this.manul_lbCommand1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbCommand1.Location = new System.Drawing.Point(52, 117);
-            this.manul_lbCommand1.Name = "manul_lbCommand1";
-            this.manul_lbCommand1.Size = new System.Drawing.Size(152, 28);
-            this.manul_lbCommand1.TabIndex = 1;
-            this.manul_lbCommand1.Text = "动作类型：";
-            // 
-            // manul_lbProductSort
-            // 
-            this.manul_lbProductSort.AutoSize = true;
-            this.manul_lbProductSort.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbProductSort.Location = new System.Drawing.Point(52, 56);
-            this.manul_lbProductSort.Name = "manul_lbProductSort";
-            this.manul_lbProductSort.Size = new System.Drawing.Size(152, 28);
-            this.manul_lbProductSort.TabIndex = 2;
-            this.manul_lbProductSort.Text = "产品类型：";
-            // 
-            // manul_cbCommand
-            // 
-            this.manul_cbCommand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbCommand.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbCommand.FormattingEnabled = true;
-            this.manul_cbCommand.Items.AddRange(new object[] {
-            "取料",
-            "放料"});
-            this.manul_cbCommand.Location = new System.Drawing.Point(238, 115);
-            this.manul_cbCommand.Name = "manul_cbCommand";
-            this.manul_cbCommand.Size = new System.Drawing.Size(162, 32);
-            this.manul_cbCommand.TabIndex = 4;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(52, 237);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(124, 28);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "位置号：";
-            // 
-            // manul_lbGoalPos1
-            // 
-            this.manul_lbGoalPos1.AutoSize = true;
-            this.manul_lbGoalPos1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbGoalPos1.Location = new System.Drawing.Point(52, 179);
-            this.manul_lbGoalPos1.Name = "manul_lbGoalPos1";
-            this.manul_lbGoalPos1.Size = new System.Drawing.Size(152, 28);
-            this.manul_lbGoalPos1.TabIndex = 0;
-            this.manul_lbGoalPos1.Text = "目标位置：";
-            // 
-            // manul_cbGoalPos
-            // 
-            this.manul_cbGoalPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbGoalPos.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbGoalPos.FormattingEnabled = true;
-            this.manul_cbGoalPos.Items.AddRange(new object[] {
-            "料架位",
-            "1#测试位",
-            "2#测试位",
-            "3#测试位",
-            "4#测试位",
-            "5#测试位",
-            "6#测试位"});
-            this.manul_cbGoalPos.Location = new System.Drawing.Point(238, 179);
-            this.manul_cbGoalPos.Name = "manul_cbGoalPos";
-            this.manul_cbGoalPos.Size = new System.Drawing.Size(162, 32);
-            this.manul_cbGoalPos.TabIndex = 3;
-            // 
-            // manul_cbProductSort
-            // 
-            this.manul_cbProductSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbProductSort.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbProductSort.FormattingEnabled = true;
-            this.manul_cbProductSort.Location = new System.Drawing.Point(238, 52);
-            this.manul_cbProductSort.Name = "manul_cbProductSort";
-            this.manul_cbProductSort.Size = new System.Drawing.Size(162, 32);
-            this.manul_cbProductSort.TabIndex = 5;
-            this.manul_cbProductSort.SelectedIndexChanged += new System.EventHandler(this.manul_cbProductSort_SelectedIndexChanged);
-            this.manul_cbProductSort.Click += new System.EventHandler(this.manul_cbProductSort_Click);
-            // 
-            // manul_btnStart1
-            // 
-            this.manul_btnStart1.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStart1.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStart1.Location = new System.Drawing.Point(475, 52);
-            this.manul_btnStart1.Name = "manul_btnStart1";
-            this.manul_btnStart1.Size = new System.Drawing.Size(146, 141);
-            this.manul_btnStart1.TabIndex = 6;
-            this.manul_btnStart1.Text = "G O";
-            this.manul_btnStart1.UseVisualStyleBackColor = false;
-            this.manul_btnStart1.Click += new System.EventHandler(this.manul_btnStart1_Click);
-            // 
-            // manul_cbProductNum
-            // 
-            this.manul_cbProductNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbProductNum.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbProductNum.FormattingEnabled = true;
-            this.manul_cbProductNum.Location = new System.Drawing.Point(238, 238);
-            this.manul_cbProductNum.Name = "manul_cbProductNum";
-            this.manul_cbProductNum.Size = new System.Drawing.Size(162, 32);
-            this.manul_cbProductNum.TabIndex = 7;
-            // 
-            // ckbAxis7Alone
-            // 
-            this.ckbAxis7Alone.AutoSize = true;
-            this.ckbAxis7Alone.Location = new System.Drawing.Point(475, 216);
-            this.ckbAxis7Alone.Name = "ckbAxis7Alone";
-            this.ckbAxis7Alone.Size = new System.Drawing.Size(196, 22);
-            this.ckbAxis7Alone.TabIndex = 8;
-            this.ckbAxis7Alone.Text = "机器人轨道独立运动";
-            this.ckbAxis7Alone.UseVisualStyleBackColor = true;
-            // 
-            // manul_gbRobt
-            // 
-            this.manul_gbRobt.Controls.Add(this.ckbAxis7Alone);
-            this.manul_gbRobt.Controls.Add(this.manul_cbProductNum);
-            this.manul_gbRobt.Controls.Add(this.manul_btnStart1);
-            this.manul_gbRobt.Controls.Add(this.manul_cbProductSort);
-            this.manul_gbRobt.Controls.Add(this.manul_cbGoalPos);
-            this.manul_gbRobt.Controls.Add(this.manul_lbGoalPos1);
-            this.manul_gbRobt.Controls.Add(this.label7);
-            this.manul_gbRobt.Controls.Add(this.manul_cbCommand);
-            this.manul_gbRobt.Controls.Add(this.manul_lbProductSort);
-            this.manul_gbRobt.Controls.Add(this.manul_lbCommand1);
-            this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_gbRobt.Location = new System.Drawing.Point(18, 286);
-            this.manul_gbRobt.Name = "manul_gbRobt";
-            this.manul_gbRobt.Size = new System.Drawing.Size(690, 288);
-            this.manul_gbRobt.TabIndex = 36;
-            this.manul_gbRobt.TabStop = false;
-            this.manul_gbRobt.Text = "机器人取放料";
-            // 
             // StepForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -669,10 +735,10 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.manul_gbFrame.ResumeLayout(false);
-            this.manul_gbFrame.PerformLayout();
             this.manul_gbRobt.ResumeLayout(false);
             this.manul_gbRobt.PerformLayout();
+            this.manul_gbFrame.ResumeLayout(false);
+            this.manul_gbFrame.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -720,5 +786,7 @@
         private System.Windows.Forms.ComboBox manul_cbCommand;
         private System.Windows.Forms.Label manul_lbProductSort;
         private System.Windows.Forms.Label manul_lbCommand1;
+        private System.Windows.Forms.ComboBox manul_cbTrayNo;
+        private System.Windows.Forms.Label label8;
     }
 }

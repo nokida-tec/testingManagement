@@ -11,7 +11,7 @@ namespace XT_CETC23
         static Plc plc;
         S7Client s7client = new S7Client();
         S7Client s7clientRead = new S7Client();
-        byte[] myBytes=new byte[504];
+        byte[] myBytes=new byte[556];
         INTransfer.IMessage iMessage;
         //delegate void plcMessage(string message);
         //plcMessage PlcMessage;

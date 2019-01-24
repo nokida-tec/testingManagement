@@ -67,6 +67,7 @@
             this.BtnMin = new System.Windows.Forms.PictureBox();
             this.BtnMax = new System.Windows.Forms.PictureBox();
             this.BtnClose = new System.Windows.Forms.PictureBox();
+            this.btn_test = new System.Windows.Forms.Button();
             this.panel_Status.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -490,10 +491,9 @@
             this.BtnMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnMin.BackColor = System.Drawing.Color.Transparent;
             this.BtnMin.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_min;
-            this.BtnMin.Location = new System.Drawing.Point(1710, 2);
-            this.BtnMin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnMin.Location = new System.Drawing.Point(1446, 1);
             this.BtnMin.Name = "BtnMin";
-            this.BtnMin.Size = new System.Drawing.Size(39, 34);
+            this.BtnMin.Size = new System.Drawing.Size(26, 23);
             this.BtnMin.TabIndex = 35;
             this.BtnMin.TabStop = false;
             // 
@@ -502,10 +502,9 @@
             this.BtnMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnMax.BackColor = System.Drawing.Color.Transparent;
             this.BtnMax.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_max;
-            this.BtnMax.Location = new System.Drawing.Point(1743, 2);
-            this.BtnMax.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnMax.Location = new System.Drawing.Point(1468, 1);
             this.BtnMax.Name = "BtnMax";
-            this.BtnMax.Size = new System.Drawing.Size(39, 34);
+            this.BtnMax.Size = new System.Drawing.Size(26, 23);
             this.BtnMax.TabIndex = 36;
             this.BtnMax.TabStop = false;
             // 
@@ -521,12 +520,23 @@
             this.BtnClose.TabIndex = 37;
             this.BtnClose.TabStop = false;
             // 
+            // btn_test
+            // 
+            this.btn_test.Location = new System.Drawing.Point(1221, 79);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(58, 49);
+            this.btn_test.TabIndex = 62;
+            this.btn_test.Text = "Testing";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1825, 1040);
+            this.Controls.Add(this.btn_test);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pB_step);
             this.Controls.Add(this.panel_Load);
@@ -624,6 +634,7 @@
         private System.Windows.Forms.Label labSystemStatus;
         private System.Windows.Forms.PictureBox pB_step;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btn_test;
     }
 }
 

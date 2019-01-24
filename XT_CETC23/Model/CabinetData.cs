@@ -9,20 +9,20 @@ namespace XT_CETC23.DataManager
 {
     class CabinetData
     {
-        static string pathRead1 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\status.txt";
-        static string pathRead2 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\status.txt";
-        static string pathRead3 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\status.txt";
-        static string pathRead4 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\status.txt";
-        static string pathRead5 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\status.txt";
-        static string pathRead6 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\status.txt";
+        public static string pathRead1;
+        public static string pathRead2;
+        public static string pathRead3;
+        public static string pathRead4;
+        public static string pathRead5;
+        public static string pathRead6;
         public static string[] pathCabinetStatus = new string[6] { pathRead1, pathRead2, pathRead3, pathRead4, pathRead5, pathRead6 };
 
-        static string pathWrite1 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\order.txt";
-        static string pathWrite2 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\order.txt";
-        static string pathWrite3 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\order.txt";
-        static string pathWrite4 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\order.txt";
-        static string pathWrite5 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\order.txt";
-        static string pathWrite6 = DataBase.cmdPath + @"D:\新建文件夹\cabinet\cabinet1\order.txt";
+        public static string pathWrite1;
+        public static string pathWrite2;
+        public static string pathWrite3;
+        public static string pathWrite4;
+        public static string pathWrite5;
+        public static string pathWrite6;
         public static string[] pathCabinetOrder = new string[6] { pathWrite1, pathWrite2, pathWrite3, pathWrite4, pathWrite5, pathWrite6 };
         public static string[] cabinetStatus = new string[6];
         public static string getOrder(int order)
