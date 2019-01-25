@@ -28,6 +28,7 @@ namespace XT_CETC23
         RunForm rForm;
         UserForm uForm;
         StepForm sForm;
+        ParamForm paramForm;
         DataBase db;
 
         public MainForm()
@@ -44,7 +45,8 @@ namespace XT_CETC23
             pForm = new ParaForm(rForm);
             uForm = new UserForm();
             sForm = new StepForm(mForm, cForm);
-            
+            paramForm = new ParamForm();
+         
            
             rForm.TransMessageToMain += RForm_TransMessageToMain;
             rForm.TransStatusToMain += RForm_TransStatusToMain;
@@ -133,6 +135,7 @@ namespace XT_CETC23
             pB_run.MouseUp += PB_MouseUp;
             pB_user.MouseUp += PB_MouseUp;
             pB_step.MouseUp += PB_MouseUp;
+            pB_Param.MouseUp += PB_MouseUp;
 
             pB_auto.MouseDown += PB_MouseDown;
             pB_ccd.MouseDown += PB_MouseDown;
@@ -142,6 +145,7 @@ namespace XT_CETC23
             pB_run.MouseDown += PB_MouseDown;
             pB_user.MouseDown += PB_MouseDown;
             pB_step.MouseDown += PB_MouseDown;
+            pB_Param.MouseDown += PB_MouseDown;
         }
 
         private void PB_MouseDown(object sender, MouseEventArgs e)
@@ -181,6 +185,10 @@ namespace XT_CETC23
                     pB_step.BorderStyle = BorderStyle.Fixed3D;
                     pbStep();
                     break;
+                case "pB_Param":
+                    pB_Param.BorderStyle = BorderStyle.Fixed3D;
+                    loadForm(paramForm);
+                    break;
             }
         }
         private void PB_MouseUp(object sender, MouseEventArgs e)
@@ -211,6 +219,9 @@ namespace XT_CETC23
                     break;
                 case "pB_step":
                     pB_step.BorderStyle = BorderStyle.None;
+                    break;
+                case "pB_Param":
+                    pB_Param.BorderStyle = BorderStyle.None;
                     break;
             }
         }
@@ -328,6 +339,20 @@ namespace XT_CETC23
                 uForm.Show();
             }
         }
+        void loadForm(Form form)
+        {
+            //if (Common.Account.power != "system") { MessageBox.Show("当前用户无此权限"); return; }
+            if (!form.IsDisposed)
+            {
+                panel_Load.Controls.Clear();
+                form.TopLevel = false;
+                form.Dock = DockStyle.Fill;
+                panel_Load.Controls.Add(form);
+                Run.stepEnable = false;
+                form.Show();
+            }
+        }
+
         #region 
         public const String IMG_MIN = "btn_min";
         public const String IMG_MAX = "btn_max";
