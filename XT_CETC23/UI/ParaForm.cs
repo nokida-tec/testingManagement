@@ -90,9 +90,11 @@ namespace XT_CETC23.SonForm
             DataBase.sourcePath = new string[6];
             for (int i = 0; i < 6;i++ )
             {
-                CabinetData.pathCabinetStatus[i] = @"\\" + dt.Rows[0]["CmdPathName"].ToString().Trim() + @"\发送指令.txt";
-                CabinetData.pathCabinetOrder[i] =  @"\\"  + dt.Rows[0]["CmdPathName"].ToString().Trim() + @"\接收指令.txt";
-                DataBase.sourcePath[i] = @"\\" + dt.Rows[0]["DataPathName"].ToString().Trim();
+                CabinetData.pathCabinetStatus[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\发送指令.txt";
+                CabinetData.pathCabinetOrder[i] =  @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\接收指令.txt";
+                textBoxCmd[i].Text = dt.Rows[i]["CmdPathName"].ToString().Trim();
+                DataBase.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
+                textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
             }         
         }
         private void ParaForm_Load(object sender, EventArgs e)
@@ -321,6 +323,16 @@ namespace XT_CETC23.SonForm
             {
                 Directory.CreateDirectory(DataBase.targetPath);
             }
+
+            dt = db.DBQuery("select * from dbo.Path");
+            for (int i = 0; i < 6; i++)
+            {
+                CabinetData.pathCabinetStatus[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\发送指令.txt";
+                CabinetData.pathCabinetOrder[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\接收指令.txt";
+                textBoxCmd[i].Text = dt.Rows[i]["CmdPathName"].ToString().Trim();
+                DataBase.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
+                textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
+            }         
         }
     }
 }

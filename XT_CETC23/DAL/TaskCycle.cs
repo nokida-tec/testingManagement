@@ -159,9 +159,9 @@ namespace XT_CETC23.DataCom
         {
             ArrayList paraCabTask = new ArrayList();
             paraCabTask.Add("Start");
-            paraCabTask.Add(2);
-            paraCabTask.Add(2000);
-            paraCabTask.Add("A");
+            paraCabTask.Add(4);
+            paraCabTask.Add(2005);
+            paraCabTask.Add("C");
             CabinetTest(paraCabTask);
         }
 
@@ -172,6 +172,8 @@ namespace XT_CETC23.DataCom
             int cabinetNo = (int)myList[1];
             int basicID = (int)myList[2];
             string productType = (string)myList[3];
+            Cabinet.GetInstanse().ResetData(cabinetNo);
+
             db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo);
             if(order=="Start")
             {
@@ -187,6 +189,10 @@ namespace XT_CETC23.DataCom
                         {
                             Thread.Sleep(100);
                         }
+                        if (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Ready) 
+                        {
+                            Cabinet.GetInstanse().ResetData(cabinetNo);
+                        }
                     }
 
                     db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
@@ -200,13 +206,13 @@ namespace XT_CETC23.DataCom
                             string command = (productType == "B") ? "21" : "11";
 
                             //通知测试设备测试开始
-                            cabinet.WriteData(cabinetNo, currentTime.ToString() + "   " + command);
+                            cabinet.WriteData(cabinetNo, currentTime.ToString() + "\t" + command);
                             //通知PLC测试开始了
                             plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
                         }
 
                         // 等待测试begin   
-                        //while (!CabinetData.cabinetStatus[cabinetNo].Trim().Equals(EnumHelper.GetDescription(EnumC.Cabinet.Testing)))
+                        //while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Testing))
                         //{
                         //    Thread.Sleep(100);
                         //}
@@ -223,6 +229,7 @@ namespace XT_CETC23.DataCom
                             {
                                 Thread.Sleep(100);
                             }
+//                            Cabinet.GetInstanse().ResetData(cabinetNo);
                         }
                         //处理结果
 
@@ -251,7 +258,7 @@ namespace XT_CETC23.DataCom
                         //读取excel表格判断测试OK，NG
 
                         bool testResult = true;
-                        //if (Config.Config.ENABLED_PLC == true)
+                        if (Config.Config.ENABLED_PLC == true)
                         {
                             testResult = excelOp.CheckTestResults(sourceFile);
                         }
@@ -261,7 +268,7 @@ namespace XT_CETC23.DataCom
                         //    db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.Fault) + "'where BasicID= " + basicID);
                         //}
                         //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.NG))
-                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? EnumC.Cabinet.OK : EnumC.Cabinet.NG) + "'where BasicID= " + basicID);
+                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? EnumC.Cabinet.OK : EnumC.Cabinet.NG) + "' where BasicID= " + basicID);
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
                         dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
@@ -271,13 +278,12 @@ namespace XT_CETC23.DataCom
                         dt = db.DBQuery("select * from dbo.ProductDef where Type= '" + productType + "'");
                         string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
                         string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
-
                         string[] strings = productID.Split(new char[2] { '$', '#' });
-                        string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
 
                         string opName = "常温";
                         try
                         {
+                            string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
                             DataBase dbOfU8 = DataBase.GetU8DBInstanse();
                             dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
                                 + productSerial + "' and define22 = '" + defineID + "'");

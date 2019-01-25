@@ -41,6 +41,8 @@ namespace XT_CETC23.EnumC
     }
     enum Cabinet
     {
+        [EnumDescription("NotReady")]
+        NotReady = 0,
         [EnumDescription("Ready")]
         Ready = 30,
         [EnumDescription("Testing")]

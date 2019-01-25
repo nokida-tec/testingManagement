@@ -244,6 +244,7 @@ namespace XT_CETC23.DataCom
             {
                 modeControl.Start();                
             }
+            //new Thread(CabinetControl).Start();
         }
 
         private void ModeControl()
@@ -373,6 +374,27 @@ namespace XT_CETC23.DataCom
                 PrintAlarm(PlcData._alarmNumber);
                 Thread.Sleep(100);
             }                    
+        }
+
+        public void CabinetControl()
+        {
+            readCabinetTh = new Thread(ReadCabinet);
+            readCabinetTh.Name = "读取测试柜状态";
+
+            if (!readCabinetTh.IsAlive)
+            {
+                readCabinetTh.Start();
+            }
+
+            while (true)
+            {
+                    if (readCabinetTh.ThreadState == ThreadState.Suspended)
+                    {
+                        readCabinetTh.Resume();
+                    }
+
+                Thread.Sleep(100);
+            }
         }
 
         public bool getInitResult()
@@ -1070,19 +1092,18 @@ namespace XT_CETC23.DataCom
             return plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeRobot, PlcData._writeLength1, value);
         }
 
-        string[] readCabinet = new string[6];
         void ReadCabinet()
         {
             while (true)
             {
-                for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
+                if (CabinetData.pathCabinetStatus != null)
                 {
-                    EnumC.Cabinet cabinetStatus = cabinet.ReadData(i);
-                    Thread.Sleep(100);
-                    GetCabinetResult(i + 1, readCabinet[i]);
-                    Thread.Sleep(100);
-                    CabinetData.cabinetStatus[i] = cabinetStatus;
-                    Thread.Sleep(100);
+                    for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
+                    {
+                        EnumC.Cabinet cabinetStatus = cabinet.ReadData(i);
+                        GetCabinetResult(i + 1, EnumHelper.GetDescription(cabinetStatus));
+                        CabinetData.cabinetStatus[i] = cabinetStatus;
+                    }
                 }
                 Thread.Sleep(100);
             }
