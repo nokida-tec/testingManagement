@@ -229,7 +229,6 @@ namespace XT_CETC23.DataCom
                             {
                                 Thread.Sleep(100);
                             }
-//                            Cabinet.GetInstanse().ResetData(cabinetNo);
                         }
                         //处理结果
 
@@ -324,7 +323,7 @@ namespace XT_CETC23.DataCom
                         }
                         //设置MTR表格，指示测试完成
                         db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
-                        CabinetData.cabinetStatus[cabinetNo] = EnumC.Cabinet.Ready;
+                        Cabinet.GetInstanse().ResetData(cabinetNo);
                     }
 
                 }
