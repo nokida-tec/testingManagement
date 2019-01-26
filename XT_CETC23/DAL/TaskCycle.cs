@@ -55,8 +55,7 @@ namespace XT_CETC23.DataCom
         Cabinet cabinet;
         DataTable dt2, dt7, dtc, dtr;
         Task[] task = new Task[6];
-        Thread[] threadCab= new Thread[6];
-        ArrayList paraCabTask=new ArrayList();
+        Thread[] threadCab= new Thread[6];        
         ExcelOperation excelOp = new ExcelOperation();
         FileOperation fileOp = new FileOperation();
 
@@ -127,28 +126,33 @@ namespace XT_CETC23.DataCom
                     dtc = db.DBQuery("select * from dbo.TaskCabinet");
                     for (int i = 0; i < dtc.Rows.Count; i++)
                     {
-                        string order = dtc.Rows[i]["OrderType"].ToString().Trim();
-                        if (order == "Stop" && threadCab[i].ThreadState == ThreadState.Running)
-                        {
-                            threadCab[i].Abort();
-                        }
-                        int basicID = (int)Convert.ToDouble(dtc.Rows[i]["BasicID"]);
-                        string productType = dtc.Rows[i]["ProductType"].ToString();
-                        paraCabTask.Add(order);
-                        paraCabTask.Add(i);
-                        paraCabTask.Add(basicID);
-                        paraCabTask.Add(productType);
-                        threadCab[i] = new Thread(CabinetTest);                        
-                        if (!order.Equals("Free") && threadCab[i].ThreadState!=ThreadState.Running)
-                        {                                                                                  
-                            threadCab[i].Start(paraCabTask);
-                        }
-                        else
-                        {
-                            threadCab[i].Abort();
-                        }
+                        lock (dtc)
+                            {
+                                string order = dtc.Rows[i]["OrderType"].ToString().Trim();
+                                if (order == "Stop" && threadCab[i].ThreadState == ThreadState.Running)
+                                {
+                                    threadCab[i].Abort();
+                                }
+                                int basicID = (int)Convert.ToDouble(dtc.Rows[i]["BasicID"]);
+                                string productType = dtc.Rows[i]["ProductType"].ToString();
+
+                                ArrayList paraCabTask = new ArrayList();
+                                paraCabTask.Add(order);
+                                paraCabTask.Add(i);
+                                paraCabTask.Add(basicID);
+                                paraCabTask.Add(productType);
+                                threadCab[i] = new Thread(CabinetTest);
+                                threadCab[i].Name = "CabinetTest" + i;
+                                if (!order.Equals("Free") && threadCab[i].ThreadState != ThreadState.Running)
+                                {
+                                    threadCab[i].Start(paraCabTask);
+                                }
+                                else
+                                {
+                                    threadCab[i].Abort();
+                                }
+                         }
                         Thread.Sleep(100);
-                        paraCabTask.Clear();
                     }
                     Thread.Sleep(100);
                 }
@@ -172,6 +176,9 @@ namespace XT_CETC23.DataCom
             int cabinetNo = (int)myList[1];
             int basicID = (int)myList[2];
             string productType = (string)myList[3];
+            Console.WriteLine(DateTime.Now.ToString() + ":  [order]:" + order + " [cabinetNo]:" + cabinetNo + " [basicID]:" + basicID + " [productType]:" + productType);
+            myList.Clear();
+
             Cabinet.GetInstanse().ResetData(cabinetNo);
 
             db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo);
@@ -195,7 +202,7 @@ namespace XT_CETC23.DataCom
                         }
                     }
 
-                    db.DBUpdate("update dbo.MTR set ProductSign= '" + false + "' where BasicID=" + basicID);
+                    db.DBUpdate("update dbo.MTR set StationSign= '" + false + "' where BasicID=" + basicID);
 
                     if (Config.Config.ENABLED_PLC)
                     {
@@ -220,9 +227,6 @@ namespace XT_CETC23.DataCom
 
                     // 测试完成后，修改测试柜
                     {
-                        //db.DBDelete("delete from dbo.TaskCabinet");
-                        //task[i].Dispose();
-                        //task[i] = null;
                         if (Config.Config.ENABLED_PLC)
                         {
                             while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Finished)
@@ -262,11 +266,6 @@ namespace XT_CETC23.DataCom
                             testResult = excelOp.CheckTestResults(sourceFile);
                         }
 
-                        //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.Fault))
-                        //{
-                        //    db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(EnumC.Cabinet.Fault) + "'where BasicID= " + basicID);
-                        //}
-                        //if (CabinetData.cabinetStatus[cabinetNo] == EnumHelper.GetDescription(EnumC.Cabinet.NG))
                         db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? EnumC.Cabinet.OK : EnumC.Cabinet.NG) + "' where BasicID= " + basicID);
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
@@ -322,7 +321,7 @@ namespace XT_CETC23.DataCom
                             }
                         }
                         //设置MTR表格，指示测试完成
-                        db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                        db.DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + basicID);
                         Cabinet.GetInstanse().ResetData(cabinetNo);
                     }
 
@@ -359,7 +358,7 @@ namespace XT_CETC23.DataCom
                         Thread.Sleep(100);
                     }
                     //设置MTR表格，指示测试完成
-                    db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                    db.DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + basicID);
                     //=========================================================================================================================
                 }
             }
@@ -377,7 +376,7 @@ namespace XT_CETC23.DataCom
                         Thread.Sleep(100);
                     }
                     db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo);
-                    db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID );
+                    db.DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + basicID );
                 }
                 else 
                 {
@@ -395,7 +394,7 @@ namespace XT_CETC23.DataCom
                     }
                     //设置MTR表格，指示测试完成
                 
-                    db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + basicID);
+                    db.DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + basicID);
                     //=========================================================================================================================                    
                 }
             }          
@@ -454,6 +453,7 @@ namespace XT_CETC23.DataCom
                             {
                                 scanStatus = true;
                             }
+                            RobotData.Response = "";
                             robot.sendDataToRobot("ScanDone");              //给机器人发送扫码完成消息 
                         }
                         else

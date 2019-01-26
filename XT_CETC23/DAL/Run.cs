@@ -429,7 +429,10 @@ namespace XT_CETC23.DataCom
             for (int j = 13; j < 19;j++ )
             {
                 plc.DBWrite(PlcData.PlcWriteAddress, j, 1, new Byte[] { 0 });
-            }                
+            }
+            plc.DBWrite(100, 2, 1, new Byte[] { 0 });
+            plc.DBWrite(100, 3, 1, new Byte[] { 0 });
+
             return i == 2;
         }
 
@@ -595,7 +598,7 @@ namespace XT_CETC23.DataCom
                         #region 物料在测试柜中且未测试完成,完成测试即可
                         else if (tmpText.Equals("号机台") && !statusTest)
                         {
-                            db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prodType + "'," + "BasicID=" + MTR.globalBasicID + "where CabinetID=" + cabinetNo);                            
+                                db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prodType + "'," + "BasicID=" + MTR.globalBasicID + "where CabinetID=" + cabinetNo);
                         }
                         //=========================================================================================================================
                         #endregion
@@ -756,7 +759,21 @@ namespace XT_CETC23.DataCom
                 #region 把物料从料架取出放入测试柜并触发测试任务
                 for (int i = 0; i < cabinetNum; i++)
                 {
-                    if ((PlcData._cabinetStatus[i] & 1) != 0)               //如果测试允许测试
+                        string CabName = dtCabinetTask.Rows[i]["EquipmentName"].ToString().Trim();
+                        dtMTR = db.DBQuery("select * from dbo.MTR");
+                        bool testExsit=false;
+                        for (int m=0;m<dtMTR.Rows.Count;m++)
+                        {
+                            string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
+                            if (CabName==CabInMTR)
+                            {
+                                testExsit = true;
+                                break;
+                            }
+                        }
+
+                        bool CabinatEnable = (bool)dtCabinetData.Rows[i]["status"];
+                        if (((PlcData._cabinetStatus[i] & 1) != 0) && CabinatEnable && !testExsit)               //如果测试允许测试并且使能
                     {                        
                     Redo:
                         TaskCycle.actionType = "FrameToCabinet";

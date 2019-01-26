@@ -31,6 +31,14 @@
             this.para_lbName = new System.Windows.Forms.Label();
             this.para_pn = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnData6 = new System.Windows.Forms.Button();
+            this.btnCmd6 = new System.Windows.Forms.Button();
+            this.btnData5 = new System.Windows.Forms.Button();
+            this.btnCmd5 = new System.Windows.Forms.Button();
+            this.btnData3 = new System.Windows.Forms.Button();
+            this.btnCmd3 = new System.Windows.Forms.Button();
+            this.btnData2 = new System.Windows.Forms.Button();
+            this.btnCmd2 = new System.Windows.Forms.Button();
             this.btnData4 = new System.Windows.Forms.Button();
             this.btnCmd4 = new System.Windows.Forms.Button();
             this.btnData1 = new System.Windows.Forms.Button();
@@ -94,14 +102,6 @@
             this.para_lbCabinet3 = new System.Windows.Forms.Label();
             this.para_lbCabinet2 = new System.Windows.Forms.Label();
             this.para_lbCabinet1 = new System.Windows.Forms.Label();
-            this.btnData2 = new System.Windows.Forms.Button();
-            this.btnCmd2 = new System.Windows.Forms.Button();
-            this.btnData3 = new System.Windows.Forms.Button();
-            this.btnCmd3 = new System.Windows.Forms.Button();
-            this.btnData5 = new System.Windows.Forms.Button();
-            this.btnCmd5 = new System.Windows.Forms.Button();
-            this.btnData6 = new System.Windows.Forms.Button();
-            this.btnCmd6 = new System.Windows.Forms.Button();
             this.para_pn.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.para_gbPara.SuspendLayout();
@@ -187,6 +187,86 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "文件操作目录配置";
+            // 
+            // btnData6
+            // 
+            this.btnData6.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnData6.Location = new System.Drawing.Point(548, 329);
+            this.btnData6.Name = "btnData6";
+            this.btnData6.Size = new System.Drawing.Size(24, 21);
+            this.btnData6.TabIndex = 39;
+            this.btnData6.Text = "...";
+            this.btnData6.UseVisualStyleBackColor = true;
+            // 
+            // btnCmd6
+            // 
+            this.btnCmd6.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCmd6.Location = new System.Drawing.Point(548, 306);
+            this.btnCmd6.Name = "btnCmd6";
+            this.btnCmd6.Size = new System.Drawing.Size(24, 21);
+            this.btnCmd6.TabIndex = 38;
+            this.btnCmd6.Text = "...";
+            this.btnCmd6.UseVisualStyleBackColor = true;
+            // 
+            // btnData5
+            // 
+            this.btnData5.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnData5.Location = new System.Drawing.Point(548, 238);
+            this.btnData5.Name = "btnData5";
+            this.btnData5.Size = new System.Drawing.Size(24, 21);
+            this.btnData5.TabIndex = 37;
+            this.btnData5.Text = "...";
+            this.btnData5.UseVisualStyleBackColor = true;
+            // 
+            // btnCmd5
+            // 
+            this.btnCmd5.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCmd5.Location = new System.Drawing.Point(548, 215);
+            this.btnCmd5.Name = "btnCmd5";
+            this.btnCmd5.Size = new System.Drawing.Size(24, 21);
+            this.btnCmd5.TabIndex = 36;
+            this.btnCmd5.Text = "...";
+            this.btnCmd5.UseVisualStyleBackColor = true;
+            // 
+            // btnData3
+            // 
+            this.btnData3.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnData3.Location = new System.Drawing.Point(271, 329);
+            this.btnData3.Name = "btnData3";
+            this.btnData3.Size = new System.Drawing.Size(24, 21);
+            this.btnData3.TabIndex = 35;
+            this.btnData3.Text = "...";
+            this.btnData3.UseVisualStyleBackColor = true;
+            // 
+            // btnCmd3
+            // 
+            this.btnCmd3.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCmd3.Location = new System.Drawing.Point(271, 306);
+            this.btnCmd3.Name = "btnCmd3";
+            this.btnCmd3.Size = new System.Drawing.Size(24, 21);
+            this.btnCmd3.TabIndex = 34;
+            this.btnCmd3.Text = "...";
+            this.btnCmd3.UseVisualStyleBackColor = true;
+            // 
+            // btnData2
+            // 
+            this.btnData2.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnData2.Location = new System.Drawing.Point(271, 239);
+            this.btnData2.Name = "btnData2";
+            this.btnData2.Size = new System.Drawing.Size(24, 21);
+            this.btnData2.TabIndex = 33;
+            this.btnData2.Text = "...";
+            this.btnData2.UseVisualStyleBackColor = true;
+            // 
+            // btnCmd2
+            // 
+            this.btnCmd2.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnCmd2.Location = new System.Drawing.Point(271, 216);
+            this.btnCmd2.Name = "btnCmd2";
+            this.btnCmd2.Size = new System.Drawing.Size(24, 21);
+            this.btnCmd2.TabIndex = 32;
+            this.btnCmd2.Text = "...";
+            this.btnCmd2.UseVisualStyleBackColor = true;
             // 
             // btnData4
             // 
@@ -910,86 +990,6 @@
             this.para_lbCabinet1.Size = new System.Drawing.Size(88, 16);
             this.para_lbCabinet1.TabIndex = 0;
             this.para_lbCabinet1.Text = "1#测试台：";
-            // 
-            // btnData2
-            // 
-            this.btnData2.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnData2.Location = new System.Drawing.Point(271, 239);
-            this.btnData2.Name = "btnData2";
-            this.btnData2.Size = new System.Drawing.Size(24, 21);
-            this.btnData2.TabIndex = 33;
-            this.btnData2.Text = "...";
-            this.btnData2.UseVisualStyleBackColor = true;
-            // 
-            // btnCmd2
-            // 
-            this.btnCmd2.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCmd2.Location = new System.Drawing.Point(271, 216);
-            this.btnCmd2.Name = "btnCmd2";
-            this.btnCmd2.Size = new System.Drawing.Size(24, 21);
-            this.btnCmd2.TabIndex = 32;
-            this.btnCmd2.Text = "...";
-            this.btnCmd2.UseVisualStyleBackColor = true;
-            // 
-            // btnData3
-            // 
-            this.btnData3.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnData3.Location = new System.Drawing.Point(271, 329);
-            this.btnData3.Name = "btnData3";
-            this.btnData3.Size = new System.Drawing.Size(24, 21);
-            this.btnData3.TabIndex = 35;
-            this.btnData3.Text = "...";
-            this.btnData3.UseVisualStyleBackColor = true;
-            // 
-            // btnCmd3
-            // 
-            this.btnCmd3.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCmd3.Location = new System.Drawing.Point(271, 306);
-            this.btnCmd3.Name = "btnCmd3";
-            this.btnCmd3.Size = new System.Drawing.Size(24, 21);
-            this.btnCmd3.TabIndex = 34;
-            this.btnCmd3.Text = "...";
-            this.btnCmd3.UseVisualStyleBackColor = true;
-            // 
-            // btnData5
-            // 
-            this.btnData5.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnData5.Location = new System.Drawing.Point(548, 238);
-            this.btnData5.Name = "btnData5";
-            this.btnData5.Size = new System.Drawing.Size(24, 21);
-            this.btnData5.TabIndex = 37;
-            this.btnData5.Text = "...";
-            this.btnData5.UseVisualStyleBackColor = true;
-            // 
-            // btnCmd5
-            // 
-            this.btnCmd5.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCmd5.Location = new System.Drawing.Point(548, 215);
-            this.btnCmd5.Name = "btnCmd5";
-            this.btnCmd5.Size = new System.Drawing.Size(24, 21);
-            this.btnCmd5.TabIndex = 36;
-            this.btnCmd5.Text = "...";
-            this.btnCmd5.UseVisualStyleBackColor = true;
-            // 
-            // btnData6
-            // 
-            this.btnData6.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnData6.Location = new System.Drawing.Point(548, 329);
-            this.btnData6.Name = "btnData6";
-            this.btnData6.Size = new System.Drawing.Size(24, 21);
-            this.btnData6.TabIndex = 39;
-            this.btnData6.Text = "...";
-            this.btnData6.UseVisualStyleBackColor = true;
-            // 
-            // btnCmd6
-            // 
-            this.btnCmd6.Font = new System.Drawing.Font("宋体", 5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCmd6.Location = new System.Drawing.Point(548, 306);
-            this.btnCmd6.Name = "btnCmd6";
-            this.btnCmd6.Size = new System.Drawing.Size(24, 21);
-            this.btnCmd6.TabIndex = 38;
-            this.btnCmd6.Text = "...";
-            this.btnCmd6.UseVisualStyleBackColor = true;
             // 
             // ParaForm
             // 
