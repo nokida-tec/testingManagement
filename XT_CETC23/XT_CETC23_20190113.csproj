@@ -125,11 +125,6 @@
     <Compile Include="DAL\Robot.cs" />
     <Compile Include="DAL\Run.cs" />
     <Compile Include="DAL\TaskCycle.cs" />
-    <Compile Include="DB23DataSet_OperateDef.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DB23DataSet_OperateDef.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Model\CabinetData.cs" />
     <Compile Include="Model\DBstr.cs" />
     <Compile Include="Model\MaterielData.cs" />
@@ -232,11 +227,6 @@
     <Compile Include="UI\UserForms\UserRegister.Designer.cs">
       <DependentUpon>UserRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="_23DataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_23DataSet.xsd</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -287,17 +277,6 @@
       <DependentUpon>UserRegister.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
-    <None Include="DB23DataSet_OperateDef.xsc">
-      <DependentUpon>DB23DataSet_OperateDef.xsd</DependentUpon>
-    </None>
-    <None Include="DB23DataSet_OperateDef.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DB23DataSet_OperateDef.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DB23DataSet_OperateDef.xss">
-      <DependentUpon>DB23DataSet_OperateDef.xsd</DependentUpon>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -312,17 +291,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="_23DataSet.xsc">
-      <DependentUpon>_23DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="_23DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>_23DataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="_23DataSet.xss">
-      <DependentUpon>_23DataSet.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
