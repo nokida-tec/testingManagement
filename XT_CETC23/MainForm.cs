@@ -69,13 +69,13 @@ namespace XT_CETC23
         private void DForm_GetMessage(string message)
         {
             //listBox_Alarm.Items.Add(message + " " + DateTime.Now.ToString("G"));
-            log(DateTime.Now.ToString("G") + "：" + message + "；");
+            log(message);
         }
 
         private void MForm_TransMessage(string str)
         {
             //listBox_Alarm.Items.Add(str + " " + DateTime.Now.ToString("G"));
-            log(DateTime.Now.ToString("G") + "：" + str + "；");
+            log(str);
         }
         private void RForm_TransStatusToMain(string name,string message)
         {
@@ -96,7 +96,7 @@ namespace XT_CETC23
             Common.Account.user= str[0].ToString();
             Common.Account.power= str[1].ToString();
             //listBox_Alarm.Items.Add(str[0] + " " + DateTime.Now.ToString("G")+" "+"登录成功");
-            log(DateTime.Now.ToString("G") + "：" + str[0] + " " + "登录成功");
+            log(str[0] + " " + "登录成功");
             pB_manul.Enabled = true;
             pB_run.Enabled = true;
             pB_auto.Enabled = true;
@@ -109,12 +109,12 @@ namespace XT_CETC23
             if(listBox_Alarm.InvokeRequired)
             {
                 //listBox_Alarm.Invoke(new Action<string>((s) => { listBox_Alarm.Items.Add(s); }), message + " " + DateTime.Now.ToString("G"));
-                listBox_Alarm.Invoke(new Action<string>((s) => { log(s); }), DateTime.Now.ToString("G") + "：" + message + "；");
+                listBox_Alarm.Invoke(new Action<string>((s) => { log(s); }), message);
             }
             else
             {
                 //listBox_Alarm.Items.Add(message + " " + DateTime.Now.ToString("G"));
-                log(DateTime.Now.ToString("G") + "：" + message + "；");
+                log(message);
             }
             //if(message.Equals("Plc"))
             //{
@@ -711,21 +711,20 @@ namespace XT_CETC23
             pbRun();
         }
 
-        private void log(string message)
+        public void log(string message)
         {
 
             try
             {
-                listBox_Alarm.Items.Add(message);
                 byte[] fsByte = new byte[1000];
                 string path = DataBase.logPath+@"\log.txt";
-                using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write))
-                {
-                    string str = "\r\n" + message + "\r\n";
-                    int len = str.Length;
-                    fsByte = Encoding.Default.GetBytes(str);
-                    fs.Write(fsByte, 0, len);
-                }
+                DateTime currentTime = DateTime.Now;
+                StreamWriter sw = File.AppendText(path);
+                string strLog = currentTime.ToString() + ": " + message;
+                sw.WriteLine(strLog);
+                sw.Flush();
+                sw.Close();
+                listBox_Alarm.Items.Add(strLog);
             }
             catch (Exception)
             {
