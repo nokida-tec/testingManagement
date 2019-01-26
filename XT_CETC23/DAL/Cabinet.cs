@@ -59,9 +59,9 @@ namespace XT_CETC23.DataCom
             {
                 DataBase db = DataBase.GetInstanse();
                 DataTable dt = db.DBQuery("select * from dbo.CabinetData where number = " + i);
-                bool tmpStatus = (bool)dt.Rows[0]["status"];
+                bool enabled = (bool)dt.Rows[0]["status"];
                 FileStream fs = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open, FileAccess.Read);
-                if (tmpStatus)
+                if (enabled)
                 {
                     StreamReader sr = new StreamReader(fs);
                     string line = null;
@@ -88,17 +88,16 @@ namespace XT_CETC23.DataCom
                             case "40":
                                 return EnumC.Cabinet.Finished;
                             default:
-                                break;
+                                return EnumC.Cabinet.Ready;
                         }
                     }
                 }
-                return EnumC.Cabinet.Ready;
             }
             catch (Exception e)
             {
 
             }
-            return EnumC.Cabinet.NotReady;
+            return EnumC.Cabinet.NG;
         }
 
         public bool ResetData(int cabinetNo)
