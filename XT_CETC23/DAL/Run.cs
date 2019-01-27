@@ -22,7 +22,6 @@ namespace XT_CETC23.DataCom
         public Robot robot;
         public Plc plc;
         public DataBase db;
-        Cabinet cabinet;
         TaskCycle taskCycle;
         IRunForm iRunForm;
         IAutoForm iAutoForm;
@@ -204,7 +203,6 @@ namespace XT_CETC23.DataCom
             robot = Robot.GetInstanse();
             plc = Plc.GetInstanse();
             db = DataBase.GetInstanse();
-            cabinet = Cabinet.GetInstanse();
             taskCycle = TaskCycle.GetInstanse();
 
             this.iCameraForm = iCameraForm;
@@ -1109,7 +1107,7 @@ namespace XT_CETC23.DataCom
                 {
                     for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                     {
-                        TestingCabinet.STATUS cabinetStatus = cabinet.ReadData(i);
+                        TestingCabinet.STATUS cabinetStatus = TestingCabinets.getInstance(i).ReadData();
                         GetCabinetResult(i + 1, EnumHelper.GetDescription(cabinetStatus));
                         TestingCabinets.getInstance(i).Status = cabinetStatus;
                     }

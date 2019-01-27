@@ -20,7 +20,6 @@ namespace XT_CETC23.DataCom
         SqlDataAdapter dread;
         public static string logPath;
         public static string cmdPath;
-        public static string[] sourcePath;
         public static string targetPath;
         object lockConCLose = new object();
         object lockConOpen = new object();

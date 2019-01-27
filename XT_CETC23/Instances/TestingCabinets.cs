@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XT_CETC23.Model;
+using XT_CETC23.DAL;
 
 namespace XT_CETC23.Instances
 {
     class TestingCabinets
     {
-        static private TestingCabinet[] mTestingCabinet;
+        static private Cabinet[] mTestingCabinet;
         private static readonly object lockRoot = new object();
 
-        static public TestingCabinet getInstance(int ID)
+        static public Cabinet getInstance(int ID)
         {
             if (mTestingCabinet == null)
             {
@@ -20,7 +21,7 @@ namespace XT_CETC23.Instances
                 {
                     if (mTestingCabinet == null)
                     {
-                        mTestingCabinet = new TestingCabinet[DeviceCount.TestingCabinetCount];
+                        mTestingCabinet = new Cabinet[DeviceCount.TestingCabinetCount];
                     }
                 }
             }
@@ -34,7 +35,7 @@ namespace XT_CETC23.Instances
                 {
                     if (mTestingCabinet[ID] == null)
                     {
-                        mTestingCabinet[ID] = new TestingCabinet(ID);
+                        mTestingCabinet[ID] = new Cabinet(ID);
                     }
                 }
             }

@@ -1,67 +1,64 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XT_CETC23.DataManager;
-using XT_CETC23.Model;
-using XT_CETC23.Instances;
+using System.Threading;
 using System.Data;
+using System.IO;
+using XT_CETC23.DataManager;
+using XT_CETC23_GK.Task;
+using XT_CETC23.Common;
+using XT_CETC23.Model;
+using XT_CETC23.DataCom;
+using XT_CETC23.Instances;
+using Excel;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
-namespace XT_CETC23.DataCom
+
+namespace XT_CETC23.DAL
 {
-    class Cabinet
+    class Cabinet: TestingCabinet
     {
-        static Cabinet cabinet;
-        FileStream[] fsR=new FileStream[6];
-        FileStream[] fsW=new FileStream[6];
-        StreamReader[] sread=new StreamReader[6];
-        StreamWriter[] swrite=new StreamWriter[6];
-        object lockWrite = new object();
-
-        public static Cabinet GetInstanse()
+        public Cabinet(int ID) : base(ID)
         {
-            if(cabinet==null)
-            {
-                cabinet = new Cabinet();
-            }
-            return cabinet;
         }
 
-        public void WriteData(int i, string data)
+        public void WriteData(string data)
         {
-            lock (lockWrite)
+            lock (this)
             {
-                string path = System.IO.Path.GetDirectoryName(CabinetData.pathCabinetOrder[i]);
+                string path = System.IO.Path.GetDirectoryName(CabinetData.pathCabinetOrder[this.ID]);
                 if (!System.IO.Directory.Exists(path))
                 {
                     System.IO.Directory.CreateDirectory(path);
                 }
 
-                using (fsW[i] = new FileStream(CabinetData.pathCabinetOrder[i], FileMode.Append))
+                using (FileStream fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append))
                 {
-                    using (swrite[i] = new StreamWriter(fsW[i]))
+                    using (StreamWriter sw = new StreamWriter(fs))
                     {
-                        swrite[i].WriteLine(data);
-                        fsW[i].Flush();
-                        swrite[i].Flush();
-                        swrite[i].Close();
-                        fsW[i].Close();
-                        swrite[i].Dispose();
-                        fsW[i].Dispose();
+                        sw.WriteLine(data);
+                        fs.Flush();
+                        sw.Flush();
+                        sw.Close();
+                        fs.Close();
+                        sw.Dispose();
+                        fs.Dispose();
                     }
                 }
             }
         }
 
-        public TestingCabinet.STATUS ReadData(int i)
+        public TestingCabinet.STATUS ReadData()
         {
             try
             {
-                if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable)
+                if (TestingCabinets.getInstance(this.ID).Enable == TestingCabinet.ENABLE.Enable)
                 {
-                    FileStream fs = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open, FileAccess.Read);
+                    FileStream fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Open, FileAccess.Read);
                     StreamReader sr = new StreamReader(fs);
                     string line = null;
                     string lastline = null;
@@ -99,17 +96,17 @@ namespace XT_CETC23.DataCom
             return TestingCabinet.STATUS.NG;
         }
 
-        public bool ResetData(int cabinetNo)
+        public bool ResetData()
         {
             try
             {
                 string line = "时间\t指令字";
                 // 清除指令文件
-                FileStream fs = new FileStream(CabinetData.pathCabinetStatus[cabinetNo], FileMode.Truncate, FileAccess.ReadWrite);
+                FileStream fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Truncate, FileAccess.ReadWrite);
                 fs.Flush();
                 fs.Close();
                 fs.Dispose();
-                fs = new FileStream(CabinetData.pathCabinetStatus[cabinetNo], FileMode.Append);
+                fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(line);
                 fs.Flush();
@@ -120,11 +117,11 @@ namespace XT_CETC23.DataCom
                 fs.Dispose();
 
 
-                fs = new FileStream(CabinetData.pathCabinetOrder[cabinetNo], FileMode.Truncate, FileAccess.ReadWrite);
+                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Truncate, FileAccess.ReadWrite);
                 fs.Flush();
                 fs.Close();
                 fs.Dispose();
-                fs = new FileStream(CabinetData.pathCabinetOrder[cabinetNo], FileMode.Append);
+                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append);
                 sw = new StreamWriter(fs);
                 sw.WriteLine(line);
                 fs.Flush();
@@ -135,7 +132,7 @@ namespace XT_CETC23.DataCom
                 fs.Dispose();
 
                 // delete the excel源文件
-                String[] filePath = Directory.GetFiles(DataBase.sourcePath[cabinetNo]);
+                String[] filePath = Directory.GetFiles(CabinetData.sourcePath[this.ID]);
                 if (filePath != null)
                 {
                     for (int i = 0; i < filePath.Length; i++)
@@ -147,7 +144,7 @@ namespace XT_CETC23.DataCom
                      }
                 }
 
-                TestingCabinets.getInstance(cabinetNo).Status = TestingCabinet.STATUS.Ready;
+                TestingCabinets.getInstance(this.ID).Status = TestingCabinet.STATUS.Ready;
 
                 return true;
             }
@@ -155,8 +152,251 @@ namespace XT_CETC23.DataCom
             {
 
             }
-            TestingCabinets.getInstance(cabinetNo).Status = TestingCabinet.STATUS.Ready;
+            TestingCabinets.getInstance(this.ID).Status = TestingCabinet.STATUS.Ready;
             return false;
+        }
+
+        private Task task;
+        public bool cmdStart(string productType, int taskId) 
+        {
+            base.cmdStart(productType, taskId);
+            if (task != null) 
+            {
+            }
+            return true;
+        }
+
+        public bool cmdStop()
+        {
+            base.cmdStop();
+            return true;
+        }
+
+        private void CabinetTest(object list)
+        {
+            Console.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
+
+            ResetData();
+
+            Status = TestingCabinet.STATUS.Finished;
+            if (Order == ORDER.Start)
+            {
+                if (Config.Config.ENABLED_DEBUG == false)
+                {
+                    // 1. 等待PLC允许测量
+                    if (Config.Config.ENABLED_PLC)
+                    {
+                        //通知PLC连接测试件，关闭测试柜
+                        Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
+
+                        while ((PlcData._cabinetStatus[this.ID] & 2) == 0)
+                        {
+                            Thread.Sleep(100);
+                        }
+                        if (TestingCabinets.getInstance(this.ID).Status != TestingCabinet.STATUS.Ready)
+                        {
+                            ResetData();
+                        }
+                    }
+
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + false + "' where BasicID=" + TaskID);
+
+                    if (Config.Config.ENABLED_PLC)
+                    {
+                        if (TestingCabinets.getInstance(this.ID).Status == TestingCabinet.STATUS.Ready)
+                        {
+                            DateTime currentTime = DateTime.Now;
+
+                            string command = (ProductType == "B") ? "21" : "11";
+
+                            //通知测试设备测试开始
+                            WriteData(currentTime.ToString() + "\t" + command);
+                            //通知PLC测试开始了
+                            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 2 });
+                        }
+
+                        // 等待测试begin   
+                        //while (TestingCabinets.getInstance(this.ID).Status != TestingCabinet.STATUS.Testing))
+                        //{
+                        //    Thread.Sleep(100);
+                        //}
+                    }
+
+                    // 测试完成后，修改测试柜
+                    {
+                        if (Config.Config.ENABLED_PLC)
+                        {
+                            while (TestingCabinets.getInstance(this.ID).Status != TestingCabinet.STATUS.Finished)
+                            {
+                                Thread.Sleep(100);
+                            }
+                        }
+                        //处理结果
+
+                        //获取测量结果的excel源文件
+                        String[] filePath = Directory.GetFiles(CabinetData.sourcePath[this.ID]);
+                        string sourceFile = "";
+                        if (filePath != null)
+                        {
+                            for (int i = 0; i < filePath.Length; i++)
+                            {
+                                if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
+                                {
+                                    sourceFile = filePath[i];
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+
+                        //读取excel表格判断测试OK，NG
+
+                        bool testResult = true;
+                        if (Config.Config.ENABLED_PLC == true)
+                        {
+                            ExcelOperation excelOp = new ExcelOperation();
+                            testResult = excelOp.CheckTestResults(sourceFile);
+                        }
+
+                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' where BasicID= " + this.TaskID);
+
+                        //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
+                        DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
+                        string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                        //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
+
+                        dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
+                        string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
+                        string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
+                        string[] strings = productID.Split(new char[2] { '$', '#' });
+
+                        string opName = "常温";
+                        try
+                        {
+                            string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
+                            DataBase dbOfU8 = DataBase.GetU8DBInstanse();
+                            dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
+                                + productSerial + "' and define22 = '" + defineID + "'");
+                            int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
+                            dt = DataBase.GetInstanse().DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
+                            opName = dt.Rows[0]["Name"].ToString().Trim();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+
+                        string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
+                        FileOperation fileOp = new FileOperation();
+                        fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+
+                        //  record the scan barcode to logs file
+                        DateTime currentTime = DateTime.Now;
+                        StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
+                        sw.WriteLine(currentTime.ToString() + " \t" + productID);
+                        sw.Flush();
+                        sw.Close();
+
+                        // send scancode to U8
+                        TaskCycle.sendToU8(productID);
+
+                        //删除源文件          
+                        File.Delete(sourceFile);
+
+                        if (Config.Config.ENABLED_PLC)
+                        {
+                            //通知PLC测试完成，打开测试柜
+                            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                            //等待PLC允许取料
+                            while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
+                            {
+                                Thread.Sleep(100);
+                            }
+                        }
+                        //设置MTR表格，指示测试完成
+                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
+                        ResetData();
+                    }
+
+                }
+                else
+                {
+                    //=================================================模拟测试过程,最终放入测试进程中========================================
+                    //通知PLC连接测试件，关闭测试柜                
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
+
+                    //等待PLC允许测量
+                    while ((PlcData._cabinetStatus[this.ID] & 2) == 0)
+                    {
+                        Thread.Sleep(100);
+                    }
+
+                    //等待plc
+                    Thread.Sleep(20000);
+                    //通知PLC测试开始了
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 2 });
+
+                    //模拟测试
+                    Thread.Sleep(20000);
+
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + "OK" + "' where BasicID=" + this.TaskID);
+
+                    //通知PLC测试完成，打开测试柜
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                    Thread.Sleep(100);
+
+                    //等待PLC允许取料
+                    while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    //设置MTR表格，指示测试完成
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + this.TaskID);
+                    //=========================================================================================================================
+                }
+            }
+            if (this.Order == ORDER.Stop)
+            {
+                if (Config.Config.ENABLED_DEBUG == false)
+                {
+                    if (!(TestingCabinets.getInstance(this.ID).Status == TestingCabinet.STATUS.Ready
+                            || TestingCabinets.getInstance(this.ID).Status == TestingCabinet.STATUS.Finished))
+                    {
+                        WriteData(EnumHelper.GetDescription(TestingCabinet.ORDER.Stop));
+                    }
+                    while (TestingCabinets.getInstance(this.ID).Status != TestingCabinet.STATUS.Finished)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    TestingCabinets.getInstance(this.ID).Order = TestingCabinet.ORDER.Undefined;
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + this.TaskID);
+                }
+                else
+                {
+                    //=================================================模拟测试过程,最终放入测试进程中========================================
+
+                    Thread.Sleep(2000);
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + "NG" + "' where BasicID=" + this.TaskID);
+                    //通知PLC测试完成，打开测试柜
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+
+                    //等待PLC允许取料
+                    while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    //设置MTR表格，指示测试完成
+
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + this.TaskID);
+                    //=========================================================================================================================                    
+                }
+            }
         }
 
     }

@@ -51,56 +51,86 @@ namespace XT_CETC23.Model
             Resume = 5,
         };
 
-        private int ID;
+        private int id;
+        public int ID
+        {
+            get { return id; }
+            set { id = value; }
+        }
+
         private string name;
         public string Name
         {
             get { return name; }
-            set { name = value; }
+            set { 
+                name = value;
+                Save();
+            }
         }
+
         private ENABLE enable;
         public ENABLE Enable
         {
             get { return enable; }
-            set { enable = value; }
+            set {
+                enable = value;
+                Save();
+            }
         }
 
         private string type;
         public string Type
         {
             get { return type; }
-            set { type = value; }
+            set {
+                type = value;
+                Save();
+            }
         }
+
         private STATUS status;
         public STATUS Status
         {
             get { return status; }
-            set { status = value; }
+            set { 
+                status = value;
+                Save();
+            }
         }
+
         private ORDER order;
         public ORDER Order
         {
             get { return order; }
-            set { order = value; }
+            set {
+                order = value;
+                Save();
+            }
         }
+
         private int taskID;
         public int TaskID
         {
             get { return taskID; }
-            set { taskID = value; }
+            set { 
+                taskID = value;
+                Save();
+            }
         }
 
         private string productType;
         public string ProductType
         {
             get { return productType; }
-            set { productType = value; }
+            set { 
+                productType = value;
+                Save();
+            }
         }
-
 
         public TestingCabinet(int ID)
         {
-            this.ID = ID;
+            this.id = ID;
             Load();
         }
 
@@ -111,34 +141,34 @@ namespace XT_CETC23.Model
                 DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.TaskCabinet where CabinetID=" + ID);
                 if (dt.Rows.Count == 1)
                 {
-                    this.Name = Convert.ToString(dt.Rows[0]["EquipmentName"]);
-                    this.Type = Convert.ToString(dt.Rows[0]["Type"]);
-                    this.Enable = (ENABLE)Convert.ToInt32(dt.Rows[0]["Enable"]);
-                    this.Status = (STATUS)Convert.ToInt32(dt.Rows[0]["Status"]);
-                    this.Order = (ORDER)Convert.ToInt32(dt.Rows[0]["OrderType"]);
-                    this.ProductType = Convert.ToString(dt.Rows[0]["ProductType"]);
-                    this.TaskID = Convert.ToInt32(dt.Rows[0]["BasicID"]);
+                    this.name = Convert.ToString(dt.Rows[0]["EquipmentName"]);
+                    this.type = Convert.ToString(dt.Rows[0]["Type"]);
+                    this.enable = (ENABLE)Convert.ToInt32(dt.Rows[0]["Enable"]);
+                    this.status = (STATUS)Convert.ToInt32(dt.Rows[0]["Status"]);
+                    this.order = (ORDER)Convert.ToInt32(dt.Rows[0]["OrderType"]);
+                    this.productType = Convert.ToString(dt.Rows[0]["ProductType"]);
+                    this.taskID = Convert.ToInt32(dt.Rows[0]["BasicID"]);
                 }
                 else
                 {
-                    this.Name = "#" + (ID + 1) + "号机台";
-                    this.Type = "";
-                    this.Enable = ENABLE.Disable;
-                    this.Status = STATUS.NG;
-                    this.Order = ORDER.Undefined;
-                    this.ProductType = "";
-                    this.TaskID = 0;
+                    this.name = "#" + (ID + 1) + "号机台";
+                    this.type = "";
+                    this.enable = ENABLE.Disable;
+                    this.status = STATUS.NG;
+                    this.order = ORDER.Undefined;
+                    this.productType = "";
+                    this.taskID = 0;
                     
                     Save();
                 }
             }
             catch (Exception e)
             {
-                this.Name = "#" + (ID + 1) + "号机台";
-                this.Order = ORDER.Undefined;
-                this.TaskID = 0;
-                this.Enable = ENABLE.Disable;
-                this.Status = STATUS.NG;
+                this.name = "#" + (ID + 1) + "号机台";
+                this.order = ORDER.Undefined;
+                this.taskID = 0;
+                this.enable = ENABLE.Disable;
+                this.status = STATUS.NG;
             }
             return true;
         }
@@ -146,12 +176,12 @@ namespace XT_CETC23.Model
         public bool Save()
         {
             string sql = string.Format("UPDATE [dbo].[TaskCabinet] "
-                   + "SET [EquipmentName] = {1} "
-                   + ",[Type] = {2} "
+                   + "SET [EquipmentName] = '{1}' "
+                   + ",[Type] = '{2}' "
                    + ",[Enable] = {3:d} "
                    + ",[Status] = {4:d} "
                    + ",[OrderType] = {5:d} "
-                   + ",[ProductType] = {6} "
+                   + ",[ProductType] = '{6}' "
                    + ",[BasicID] ={7:d} "
                    + " WHERE CabinetID = {0:d}",
                     this.ID,
@@ -193,6 +223,9 @@ namespace XT_CETC23.Model
             this.Order = ORDER.Stop;
             return Save();
         }
+
+        private Task task;
+
 
     }
 }

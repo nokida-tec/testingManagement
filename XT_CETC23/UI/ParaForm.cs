@@ -95,13 +95,13 @@ namespace XT_CETC23.SonForm
 
             CabinetData.pathCabinetStatus = new string[6];
             CabinetData.pathCabinetOrder = new string[6];
-            DataBase.sourcePath = new string[6];
+            CabinetData.sourcePath = new string[6];
             for (int i = 0; i < 6;i++ )
             {
                 CabinetData.pathCabinetStatus[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\发送指令.txt";
                 CabinetData.pathCabinetOrder[i] =  @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\接收指令.txt";
                 textBoxCmd[i].Text = dt.Rows[i]["CmdPathName"].ToString().Trim();
-                DataBase.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
+                CabinetData.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
                 textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
             }         
         }
@@ -335,7 +335,7 @@ namespace XT_CETC23.SonForm
                 CabinetData.pathCabinetStatus[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\发送指令.txt";
                 CabinetData.pathCabinetOrder[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\接收指令.txt";
                 textBoxCmd[i].Text = dt.Rows[i]["CmdPathName"].ToString().Trim();
-                DataBase.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
+                CabinetData.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
                 textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
             }         
         }
