@@ -67,9 +67,10 @@
             this.BtnMin = new System.Windows.Forms.PictureBox();
             this.BtnMax = new System.Windows.Forms.PictureBox();
             this.BtnClose = new System.Windows.Forms.PictureBox();
-            this.btn_test = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.pB_Param = new System.Windows.Forms.PictureBox();
+            this.btnStop = new System.Windows.Forms.Button();
             this.panel_Status.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -495,16 +496,16 @@
             this.BtnClose.TabIndex = 37;
             this.BtnClose.TabStop = false;
             // 
-            // btn_test
+            // btnStart
             // 
-            this.btn_test.Location = new System.Drawing.Point(1157, 8);
-            this.btn_test.Margin = new System.Windows.Forms.Padding(2);
-            this.btn_test.Name = "btn_test";
-            this.btn_test.Size = new System.Drawing.Size(39, 33);
-            this.btn_test.TabIndex = 62;
-            this.btn_test.Text = "Testing";
-            this.btn_test.UseVisualStyleBackColor = true;
-            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            this.btnStart.Location = new System.Drawing.Point(489, 11);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(65, 33);
+            this.btnStart.TabIndex = 62;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // label3
             // 
@@ -529,15 +530,27 @@
             this.pB_Param.TabIndex = 63;
             this.pB_Param.TabStop = false;
             // 
+            // btnStop
+            // 
+            this.btnStop.Location = new System.Drawing.Point(558, 11);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(65, 33);
+            this.btnStop.TabIndex = 65;
+            this.btnStop.Text = "Stop";
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1354, 608);
+            this.Controls.Add(this.btnStop);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pB_Param);
-            this.Controls.Add(this.btn_test);
+            this.Controls.Add(this.btnStart);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pB_step);
             this.Controls.Add(this.panel_Load);
@@ -637,9 +650,10 @@
         private System.Windows.Forms.Label labSystemStatus;
         private System.Windows.Forms.PictureBox pB_step;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btn_test;
+        private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pB_Param;
+        private System.Windows.Forms.Button btnStop;
     }
 }
 

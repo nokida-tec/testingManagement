@@ -14,6 +14,11 @@ using XT_CETC23.INTransfer;
 using XT_CETC23.SonForm;
 using XT_CETC23.DataCom;
 using XT_CETC23.UserForms;
+using XT_CETC23.DataManager;
+using XT_CETC23_GK.Task;
+using XT_CETC23.Common;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
 using System.IO;
 
 namespace XT_CETC23
@@ -732,10 +737,14 @@ namespace XT_CETC23
             }
         }
 
-        private void btn_test_Click(object sender, EventArgs e)
+        private void btnStart_Click(object sender, EventArgs e)
         {
-            TaskCycle taskCycle = TaskCycle.GetInstanse();
-            taskCycle.Test();
+            TestingCabinets.getInstance(0).cmdStart("C", 9999);
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            TestingCabinets.getInstance(0).cmdStop();
         }
     }
 }

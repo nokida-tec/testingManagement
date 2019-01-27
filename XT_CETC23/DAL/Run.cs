@@ -773,7 +773,7 @@ namespace XT_CETC23.DataCom
                         int numRemain = 0;
                         int layerID = 0;
                         cabinetNo = i;
-                        prodType = TestingCabinets.getInstance(cabinetNo).Type;
+                        prodType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
                         mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
                         Thread.Sleep(100);
 
@@ -1000,27 +1000,7 @@ namespace XT_CETC23.DataCom
             int cabinetStatus = 0;
             for (int i = 0; i < DeviceCount.TestingCabinetCount; ++i)
             {
-                switch (TestingCabinets.getInstance(i).Type)
-                {
-                    case "A":
-                        prodType[0] = 1;
-                        break;
-                    case "B":
-                        prodType[0] = 2;
-                        break;
-                    case "C":
-                        prodType[0] = 3;
-                        break;
-                    case "D":
-                        prodType[0] = 4;
-                        break;
-                    case "E":
-                        prodType[0] = 5;
-                        break;
-                    case "F":
-                        prodType[0] = 6;
-                        break;
-                }
+                prodType[0] = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(i).Type].PlcMode;
 
                 plc.DBWrite(PlcData.PlcWriteAddress, 21 + i, 1, prodType);
                 bool tmpBool = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;

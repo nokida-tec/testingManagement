@@ -31,7 +31,7 @@ namespace XT_CETC23.UserForms
             {
                 if(db.DBConnect())
                 {
-                    if (db.DBInsert("insert into sortdata(sortname,number) values('" + sort_tbSortName.Text + "','" + sort_tbSortNum.Text + "')")) { GetSort(sort_tbSortName.Text); MessageBox.Show("数据插入成功"); }
+                    if (0 < db.DBInsert("insert into sortdata(sortname,number) values('" + sort_tbSortName.Text + "','" + sort_tbSortNum.Text + "')")) { GetSort(sort_tbSortName.Text); MessageBox.Show("数据插入成功"); }
                     else { MessageBox.Show("数据插入失败"); }
                     this.Close();
                 }

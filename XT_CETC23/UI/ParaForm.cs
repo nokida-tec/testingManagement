@@ -37,7 +37,7 @@ namespace XT_CETC23.SonForm
         TextBox[] textBoxData;
         Button[] btnCmd;
         Button[] btnData;
-
+         
         public class ProductTypeItem
         {
 
@@ -103,6 +103,23 @@ namespace XT_CETC23.SonForm
                 textBoxCmd[i].Text = dt.Rows[i]["CmdPathName"].ToString().Trim();
                 CabinetData.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
                 textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
+
+                string path = Path.GetDirectoryName(CabinetData.pathCabinetStatus[i]);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = Path.GetDirectoryName(CabinetData.pathCabinetOrder[i]);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = CabinetData.sourcePath[i];
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
             }         
         }
         private void ParaForm_Load(object sender, EventArgs e)
@@ -111,10 +128,19 @@ namespace XT_CETC23.SonForm
         }
         void InitData()
         {
-            for (int i = 0; i < DeviceCount.TestingCabinetCount; ++i)
+            for (int i = 0; i < Math.Min(cb.Length, DeviceCount.TestingBedCount); ++i)
             {
-                cb[i].Text = TestingCabinets.getInstance(i).Name;
-                str[i] = TestingCabinets.getInstance(i).Type;
+                int capOfProduct = TestingCabinets.getInstance(i).Type;
+                cb[i].Items.Clear();
+                cb[i].Items.Add("未定义");
+                cb[i].Items.Add("A组件");
+                cb[i].Items.Add("B组件");
+                cb[i].Items.Add("2类组件");
+                cb[i].Items.Add("AB组件");
+                cb[i].Items.Add("C组件");
+                cb[i].Items.Add("D组件");
+                cb[i].Text = TestingBedCapOfProduct.sTestingBedCapOfProduct[capOfProduct].ShowName;
+                str[i] = TestingBedCapOfProduct.sTestingBedCapOfProduct[capOfProduct].ProductType; ;
                 chb[i].Checked = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;
                 bl[i] = chb[i].Checked;
             }
@@ -133,45 +159,16 @@ namespace XT_CETC23.SonForm
                 {
                     try
                     {
-                        if (cb[i].SelectedIndex == -1)
+                        int sel = cb[i].SelectedIndex;
+                        if (sel == -1)
                         {
-                            strTmp = "undefine";
+                            sel = 0;
                         }
-                        else
-                        {
-                            switch (cb[i].SelectedItem.ToString().Trim())
-                            {
-                                case "A组件":
-                                    strTmp = "A";
-                                    prodType[0] = 1;
-                                    break;
-                                case "B组件":
-                                    strTmp = "B";
-                                    prodType[0] = 2;
-                                    break;
-                                case "2类组件":
-                                    strTmp = "E";
-                                    prodType[0] = 5;
-                                    break;
-                                case "AB组件":
-                                    strTmp = "F";
-                                    prodType[0] = 6;
-                                    break;
-                                case "C组件":
-                                    strTmp = "C";
-                                    prodType[0] = 3;
-                                    break;
-                                case "D组件":
-                                    strTmp = "D";
-                                    prodType[0] = 4;
-                                    break;
-                                default:
-                                    strTmp = "undefine";
-                                    break;
-                            }
-                        }
+
+                        strTmp = TestingBedCapOfProduct.sTestingBedCapOfProduct[sel].ProductType;
+                        prodType[0] = TestingBedCapOfProduct.sTestingBedCapOfProduct[sel].PlcMode;
                         //db.DBUpdata("insert into CabinetData(number,sort,status) values('"+i+"','" + cb[i].SelectedItem.ToString() + "','" + chb[i].Checked + "')");
-                        TestingCabinets.getInstance(i).Type = strTmp;
+                        TestingCabinets.getInstance(i).Type = sel;
                         TestingCabinets.getInstance(i).Enable = chb[i].Checked ? TestingCabinet.ENABLE.Enable : TestingCabinet.ENABLE.Disable;
 
                         {

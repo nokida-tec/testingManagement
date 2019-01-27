@@ -633,7 +633,7 @@ namespace XT_CETC23.SonForm
                 pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString()) + 1;
             }
             int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-            cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
+            cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
 
             if (cabinetType != prodType)
             {
@@ -856,7 +856,7 @@ namespace XT_CETC23.SonForm
                 }
                 int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
                 string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-                cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
+                cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
 
                 if (cabinetType != prodType)
                 {
@@ -897,7 +897,7 @@ namespace XT_CETC23.SonForm
                 }
                 int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
                 string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-                cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
+                cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
 
                 if (cabinetType != prodType)
                 {
@@ -951,7 +951,7 @@ namespace XT_CETC23.SonForm
             }
             int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
             string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-            cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
+            cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
 
             if (cabinetType != prodType)
             {

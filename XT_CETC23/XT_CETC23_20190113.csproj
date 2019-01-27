@@ -131,6 +131,7 @@
     <Compile Include="Model\DeviceCount.cs" />
     <Compile Include="Model\MaterielData.cs" />
     <Compile Include="Model\PlcData.cs" />
+    <Compile Include="Model\TestingBedCapOfProduct.cs" />
     <Compile Include="Model\RobotData.cs" />
     <Compile Include="EnumC\EnumRead.cs" />
     <Compile Include="EnumC\EnumWrite.cs" />

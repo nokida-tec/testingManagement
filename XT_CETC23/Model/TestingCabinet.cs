@@ -78,8 +78,8 @@ namespace XT_CETC23.Model
             }
         }
 
-        private string type;
-        public string Type
+        private int type;
+        public int Type
         {
             get { return type; }
             set {
@@ -142,7 +142,7 @@ namespace XT_CETC23.Model
                 if (dt.Rows.Count == 1)
                 {
                     this.name = Convert.ToString(dt.Rows[0]["EquipmentName"]);
-                    this.type = Convert.ToString(dt.Rows[0]["Type"]);
+                    this.type = Convert.ToInt32(dt.Rows[0]["Type"]);
                     this.enable = (ENABLE)Convert.ToInt32(dt.Rows[0]["Enable"]);
                     this.status = (STATUS)Convert.ToInt32(dt.Rows[0]["Status"]);
                     this.order = (ORDER)Convert.ToInt32(dt.Rows[0]["OrderType"]);
@@ -152,7 +152,7 @@ namespace XT_CETC23.Model
                 else
                 {
                     this.name = "#" + (ID + 1) + "号机台";
-                    this.type = "";
+                    this.type = 0;
                     this.enable = ENABLE.Disable;
                     this.status = STATUS.NG;
                     this.order = ORDER.Undefined;
@@ -177,7 +177,7 @@ namespace XT_CETC23.Model
         {
             string sql = string.Format("UPDATE [dbo].[TaskCabinet] "
                    + "SET [EquipmentName] = '{1}' "
-                   + ",[Type] = '{2}' "
+                   + ",[Type] = {2} "
                    + ",[Enable] = {3:d} "
                    + ",[Status] = {4:d} "
                    + ",[OrderType] = {5:d} "
@@ -192,8 +192,8 @@ namespace XT_CETC23.Model
                     this.Order,
                     this.ProductType,
                     this.TaskID);
-            bool ret = DataBase.GetInstanse().DBUpdate(sql);
-            if (ret == false) 
+            int count = DataBase.GetInstanse().DBUpdate(sql);
+            if (count < 1) 
             {
                 sql = string.Format("INSERT INTO [dbo].[TaskCabinet] ([CabinetID],[EquipmentName],[Type],[Enable],[Status],[OrderType],[ProductType],[BasicID])" +
                     " VALUES ({0:d}, '{1}', '{2}', {3:d}, {4:d}, {5:d}, '{6}', {7:d})",
@@ -206,9 +206,9 @@ namespace XT_CETC23.Model
                         this.ProductType,
                         this.TaskID
                     );
-                ret = DataBase.GetInstanse().DBInsert(sql);
+                count = DataBase.GetInstanse().DBInsert(sql);
             }
-            return ret;
+            return count > 0;
         }
 
         public bool cmdStart(string productType, int taskId)

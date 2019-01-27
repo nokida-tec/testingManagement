@@ -102,11 +102,6 @@ namespace XT_CETC23.DataCom
             }
         }
 
-        public void Test()
-        {
-            TestingCabinets.getInstance(4).cmdStart("C", 9999);
-        }
-
         private void RobotTask()
         {
             string cordX = "";

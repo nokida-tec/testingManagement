@@ -33,7 +33,7 @@ namespace XT_CETC23.UserForms
             {
                 if(db.DBConnect())
                 {
-                    if (db.DBUpdate("update Acount set password = '" + userChange_tbPassWord.Text + "',power='" + userChange_cbPower.SelectedItem.ToString()
+                    if (0 < db.DBUpdate("update Acount set password = '" + userChange_tbPassWord.Text + "',power='" + userChange_cbPower.SelectedItem.ToString()
                                         + "' where username = '" + userChange_tbUserName.Text + "'")) { MessageBox.Show("修改成功"); this.Close(); }
                     else { MessageBox.Show("修改失败"); }
                 }

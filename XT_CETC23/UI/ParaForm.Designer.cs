@@ -901,6 +901,7 @@
             this.para_cbCabinet1.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.para_cbCabinet1.FormattingEnabled = true;
             this.para_cbCabinet1.Items.AddRange(new object[] {
+            "未定义",
             "A组件",
             "B组件",
             "2类组件",

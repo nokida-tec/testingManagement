@@ -157,22 +157,34 @@ namespace XT_CETC23.DAL
         }
 
         private Task task;
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
         public bool cmdStart(string productType, int taskId) 
         {
             base.cmdStart(productType, taskId);
             if (task != null) 
             {
+                Console.WriteLine("测试柜线程"+this.ID+"状态："+task.Status);
             }
+            else 
+            {
+                task = new Task(CabinetTest, tokenSource.Token);
+                task.Start();
+            }
+
             return true;
         }
 
         public bool cmdStop()
         {
             base.cmdStop();
+            if (task != null)
+            {
+                tokenSource.Cancel();
+            }
             return true;
         }
 
-        private void CabinetTest(object list)
+        private void CabinetTest()
         {
             Console.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
 
