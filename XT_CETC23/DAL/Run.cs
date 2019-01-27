@@ -11,6 +11,8 @@ using XT_CETC23.Common;
 using System.IO;
 using System.Windows.Forms;
 using System.Data;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
 
 namespace XT_CETC23.DataCom
 {
@@ -59,7 +61,6 @@ namespace XT_CETC23.DataCom
         Thread readCabinetTh;
         Thread modeControl;
         Thread mainSchedule;
-        DataTable dt = new DataTable();
         public static bool InitStatus;
 
         System.Timers.Timer timer = new System.Timers.Timer(1000);
@@ -438,13 +439,10 @@ namespace XT_CETC23.DataCom
 
         private void MainSchedule()
         {
-            DataTable dtCabinetData = db.DBQuery("select * from dbo.CabinetData");
-            DataTable dtCabinetTask = db.DBQuery("select * from dbo.TaskCabinet");
             DataTable dtMTR = new DataTable();
             DataTable dtFeedBin = new DataTable();
             DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
-            String cabinetType = "";
             String prodType = "";
             String prodCode = "";
             String cabinetName = "";
@@ -453,7 +451,6 @@ namespace XT_CETC23.DataCom
             int trayNo = 0;
             int pieceNo = 0;
             MTR mtr = MTR.GetIntanse();
-            int cabinetNum = dtCabinetData.Rows.Count;
 
             //判断料架是否已经完成扫码，如果没有，则插入扫码任务
             ReStart:
@@ -462,9 +459,8 @@ namespace XT_CETC23.DataCom
             TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
             if (TaskCycle.feedBinScanDone == "No")
             {
-                using (dt = new DataTable())
                 {
-                    dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                    DataTable dt = db.DBQuery("select * from dbo.TaskAxlis2");
                     //设备只能有一条实时任务
                     if (!(dt.Rows.Count > 0))
                     {
@@ -598,7 +594,7 @@ namespace XT_CETC23.DataCom
                         #region 物料在测试柜中且未测试完成,完成测试即可
                         else if (tmpText.Equals("号机台") && !statusTest)
                         {
-                                db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prodType + "'," + "BasicID=" + MTR.globalBasicID + "where CabinetID=" + cabinetNo);
+                            TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
                         }
                         //=========================================================================================================================
                         #endregion
@@ -718,7 +714,7 @@ namespace XT_CETC23.DataCom
                             //通知PLC测试开始了
                             plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
                             Thread.Sleep(5000);
-                            db.DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + EnumHelper.GetDescription(EnumC.Cabinet.OK) + "' where BasicID=" + MTR.globalBasicID);
+                            db.DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + EnumHelper.GetDescription(TestingCabinet.STATUS.OK) + "' where BasicID=" + MTR.globalBasicID);
 
                             //通知PLC测试完成，打开测试柜
                             plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
@@ -757,32 +753,29 @@ namespace XT_CETC23.DataCom
                 #endregion
 
                 #region 把物料从料架取出放入测试柜并触发测试任务
-                for (int i = 0; i < cabinetNum; i++)
+                for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
                 {
-                        string CabName = dtCabinetTask.Rows[i]["EquipmentName"].ToString().Trim();
                         dtMTR = db.DBQuery("select * from dbo.MTR");
                         bool testExsit=false;
                         for (int m=0;m<dtMTR.Rows.Count;m++)
                         {
                             string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
-                            if (CabName==CabInMTR)
+                            if (TestingCabinets.getInstance(i).Name == CabInMTR)
                             {
                                 testExsit = true;
                                 break;
                             }
                         }
 
-                        bool CabinatEnable = (bool)dtCabinetData.Rows[i]["status"];
+                        bool CabinatEnable = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;
                         if (((PlcData._cabinetStatus[i] & 1) != 0) && CabinatEnable && !testExsit)               //如果测试允许测试并且使能
                     {                        
                     Redo:
                         TaskCycle.actionType = "FrameToCabinet";
                         int numRemain = 0;
                         int layerID = 0;
-                        cabinetType = dtCabinetData.Rows[i]["sort"].ToString().Trim();
-                        prodType = cabinetType;
                         cabinetNo = i;
-                        cabinetName = dtCabinetTask.Rows[i]["EquipmentName"].ToString().Trim();
+                        prodType = TestingCabinets.getInstance(cabinetNo).Type;
                         mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
                         Thread.Sleep(100);
 
@@ -833,7 +826,7 @@ namespace XT_CETC23.DataCom
                             }
                             else
                             {
-                                if ((i== (cabinetNum -1)) && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
+                                if ((i== (DeviceCount.TestingCabinetCount -1)) && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
                                 {
                                     db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
                                     frameUpdate = false;
@@ -992,7 +985,7 @@ namespace XT_CETC23.DataCom
 
                         //插入测试任务
                         db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                        db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prodType + "'," + "BasicID=" + MTR.globalBasicID + "where CabinetID=" + cabinetNo);
+                        TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
                         
                         PickEnd:
                         TaskCycle.PickStep = 0;
@@ -1005,12 +998,11 @@ namespace XT_CETC23.DataCom
 
         private void SetProdType2Plc()
         {
-            dt = db.DBQuery("select * from dbo.CabinetData");
             byte[] prodType = new byte[1];
             int cabinetStatus = 0;
-            for (int i = 0; i < dt.Rows.Count; ++i)
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; ++i)
             {
-                switch (dt.Rows[i]["sort"].ToString().Trim())
+                switch (TestingCabinets.getInstance(i).Type)
                 {
                     case "A":
                         prodType[0] = 1;
@@ -1033,7 +1025,7 @@ namespace XT_CETC23.DataCom
                 }
 
                 plc.DBWrite(PlcData.PlcWriteAddress, 21 + i, 1, prodType);
-                bool tmpBool = (bool)dt.Rows[i]["status"];
+                bool tmpBool = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;
                 if (tmpBool)
                 {
                     switch (i)
@@ -1068,7 +1060,7 @@ namespace XT_CETC23.DataCom
             string tmpStr = "";
             if (PlcData._alarmNumber!=preAlarmNo)
             {
-                dt = db.DBQuery("select * from dbo.Alarm where AlarmID ="+ alarmId);
+                DataTable dt = db.DBQuery("select * from dbo.Alarm where AlarmID ="+ alarmId);
                 if (dt.Rows.Count > 0)
                 {
                     tmpStr = dt.Rows[0]["AlarmDescription"].ToString().Trim();
@@ -1090,7 +1082,7 @@ namespace XT_CETC23.DataCom
             {
                 for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                 {
-                    if (CabinetData.cabinetStatus[i] == EnumC.Cabinet.Testing)
+                    if (TestingCabinets.getInstance(i).Status == TestingCabinet.STATUS.Testing)
                     {
 
                     }
@@ -1117,9 +1109,9 @@ namespace XT_CETC23.DataCom
                 {
                     for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                     {
-                        EnumC.Cabinet cabinetStatus = cabinet.ReadData(i);
+                        TestingCabinet.STATUS cabinetStatus = cabinet.ReadData(i);
                         GetCabinetResult(i + 1, EnumHelper.GetDescription(cabinetStatus));
-                        CabinetData.cabinetStatus[i] = cabinetStatus;
+                        TestingCabinets.getInstance(i).Status = cabinetStatus;
                     }
                 }
                 Thread.Sleep(100);

@@ -10,6 +10,8 @@ using System.IO;
 using XT_CETC23.DataManager;
 using XT_CETC23_GK.Task;
 using XT_CETC23.Common;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
 using Excel;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -53,7 +55,7 @@ namespace XT_CETC23.DataCom
         Robot robot;
         MTR mtr;
         Cabinet cabinet;
-        DataTable dt2, dt7, dtc, dtr;
+        DataTable dt2, dt7, dtr;
         Task[] task = new Task[6];
         Thread[] threadCab= new Thread[6];        
         ExcelOperation excelOp = new ExcelOperation();
@@ -114,27 +116,22 @@ namespace XT_CETC23.DataCom
         }
         private void CabinetTask()
         {
-            dtc = new DataTable();            
             while (true)
             {
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
                     Thread.Sleep(100);
-                    dtc.Rows.Clear();
-                    dtc.Columns.Clear();
-                    dtc = db.DBQuery("select * from dbo.TaskCabinet");
-                    for (int i = 0; i < dtc.Rows.Count; i++)
+                    for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
                     {
-                        lock (dtc)
                             {
-                                string order = dtc.Rows[i]["OrderType"].ToString().Trim();
+                                string order = TestingCabinets.getInstance(i).Order.ToString();
                                 if (order == "Stop" && threadCab[i].ThreadState == ThreadState.Running)
                                 {
                                     threadCab[i].Abort();
                                 }
-                                int basicID = (int)Convert.ToDouble(dtc.Rows[i]["BasicID"]);
-                                string productType = dtc.Rows[i]["ProductType"].ToString();
+                                int basicID = TestingCabinets.getInstance(i).TaskID;
+                                string productType = TestingCabinets.getInstance(i).ProductType;
 
                                 ArrayList paraCabTask = new ArrayList();
                                 paraCabTask.Add(order);
@@ -181,7 +178,7 @@ namespace XT_CETC23.DataCom
 
             Cabinet.GetInstanse().ResetData(cabinetNo);
 
-            db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo);
+            TestingCabinets.getInstance(cabinetNo).Status = TestingCabinet.STATUS.Finished;
             if(order=="Start")
             {
                 if (Config.Config.ENABLED_DEBUG == false)
@@ -196,7 +193,7 @@ namespace XT_CETC23.DataCom
                         {
                             Thread.Sleep(100);
                         }
-                        if (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Ready) 
+                        if (TestingCabinets.getInstance(cabinetNo).Status != TestingCabinet.STATUS.Ready) 
                         {
                             Cabinet.GetInstanse().ResetData(cabinetNo);
                         }
@@ -206,7 +203,7 @@ namespace XT_CETC23.DataCom
 
                     if (Config.Config.ENABLED_PLC)
                     {
-                        if (CabinetData.cabinetStatus[cabinetNo] == EnumC.Cabinet.Ready)
+                        if (TestingCabinets.getInstance(cabinetNo).Status == TestingCabinet.STATUS.Ready)
                         {
                             DateTime currentTime = DateTime.Now;
 
@@ -219,7 +216,7 @@ namespace XT_CETC23.DataCom
                         }
 
                         // 等待测试begin   
-                        //while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Testing))
+                        //while (TestingCabinets.getInstance(cabinetNo).Status != TestingCabinet.STATUS.Testing))
                         //{
                         //    Thread.Sleep(100);
                         //}
@@ -229,7 +226,7 @@ namespace XT_CETC23.DataCom
                     {
                         if (Config.Config.ENABLED_PLC)
                         {
-                            while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Finished)
+                            while (TestingCabinets.getInstance(cabinetNo).Status != TestingCabinet.STATUS.Finished)
                             {
                                 Thread.Sleep(100);
                             }
@@ -266,7 +263,7 @@ namespace XT_CETC23.DataCom
                             testResult = excelOp.CheckTestResults(sourceFile);
                         }
 
-                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? EnumC.Cabinet.OK : EnumC.Cabinet.NG) + "' where BasicID= " + basicID);
+                        db.DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' where BasicID= " + basicID);
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
                         dt = db.DBQuery("select * from dbo.MTR where BasicID=" + basicID);
@@ -366,16 +363,16 @@ namespace XT_CETC23.DataCom
             {
                 if (Config.Config.ENABLED_DEBUG == false)
                 {
-                    if (!(CabinetData.cabinetStatus[cabinetNo] == EnumC.Cabinet.Ready
-                            || CabinetData.cabinetStatus[cabinetNo] == EnumC.Cabinet.Finished))
+                    if (!(TestingCabinets.getInstance(cabinetNo).Status == TestingCabinet.STATUS.Ready
+                            || TestingCabinets.getInstance(cabinetNo).Status == TestingCabinet.STATUS.Finished))
                     {
-                        cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(EnumC.CabinetW.Stop));
+                        cabinet.WriteData(cabinetNo, EnumHelper.GetDescription(TestingCabinet.ORDER.Stop));
                     }
-                    while (CabinetData.cabinetStatus[cabinetNo] != EnumC.Cabinet.Finished)
+                    while (TestingCabinets.getInstance(cabinetNo).Status != TestingCabinet.STATUS.Finished)
                     {
                         Thread.Sleep(100);
                     }
-                    db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "'where CabinetID=" + cabinetNo);
+                    TestingCabinets.getInstance(cabinetNo).Order = TestingCabinet.ORDER.Undefined;
                     db.DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + basicID );
                 }
                 else 

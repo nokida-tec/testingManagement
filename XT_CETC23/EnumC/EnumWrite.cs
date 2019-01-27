@@ -65,15 +65,6 @@ namespace XT_CETC23.EnumC
         [EnumDescription("启动放料")]
         PutPiece,
     }
-    enum CabinetW
-    {
-        [EnumDescription("Start")]
-        Start,
-        [EnumDescription("Stop")]
-        Stop,
-        [EnumDescription("Free")]
-        Free,
-    }
     enum EquipmentPos
     {
         [EnumDescription("料架位")]

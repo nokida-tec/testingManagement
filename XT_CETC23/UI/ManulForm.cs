@@ -14,6 +14,9 @@ using XT_CETC23.DataManager;
 using XT_CETC23.Common;
 using XT_CETC23_GK.Task;
 using System.Threading;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
+
 namespace XT_CETC23.SonForm
 {
     public partial class ManulForm : Form, IManulForm
@@ -1102,29 +1105,18 @@ namespace XT_CETC23.SonForm
                 if (dt.Rows.Count > 0)
                     goto RobotLable;
                 //
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskCabinet");
                 CabinetLable:
-                if (dt.Rows.Count > 0)
-                {
-                    for(int i=0;i<dt.Rows.Count;++i)
+                    for(int i=0;i<DeviceCount.TestingCabinetCount;++i)
                     {
-                        db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + EnumHelper.GetDescription(EnumC.CabinetW.Free) + "' where EquipmentName='" + dt.Rows[i]["EquipmentName"].ToString().Trim() + "'");
+                        TestingCabinets.getInstance(i).Order = TestingCabinet.ORDER.Undefined;
                     }
-                    //db.DBDelete("delete from dbo.TaskCabinet");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskCabinet");
-                if (dt.Rows.Count > 0)
-                {
                     for (int i = 0; i < dt.Rows.Count; ++i)
                     {
-                        if(!(dt.Rows[i]["OrderType"].ToString().Trim().Equals(EnumHelper.GetDescription(EnumC.CabinetW.Free))))
+                        if (TestingCabinets.getInstance(i).Order != TestingCabinet.ORDER.Undefined)
+                        {
                             goto CabinetLable;
+                        }
                     }
-                }             
                 PlcData.clearTask = true;
                 //TransMessage("任务清除完成");
             }

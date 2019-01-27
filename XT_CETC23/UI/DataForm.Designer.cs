@@ -126,7 +126,6 @@
             "dbo.MTR",
             "dbo.Frame",
             "dbo.SortData",
-            "dbo.CabinetData",
             "dbo.ActualData"});
             this.data_cbQueryCondition.Location = new System.Drawing.Point(315, 476);
             this.data_cbQueryCondition.Name = "data_cbQueryCondition";

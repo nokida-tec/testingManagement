@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Snap7;
+using XT_CETC23.Config;
+
 namespace XT_CETC23
 {
    public class Plc
@@ -85,6 +87,10 @@ namespace XT_CETC23
         }
         public byte[] DbRead(int DbNumber, int Start, int Size)
         {
+            if (Config.Config.ENABLED_PLC == false)
+            {
+                return null;
+            }
             lock (lockDbRead)
             {
                 if (plcConnected)
@@ -105,6 +111,10 @@ namespace XT_CETC23
         }
         public bool DBWrite(int DBNumber, int Start,int Size, byte[] Data)
         {
+            if (Config.Config.ENABLED_PLC == false)
+            {
+                return true;
+            }
             // Declaration separated from the code for readability
             lock (lockDbWrite)
             {

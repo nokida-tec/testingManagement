@@ -125,8 +125,10 @@
     <Compile Include="DAL\Robot.cs" />
     <Compile Include="DAL\Run.cs" />
     <Compile Include="DAL\TaskCycle.cs" />
+    <Compile Include="Instances\TestingCabinets.cs" />
     <Compile Include="Model\CabinetData.cs" />
     <Compile Include="Model\DBstr.cs" />
+    <Compile Include="Model\DeviceCount.cs" />
     <Compile Include="Model\MaterielData.cs" />
     <Compile Include="Model\PlcData.cs" />
     <Compile Include="Model\RobotData.cs" />
@@ -147,6 +149,8 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\TestingBed.cs" />
+    <Compile Include="Model\TestingCabinet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AutoForm.cs">

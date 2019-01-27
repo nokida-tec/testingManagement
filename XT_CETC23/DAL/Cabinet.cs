@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XT_CETC23.DataManager;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
 using System.Data;
 
 namespace XT_CETC23.DataCom
@@ -53,16 +55,13 @@ namespace XT_CETC23.DataCom
             }
         }
 
-        public EnumC.Cabinet ReadData(int i)
+        public TestingCabinet.STATUS ReadData(int i)
         {
             try
             {
-                DataBase db = DataBase.GetInstanse();
-                DataTable dt = db.DBQuery("select * from dbo.CabinetData where number = " + i);
-                bool enabled = (bool)dt.Rows[0]["status"];
-                FileStream fs = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open, FileAccess.Read);
-                if (enabled)
+                if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable)
                 {
+                    FileStream fs = new FileStream(CabinetData.pathCabinetStatus[i], FileMode.Open, FileAccess.Read);
                     StreamReader sr = new StreamReader(fs);
                     string line = null;
                     string lastline = null;
@@ -76,19 +75,19 @@ namespace XT_CETC23.DataCom
                         switch (orders[orders.Length - 1])
                         {
                             case "30":
-                                return EnumC.Cabinet.Ready;
+                                return TestingCabinet.STATUS.Ready;
                             case "31":
-                                return EnumC.Cabinet.Testing;
+                                return TestingCabinet.STATUS.Testing;
                             case "32":
-                                return EnumC.Cabinet.Fault_Config;
+                                return TestingCabinet.STATUS.Fault_Config;
                             case "33":
-                                return EnumC.Cabinet.Fault_Control;
+                                return TestingCabinet.STATUS.Fault_Control;
                             case "34":
-                                return EnumC.Cabinet.Fault_Report;
+                                return TestingCabinet.STATUS.Fault_Report;
                             case "40":
-                                return EnumC.Cabinet.Finished;
+                                return TestingCabinet.STATUS.Finished;
                             default:
-                                return EnumC.Cabinet.Ready;
+                                return TestingCabinet.STATUS.Ready;
                         }
                     }
                 }
@@ -97,7 +96,7 @@ namespace XT_CETC23.DataCom
             {
 
             }
-            return EnumC.Cabinet.NG;
+            return TestingCabinet.STATUS.NG;
         }
 
         public bool ResetData(int cabinetNo)
@@ -148,7 +147,7 @@ namespace XT_CETC23.DataCom
                      }
                 }
 
-                CabinetData.cabinetStatus[cabinetNo] = EnumC.Cabinet.Ready;
+                TestingCabinets.getInstance(cabinetNo).Status = TestingCabinet.STATUS.Ready;
 
                 return true;
             }
@@ -156,7 +155,7 @@ namespace XT_CETC23.DataCom
             {
 
             }
-            CabinetData.cabinetStatus[cabinetNo] = EnumC.Cabinet.Ready;
+            TestingCabinets.getInstance(cabinetNo).Status = TestingCabinet.STATUS.Ready;
             return false;
         }
 

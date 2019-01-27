@@ -11,7 +11,6 @@ namespace XT_CETC23.DataManager
     {
         public static string[] pathCabinetStatus; //= new string[6] { pathRead1, pathRead2, pathRead3, pathRead4, pathRead5, pathRead6 };
         public static string[] pathCabinetOrder;// = new string[6] { pathWrite1, pathWrite2, pathWrite3, pathWrite4, pathWrite5, pathWrite6 };
-        public static EnumC.Cabinet[] cabinetStatus = new EnumC.Cabinet[6] { EnumC.Cabinet.Ready, EnumC.Cabinet.Ready, EnumC.Cabinet.Ready, EnumC.Cabinet.Ready, EnumC.Cabinet.Ready, EnumC.Cabinet.Ready };
         public static string getOrder(int order)
         {
             return DateTime.Now.ToString("G" + " "+order.ToString());

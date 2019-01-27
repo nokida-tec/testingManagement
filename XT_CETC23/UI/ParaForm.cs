@@ -13,7 +13,11 @@ using XT_CETC23.DataCom;
 using XT_CETC23.DataManager;
 using XT_CETC23.Common;
 using XT_CETC23.EnumC;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
 using System.Threading;
+
+
 namespace XT_CETC23.SonForm
 {
     public partial class ParaForm : Form,IParaForm
@@ -21,7 +25,6 @@ namespace XT_CETC23.SonForm
         CameraForm cf = new CameraForm();
         Thread th1;
         DataBase db;
-        DataTable dt;
         ComboBox[] cb;
         CheckBox[] chb;
         IRunForm rform;
@@ -34,6 +37,11 @@ namespace XT_CETC23.SonForm
         TextBox[] textBoxData;
         Button[] btnCmd;
         Button[] btnData;
+
+        public class ProductTypeItem
+        {
+
+        }
 
         public ParaForm(IRunForm iRunForm)
         {
@@ -53,7 +61,7 @@ namespace XT_CETC23.SonForm
             plc = Plc.GetInstanse();
 
             db = DataBase.GetInstanse();
-            dt = db.DBQuery("select * from dbo.Path");
+            DataTable dt = db.DBQuery("select * from dbo.Path");
             for (int i = 0; i < 4; i++)
             {
                 if (dt.Rows[0]["CmdPathName"].ToString().Trim() == null || dt.Rows[0]["DataPathName"].ToString().Trim() == null)
@@ -103,25 +111,17 @@ namespace XT_CETC23.SonForm
         }
         void InitData()
         {
-            if(db.DBConnect())
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; ++i)
             {
-                dt = db.DBQuery(DBstr.QueryStr("CabinetData"));
-                if(dt.Rows.Count>1)
-                {
-                    for (int i = 0; i < dt.Rows.Count; ++i)
-                    {
-                        cb[i].Text = dt.Rows[i]["sort"].ToString().Trim();
-                        str[i]= dt.Rows[i]["sort"].ToString().Trim();
-                        //bool tmpBool= (bool)dt.Rows[i]["status"];
-                        bool status = (int)Convert.ToDouble(dt.Rows[i]["status"]) != 0;
-                        chb[i].Checked = status;
-                        bl[i] = status;
-                    }
-                    rform.getGrab(str);
-                    rform.getStatus(bl);
-                }               
+                cb[i].Text = TestingCabinets.getInstance(i).Name;
+                str[i] = TestingCabinets.getInstance(i).Type;
+                chb[i].Checked = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;
+                bl[i] = chb[i].Checked;
             }
+            rform.getGrab(str);
+            rform.getStatus(bl);
         }
+
         private void para_btnWrite_Click(object sender, EventArgs e)
         {
             string strTmp="";
@@ -164,7 +164,9 @@ namespace XT_CETC23.SonForm
                                 break;
                         }
                         //db.DBUpdata("insert into CabinetData(number,sort,status) values('"+i+"','" + cb[i].SelectedItem.ToString() + "','" + chb[i].Checked + "')");
-                        if (db.DBUpdate("update CabinetData set sort = '" + strTmp + "',status='" + chb[i].Checked + "' where number= " + i + ""))
+                        TestingCabinets.getInstance(i).Type = strTmp;
+                        TestingCabinets.getInstance(i).Enable = chb[i].Checked ? TestingCabinet.ENABLE.Enable : TestingCabinet.ENABLE.Disable;
+
                         {
                             str[i] = cb[i].SelectedItem.ToString();
                             bl[i] = (bool)chb[i].Checked;
@@ -193,10 +195,6 @@ namespace XT_CETC23.SonForm
                                         break;
                                 }
                             }
-                        }
-                        else
-                        {
-                            MessageBox.Show("写入失败");
                         }
                     }
                     catch(Exception exp)
@@ -324,7 +322,7 @@ namespace XT_CETC23.SonForm
                 Directory.CreateDirectory(DataBase.targetPath);
             }
 
-            dt = db.DBQuery("select * from dbo.Path");
+            DataTable dt = db.DBQuery("select * from dbo.Path");
             for (int i = 0; i < 6; i++)
             {
                 CabinetData.pathCabinetStatus[i] = @dt.Rows[i]["CmdPathName"].ToString().Trim() + @"\发送指令.txt";

@@ -14,7 +14,6 @@ namespace XT_CETC23.SonForm
 {
     public partial class AutoForm : Form,IAutoForm
     {
-        bool first = false;
         public DataBase db;
         Run run;
         TextBox[] tbSort,tbNum;
@@ -40,7 +39,7 @@ namespace XT_CETC23.SonForm
                                     auto_tbNumRC81, auto_tbNumRC82, auto_tbNumRC83, auto_tbNumRC84, auto_tbNumRC85};
             #endregion
             InitForm();
-            this.run = run;
+  //          this.run = run;
         }
         void InitForm()
         {

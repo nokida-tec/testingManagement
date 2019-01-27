@@ -13,6 +13,8 @@ using XT_CETC23.DataManager;
 using XT_CETC23.Common;
 using XT_CETC23_GK.Task;
 using System.Threading;
+using XT_CETC23.Model;
+using XT_CETC23.Instances;
 
 namespace XT_CETC23.SonForm
 {
@@ -74,7 +76,7 @@ namespace XT_CETC23.SonForm
                     //manul_cbProductNum.Enabled = false;
                 }   
             }
-            catch (Exception except)
+            catch (Exception exception)
             {
 
             }
@@ -534,8 +536,8 @@ namespace XT_CETC23.SonForm
             {
                 //if (db.DBInsert("insert into dbo.TaskCabinet(EquipmentName,OrderType) values('" + manul_cbCabineit.SelectedItem.ToString() + "','" + EnumHelper.GetDescription(EnumC.CabinetW.Start) + "')"))
                 //if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + CabinetData.getType(manul_cbCabineitType.SelectedItem.ToString())  + "',ProductType='"+ manul_cbCabineitType.SelectedItem.ToString()+ "' where EquipmentName='" + manul_cbCabineit.SelectedItem.ToString().Trim() + "'"))
-
-                db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + order + "',ProductType='" + prod + "'," + "BasicID=" + 2998 + "where CabinetID=" + cabinet);
+                TestingCabinets.getInstance(cabinet).cmdStart(prod, cabinet);
+                //db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + order + "',ProductType='" + prod + "'," + "BasicID=" + 2998 + "where CabinetID=" + cabinet);
                 //if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prod + "' where CabinetID='" + cabinet + "'"))
                 //    TransMessage(manul_cbCabineit.SelectedItem.ToString() + "任务手动插入成功");
                 //else
@@ -609,19 +611,14 @@ namespace XT_CETC23.SonForm
 
         private void FrameToCabinet()
         {
-            DataTable dtCabinetData = db.DBQuery("select * from dbo.CabinetData");
-            DataTable dtCabinetTask = db.DBQuery("select * from dbo.TaskCabinet");
             DataTable dtMTR = new DataTable();
             DataTable dtFeedBin = new DataTable();
             DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
             String cabinetType = "";
             String prodCode = "";
-            string checkResult = "";
             int pieceNo = 0;
             MTR mtr = MTR.GetIntanse();
-
-            int cabinetNum = dtCabinetData.Rows.Count;
 
             string prodType = step_cbProductSort.SelectedItem.ToString().Trim();
 
@@ -636,8 +633,7 @@ namespace XT_CETC23.SonForm
                 pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString()) + 1;
             }
             int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-            string cabinetName = dtCabinetTask.Rows[cabinetNo]["EquipmentName"].ToString().Trim();
-            cabinetType = dtCabinetData.Rows[cabinetNo]["sort"].ToString().Trim();
+            cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
 
             if (cabinetType != prodType)
             {
@@ -832,26 +828,20 @@ namespace XT_CETC23.SonForm
             } while (TaskCycle.PickStep != 60);
 
             //更新MTR表格
-            db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+            db.DBUpdate("update dbo.MTR set CurrentStation = '" + TestingCabinets.getInstance(cabinetNo).Name + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
         }
 
         private void step_btnTestStart_Click(object sender, EventArgs e)
         {
             if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
             {
-                DataTable dtCabinetData = db.DBQuery("select * from dbo.CabinetData");
-                DataTable dtCabinetTask = db.DBQuery("select * from dbo.TaskCabinet");
                 DataTable dtMTR = new DataTable();
                 DataTable dtFeedBin = new DataTable();
                 DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
                 String cabinetType = "";
-                String prodCode = "";
-                string checkResult = "";
                 int pieceNo = 0;
                 MTR mtr = MTR.GetIntanse();
-
-                int cabinetNum = dtCabinetData.Rows.Count;
 
                 string prodType = step_cbProductSort.SelectedItem.ToString();
 
@@ -865,8 +855,8 @@ namespace XT_CETC23.SonForm
                     pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
                 }
                 int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-                string cabinetName = dtCabinetTask.Rows[cabinetNo]["EquipmentName"].ToString().Trim();
-                cabinetType = dtCabinetData.Rows[cabinetNo]["sort"].ToString().Trim();
+                string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
+                cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
 
                 if (cabinetType != prodType)
                 {
@@ -874,7 +864,7 @@ namespace XT_CETC23.SonForm
                     return;
                 }
                 //插入测试开始任务
-                db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prodType + "'," + "BasicID=" + MTR.globalBasicID + "where CabinetID=" + cabinetNo);
+                TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
             }
             else
             {
@@ -886,19 +876,13 @@ namespace XT_CETC23.SonForm
         {
             if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
             {
-                DataTable dtCabinetData = db.DBQuery("select * from dbo.CabinetData");
-                DataTable dtCabinetTask = db.DBQuery("select * from dbo.TaskCabinet");
                 DataTable dtMTR = new DataTable();
                 DataTable dtFeedBin = new DataTable();
                 DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
                 String cabinetType = "";
-                String prodCode = "";
-                string checkResult = "";
                 int pieceNo = 0;
                 MTR mtr = MTR.GetIntanse();
-
-                int cabinetNum = dtCabinetData.Rows.Count;
 
                 string prodType = step_cbProductSort.SelectedItem.ToString();
 
@@ -912,8 +896,8 @@ namespace XT_CETC23.SonForm
                     pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
                 }
                 int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-                string cabinetName = dtCabinetTask.Rows[cabinetNo]["EquipmentName"].ToString().Trim();
-                cabinetType = dtCabinetData.Rows[cabinetNo]["sort"].ToString().Trim();
+                string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
+                cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
 
                 if (cabinetType != prodType)
                 {
@@ -921,7 +905,7 @@ namespace XT_CETC23.SonForm
                     return;
                 }
                 //插入测试停止任务
-                db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Stop" + "',ProductType='" + prodType + "'," + "BasicID=" + MTR.globalBasicID + "where CabinetID='" + cabinetNo + "'");
+                TestingCabinets.getInstance(cabinetNo).cmdStop();
             }
             else
             {
@@ -944,8 +928,6 @@ namespace XT_CETC23.SonForm
 
         private void CabinetToFrame()
         {
-            DataTable dtCabinetData = db.DBQuery("select * from dbo.CabinetData");
-            DataTable dtCabinetTask = db.DBQuery("select * from dbo.TaskCabinet");
             DataTable dtMTR = new DataTable();
             DataTable dtFeedBin = new DataTable();
             DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
@@ -955,8 +937,6 @@ namespace XT_CETC23.SonForm
             string checkResult = "";
             int pieceNo = 0;
             MTR mtr = MTR.GetIntanse();
-
-            int cabinetNum = dtCabinetData.Rows.Count;
 
             string prodType = step_cbProductSort.SelectedItem.ToString();
 
@@ -970,8 +950,8 @@ namespace XT_CETC23.SonForm
                 pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
             }
             int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-            string cabinetName = dtCabinetTask.Rows[cabinetNo]["EquipmentName"].ToString().Trim();
-            cabinetType = dtCabinetData.Rows[cabinetNo]["sort"].ToString().Trim();
+            string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
+            cabinetType = TestingCabinets.getInstance(cabinetNo).Type;
 
             if (cabinetType != prodType)
             {

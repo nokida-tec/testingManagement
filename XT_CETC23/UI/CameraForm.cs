@@ -19,7 +19,6 @@ namespace XT_CETC23.SonForm
         Thread thLive; 
         public string X, Y;
         public int CCDDone;
-        int i = 0;
         public CameraForm()
         {
             InitializeComponent();
@@ -71,7 +70,6 @@ namespace XT_CETC23.SonForm
                     this.XBox.Text = X;
                     this.YBox.Text = Y;
                 }));
-                i = 1;
             }
             else
             {
