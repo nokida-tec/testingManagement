@@ -144,7 +144,7 @@ namespace XT_CETC23.DAL
                      }
                 }
 
-                TestingCabinets.getInstance(this.ID).Status = TestingCabinet.STATUS.Ready;
+                Status = TestingCabinet.STATUS.Ready;
 
                 return true;
             }
@@ -160,9 +160,9 @@ namespace XT_CETC23.DAL
         public bool cmdStart(string productType, int taskId) 
         {
             Console.WriteLine("  ***   cmdStart：" + this.ID);
+            base.cmdStart(productType, taskId);
             lock (this)
             {
-                base.cmdStart(productType, taskId);
                 if (task != null)
                 {
                     Console.WriteLine("  ***   测试柜:" + this.ID + " 启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
@@ -184,9 +184,9 @@ namespace XT_CETC23.DAL
         public bool cmdStop()
         {
             Console.WriteLine("  ***   cmdStop：" + this.ID);
+            base.cmdStop();
             lock (this)
             {
-                base.cmdStop();
                 if (task != null)
                 {
                     Console.WriteLine("  ***   测试柜:" + this.ID + " 停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
@@ -208,9 +208,6 @@ namespace XT_CETC23.DAL
         {
             Console.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
 
-            ResetData();
-
-            Status = TestingCabinet.STATUS.Finished;
             if (Order == ORDER.Start)
             {
                 if (Config.Config.ENABLED_DEBUG == false)
@@ -225,7 +222,7 @@ namespace XT_CETC23.DAL
                         {
                             Thread.Sleep(100);
                         }
-                        if (TestingCabinets.getInstance(this.ID).Status != TestingCabinet.STATUS.Ready)
+                        if (Status != TestingCabinet.STATUS.Ready)
                         {
                             ResetData();
                         }
@@ -258,7 +255,7 @@ namespace XT_CETC23.DAL
                     {
                         if (Config.Config.ENABLED_PLC)
                         {
-                            while (TestingCabinets.getInstance(this.ID).Status != TestingCabinet.STATUS.Finished)
+                            while (Status != TestingCabinet.STATUS.Finished)
                             {
                                 Thread.Sleep(100);
                             }
