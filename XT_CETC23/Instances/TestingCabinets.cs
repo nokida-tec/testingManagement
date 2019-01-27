@@ -10,12 +10,19 @@ namespace XT_CETC23.Instances
     class TestingCabinets
     {
         static private TestingCabinet[] mTestingCabinet;
+        private static readonly object lockRoot = new object();
 
         static public TestingCabinet getInstance(int ID)
         {
             if (mTestingCabinet == null)
             {
-                mTestingCabinet = new TestingCabinet[DeviceCount.TestingCabinetCount];
+                lock (lockRoot)
+                {
+                    if (mTestingCabinet == null)
+                    {
+                        mTestingCabinet = new TestingCabinet[DeviceCount.TestingCabinetCount];
+                    }
+                }
             }
             if (mTestingCabinet.Length != DeviceCount.TestingCabinetCount)
             {
@@ -23,7 +30,13 @@ namespace XT_CETC23.Instances
             }
             if (mTestingCabinet[ID] == null)
             {
-                mTestingCabinet[ID] = new TestingCabinet(ID);
+                lock (lockRoot)
+                {
+                    if (mTestingCabinet[ID] == null)
+                    {
+                        mTestingCabinet[ID] = new TestingCabinet(ID);
+                    }
+                }
             }
             return mTestingCabinet[ID];
         }
