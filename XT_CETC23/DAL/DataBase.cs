@@ -137,7 +137,7 @@ namespace XT_CETC23.DataCom
                 }
             }
         }
-        public bool DBUpdate(string questr)
+        public int DBUpdate(string questr)
         {
             try
             {
@@ -145,16 +145,16 @@ namespace XT_CETC23.DataCom
                 conOpen();
                 using (com = new SqlCommand(questr, con))
                 {
-                    com.ExecuteNonQuery();
+                    int count = com.ExecuteNonQuery();
                     conClose();
                     com.Dispose();
-                    return true;
+                    return count;
                 }
             }
             catch (SqlException sex)
             {
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
-                return false;
+                return 0;
             }
         }
         public bool DBDelete(string questr)
@@ -177,7 +177,7 @@ namespace XT_CETC23.DataCom
                 return false;
             }
         }
-        public bool DBInsert(string questr)
+        public int DBInsert(string questr)
         {
             try
             {
@@ -185,16 +185,16 @@ namespace XT_CETC23.DataCom
                 conOpen();
                 using (com = new SqlCommand(questr, con))
                 {
-                    com.ExecuteNonQuery();
+                    int count = com.ExecuteNonQuery();
                     conClose();
                     com.Dispose();
-                    return true;
+                    return count;
                 }                
             }
             catch (SqlException sex)
             {
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
-                return false;
+                return 0;
             }
         }
     }
