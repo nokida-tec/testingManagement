@@ -213,14 +213,15 @@ namespace XT_CETC23.Model
 
         public bool cmdStart(string productType, int taskId)
         {
-            this.Order = ORDER.Start;
-            this.TaskID = taskId;
+            this.order = ORDER.Start;
+            this.taskID = taskId;
+            this.productType = productType;
             return Save();
         }
 
         public bool cmdStop()
         {
-            this.Order = ORDER.Stop;
+            this.order = ORDER.Stop;
             return Save();
         }
 

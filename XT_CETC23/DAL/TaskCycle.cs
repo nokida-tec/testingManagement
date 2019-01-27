@@ -378,13 +378,13 @@ namespace XT_CETC23.DataCom
                 }
                 else
                 {
-                    Console.WriteLine("can't find the input box of U8");
+                    Console.WriteLine("请确认U8转移报工窗口打开");
                     return -2;
                 }
             }
             else
             {
-                Console.WriteLine("can't find the windows of U8");
+                Console.WriteLine("请确认U8转移报工窗口打开");
                 return -1;
             }
             return 0;

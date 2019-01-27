@@ -157,31 +157,47 @@ namespace XT_CETC23.DAL
         }
 
         private Task task;
-        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationTokenSource tokenSource;
         public bool cmdStart(string productType, int taskId) 
         {
-            base.cmdStart(productType, taskId);
-            if (task != null) 
+            Console.WriteLine("  ***   cmdStart：" + this.ID);
+            lock (this)
             {
-                Console.WriteLine("测试柜线程"+this.ID+"状态："+task.Status);
-            }
-            else 
-            {
-                task = new Task(CabinetTest, tokenSource.Token);
-                task.Start();
-            }
+                base.cmdStart(productType, taskId);
+                if (task != null)
+                {
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 线程:" + task.Id + " 状态：" + task.Status);
+                    if (task.IsCompleted)
+                    {
+                        task.Dispose();
+                        task = null;
+                    }
+                }
+                if (task == null)
+                {
+                    tokenSource = new CancellationTokenSource();
+                    task = new Task(CabinetTest, tokenSource.Token);
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 新线程:" + task.Id + " 状态：" + task.Status);
+                    task.Start();
+                }
 
-            return true;
+                return true;
+            }
         }
 
         public bool cmdStop()
         {
-            base.cmdStop();
-            if (task != null)
+            Console.WriteLine("  ***   cmdStop：" + this.ID);
+            lock (this)
             {
-                tokenSource.Cancel();
+                if (task != null)
+                {
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 线程:" + task.Id + " 状态：" + task.Status);
+                    tokenSource.Cancel();
+                }
+                base.cmdStop();
+                return true;
             }
-            return true;
         }
 
         private void CabinetTest()
@@ -247,7 +263,7 @@ namespace XT_CETC23.DAL
 
                         //获取测量结果的excel源文件
                         String[] filePath = Directory.GetFiles(CabinetData.sourcePath[this.ID]);
-                        string sourceFile = "";
+                        string sourceFile = null;
                         if (filePath != null)
                         {
                             for (int i = 0; i < filePath.Length; i++)
@@ -301,12 +317,21 @@ namespace XT_CETC23.DAL
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            Console.WriteLine(e.StackTrace);
                         }
 
-                        string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
-                        FileOperation fileOp = new FileOperation();
-                        fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+                        try
+                        {
+                            string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
+                            FileOperation fileOp = new FileOperation();
+                            fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+                            //删除源文件          
+                            File.Delete(sourceFile);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.StackTrace);
+                        }
 
                         //  record the scan barcode to logs file
                         DateTime currentTime = DateTime.Now;
@@ -317,9 +342,6 @@ namespace XT_CETC23.DAL
 
                         // send scancode to U8
                         TaskCycle.sendToU8(productID);
-
-                        //删除源文件          
-                        File.Delete(sourceFile);
 
                         if (Config.Config.ENABLED_PLC)
                         {
