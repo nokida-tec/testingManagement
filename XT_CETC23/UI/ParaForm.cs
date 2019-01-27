@@ -133,35 +133,42 @@ namespace XT_CETC23.SonForm
                 {
                     try
                     {
-                        switch (cb[i].SelectedItem.ToString().Trim())
+                        if (cb[i].SelectedIndex == -1)
                         {
-                            case "A组件":
-                                strTmp = "A";
-                                prodType[0] = 1;
-                                break;
-                            case "B组件":
-                                strTmp = "B";
-                                prodType[0] = 2;
-                                break;
-                            case "2类组件":
-                                strTmp = "E";
-                                prodType[0] = 5;
-                                break;
-                            case "AB组件":
-                                strTmp = "F";
-                                prodType[0] = 6;
-                                break;
-                            case "C组件":
-                                strTmp = "C";
-                                prodType[0] = 3;
-                                break;
-                            case "D组件":
-                                strTmp = "D";
-                                prodType[0] = 4;
-                                break;
-                            default:
-                                strTmp = "undefine";
-                                break;
+                            strTmp = "undefine";
+                        }
+                        else
+                        {
+                            switch (cb[i].SelectedItem.ToString().Trim())
+                            {
+                                case "A组件":
+                                    strTmp = "A";
+                                    prodType[0] = 1;
+                                    break;
+                                case "B组件":
+                                    strTmp = "B";
+                                    prodType[0] = 2;
+                                    break;
+                                case "2类组件":
+                                    strTmp = "E";
+                                    prodType[0] = 5;
+                                    break;
+                                case "AB组件":
+                                    strTmp = "F";
+                                    prodType[0] = 6;
+                                    break;
+                                case "C组件":
+                                    strTmp = "C";
+                                    prodType[0] = 3;
+                                    break;
+                                case "D组件":
+                                    strTmp = "D";
+                                    prodType[0] = 4;
+                                    break;
+                                default:
+                                    strTmp = "undefine";
+                                    break;
+                            }
                         }
                         //db.DBUpdata("insert into CabinetData(number,sort,status) values('"+i+"','" + cb[i].SelectedItem.ToString() + "','" + chb[i].Checked + "')");
                         TestingCabinets.getInstance(i).Type = strTmp;
