@@ -336,5 +336,81 @@ namespace XT_CETC23.SonForm
                 textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
             }         
         }
+
+        private void selectPath (int index, bool isCmd)
+        {
+            FolderBrowserDialog fbLog = new FolderBrowserDialog();
+            if (fbLog.ShowDialog() == DialogResult.OK)
+            {
+                if (isCmd)
+                {
+                    textBoxCmd[index].Text = fbLog.SelectedPath;
+                }
+                else
+                {
+                    textBoxData[index].Text = fbLog.SelectedPath;
+                }
+            }
+        }
+
+        private void btnCmd1_Click(object sender, EventArgs e)
+        {
+            selectPath(0, true);
+        }
+
+        private void btnData1_Click(object sender, EventArgs e)
+        {
+            selectPath(0, false);
+        }
+
+        private void btnCmd2_Click(object sender, EventArgs e)
+        {
+            selectPath(1, true);
+        }
+
+        private void btnData2_Click(object sender, EventArgs e)
+        {
+            selectPath(1, false);
+        }
+
+        private void btnCmd3_Click(object sender, EventArgs e)
+        {
+            selectPath(2, true);
+        }
+
+        private void btnData3_Click(object sender, EventArgs e)
+        {
+            selectPath(2, false);
+        }
+
+        private void btnCmd4_Click(object sender, EventArgs e)
+        {
+            selectPath(3, true);
+        }
+
+        private void btnData4_Click(object sender, EventArgs e)
+        {
+            selectPath(3, false);
+        }
+
+        private void btnCmd5_Click(object sender, EventArgs e)
+        {
+            selectPath(4, true);
+        }
+
+        private void btnData5_Click(object sender, EventArgs e)
+        {
+            selectPath(4, false);
+        }
+
+        private void btnCmd6_Click(object sender, EventArgs e)
+        {
+            selectPath(5, true);
+        }
+
+        private void btnData6_Click(object sender, EventArgs e)
+        {
+            selectPath(5, false);
+        }
     }
 }
