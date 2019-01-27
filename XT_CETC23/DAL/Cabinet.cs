@@ -156,8 +156,7 @@ namespace XT_CETC23.DAL
             return false;
         }
 
-        private Task task;
-        private CancellationTokenSource tokenSource;
+        private Thread task;
         public bool cmdStart(string productType, int taskId) 
         {
             Console.WriteLine("  ***   cmdStart：" + this.ID);
@@ -166,18 +165,15 @@ namespace XT_CETC23.DAL
                 base.cmdStart(productType, taskId);
                 if (task != null)
                 {
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 线程:" + task.Id + " 状态：" + task.Status);
-                    if (task.IsCompleted)
-                    {
-                        task.Dispose();
-                        task = null;
-                    }
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    task.Abort();
+                    task = null;
                 }
                 if (task == null)
                 {
-                    tokenSource = new CancellationTokenSource();
-                    task = new Task(CabinetTest, tokenSource.Token);
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 新线程:" + task.Id + " 状态：" + task.Status);
+                    task = new Thread(CabinetTest);
+                    task.Name = "测试柜" + this.ID + ": 启动线程";
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 新启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                     task.Start();
                 }
 
@@ -190,12 +186,20 @@ namespace XT_CETC23.DAL
             Console.WriteLine("  ***   cmdStop：" + this.ID);
             lock (this)
             {
+                base.cmdStop();
                 if (task != null)
                 {
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 线程:" + task.Id + " 状态：" + task.Status);
-                    tokenSource.Cancel();
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    task.Abort();
+                    task = null;
                 }
-                base.cmdStop();
+                if (task == null)
+                {
+                    task = new Thread(CabinetTest);
+                    task.Name = "测试柜" + this.ID + ": 停止线程";
+                    Console.WriteLine("  ***   测试柜:" + this.ID + " 新停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    task.Start();
+                }
                 return true;
             }
         }
