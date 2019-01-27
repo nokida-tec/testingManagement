@@ -19,28 +19,21 @@ namespace XT_CETC23.SonForm
 
         private void ParamForm_Load(object sender, EventArgs e)
         {
-        }
-
-        private void btnSaveProdStatus_Click(object sender, EventArgs e)
-        {
-       //     this.operateDefTableAdapter.Update(this.dB23DataSet_OperateDef.OperateDef);
+            // TODO:  这行代码将数据加载到表“dB23DataSet.ProductDef”中。您可以根据需要移动或删除它。
+            this.productDefTableAdapter.Fill(this.dB23DataSet.ProductDef);
+            // TODO:  这行代码将数据加载到表“dB23DataSet.OperateDef”中。您可以根据需要移动或删除它。
+            this.operateDefTableAdapter.Fill(this.dB23DataSet.OperateDef);
         }
 
         private void btnSaveProdCode_Click(object sender, EventArgs e)
         {
-       //     this.productDefTableAdapter.Update(this._23DataSet.ProductDef);
+            this.productDefTableAdapter.Update(this.dB23DataSet.ProductDef);
         }
 
-        private void Form1_SizeChanged(object sender, EventArgs e)
+        private void btnSaveProdStatus_Click(object sender, EventArgs e)
         {
-            groupBox1.Width = this.Width / 2 - 8;
-            groupBox2.Width = this.Width / 2 - 8;
+            this.operateDefTableAdapter.Update(this.dB23DataSet.OperateDef);
         }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }  
 
     }
 }

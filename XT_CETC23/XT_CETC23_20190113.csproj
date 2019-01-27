@@ -125,6 +125,11 @@
     <Compile Include="DAL\Robot.cs" />
     <Compile Include="DAL\Run.cs" />
     <Compile Include="DAL\TaskCycle.cs" />
+    <Compile Include="DB23DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB23DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Instances\TestingCabinets.cs" />
     <Compile Include="Model\CabinetData.cs" />
     <Compile Include="Model\DBstr.cs" />
@@ -282,6 +287,17 @@
       <DependentUpon>UserRegister.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="DB23DataSet.xsc">
+      <DependentUpon>DB23DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DB23DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DB23DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DB23DataSet.xss">
+      <DependentUpon>DB23DataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
