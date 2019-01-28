@@ -774,6 +774,7 @@ namespace XT_CETC23.DataCom
                         int layerID = 0;
                         cabinetNo = i;
                         prodType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
+                        cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
                         mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
                         Thread.Sleep(100);
 
