@@ -104,22 +104,28 @@ namespace XT_CETC23.SonForm
                 CabinetData.sourcePath[i] = @dt.Rows[i]["DataPathName"].ToString().Trim();
                 textBoxData[i].Text = @dt.Rows[i]["DataPathName"].ToString().Trim();
 
-                string path = Path.GetDirectoryName(CabinetData.pathCabinetStatus[i]);
-                if (!Directory.Exists(path))
+                try
                 {
-                    Directory.CreateDirectory(path);
+                    //string path = Path.GetDirectoryName(CabinetData.pathCabinetStatus[i]);
+                    //if (path != null && !Directory.Exists(path))
+                    //{
+                    //    Directory.CreateDirectory(path);
+                    //}
+                    //path = Path.GetDirectoryName(CabinetData.pathCabinetOrder[i]);
+                    //if (path != null && !Directory.Exists(path))
+                    //{
+                    //    Directory.CreateDirectory(path);
+                    //}
+                    //path = CabinetData.sourcePath[i];
+                    //if (path != null && !Directory.Exists(path))
+                    //{
+                    //    Directory.CreateDirectory(path);
+                    //}
                 }
-                path = Path.GetDirectoryName(CabinetData.pathCabinetOrder[i]);
-                if (!Directory.Exists(path))
+                catch(Exception e)
                 {
-                    Directory.CreateDirectory(path);
+                    
                 }
-                path = CabinetData.sourcePath[i];
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
             }         
         }
         private void ParaForm_Load(object sender, EventArgs e)
