@@ -161,6 +161,12 @@ namespace XT_CETC23.DAL
         {
             Console.WriteLine("  ***   cmdStart：" + this.ID);
             base.cmdStart(productType, taskId);
+            return true;
+        }
+
+        public bool start()
+        {
+            Console.WriteLine("  ***   cmdStart：" + this.ID);
             lock (this)
             {
                 if (task != null)
@@ -185,6 +191,11 @@ namespace XT_CETC23.DAL
         {
             Console.WriteLine("  ***   cmdStop：" + this.ID);
             base.cmdStop();
+            return true;
+        }
+        public bool stop()
+        {
+            Console.WriteLine("  ***   stop：" + this.ID);
             lock (this)
             {
                 if (task != null)
@@ -201,6 +212,18 @@ namespace XT_CETC23.DAL
                     task.Start();
                 }
                 return true;
+            }
+        }
+
+        public void startTask()
+        {
+            if (this.Order == ORDER.Start)
+            {
+                start ();
+            }
+            else if (this.Order == ORDER.Stop)
+            {
+                stop ();
             }
         }
 
@@ -227,8 +250,6 @@ namespace XT_CETC23.DAL
                             ResetData();
                         }
                     }
-
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + false + "' where BasicID=" + TaskID);
 
                     if (Config.Config.ENABLED_PLC)
                     {
@@ -296,7 +317,7 @@ namespace XT_CETC23.DAL
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' where BasicID= " + this.TaskID);
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                        DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
+                        DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FrameData where BasicID=" + TaskID);
                         string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
                         //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
 
