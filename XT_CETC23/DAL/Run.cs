@@ -451,6 +451,9 @@ namespace XT_CETC23.DataCom
             MTR mtr = MTR.GetIntanse();
 
             //判断料架是否已经完成扫码，如果没有，则插入扫码任务
+            db.DBDelete("delete from dbo.MTR");
+            db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+
             ReStart:
             TaskCycle.MainStep = 0;
             dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
@@ -485,7 +488,7 @@ namespace XT_CETC23.DataCom
             while (TaskCycle.feedBinScanDone == "Yes")
             {
                 #region 根据数据库中的跟踪表MTR,区分不同的情况进行相应的处理.
-                TakeBack:
+                TakeBack:   
                 dtMTR = db.DBQuery("select * from dbo.MTR");
                 if (dtMTR.Rows.Count > 0)
                 {
@@ -592,7 +595,10 @@ namespace XT_CETC23.DataCom
                         #region 物料在测试柜中且未测试完成,完成测试即可
                         else if (tmpText.Equals("号机台") && !statusTest)
                         {
-                            TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
+                            //             DialogResult result = MessageBox.Show("有未完成测试任务，请确认把产品从测试台中拿出，然后点击确定按钮", "重要提示");
+                            // db.DBDelete("delete from dbo.MTR");
+                            // db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                            //                            TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
                         }
                         //=========================================================================================================================
                         #endregion

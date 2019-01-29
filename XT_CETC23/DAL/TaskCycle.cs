@@ -127,7 +127,7 @@ namespace XT_CETC23.DataCom
                                 int basicID = (int)Convert.ToDouble(dt.Rows[i]["BasicID"]);
                                 if (basicID > 0)
                                 {
-                                    TestingCabinets.getInstance(i).startTask();
+                                    //TestingCabinets.getInstance(i).startTask();
                                     //if (order == "Stop" && threadCab[i].ThreadState == ThreadState.Running)
                                     //{
                                     //    threadCab[i].Abort();

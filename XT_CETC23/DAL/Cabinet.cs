@@ -161,6 +161,7 @@ namespace XT_CETC23.DAL
         {
             Console.WriteLine("  ***   cmdStart：" + this.ID);
             base.cmdStart(productType, taskId);
+            start();
             return true;
         }
 
@@ -191,6 +192,7 @@ namespace XT_CETC23.DAL
         {
             Console.WriteLine("  ***   cmdStop：" + this.ID);
             base.cmdStop();
+            stop();
             return true;
         }
         public bool stop()
@@ -317,7 +319,7 @@ namespace XT_CETC23.DAL
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' where BasicID= " + this.TaskID);
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                        DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FrameData where BasicID=" + TaskID);
+                        DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
                         string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
                         //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
 
