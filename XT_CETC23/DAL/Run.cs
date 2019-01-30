@@ -454,7 +454,7 @@ namespace XT_CETC23.DataCom
             db.DBDelete("delete from dbo.MTR");
             db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
 
-            ReStart:
+        ReStart:
             TaskCycle.MainStep = 0;
             dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
             TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
@@ -474,7 +474,7 @@ namespace XT_CETC23.DataCom
                             MessageBox.Show("PLC未连接");
                     }
                     else
-                        MessageBox.Show("当前任务未完成"); 
+                        MessageBox.Show("当前任务未完成");
                 }
                 do
                 {
@@ -488,7 +488,7 @@ namespace XT_CETC23.DataCom
             while (TaskCycle.feedBinScanDone == "Yes")
             {
                 #region 根据数据库中的跟踪表MTR,区分不同的情况进行相应的处理.
-                TakeBack:   
+            TakeBack:
                 dtMTR = db.DBQuery("select * from dbo.MTR");
                 if (dtMTR.Rows.Count > 0)
                 {
@@ -531,13 +531,13 @@ namespace XT_CETC23.DataCom
                                 Thread.Sleep(100);
                             } while (TaskCycle.PutStep != 20);
                             db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                            
+
                             //通知PLC从测试柜取料完成
                             plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 8 });
 
                             //插入机器人轨道到料架任务
                             //判断机器人是否在原点
-                            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");                        
+                            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
 
                             //插入料架取料任务，取出托盘（要区分取出和放入）
                             db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
@@ -749,7 +749,7 @@ namespace XT_CETC23.DataCom
                 //料架更换完成，重新扫描
                 dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
                 TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
-                if(TaskCycle.feedBinScanDone=="No")
+                if (TaskCycle.feedBinScanDone == "No")
                 {
                     goto ReStart;
                 }
@@ -759,21 +759,21 @@ namespace XT_CETC23.DataCom
                 #region 把物料从料架取出放入测试柜并触发测试任务
                 for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
                 {
-                        dtMTR = db.DBQuery("select * from dbo.MTR");
-                        bool testExsit=false;
-                        for (int m=0;m<dtMTR.Rows.Count;m++)
+                    dtMTR = db.DBQuery("select * from dbo.MTR");
+                    bool testExsit = false;
+                    for (int m = 0; m < dtMTR.Rows.Count; m++)
+                    {
+                        string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
+                        if (TestingCabinets.getInstance(i).Name == CabInMTR)
                         {
-                            string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
-                            if (TestingCabinets.getInstance(i).Name == CabInMTR)
-                            {
-                                testExsit = true;
-                                break;
-                            }
+                            testExsit = true;
+                            break;
                         }
+                    }
 
-                        bool CabinatEnable = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;
-                        if (((PlcData._cabinetStatus[i] & 1) != 0) && CabinatEnable && !testExsit)               //如果测试允许测试并且使能
-                    {                        
+                    if (((PlcData._cabinetStatus[i] & 1) != 0)
+                        && (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable) && !testExsit)               //如果测试允许测试并且使能
+                    {
                     Redo:
                         TaskCycle.actionType = "FrameToCabinet";
                         int numRemain = 0;
@@ -806,7 +806,7 @@ namespace XT_CETC23.DataCom
                         {
                             Thread.Sleep(100);
                         } while (TaskCycle.PickStep != 10);
-                    
+
                         //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
                         db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
@@ -831,7 +831,16 @@ namespace XT_CETC23.DataCom
                             }
                             else
                             {
-                                if ((i== (DeviceCount.TestingCabinetCount -1)) && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
+                                bool needContinue = false;
+                                for (int leftCabinet = i + 1; leftCabinet < DeviceCount.TestingCabinetCount; leftCabinet++)
+                                {
+                                    if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable)
+                                    {
+                                        needContinue = true;
+                                        break;
+                                    }
+                                }
+                                if (needContinue = false && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
                                 {
                                     db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
                                     frameUpdate = false;
@@ -845,10 +854,10 @@ namespace XT_CETC23.DataCom
                                     frameUpdate = false;
                                     goto TakeBack;
                                 }
-                                if((j == (dtFeedBin.Rows.Count - 1)))                                   //如果某种产品取空，跳过本次操作
+                                if ((j == (dtFeedBin.Rows.Count - 1)))                                   //如果某种产品取空，跳过本次操作
                                 {
                                     goto PickEnd;
-                                }                                   
+                                }
                             }
                         }
 
@@ -858,7 +867,7 @@ namespace XT_CETC23.DataCom
                             Thread.Sleep(100);
                         } while (TaskCycle.PickStep != 20);
 
-                        int prodNumber=0;
+                        int prodNumber = 0;
                         switch (prodType)
                         {
                             case "A":
@@ -886,7 +895,7 @@ namespace XT_CETC23.DataCom
                         string CordinatorU = "0";
                         cFrom.CCDTrigger(prodNumber, pieceNo);
 
-                        if(cFrom.CCDDone==-1)                                  //拍照失败
+                        if (cFrom.CCDDone == -1)                                  //拍照失败
                         {
                             db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
                             //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
@@ -908,10 +917,10 @@ namespace XT_CETC23.DataCom
                                 db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
                                 goto shootAgain;
                             }
-                            
+
                         }
-                        
-                        if (prodType=="D")
+
+                        if (prodType == "D")
                         {
                             CordinatorX = cFrom.X;
                             CordinatorY = cFrom.Y;
@@ -928,9 +937,9 @@ namespace XT_CETC23.DataCom
                         } while (TaskCycle.PickStep != 30);
 
                         db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
-                        
+
                         if (!TaskCycle.scanStatus)      //读码失败
-                        {                                
+                        {
                             //db.DBUpdate("update dbo.MTR set ProductID = '" + "0" +"',"++ "'where BasicID=" + MTR.globalBasicID);
                             db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "NG" + "')");
                             db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "NG" + "')");
@@ -962,7 +971,7 @@ namespace XT_CETC23.DataCom
                         int strLen = Convert.ToInt32(myCode[504]);
                         int realLen = Convert.ToInt32(myCode[505]);
                         prodCode = Encoding.Default.GetString(myCode, 506, realLen).Trim();
-                        
+
                         db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
                         //插入放回料盘任务
@@ -991,13 +1000,13 @@ namespace XT_CETC23.DataCom
                         //插入测试任务
                         db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
                         TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
-                        
-                        PickEnd:
+
+                    PickEnd:
                         TaskCycle.PickStep = 0;
                     }
                 }
                 #endregion
-                Thread.Sleep(100);              
+                Thread.Sleep(100);
             }
         }
 
