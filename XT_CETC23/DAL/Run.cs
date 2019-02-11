@@ -272,11 +272,6 @@ namespace XT_CETC23.DataCom
                         readCabinetTh.Resume(); 
                     }
 
-                    if (!robot.robotConnected && robot.robotInitialized && statusByPlc == "Initalized")
-                    {
-                        //robot.RobotSocketReconnect();
-                    }
-
                     if (modeByPlc == "Auto" && commandByPlc == "Start" && !mainStarting)
                     {                        
                         mainSchedule = new Thread(MainSchedule);
@@ -410,7 +405,8 @@ namespace XT_CETC23.DataCom
                 //TransMessage("数据库初始化失败");
             }
             Thread.Sleep(200);
-            if (robot.InitRobot())
+            //if (robot.InitRobot())
+            if(true)
             {
                 //TransMessage("Robot初始化成功");
                 ++i;
@@ -451,8 +447,8 @@ namespace XT_CETC23.DataCom
             MTR mtr = MTR.GetIntanse();
 
             //判断料架是否已经完成扫码，如果没有，则插入扫码任务
-            db.DBDelete("delete from dbo.MTR");
-            db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+            //db.DBDelete("delete from dbo.MTR");
+            //db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
 
         ReStart:
             TaskCycle.MainStep = 0;

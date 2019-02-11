@@ -14,11 +14,9 @@ namespace XT_CETC23.DataCom
     {
         static Robot robot = null;
         Socket socketClient = null;
-        IPAddress ip;
-        IPEndPoint iEndPoint = null;
         System.Threading.Thread dThread;
-        public bool robotConnected = false;
-        public bool robotInitialized = false;
+
+
         public static Robot GetInstanse()
         {
             if (robot == null)
@@ -27,78 +25,58 @@ namespace XT_CETC23.DataCom
             }
             return robot;
         }
+
         Robot()
         {
-            dThread = new Thread(new ThreadStart(DataStream));
+            dThread = new Thread(new ThreadStart(readFunc));
             dThread.Name = "机器人操作";
-            dThread.IsBackground = true;
-            //dThread.Start();
-            //robot = this;
+            dThread.Start();
         }
-        public bool InitRobot()
+
+        public bool tryConnected()
         {
-            ip = IPAddress.Parse("192.168.10.1");
-            iEndPoint = new IPEndPoint(ip, 1000);
-            socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
+            IPAddress ip = IPAddress.Parse("192.168.10.1");
+            IPEndPoint iEndPoint = new IPEndPoint(ip, 1000);
+            int tryCount = 50;
+            bool isConnected = false;
+
+            while (isConnected == false && tryCount-- > 0)
             {
-                Thread.Sleep(1000);
-                socketClient.Connect(iEndPoint);
-                Thread.Sleep(1000);
-                if(!dThread.IsAlive)
+                if (socketClient == null)
                 {
-                    dThread.Start();                    
+                    socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 }
-                robotInitialized = true;
-                return true;
-            }
-            catch (SocketException sex)
-            {
-                return false;
-            }
 
+                if (socketClient.Connected == false)
+                {
+                    socketClient.Connect(iEndPoint);
+                }
+
+                isConnected = socketClient.Connected;
+                Thread.Sleep(200);
+            }
+            return isConnected;
         }
 
-        public void RobotSocketReconnect()
-        {
-            socketClient.Close();
-            socketClient.Dispose();
-            dThread.Abort();
-            Thread.Sleep(200);
-            ip = IPAddress.Parse("192.168.10.1");
-            iEndPoint = new IPEndPoint(ip, 1000);
-            socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socketClient.Connect(iEndPoint);
-            Thread.Sleep(200);
-            if (!dThread.IsAlive)
-            {
-                dThread.Start();
-            }
-        }
-
-        private void DataStream()
+        private void readFunc()
         {
             while (true)
             {
-                if (socketClient.Connected)
+                if (tryConnected() == true)
                 {
-                    robotConnected = true;
                     byte[] arrMsgRec = new byte[20];
                     int length = socketClient.Receive(arrMsgRec);
                     String strMsgRec = Encoding.UTF8.GetString(arrMsgRec, 0, length);
                     RobotData.Response = strMsgRec;
                 }
-                else
-                {
-                    robotConnected = false;
-                    //RobotSocketReconnect();            
-                }
                 Thread.Sleep(100);
             }
         }
+
+       
         public void sendDataToRobot(string sendStr)
         {
-            if (socketClient.Connected)
+            if (tryConnected() == true)
             {
                 RobotData.Response = "";
                 string strMsg = sendStr;
@@ -112,6 +90,10 @@ namespace XT_CETC23.DataCom
                     Thread.Sleep(100);
                 }
                 socketClient.Send(arrMsg);
+            }
+            else
+            {
+                int j = 1;
             }
         }
     }
