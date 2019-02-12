@@ -33,7 +33,14 @@ namespace XT_CETC23.DAL
                 string path = System.IO.Path.GetDirectoryName(CabinetData.pathCabinetOrder[this.ID]);
                 if (!System.IO.Directory.Exists(path))
                 {
-                    System.IO.Directory.CreateDirectory(path);
+                    try
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.printException(e);
+                    }
                 }
 
                 using (FileStream fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append))
