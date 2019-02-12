@@ -41,5 +41,18 @@ namespace XT_CETC23.Instances
             }
             return mTestingCabinet[ID];
         }
+
+        static public int getEnableCount()
+        {
+            int count = 0;
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; i ++ )
+            {
+                if (getInstance(i).Enable == TestingCabinet.ENABLE.Enable)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
     }
 }
