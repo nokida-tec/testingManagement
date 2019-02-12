@@ -73,6 +73,11 @@ namespace XT_CETC23.DAL
                     {
                         lastline = line;
                     }
+                    fs.Flush();
+                    sr.Close();
+                    fs.Close();
+                    sr.Dispose();
+                    fs.Dispose();
                     if (lastline != null)
                     {
                         string[] orders = lastline.Split(new char[2] { ' ', '\t' });
