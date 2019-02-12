@@ -14,20 +14,26 @@ namespace XT_CETC23
         [STAThread]
         static void Main(string[] args)
         {
-            bool isRuned;
-            System.Threading.Mutex mutex = new System.Threading.Mutex(true, "OnlyRunOneInstance", out isRuned);
-            if (isRuned)
+            try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm());
-                mutex.ReleaseMutex();
+                bool isRuned;
+                System.Threading.Mutex mutex = new System.Threading.Mutex(true, "OnlyRunOneInstance", out isRuned);
+                if (isRuned)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new MainForm());
+                    mutex.ReleaseMutex();
+                }
+                else
+                {
+                    MessageBox.Show("程序已启动!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("程序已启动!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Console.WriteLine("  *****  " + e.StackTrace);
             }
-
         }
     }
 }
