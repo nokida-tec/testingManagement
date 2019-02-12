@@ -81,6 +81,8 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException sex)
             {
+                Console.WriteLine(" ***** " + sex.Message);
+                Console.WriteLine(" ***** " + sex.StackTrace);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
             }
@@ -107,6 +109,8 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException sex)
             {
+                Console.WriteLine(" ***** " + sex.Message);
+                Console.WriteLine(" ***** " + sex.StackTrace);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
             }
@@ -132,6 +136,8 @@ namespace XT_CETC23.DataCom
                 }
                 catch (SqlException sex)
                 {
+                    Console.WriteLine(" ***** " + sex.Message);
+                    Console.WriteLine(" ***** " + sex.StackTrace);
                     //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                     return null;
                 }
@@ -153,6 +159,8 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException sex)
             {
+                Console.WriteLine(" ***** " + sex.Message);
+                Console.WriteLine(" ***** " + sex.StackTrace);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return 0;
             }
@@ -173,6 +181,8 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException sex)
             {
+                Console.WriteLine(" ***** " + sex.Message);
+                Console.WriteLine(" ***** " + sex.StackTrace);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
             }
@@ -193,6 +203,8 @@ namespace XT_CETC23.DataCom
             }
             catch (SqlException sex)
             {
+                Console.WriteLine(" ***** " + sex.Message);
+                Console.WriteLine(" ***** " + sex.StackTrace);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return 0;
             }
