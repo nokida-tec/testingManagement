@@ -13,13 +13,13 @@ using System.Windows.Forms;
 using System.Data;
 using XT_CETC23.Model;
 using XT_CETC23.Instances;
+using XT_CETC23.DAL;
 
 namespace XT_CETC23.DataCom
 {
    public  class Run
     {
         static Run run;
-        public Robot robot;
         public Plc plc;
         public DataBase db;
         TaskCycle taskCycle;
@@ -69,6 +69,7 @@ namespace XT_CETC23.DataCom
         public static bool frameUpdate = false;
         public static bool stepEnable = false;
         int preAlarmNo = 0;
+        private bool gSheduleExit = false;
 
         static public Run GetInstanse(IRunForm iRunForm,IAutoForm iAutoForm,IMainForm iMainFrom,IManulForm iManulForm, ICameraForm iCameraForm)
         {
@@ -200,7 +201,6 @@ namespace XT_CETC23.DataCom
 
         private Run(IRunForm iRunForm, IAutoForm iAutoForm, IMainForm iMainForm, IManulForm iManulForm, ICameraForm iCameraForm)
         {
-            robot = Robot.GetInstanse();
             plc = Plc.GetInstanse();
             db = DataBase.GetInstanse();
             taskCycle = TaskCycle.GetInstanse();
@@ -249,12 +249,11 @@ namespace XT_CETC23.DataCom
         private void ModeControl()
         {
             plc = Plc.GetInstanse();
+            Robot.GetInstanse();
             bool initializing = false;
             bool mainStarting = false;
             readPlcTh = new Thread(ReadPlc);
             readPlcTh.Name = "读取PLC数据";
-            mainSchedule = new Thread(MainSchedule);
-            mainSchedule.Name = "主调度流程";
             readCabinetTh = new Thread(ReadCabinet);
             readCabinetTh.Name = "读取测试柜状态";
             TransMessage("监控进程启动");
@@ -272,16 +271,16 @@ namespace XT_CETC23.DataCom
                         readCabinetTh.Resume(); 
                     }
 
-                    if (modeByPlc == "Auto" && commandByPlc == "Start" && !mainStarting)
+                    if (modeByPlc == "Auto" && commandByPlc == "Start" && !mainStarting && initializing == true)
                     {                        
                         mainSchedule = new Thread(MainSchedule);
                         mainSchedule.Name = "主调度流程";
-                        if (!mainSchedule.IsAlive)
-                        {                            
-                            mainSchedule.Start();
-                            TransMessage("主调度进程启动");
-                            mainStarting = true;
-                        }
+                        mainSchedule.Start();
+                        TransMessage("主调度进程启动");
+                        Console.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId );
+                        mainStarting = true;
+                        gSheduleExit = false;
+                        
                         commandByPlc = "";
                     }
 
@@ -289,9 +288,10 @@ namespace XT_CETC23.DataCom
                     {
                         try
                         {
-                            if (mainSchedule.IsAlive)
+                            if (mainSchedule != null && mainSchedule.IsAlive)
                             {
-                                mainSchedule.Abort();
+                                Console.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
+                                gSheduleExit = true;
                                 TransMessage("主调度进程退出");
                             }
                             mainStarting = false;
@@ -318,12 +318,11 @@ namespace XT_CETC23.DataCom
                         Thread.Sleep(1000);
                         SetProdType2Plc();
                         TransMessage("初始化成功");
-                            initializing = true;
-                        
+                        initializing = true;                       
                         commandByPlc = "";                      
                     }
 
-                    if (stepEnable && mainSchedule.ThreadState == ThreadState.Running)
+                    if (stepEnable && mainSchedule != null && mainSchedule.ThreadState == ThreadState.Running)
                     {
                         mainSchedule.Suspend();
                         TransMessage("主调度进程挂起");
@@ -336,7 +335,7 @@ namespace XT_CETC23.DataCom
                             readPlcTh.Resume();
                             TransMessage("读取PLC状态进程恢复");
                         }
-                        if (mainSchedule.ThreadState == ThreadState.Suspended)
+                        if (mainSchedule != null && mainSchedule.ThreadState == ThreadState.Suspended)
                         {
                             mainSchedule.Resume();
                             TransMessage("主调度进程恢复");
@@ -358,7 +357,7 @@ namespace XT_CETC23.DataCom
                         //{
                         //    Image.Suspend();
                         //}
-                        if (mainSchedule.ThreadState == ThreadState.Running)
+                        if (mainSchedule != null && mainSchedule.ThreadState == ThreadState.Running)
                         {
                             mainSchedule.Suspend();
                             TransMessage("主调度进程挂起");
@@ -405,7 +404,6 @@ namespace XT_CETC23.DataCom
                 //TransMessage("数据库初始化失败");
             }
             Thread.Sleep(200);
-            //if (robot.InitRobot())
             if(true)
             {
                 //TransMessage("Robot初始化成功");
@@ -433,577 +431,572 @@ namespace XT_CETC23.DataCom
 
         private void MainSchedule()
         {
-            DataTable dtMTR = new DataTable();
-            DataTable dtFeedBin = new DataTable();
-            DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
-
-            String prodType = "";
-            String prodCode = "";
-            String cabinetName = "";
-            string checkResult = "";
-            int cabinetNo = 0;
-            int trayNo = 0;
-            int pieceNo = 0;
-            MTR mtr = MTR.GetIntanse();
-
-            //判断料架是否已经完成扫码，如果没有，则插入扫码任务
-            //db.DBDelete("delete from dbo.MTR");
-            //db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
-
-        ReStart:
-            TaskCycle.MainStep = 0;
-            dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
-            TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
-            if (TaskCycle.feedBinScanDone == "No")
+            try
             {
-                {
-                    DataTable dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                    //设备只能有一条实时任务
-                    if (!(dt.Rows.Count > 0))
-                    {
-                        if (plc.plcConnected)
-                        {
-                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
-                            TransMessage("插入料架扫码任务");
-                        }
-                        else
-                            MessageBox.Show("PLC未连接");
-                    }
-                    else
-                        MessageBox.Show("当前任务未完成");
-                }
-                do
-                {
-                    Thread.Sleep(100);
-                } while (TaskCycle.MainStep != 10);
-                TaskCycle.feedBinScanDone = "Yes";
-                db.DBUpdate("update dbo.FeedBin set Sort='" + "Yes" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
-                FrameDataUpdate();
-            }
+                DataTable dtMTR = new DataTable();
+                DataTable dtFeedBin = new DataTable();
+                DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
-            while (TaskCycle.feedBinScanDone == "Yes")
-            {
-                #region 根据数据库中的跟踪表MTR,区分不同的情况进行相应的处理.
-            TakeBack:
-                dtMTR = db.DBQuery("select * from dbo.MTR");
-                if (dtMTR.Rows.Count > 0)
-                {
-                    for (int j = 0; j < dtMTR.Rows.Count; j++)
-                    {
-                        string tmpText = dtMTR.Rows[j]["CurrentStation"].ToString().Trim().Substring(2);
-                        bool statusTest = (bool)dtMTR.Rows[j]["StationSign"];
+                String prodType = "";
+                String prodCode = "";
+                String cabinetName = "";
+                string checkResult = "";
+                int cabinetNo = 0;
+                int trayNo = 0;
+                int pieceNo = 0;
+                MTR mtr = MTR.GetIntanse();
+                bool frameEmptyInd=false;
 
-                        TaskCycle.actionType = "CabinetToFrame";
-                        MTR.globalBasicID = (int)dtMTR.Rows[j]["BasicID"];
-                        cabinetNo = (int)dtMTR.Rows[j]["CabinetID"];
-                        cabinetName = dtMTR.Rows[j]["CurrentStation"].ToString().Trim();
-                        trayNo = (int)dtMTR.Rows[j]["FrameLocation"];
-                        pieceNo = (int)dtMTR.Rows[j]["SalverLocation"];
-                        prodType = dtMTR.Rows[j]["ProductType"].ToString().Trim();
-                        prodCode = dtMTR.Rows[j]["ProductID"].ToString().Trim();
-                        checkResult = dtMTR.Rows[j]["ProductCheckResult"].ToString().Trim();
+                //判断料架是否已经完成扫码，如果没有，则插入扫码任务
+                db.DBDelete("delete from dbo.MTR");
+                db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
 
-                        #region 测试柜中且测试完成,把测量完成的物料从测试柜取出放回料架，删除测试跟踪记录，把测试结果插入测试记录表
-                        if (tmpText.Equals("号机台") && statusTest)
-                        {
-                            TaskCycle.PutStep = 0;
-
-                            //插入机器轨道任务
-                            //插入机器人轨道任务：到测试柜
-                            //判断机器人是否在原点
-                            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
-
-                            //等待机器人轨道到位
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PutStep != 10);
-
-                            //插入机器人从测试柜的取料任务；
-                            db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'GetProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
-                            //等待机器人取料完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PutStep != 20);
-                            db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-
-                            //通知PLC从测试柜取料完成
-                            plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 8 });
-
-                            //插入机器人轨道到料架任务
-                            //判断机器人是否在原点
-                            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
-
-                            //插入料架取料任务，取出托盘（要区分取出和放入）
-                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
-
-                            //等待和机器人轨道到位和料架取出托盘完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PutStep != 40);
-
-                            //插入机器人回料任务
-                            db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ")");
-
-                            //等待机器人回料完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PutStep != 50);
-
-                            //插入料架放料任务，放回托盘；（要区分取出和放入）
-                            db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-
-                            //等待料架放回托盘完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PutStep != 60);
-
-                            //根据结果更新FeedBin表格                                                      
-                            int colNo = trayNo % 10;
-                            int rowNo = trayNo / 10;
-                            int layerID = (colNo - 1) * 8 + rowNo;
-                            dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=" + layerID);
-                            if (checkResult == "OK")
-                            {
-                                int okNum = (int)dtFeedBin.Rows[0]["ResultOK"] + 1;
-                                db.DBUpdate("update dbo.FeedBin set ResultOK = " + okNum + "where LayerID=" + layerID);
-                            }
-                            else
-                            {
-                                int ngNum = (int)dtFeedBin.Rows[0]["ResultNG"] + 1;
-                                db.DBUpdate("update dbo.FeedBin set ResultNG = " + ngNum + "where LayerID=" + layerID);
-                            }
-                            FrameDataUpdate();
-
-                            //测试结果插入测试统计表格；
-                            db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + checkResult + "')");
-                            db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + checkResult + "')");
-                            db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
-                            TaskCycle.PutStep = 0;
-                        }
-                        #endregion
-
-                        #region 物料在测试柜中且未测试完成,完成测试即可
-                        else if (tmpText.Equals("号机台") && !statusTest)
-                        {
-                            //             DialogResult result = MessageBox.Show("有未完成测试任务，请确认把产品从测试台中拿出，然后点击确定按钮", "重要提示");
-                            // db.DBDelete("delete from dbo.MTR");
-                            // db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
-                            //                            TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
-                        }
-                        //=========================================================================================================================
-                        #endregion
-
-                        #region 物料在料架中且过程没有完成,终止该过程
-                        /*
-                        if (tmpText.Equals("FeedBin") && !statusTest)
-                        {
-                            TaskCycle.actionType = "CabinetToFrame";
-                            MTR.globalBasicID = (int)dtMTR.Rows[j]["BasicID"];
-                            cabinetNo = (int)dtMTR.Rows[j]["CabinetID"];
-                            cabinetName = dtMTR.Rows[j]["CurrentStation"].ToString().Trim();
-                            trayNo = (int)dtMTR.Rows[j]["FrameLocation"];
-                            pieceNo = (int)dtMTR.Rows[j]["SalverLocation"];
-                            prodType = (string)dtMTR.Rows[j]["ProductType"].ToString().Trim();
-                            prodCode = (string)dtMTR.Rows[j]["ProductID"].ToString().Trim();
-                            checkResult = (string)dtMTR.Rows[j]["ProductCheckResult"];
-                            TaskCycle.PutStep = 0;
-
-                            //删除该过程
-                            db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
-                        }
-                        */
-                        #endregion
-
-                        #region 物料在料架中且过程已经完成,继续后续步骤完成该过程
-                        /*
-                        if (tmpText.Equals("FeedBin") && statusTest)
-                        {
-                            TaskCycle.actionType = "CabinetToFrame";
-                            MTR.globalBasicID = (int)dtMTR.Rows[j]["BasicID"];
-                            cabinetNo = (int)dtMTR.Rows[j]["CabinetID"];
-                            cabinetName = dtMTR.Rows[j]["CurrentStation"].ToString().Trim();
-                            trayNo = (int)dtMTR.Rows[j]["FrameLocation"];
-                            pieceNo = (int)dtMTR.Rows[j]["SalverLocation"];
-                            prodType = (string)dtMTR.Rows[j]["ProductType"].ToString().Trim();
-                            prodCode = (string)dtMTR.Rows[j]["ProductID"].ToString().Trim();
-                            checkResult = (string)dtMTR.Rows[j]["ProductCheckResult"];
-                            TaskCycle.PutStep = 0;
-
-                            //加入机器人是否空闲并处在安全位置的判断
-
-                            //插入机器人轨道到料架任务
-                            TaskCycle.PickStep = 0;
-                            //判断机器人是否在原点
-                            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
-
-                            //等待机器人轨道到位
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 10);                           
-
-                            //插入机器人取料任务                         
-                            db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                            db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'GetProTray'" + ",'" + prodType + "'," + pieceNo + ")");
-
-                            //等待机器人取料完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 20);
-
-                            //等待读产品码完成，读码并写入MTR表格
-                            //while ((PlcData._axlis2Status&4)==0)
-                            //{
-                            //    Thread.Sleep(100);
-                            //}
-                            db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
-                            Byte[] myCode = new Byte[50] { 50, 8, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                            //myCode = plc.DbRead(104, 504, 50);
-                            //plc.DBWrite(100, 3, 1, new Byte[] { 0 });
-
-                            int realLen = Convert.ToInt32(myCode[1]);
-                            prodCode = Encoding.Default.GetString(myCode, 2, realLen).Trim();
-                            db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
-
-                            //插入放回料盘任务
-                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-
-                            //插入机器人轨道走位任务：到测试柜
-                            //判断机器人是否在原点
-                            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
-
-                            //等待机器人轨道到位
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 40);
-
-                            //插入机器人放料任务
-                            db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                            db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
-
-                            //等待机器人放料完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 50);
-
-                            //插入测试任务
-                            db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                            //InsertTest(prodType, cabinetNo);
-
-                            //=================================================模拟测试过程,最终放入测试进程中========================================
-                            //通知PLC连接测试件，关闭测试柜
-                            plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 1 });
-
-                            //等待PLC允许测量
-                            while ((PlcData._cabinetStatus[cabinetNo] & 2) == 0)
-                            {
-                                Thread.Sleep(100);
-                            }
-
-                            //模拟测试
-                            Thread.Sleep(2000);
-                            //通知PLC测试开始了
-                            plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 2 });
-                            Thread.Sleep(5000);
-                            db.DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + EnumHelper.GetDescription(TestingCabinet.STATUS.OK) + "' where BasicID=" + MTR.globalBasicID);
-
-                            //通知PLC测试完成，打开测试柜
-                            plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 4 });
-
-                            //等待PLC允许取料
-                            while ((PlcData._cabinetStatus[cabinetNo] & 8) == 0)
-                            {
-                                Thread.Sleep(100);
-                            }
-                            //设置MTR表格，指示测试完成
-                            db.DBUpdate("update dbo.MTR set ProductSign= '" + true + "' where BasicID= " + MTR.globalBasicID);
-                            //=========================================================================================================================
-
-                            TaskCycle.PickStep = 0;
-                        }
-                        */
-                        #endregion
-
-                        #region 其它,终止该过程
-                        else
-                        {
-                            db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
-                        }
-                        #endregion
-                    }
-                }
-
-                //料架更换完成，重新扫描
+            ReStart:
+                TaskCycle.MainStep = 0;
                 dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
                 TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
                 if (TaskCycle.feedBinScanDone == "No")
                 {
-                    goto ReStart;
-                }
-
-                #endregion
-
-                #region 把物料从料架取出放入测试柜并触发测试任务
-                for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
-                {
-                    dtMTR = db.DBQuery("select * from dbo.MTR");
-                    bool testExsit = false;
-                    for (int m = 0; m < dtMTR.Rows.Count; m++)
                     {
-                        string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
-                        if (TestingCabinets.getInstance(i).Name == CabInMTR)
+                        DataTable dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                        //设备只能有一条实时任务
+                        if (!(dt.Rows.Count > 0))
                         {
-                            testExsit = true;
-                            break;
-                        }
-                    }
-
-                    if (((PlcData._cabinetStatus[i] & 1) != 0)
-                        && (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable) && !testExsit)               //如果测试允许测试并且使能
-                    {
-                    Redo:
-                        TaskCycle.actionType = "FrameToCabinet";
-                        int numRemain = 0;
-                        int layerID = 0;
-                        cabinetNo = i;
-                        prodType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
-                        cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-                        mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
-                        Thread.Sleep(100);
-
-                        //针对MTR表格中多条纪录，选择还未取料的任务
-                        dtMTR = db.DBQuery("select * from dbo.MTR");
-                        for (int j = 0; j < dtMTR.Rows.Count; j++)
-                        {
-                            if (dtMTR.Rows[j]["CurrentStation"].ToString().Trim().Equals("FeedBin"))
+                            if (plc.plcConnected)
                             {
-                                MTR.globalBasicID = (int)dtMTR.Rows[j]["BasicID"];
-                            }
-                        }
-
-                        //加入机器人是否空闲并处在安全位置的判断
-
-                        //插入机器人轨道到料架任务
-                        TaskCycle.PickStep = 0;
-                        //判断机器人是否在原点
-                        db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
-
-                        //等待机器人轨道到位
-                        do
-                        {
-                            Thread.Sleep(100);
-                        } while (TaskCycle.PickStep != 10);
-
-                        //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
-                        db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-
-                    pickAnotherTray:
-                        dtFeedBin = db.DBQuery("select * from dbo.FeedBin where sort='" + prodType + "'");
-                        for (int j = 0; j < dtFeedBin.Rows.Count; j++)
-                        {
-                            if ((int)dtFeedBin.Rows[j]["NumRemain"] != 0)
-                            {
-                                layerID = (int)dtFeedBin.Rows[j]["LayerID"];
-                                int colNo = (layerID - 1) / 8;
-                                int rowNo = (layerID - 1) % 8;
-                                trayNo = (rowNo + 1) * 10 + (colNo + 1);
-
-                                DataTable dtTmp = db.DBQuery("select * from dbo.SortData where sortname='" + prodType + "'");
-                                numRemain = (int)dtFeedBin.Rows[j]["NumRemain"];
-                                pieceNo = (int)dtTmp.Rows[0]["number"] - numRemain + 1;       //从0开始编号
-
-                                db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
-                                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
-                                break;
+                                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
+                                TransMessage("插入料架扫码任务");
                             }
                             else
-                            {
-                                bool needContinue = false;
-                                for (int leftCabinet = i + 1; leftCabinet < DeviceCount.TestingCabinetCount; leftCabinet++)
-                                {
-                                    if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable)
-                                    {
-                                        needContinue = true;
-                                        break;
-                                    }
-                                }
-                                if (needContinue = false && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
-                                {
-                                    db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
-                                    frameUpdate = false;
-                                    plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
-                                    MessageBox.Show("料架已取空，请更换料架");
-                                    while (!frameUpdate)
-                                    {
-                                        Thread.Sleep(100);
-                                    }
+                                MessageBox.Show("PLC未连接");
+                        }
+                        else
+                            MessageBox.Show("当前任务未完成");
+                    }
+                    do
+                    {
+                        if (gSheduleExit == true)
+                        {
+                            gSheduleExit = false;
+                            return;
+                        }
+                        Thread.Sleep(100);
+                    } while (TaskCycle.MainStep != 10);
+                    TaskCycle.feedBinScanDone = "Yes";
+                    db.DBUpdate("update dbo.FeedBin set Sort='" + "Yes" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                    FrameDataUpdate();
+                    frameEmptyInd=false;
+                }
 
-                                    frameUpdate = false;
-                                    goto TakeBack;
-                                }
-                                if ((j == (dtFeedBin.Rows.Count - 1)))                                   //如果某种产品取空，跳过本次操作
+
+                while (true)
+                {
+                    if(TaskCycle.feedBinScanDone == "Yes")
+                    {
+                        if (gSheduleExit == true)
+                        {
+                            gSheduleExit = false;
+                            return;
+                        }
+                        #region 根据数据库中的跟踪表MTR,区分不同的情况进行相应的处理.
+                    TakeBack:
+                        dtMTR = db.DBQuery("select * from dbo.MTR");
+                        if (dtMTR.Rows.Count > 0)
+                        {
+                            for (int j = 0; j < dtMTR.Rows.Count; j++)
+                            {
+                                if (gSheduleExit == true)
                                 {
-                                    goto PickEnd;
+                                    gSheduleExit = false;
+                                    return;
                                 }
+                                string tmpText = dtMTR.Rows[j]["CurrentStation"].ToString().Trim().Substring(2);
+                                bool statusTest = (bool)dtMTR.Rows[j]["StationSign"];
+
+                                TaskCycle.actionType = "CabinetToFrame";
+                                MTR.globalBasicID = (int)dtMTR.Rows[j]["BasicID"];
+                                cabinetNo = (int)dtMTR.Rows[j]["CabinetID"];
+                                cabinetName = dtMTR.Rows[j]["CurrentStation"].ToString().Trim();
+                                trayNo = (int)dtMTR.Rows[j]["FrameLocation"];
+                                pieceNo = (int)dtMTR.Rows[j]["SalverLocation"];
+                                prodType = dtMTR.Rows[j]["ProductType"].ToString().Trim();
+                                prodCode = dtMTR.Rows[j]["ProductID"].ToString().Trim();
+                                checkResult = dtMTR.Rows[j]["ProductCheckResult"].ToString().Trim();
+
+                                #region 测试柜中且测试完成,把测量完成的物料从测试柜取出放回料架，删除测试跟踪记录，把测试结果插入测试记录表
+                                if (tmpText.Equals("号机台") && statusTest)
+                                {
+                                    TaskCycle.PutStep = 0;
+
+                                    //插入机器轨道任务
+                                    //插入机器人轨道任务：到测试柜
+                                    //判断机器人是否在原点
+                                    db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
+
+                                    //等待机器人轨道到位
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PutStep != 10);
+
+                                    //插入机器人从测试柜的取料任务；
+                                    db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'GetProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
+                                    //等待机器人取料完成
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PutStep != 20);
+                                    db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+
+                                    //通知PLC从测试柜取料完成
+                                    plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 8 });
+
+                                    //插入机器人轨道到料架任务
+                                    //判断机器人是否在原点
+                                    db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
+
+                                    //插入料架取料任务，取出托盘（要区分取出和放入）
+                                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
+
+                                    //等待和机器人轨道到位和料架取出托盘完成
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PutStep != 40);
+
+                                    //插入机器人回料任务
+                                    db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ")");
+
+                                    //等待机器人回料完成
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PutStep != 50);
+
+                                    //插入料架放料任务，放回托盘；（要区分取出和放入）
+                                    db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+
+                                    //等待料架放回托盘完成
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PutStep != 60);
+
+                                    //根据结果更新FeedBin表格                                                      
+                                    int colNo = trayNo % 10;
+                                    int rowNo = trayNo / 10;
+                                    int layerID = (colNo - 1) * 8 + rowNo;
+                                    dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=" + layerID);
+                                    if (checkResult == "OK")
+                                    {
+                                        int okNum = (int)dtFeedBin.Rows[0]["ResultOK"] + 1;
+                                        db.DBUpdate("update dbo.FeedBin set ResultOK = " + okNum + "where LayerID=" + layerID);
+                                    }
+                                    else
+                                    {
+                                        int ngNum = (int)dtFeedBin.Rows[0]["ResultNG"] + 1;
+                                        db.DBUpdate("update dbo.FeedBin set ResultNG = " + ngNum + "where LayerID=" + layerID);
+                                    }
+                                    FrameDataUpdate();
+
+                                    //测试结果插入测试统计表格；
+                                    db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + checkResult + "')");
+                                    db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + checkResult + "')");
+                                    db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                    TaskCycle.PutStep = 0;
+                                }
+                                #endregion
+
+                                #region 物料在测试柜中且未测试完成,完成测试即可
+                                else if (tmpText.Equals("号机台") && !statusTest)
+                                {
+                                    //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                    // DialogResult result = MessageBox.Show("有未完成测试任务，请确认把产品从测试台中拿出，然后点击确定按钮", "重要提示");
+                                    // db.DBDelete("delete from dbo.MTR");
+                                    // db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                                    //                            TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
+                                }
+                                //=========================================================================================================================
+                                #endregion
+
+                                #region 其它,终止该过程
+                                else
+                                {
+                                    db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                }
+                                #endregion
                             }
                         }
 
-                        //等待料架取料盘完成
-                        do
+                        //料架更换完成，重新扫描
+                        dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
+                        TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
+                        dtMTR = db.DBQuery("select * from dbo.MTR");
+                        if (TaskCycle.feedBinScanDone == "No" && dtMTR.Rows.Count < 1 && frameEmptyInd == true)
                         {
-                            Thread.Sleep(100);
-                        } while (TaskCycle.PickStep != 20);
-
-                        int prodNumber = 0;
-                        switch (prodType)
-                        {
-                            case "A":
-                                prodNumber = 1;
-                                break;
-                            case "B":
-                                prodNumber = 2;
-                                break;
-                            case "C":
-                                prodNumber = 3;
-                                break;
-                            case "D":
-                                prodNumber = 4;
-                                break;
-                            case "E":
-                                prodNumber = 5;
-                                break;
-                            case "F":
-                                prodNumber = 6;
-                                break;
-                        }
-                    shootAgain:
-                        string CordinatorX = "0";
-                        string CordinatorY = "0";
-                        string CordinatorU = "0";
-                        cFrom.CCDTrigger(prodNumber, pieceNo);
-
-                        if (cFrom.CCDDone == -1)                                  //拍照失败
-                        {
-                            db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
-                            //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
-                            if ((numRemain - 1) == 0)
+                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);                          
+                            frameUpdate = false;
+                            //plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
+                            MessageBox.Show("料架已取空，请更换料架");
+                            while (!frameUpdate)
                             {
-                                //插入放回料盘任务
-                                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+                                Thread.Sleep(100);
+                            }
+
+                            //plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 0 });
+                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
+
+                            frameUpdate = false;
+                            frameEmptyInd = false;
+                            goto ReStart;
+                        }
+                        else if (TaskCycle.feedBinScanDone == "No" && dtMTR.Rows.Count > 0 && frameEmptyInd == true)
+                        {
+                            goto TakeBack;
+                        }
+
+                        #endregion
+
+                        #region 把物料从料架取出放入测试柜并触发测试任务
+                        int testedCabinetNo = 0;
+                        for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
+                        {
+                            dtMTR = db.DBQuery("select * from dbo.MTR");
+                            bool testExsit = false;
+                            for (int m = 0; m < dtMTR.Rows.Count; m++)
+                            {
+                                if (gSheduleExit == true)
+                                {
+                                    gSheduleExit = false;
+                                    return;
+                                }
+                                string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
+                                if (TestingCabinets.getInstance(i).Name == CabInMTR)
+                                {
+                                    testExsit = true;
+                                    break;
+                                }
+                            }
+
+                            if (((PlcData._cabinetStatus[i] & 1) != 0)
+                                && (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable) && !testExsit)               //如果测试允许测试并且使能
+                            {
+                            Redo:
+                                testedCabinetNo++;
+                                TaskCycle.actionType = "FrameToCabinet";
+                                int numRemain = 0;
+                                int layerID = 0;
+                                cabinetNo = i;
+                                prodType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
+                                cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
+                                mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
+                                Thread.Sleep(100);
+
+                                //针对MTR表格中多条纪录，选择还未取料的任务
+                                dtMTR = db.DBQuery("select * from dbo.MTR");
+                                for (int j = 0; j < dtMTR.Rows.Count; j++)
+                                {
+                                    if (dtMTR.Rows[j]["CurrentStation"].ToString().Trim().Equals("FeedBin"))
+                                    {
+                                        MTR.globalBasicID = (int)dtMTR.Rows[j]["BasicID"];
+                                    }
+                                }
+
+                                //加入机器人是否空闲并处在安全位置的判断
+
+                                //插入机器人轨道到料架任务
+                                TaskCycle.PickStep = 0;
+                                //判断机器人是否在原点
+                                db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
+
+                                //等待机器人轨道到位
                                 do
                                 {
+                                    if (gSheduleExit == true)
+                                    {
+                                        gSheduleExit = false;
+                                        return;
+                                    }
+                                    Thread.Sleep(100);
+                                } while (TaskCycle.PickStep != 10);
+
+                                //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
+                                db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+
+                            pickAnotherTray:
+                                dtFeedBin = db.DBQuery("select * from dbo.FeedBin where sort='" + prodType + "'");
+                                for (int j = 0; j < dtFeedBin.Rows.Count; j++)
+                                {
+                                    if ((int)dtFeedBin.Rows[j]["NumRemain"] != 0)
+                                    {
+                                        layerID = (int)dtFeedBin.Rows[j]["LayerID"];
+                                        int colNo = (layerID - 1) / 8;
+                                        int rowNo = (layerID - 1) % 8;
+                                        trayNo = (rowNo + 1) * 10 + (colNo + 1);
+
+                                        DataTable dtTmp = db.DBQuery("select * from dbo.SortData where sortname='" + prodType + "'");
+                                        numRemain = (int)dtFeedBin.Rows[j]["NumRemain"];
+                                        pieceNo = (int)dtTmp.Rows[0]["number"] - numRemain + 1;       //从0开始编号
+
+                                        db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
+                                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        if ((testedCabinetNo == TestingCabinets.getEnableCount()) && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
+                                        {
+                                            frameEmptyInd = true;
+                                            //Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
+                                            db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                                            //frameUpdate = false;
+                                            //testedCabinetNo = 0;
+                                            ////plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
+                                            //MessageBox.Show("料架已取空，请更换料架");
+                                            //while (!frameUpdate)
+                                            //{
+                                            //    Thread.Sleep(100);
+                                            //}
+
+                                            ////plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 0 });
+                                            //Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
+
+                                            //frameUpdate = false;
+                                            goto PickEnd;
+                                        }
+                                        if ((j == (dtFeedBin.Rows.Count - 1)))                                   //如果某种产品取空，跳过本次操作
+                                        {
+                                            goto PickEnd;
+                                        }
+                                    }
+                                }
+
+                                //等待料架取料盘完成
+                                do
+                                {
+                                    if (gSheduleExit == true)
+                                    {
+                                        gSheduleExit = false;
+                                        return;
+                                    }
+                                    Thread.Sleep(100);
+                                } while (TaskCycle.PickStep != 20);
+
+                                int prodNumber = 0;
+                                switch (prodType)
+                                {
+                                    case "A":
+                                        prodNumber = 1;
+                                        break;
+                                    case "B":
+                                        prodNumber = 2;
+                                        break;
+                                    case "C":
+                                        prodNumber = 3;
+                                        break;
+                                    case "D":
+                                        prodNumber = 4;
+                                        break;
+                                    case "E":
+                                        prodNumber = 5;
+                                        break;
+                                    case "F":
+                                        prodNumber = 6;
+                                        break;
+                                }
+                            shootAgain:
+                                string CordinatorX = "0";
+                                string CordinatorY = "0";
+                                string CordinatorU = "0";
+                                if (prodNumber == 4)
+                                {
+                                    if (pieceNo%4==0)
+                                    {
+                                        pieceNo = pieceNo + 1;
+                                        db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
+                                        db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
+                                    }
+                                }
+                                cFrom.CCDTrigger(prodNumber, pieceNo);
+
+                                if (cFrom.CCDDone == -1)                                  //拍照失败
+                                {
+                                    db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
+                                    //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                    if ((numRemain - 1) == 0)
+                                    {
+                                        //插入放回料盘任务
+                                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+                                        do
+                                        {
+                                            if (gSheduleExit == true)
+                                            {
+                                                gSheduleExit = false;
+                                                return;
+                                            }
+                                            Thread.Sleep(100);
+                                        } while (TaskCycle.PickStep != 30);
+                                        TaskCycle.PickStep = 10;
+                                        goto pickAnotherTray;               //换盘
+                                    }
+                                    if ((numRemain - 1) > 0)
+                                    {
+                                        pieceNo = pieceNo + 1;              //换位置
+                                        numRemain = numRemain - 1;
+                                        db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
+                                        goto shootAgain;
+                                    }
+
+                                }
+
+                                if (prodType == "D")
+                                {
+                                    CordinatorX = cFrom.X;
+                                    CordinatorY = cFrom.Y;
+                                }
+
+                                //插入机器人取料任务                         
+                                db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                                db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'GetProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
+
+                                //等待机器人取料完成
+                                do
+                                {
+                                    if (gSheduleExit == true)
+                                    {
+                                        gSheduleExit = false;
+                                        return;
+                                    }
                                     Thread.Sleep(100);
                                 } while (TaskCycle.PickStep != 30);
-                                TaskCycle.PickStep = 10;
-                                goto pickAnotherTray;               //换盘
+
+                                db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
+
+                                if (!TaskCycle.scanStatus)      //读码失败
+                                {
+                                    //db.DBUpdate("update dbo.MTR set ProductID = '" + "0" +"',"++ "'where BasicID=" + MTR.globalBasicID);
+                                    db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "NG" + "')");
+                                    db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "NG" + "')");
+                                    db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                    //插入机器人放料到料架任务
+                                    db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
+                                    plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
+                                    FrameDataUpdate();
+
+                                    //等待放料任务完成
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PickStep != 40);
+
+                                    //插入放回料盘任务
+                                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+                                    do
+                                    {
+                                        if (gSheduleExit == true)
+                                        {
+                                            gSheduleExit = false;
+                                            return;
+                                        }
+                                        Thread.Sleep(100);
+                                    } while (TaskCycle.PickStep != 50);
+                                    goto Redo;
+                                }
+
+                                //读码成功                       
+                                Byte[] myCode = plc.DbRead(104, 0, 556);
+                                Thread.Sleep(2000);
+                                plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
+                                int strLen = Convert.ToInt32(myCode[504]);
+                                int realLen = Convert.ToInt32(myCode[505]);
+                                prodCode = Encoding.Default.GetString(myCode, 506, realLen).Trim();
+
+                                db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
+
+                                //插入放回料盘任务
+                                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+
+                                //插入机器人轨道走位任务：到测试柜
+                                //判断机器人是否在原点
+                                db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
+
+                                //等待机器人轨道到位
+                                do
+                                {
+                                    if (gSheduleExit == true)
+                                    {
+                                        gSheduleExit = false;
+                                        return;
+                                    }
+                                    Thread.Sleep(100);
+                                } while (TaskCycle.PickStep != 50);
+
+                                //插入机器人放料任务
+                                db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                                db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
+
+                                //等待机器人放料完成
+                                do
+                                {
+                                    if (gSheduleExit == true)
+                                    {
+                                        gSheduleExit = false;
+                                        return;
+                                    }
+                                    Thread.Sleep(100);
+                                } while (TaskCycle.PickStep != 60);
+
+                                //插入测试任务
+                                db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                                TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
+
+                            PickEnd:
+                                TaskCycle.PickStep = 0;
                             }
-                            if ((numRemain - 1) > 0)
-                            {
-                                pieceNo = pieceNo + 1;              //换位置
-                                numRemain = numRemain - 1;
-                                db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
-                                goto shootAgain;
-                            }
-
                         }
-
-                        if (prodType == "D")
-                        {
-                            CordinatorX = cFrom.X;
-                            CordinatorY = cFrom.Y;
-                        }
-
-                        //插入机器人取料任务                         
-                        db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                        db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'GetProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
-
-                        //等待机器人取料完成
-                        do
-                        {
-                            Thread.Sleep(100);
-                        } while (TaskCycle.PickStep != 30);
-
-                        db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
-
-                        if (!TaskCycle.scanStatus)      //读码失败
-                        {
-                            //db.DBUpdate("update dbo.MTR set ProductID = '" + "0" +"',"++ "'where BasicID=" + MTR.globalBasicID);
-                            db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "NG" + "')");
-                            db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "NG" + "')");
-                            db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
-                            //插入机器人放料到料架任务
-                            db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
-                            plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
-                            FrameDataUpdate();
-
-                            //等待放料任务完成
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 40);
-
-                            //插入放回料盘任务
-                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-                            do
-                            {
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 50);
-                            goto Redo;
-                        }
-
-                        //读码成功                       
-                        Byte[] myCode = plc.DbRead(104, 0, 556);
-                        Thread.Sleep(2000);
-                        plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
-                        int strLen = Convert.ToInt32(myCode[504]);
-                        int realLen = Convert.ToInt32(myCode[505]);
-                        prodCode = Encoding.Default.GetString(myCode, 506, realLen).Trim();
-
-                        db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
-
-                        //插入放回料盘任务
-                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-
-                        //插入机器人轨道走位任务：到测试柜
-                        //判断机器人是否在原点
-                        db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")");
-
-                        //等待机器人轨道到位
-                        do
-                        {
-                            Thread.Sleep(100);
-                        } while (TaskCycle.PickStep != 50);
-
-                        //插入机器人放料任务
-                        db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                        db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
-
-                        //等待机器人放料完成
-                        do
-                        {
-                            Thread.Sleep(100);
-                        } while (TaskCycle.PickStep != 60);
-
-                        //插入测试任务
-                        db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                        TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
-
-                    PickEnd:
-                        TaskCycle.PickStep = 0;
+                        #endregion                        
                     }
+                    Thread.Sleep(100);
                 }
-                #endregion
-                Thread.Sleep(100);
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(" ***** " + e.Message);
+                Console.WriteLine(" ***** " + e.StackTrace);
+            }
+            Console.WriteLine(" ***** exit 调度进程 thread");
+
         }
 
         private void SetProdType2Plc()
@@ -1107,5 +1100,6 @@ namespace XT_CETC23.DataCom
                 Thread.Sleep(100);
             }
         }
+
     }
 }
