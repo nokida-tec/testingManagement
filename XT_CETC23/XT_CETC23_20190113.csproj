@@ -112,6 +112,7 @@
     <Compile Include="Common\AutoStatus.cs" />
     <Compile Include="Common\EnumStr.cs" />
     <Compile Include="Common\ExportExcel.cs" />
+    <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\snap7.net.cs" />
     <Compile Include="Common\StatusFeedBack.cs" />
     <Compile Include="Config\Config.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="DAL\Cabinet.cs" />
     <Compile Include="DAL\Camera.cs" />
     <Compile Include="DAL\DataBase.cs" />
+    <Compile Include="DAL\Frame.cs" />
     <Compile Include="DAL\MTR.cs" />
     <Compile Include="DAL\Plc.cs" />
     <Compile Include="DAL\Robot.cs" />
