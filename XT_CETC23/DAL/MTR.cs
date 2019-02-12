@@ -24,19 +24,7 @@ namespace XT_CETC23.DataCom
         MTR()
         {
             db = DataBase.GetInstanse();
-        }
-        //更新料架数据
-        public void updateFrameBasicID()
-        {
-            db.DBUpdate("update dbo.BasicID set BasicID='" + GetID.getID() + "',HavePiece='"+1 +"'where EquipmentName='"+"Frame'");
-           
-        }
-        //清除料架数据
-        public void deleteFrameBasicID()
-        {
-            db.DBDelete("update dbo.BasicID set BasicID='0',HavePiece=0 where EquipmentName='Frame'");
-                //"delete from " + tableName + " where " + column + "='" + condition + "'";
-        }
+        }       
 
         public int InsertBasicID(string ProductID,int FrameLocation,int SalverLocation,string ProductType,string CurrentStation, bool StationSign,string ProductChectResult,int CabinetID)
         {

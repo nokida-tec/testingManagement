@@ -586,8 +586,6 @@ namespace XT_CETC23.DataCom
                                 Thread.Sleep(100);
                             }
                             db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");                            
-                            //更新basicID
-                            mtr.updateFrameBasicID();
                             dt2.Rows.Clear();
                             dt2.Columns.Clear();
                             Thread.Sleep(2000);
@@ -616,7 +614,6 @@ namespace XT_CETC23.DataCom
                                 Thread.Sleep(100);
                             }
                             db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");                           
-                            mtr.deleteFrameBasicID();
                             dt2.Rows.Clear();
                             dt2.Columns.Clear();
                             Thread.Sleep(2000);
