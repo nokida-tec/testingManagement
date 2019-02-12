@@ -11,6 +11,7 @@ using XT_CETC23.DataManager;
 using XT_CETC23_GK.Task;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
+using XT_CETC23.Model;
 using XT_CETC23.Instances;
 using Excel;
 using System.Windows.Forms;
@@ -52,7 +53,6 @@ namespace XT_CETC23.DataCom
         DataBase db;
         DataTable dt;
         Plc plc;
-        Robot robot;
         MTR mtr;
         DataTable dt2, dt7, dtr;
 
@@ -78,7 +78,6 @@ namespace XT_CETC23.DataCom
         {
             db = DataBase.GetInstanse();
             plc = Plc.GetInstanse();
-            robot = Robot.GetInstanse();
             mtr = MTR.GetIntanse();
             axlis2Task = new Thread(Axlis2Task);
             axlis2Task.Name = "2轴任务";
@@ -415,7 +414,7 @@ namespace XT_CETC23.DataCom
 
                         if (rTask.OrderType == "GetProTray")
                         {
-                            robot.sendDataToRobot(rTask.OrderType + "," + rTask.ProductType + "," + rTask.Position.ToString() + "," + cordX + "," + cordY + "," + cordU);
+                            Robot.GetInstanse().sendDataToRobot(rTask.OrderType + "," + rTask.ProductType + "," + rTask.Position.ToString() + "," + cordX + "," + cordY + "," + cordU);
 
                             //等待机器人触发扫码
                             while (RobotData.Response != "ScanStart")
@@ -441,11 +440,11 @@ namespace XT_CETC23.DataCom
                                 scanStatus = true;
                             }
                             RobotData.Response = "";
-                            robot.sendDataToRobot("ScanDone");              //给机器人发送扫码完成消息 
+                            Robot.GetInstanse().sendDataToRobot("ScanDone");              //给机器人发送扫码完成消息 
                         }
                         else
                         {
-                            robot.sendDataToRobot(rTask.OrderType + "," + rTask.ProductType + "," + rTask.Position.ToString());
+                            Robot.GetInstanse().sendDataToRobot(rTask.OrderType + "," + rTask.ProductType + "," + rTask.Position.ToString());
                         }
                        
                         //等待机器人取料完成消息
