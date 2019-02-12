@@ -68,6 +68,7 @@ namespace XT_CETC23.DataCom
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(" ***** " + e.Message);
                     Console.WriteLine(" ***** " + e.StackTrace);
                     //if (e.HResult == )
                     {
