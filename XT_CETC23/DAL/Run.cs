@@ -658,9 +658,11 @@ namespace XT_CETC23.DataCom
                         dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
                         TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
                         dtMTR = db.DBQuery("select * from dbo.MTR");
-                        if (TaskCycle.feedBinScanDone == "No" && dtMTR.Rows.Count < 1 && frameEmptyInd == true)
+                        if (dtMTR.Rows.Count < 1 && frameEmptyInd == true)
                         {
-                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);                          
+                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
+                            db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                            db.DBDelete("delete from dbo.FrameData");
                             frameUpdate = false;
                             //plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
                             MessageBox.Show("料架已取空，请更换料架");
@@ -676,7 +678,7 @@ namespace XT_CETC23.DataCom
                             frameEmptyInd = false;
                             goto ReStart;
                         }
-                        else if (TaskCycle.feedBinScanDone == "No" && dtMTR.Rows.Count > 0 && frameEmptyInd == true)
+                        else if (dtMTR.Rows.Count > 0 && frameEmptyInd == true)
                         {
                             goto TakeBack;
                         }
@@ -774,7 +776,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             frameEmptyInd = true;
                                             //Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
-                                            db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                                            //db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
                                             //frameUpdate = false;
                                             //testedCabinetNo = 0;
                                             ////plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
@@ -838,9 +840,31 @@ namespace XT_CETC23.DataCom
                                 {
                                     if (pieceNo%4==0)
                                     {
-                                        pieceNo = pieceNo + 1;
                                         db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
-                                        db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
+                                        //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                        if ((numRemain - 1) == 0)
+                                        {
+                                            //插入放回料盘任务
+                                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+                                            do
+                                            {
+                                                if (gSheduleExit == true)
+                                                {
+                                                    gSheduleExit = false;
+                                                    return;
+                                                }
+                                                Thread.Sleep(100);
+                                            } while (TaskCycle.PickStep != 30);
+                                            TaskCycle.PickStep = 10;
+                                            goto pickAnotherTray;               //换盘
+                                        }
+                                        if ((numRemain - 1) > 0)
+                                        {
+                                            pieceNo = pieceNo + 1;              //换位置
+                                            numRemain = numRemain - 1;
+                                            db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
+                                            goto shootAgain;
+                                        }
                                     }
                                 }
                                 cFrom.CCDTrigger(prodNumber, pieceNo);
