@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
+using XT_CETC23.DataCom;
+using XT_CETC23.Model;
 using XT_CETC23.DataManager;
 using System.Threading;
 
@@ -40,19 +42,41 @@ namespace XT_CETC23.DataCom
             int tryCount = 50;
             bool isConnected = false;
 
+            //if (socketClient != null)
+            //{             
+            //    socketClient.Close();
+            //    socketClient.Dispose();
+            //}
+
             while (isConnected == false && tryCount-- > 0)
             {
-                if (socketClient == null)
+                try
                 {
-                    socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                }
+                    if (socketClient == null)
+                    {
+                        socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        socketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, 10000);
+                        //socketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
+                    }
 
-                if (socketClient.Connected == false)
+                    if (socketClient.Connected == false)
+                    {
+                        socketClient.Connect(iEndPoint);
+                    }
+
+                    isConnected = socketClient.Connected;
+                }
+                catch (Exception e)
                 {
-                    socketClient.Connect(iEndPoint);
+                    Console.WriteLine(" ***** " + e.StackTrace);
+                    //if (e.HResult == )
+                    {
+                        socketClient.Shutdown(SocketShutdown.Both);
+                        socketClient.Disconnect(true);
+                        socketClient.Close();
+                        socketClient = null;
+                    }
                 }
-
-                isConnected = socketClient.Connected;
                 Thread.Sleep(200);
             }
             return isConnected;
@@ -60,17 +84,33 @@ namespace XT_CETC23.DataCom
 
         private void readFunc()
         {
+            Console.WriteLine(" ***** Enter readFunc ****");
+            int count = 50;
             while (true)
             {
                 if (tryConnected() == true)
                 {
-                    byte[] arrMsgRec = new byte[20];
-                    int length = socketClient.Receive(arrMsgRec);
-                    String strMsgRec = Encoding.UTF8.GetString(arrMsgRec, 0, length);
-                    RobotData.Response = strMsgRec;
+                    try
+                    {
+                        byte[] arrMsgRec = new byte[20];
+                        int length = socketClient.Receive(arrMsgRec);
+                        String strMsgRec = Encoding.UTF8.GetString(arrMsgRec, 0, length);
+                        RobotData.Response = strMsgRec;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(" ***** " + e.StackTrace);
+                    }
                 }
                 Thread.Sleep(100);
+                count --;
+                if (count == 0)
+                {
+                    sendDataToRobot("keepalive");
+                    count = 50;
+                }
             }
+            Console.WriteLine(" ***** Exit readFunc ****");
         }
 
        
@@ -78,22 +118,30 @@ namespace XT_CETC23.DataCom
         {
             if (tryConnected() == true)
             {
-                RobotData.Response = "";
-                string strMsg = sendStr;
-                byte[] arrMsg = Encoding.UTF8.GetBytes(strMsg);
-                byte[] arrMsgSend = new byte[arrMsg.Length];
-                // 添加标识位，0代表发送的是文字
-                arrMsgSend[0] = 0;
-                Buffer.BlockCopy(arrMsg, 0, arrMsgSend, 0, arrMsg.Length);
-                while (!socketClient.Connected)
+                try
                 {
-                    Thread.Sleep(100);
+                    RobotData.Response = "";
+                    string strMsg = sendStr;
+                    byte[] arrMsg = Encoding.UTF8.GetBytes(strMsg);
+                    byte[] arrMsgSend = new byte[arrMsg.Length];
+                    // 添加标识位，0代表发送的是文字
+                    arrMsgSend[0] = 0;
+                    Buffer.BlockCopy(arrMsg, 0, arrMsgSend, 0, arrMsg.Length);
+                    while (!socketClient.Connected)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    socketClient.Send(arrMsg);
                 }
-                socketClient.Send(arrMsg);
+                catch (Exception e)
+                {
+                    Console.WriteLine(" ***** " + e.Message);
+                    Console.WriteLine(" ***** " + e.StackTrace);
+                }
             }
             else
             {
-                int j = 1;
+                Console.WriteLine(" ***** try connect to robot failed ****");
             }
         }
     }
