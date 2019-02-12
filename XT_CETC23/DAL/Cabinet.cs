@@ -43,7 +43,7 @@ namespace XT_CETC23.DAL
                     }
                 }
 
-                using (FileStream fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append))
+                using (FileStream fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     using (StreamWriter sw = new StreamWriter(fs))
                     {
@@ -65,7 +65,7 @@ namespace XT_CETC23.DAL
             {
                 if (TestingCabinets.getInstance(this.ID).Enable == TestingCabinet.ENABLE.Enable)
                 {
-                    FileStream fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Open, FileAccess.Read);
+                    FileStream fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     StreamReader sr = new StreamReader(fs);
                     string line = null;
                     string lastline = null;
@@ -114,11 +114,11 @@ namespace XT_CETC23.DAL
             {
                 string line = "时间\t指令字";
                 // 清除指令文件
-                FileStream fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Truncate, FileAccess.ReadWrite);
+                FileStream fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Truncate, FileAccess.ReadWrite, FileShare.ReadWrite);
                 fs.Flush();
                 fs.Close();
                 fs.Dispose();
-                fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Append);
+                fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(line);
                 fs.Flush();
@@ -128,12 +128,11 @@ namespace XT_CETC23.DAL
                 sw.Dispose();
                 fs.Dispose();
 
-
-                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Truncate, FileAccess.ReadWrite);
+                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Truncate, FileAccess.ReadWrite, FileShare.ReadWrite);
                 fs.Flush();
                 fs.Close();
                 fs.Dispose();
-                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append);
+                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite);
                 sw = new StreamWriter(fs);
                 sw.WriteLine(line);
                 fs.Flush();
