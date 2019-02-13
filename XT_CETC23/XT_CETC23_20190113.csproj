@@ -127,6 +127,7 @@
     <Compile Include="DAL\Robot.cs" />
     <Compile Include="DAL\Run.cs" />
     <Compile Include="DAL\TaskCycle.cs" />
+    <Compile Include="DAL\TestingSystem.cs" />
     <Compile Include="DB23DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
