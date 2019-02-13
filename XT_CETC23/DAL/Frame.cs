@@ -58,16 +58,15 @@ namespace XT_CETC23.DAL
         public bool excuteCommand(Lock.Command command)
         {
             byte[] myByte = new byte[1];
-            byte[] myByte1 = new byte[1];
             switch (command)
             {
                 case Lock.Command.Open:
-                    myByte[0] = (byte)20;
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder2, PlcData._writeLength1, myByte);
+                    myByte[0] = (byte)39;
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 3, PlcData._writeLength1, myByte);
                     break;
                 case Lock.Command.Close:
-                    myByte[0] = (byte)10;
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder2, PlcData._writeLength1, myByte);
+                    myByte[0] = (byte)40;
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 3, PlcData._writeLength1, myByte);
                     break;
             }
             return false;
