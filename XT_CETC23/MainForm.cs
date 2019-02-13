@@ -22,6 +22,7 @@ using XT_CETC23.Instances;
 using XT_CETC23.DAL;
 using System.IO;
 using System.Threading;
+using System.Collections;
 
 namespace XT_CETC23
 {
@@ -236,32 +237,18 @@ namespace XT_CETC23
         void pbStep()
         {
             if (!sForm.IsDisposed)
-            {
-                if (MessageBox.Show("单步控制需要在自动流程安全处理后启动，请确认后耐心等待单步控制窗口打开！", "Information", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    panel_Load.Controls.Clear();
-                    sForm.TopLevel = false;
-                    sForm.Dock = DockStyle.Fill;
-                    panel_Load.Controls.Add(sForm);
+            {                
+                Run.stepEnable = true;
+                Run.readyForStep = false;
 
-                    Thread waitForStep = new Thread(StepStart);
-                    waitForStep.Name="单步控制启动进程";
-                    waitForStep.Start();
-                }
+                mForm.clearTask();
+                panel_Load.Controls.Clear();
+                sForm.TopLevel = false;
+                sForm.Dock = DockStyle.Fill;
+                panel_Load.Controls.Add(sForm);
+                sForm.Show();
             }
-        }
-
-        private void StepStart()
-        {            
-            Run.stepEnable = true;
-            Run.readyForStep = false;
-            while (Run.readyForStep == false)
-            {
-                Thread.Sleep(100);
-            }
-            mForm.clearTask();
-            sForm.Show();
-        }
+        }   
 
         void pbAuto()
         {
