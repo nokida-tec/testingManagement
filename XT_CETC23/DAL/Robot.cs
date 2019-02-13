@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Net;
 using XT_CETC23.DataCom;
 using XT_CETC23.Model;
+using XT_CETC23;
 using XT_CETC23.DataManager;
 using System.Threading;
 
@@ -14,10 +15,19 @@ namespace XT_CETC23.DataCom
 {
    public  class Robot
     {
-        static Robot robot = null;
+        private static Robot robot = null;
+        private State state;
         Socket socketClient = null;
         System.Threading.Thread dThread;
 
+        public enum State
+        {
+            Unkown = 0,
+            Initializing = 1,
+            Initialized = 2,
+            Closed = 3,
+            Alarming = 4,
+        }
 
         public static Robot GetInstanse()
         {
@@ -28,27 +38,85 @@ namespace XT_CETC23.DataCom
             return robot;
         }
 
-        Robot()
+        private Robot()
         {
-            dThread = new Thread(new ThreadStart(readFunc));
-            dThread.Name = "机器人操作";
-            dThread.Start();
+            state = State.Unkown;
         }
 
-        public bool tryConnected()
+        ~Robot()
+        {
+            Close();
+        }
+
+        public bool Open()
+        {
+            Logger.WriteLine("Robot Open:" + socketClient);
+            Close();
+            if (tryConnectSocket(10 * 60 * 1000)) // 10分钟
+            {
+                if (dThread != null)
+                {
+                    dThread.Abort();
+                    dThread = null;
+                }
+                dThread = new Thread(readFunc);
+                dThread.Name = "机器人读线程";
+                dThread.Start();
+                Logger.WriteLine("Robot Read Thread start:" + socketClient);
+                Logger.WriteLine("Robot Read Thread start:" + dThread);
+                return true;
+            }
+
+            return false;
+        }
+
+        bool Close()
+        {
+            if (dThread != null)
+            {
+                dThread.Abort();
+                dThread = null;
+            } 
+
+            CloseSocket();
+
+            return true;
+        }
+
+        bool CloseSocket()
+        {
+            Logger.WriteLine("socket CloseSocket:" + socketClient);
+            if (socketClient != null)
+            {
+                try
+                {
+                    socketClient.Shutdown(SocketShutdown.Both);
+                    socketClient.Disconnect(true);
+                }
+                catch (Exception e2)
+                {
+                    Logger.printException(e2);
+                }
+                socketClient.Close();
+            }
+
+            socketClient = null;
+
+            return true;
+        }
+
+
+        public bool tryConnectSocket(int millisecond)
         {
             IPAddress ip = IPAddress.Parse("192.168.10.1");
             IPEndPoint iEndPoint = new IPEndPoint(ip, 1000);
-            int tryCount = 50;
+            Logger.WriteLine("socket tryConnectSocket:" + millisecond);
+
+            int timeInter = 200;
+            int tryCount = (millisecond < 0) ? 99999 : (millisecond + timeInter) / timeInter;
             bool isConnected = false;
 
-            //if (socketClient != null)
-            //{             
-            //    socketClient.Close();
-            //    socketClient.Dispose();
-            //}
-
-            while (isConnected == false && tryCount-- > 0)
+            while (isConnected == false && tryCount -- > 0)
             {
                 try
                 {
@@ -57,39 +125,34 @@ namespace XT_CETC23.DataCom
                         socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         socketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, 10000);
                         //socketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
+                        Logger.WriteLine("New socket:" + socketClient);
+
                     }
 
                     if (socketClient.Connected == false)
                     {
                         socketClient.Connect(iEndPoint);
+                        Logger.WriteLine("socket connect:" + socketClient);
                     }
 
                     isConnected = socketClient.Connected;
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(" ***** " + e.Message);
-                    Console.WriteLine(" ***** " + e.StackTrace);
-                    //if (e.HResult == )
-                    {
-                        socketClient.Shutdown(SocketShutdown.Both);
-                        socketClient.Disconnect(true);
-                        socketClient.Close();
-                        socketClient = null;
-                    }
+                    Logger.printException(e);
+                    CloseSocket();
                 }
-                Thread.Sleep(200);
+                Thread.Sleep(timeInter);
             }
             return isConnected;
         }
 
         private void readFunc()
         {
-            Console.WriteLine(" ***** Enter readFunc ****");
-            int count = 50;
+            int count = 2;
             while (true)
             {
-                if (tryConnected() == true)
+                if (tryConnectSocket(60 * 1000) == true)
                 {
                     try
                     {
@@ -97,30 +160,29 @@ namespace XT_CETC23.DataCom
                         int length = socketClient.Receive(arrMsgRec);
                         String strMsgRec = Encoding.UTF8.GetString(arrMsgRec, 0, length);
                         RobotData.Response = strMsgRec;
+                        Logger.WriteLine("RobotData.Response:" + strMsgRec);
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(" ***** " + e.StackTrace);
+                        Logger.printException(e);
                     }
                 }
+                
                 Thread.Sleep(100);
                 count --;
                 if (count == 0)
                 {
-                    sendDataToRobot("keepalive");
-                    count = 50;
+//                    sendDataToRobot("keepalive");
+                    count = 2;
                 }
             }
-            Console.WriteLine(" ***** Exit readFunc ****");
         }
 
-       
         public void sendDataToRobot(string sendStr)
         {
-            if (tryConnected() == true)
-            {
                 try
                 {
+                    Logger.WriteLine("sendDataToRobot:" + sendStr);
                     RobotData.Response = "";
                     string strMsg = sendStr;
                     byte[] arrMsg = Encoding.UTF8.GetBytes(strMsg);
@@ -128,22 +190,12 @@ namespace XT_CETC23.DataCom
                     // 添加标识位，0代表发送的是文字
                     arrMsgSend[0] = 0;
                     Buffer.BlockCopy(arrMsg, 0, arrMsgSend, 0, arrMsg.Length);
-                    while (!socketClient.Connected)
-                    {
-                        Thread.Sleep(100);
-                    }
                     socketClient.Send(arrMsg);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(" ***** " + e.Message);
-                    Console.WriteLine(" ***** " + e.StackTrace);
+                    Logger.printException(e);
                 }
-            }
-            else
-            {
-                Console.WriteLine(" ***** try connect to robot failed ****");
-            }
         }
     }
 }
