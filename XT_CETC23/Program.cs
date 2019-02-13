@@ -32,7 +32,7 @@ namespace XT_CETC23
             }
             catch (Exception e)
             {
-                Console.WriteLine("  *****  " + e.StackTrace);
+                Logger.WriteLine(e);
             }
         }
     }
