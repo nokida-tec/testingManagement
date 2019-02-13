@@ -19,7 +19,9 @@ using XT_CETC23_GK.Task;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
 using XT_CETC23.Instances;
+using XT_CETC23.DAL;
 using System.IO;
+using System.Threading;
 
 namespace XT_CETC23
 {
@@ -235,17 +237,30 @@ namespace XT_CETC23
         {
             if (!sForm.IsDisposed)
             {
-                if (MessageBox.Show("单步控制与主调度流程是互斥的，将会挂起主调度流程，请确认主调度流程动作已经完成！", "Information", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                if (MessageBox.Show("单步控制需要在自动流程安全处理后启动，请确认后耐心等待单步控制窗口打开！", "Information", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
                     panel_Load.Controls.Clear();
                     sForm.TopLevel = false;
                     sForm.Dock = DockStyle.Fill;
                     panel_Load.Controls.Add(sForm);
-                    mForm.clearTask();
-                    Run.stepEnable = true;
-                    sForm.Show();
+
+                    Thread waitForStep = new Thread(StepStart);
+                    waitForStep.Name="单步控制启动进程";
+                    waitForStep.Start();
                 }
             }
+        }
+
+        private void StepStart()
+        {            
+            Run.stepEnable = true;
+            Run.readyForStep = false;
+            while (Run.readyForStep == false)
+            {
+                Thread.Sleep(100);
+            }
+            mForm.clearTask();
+            sForm.Show();
         }
 
         void pbAuto()
@@ -739,12 +754,14 @@ namespace XT_CETC23
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            TestingCabinets.getInstance(0).cmdStart("C", 9999);
+            //TestingCabinets.getInstance(0).cmdStart("C", 9999);
+            Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            TestingCabinets.getInstance(0).cmdStop();
+           // TestingCabinets.getInstance(0).cmdStop();
+            Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
         }
     }
 }
