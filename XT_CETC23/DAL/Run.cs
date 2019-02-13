@@ -409,7 +409,7 @@ namespace XT_CETC23.DataCom
                 //TransMessage("数据库初始化失败");
             }
             Thread.Sleep(200);
-            if(true)
+            if(Robot.GetInstanse().Open())
             {
                 //TransMessage("Robot初始化成功");
                 ++i;
