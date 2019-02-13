@@ -493,7 +493,7 @@ namespace XT_CETC23.DataCom
                     dt7.Rows.Clear();
                     dt7.Columns.Clear();
                     dt7 = db.DBQuery("select * from dbo.TaskAxlis7");
-                    if (dt7.Rows.Count == 1)
+                    if (dtr != null && dt7.Rows.Count == 1)
                     {
                         a = Convert.ToInt32(dt7.Rows[0]["Axlis7Pos"]);
                         plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(a) });
@@ -513,7 +513,7 @@ namespace XT_CETC23.DataCom
                             TaskCycle.PutStep = TaskCycle.PutStep + 10;
                         }
                     }
-                    else if(dtr.Rows.Count > 1)
+                    else if(dtr !=null && dtr.Rows.Count > 1)
                     {
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                     }
