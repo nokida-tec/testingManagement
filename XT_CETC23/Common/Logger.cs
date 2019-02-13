@@ -10,8 +10,13 @@ namespace XT_CETC23
     {
         static public void printException(Exception e)
         {
-            Console.WriteLine(" ***** " + e.Message);
+            Console.WriteLine(" ***** " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss  ") + e.Message);
             Console.WriteLine(" ***** " + e.StackTrace);
+        }
+
+        static public void WriteLine(String message)
+        {
+            Console.WriteLine(" ***** " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss  ")  + message);
         }
     }
 }
