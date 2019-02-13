@@ -43,7 +43,7 @@ namespace XT_CETC23.DAL
                     }
                 }
 
-                using (FileStream fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite))
+                using (FileStream fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
                 {
                     using (StreamWriter sw = new StreamWriter(fs))
                     {
@@ -118,7 +118,7 @@ namespace XT_CETC23.DAL
                 fs.Flush();
                 fs.Close();
                 fs.Dispose();
-                fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite);
+                fs = new FileStream(CabinetData.pathCabinetStatus[this.ID], FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(line);
                 fs.Flush();
@@ -132,7 +132,7 @@ namespace XT_CETC23.DAL
                 fs.Flush();
                 fs.Close();
                 fs.Dispose();
-                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite);
+                fs = new FileStream(CabinetData.pathCabinetOrder[this.ID], FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
                 sw = new StreamWriter(fs);
                 sw.WriteLine(line);
                 fs.Flush();
@@ -170,7 +170,7 @@ namespace XT_CETC23.DAL
         private Thread task;
         public bool cmdStart(string productType, int taskId) 
         {
-            Console.WriteLine("  ***   cmdStart：" + this.ID);
+            Logger.WriteLine("  ***   cmdStart：" + this.ID);
             base.cmdStart(productType, taskId);
             start();
             return true;
@@ -178,12 +178,12 @@ namespace XT_CETC23.DAL
 
         public bool start()
         {
-            Console.WriteLine("  ***   cmdStart：" + this.ID);
+            Logger.WriteLine("  ***   cmdStart：" + this.ID);
             lock (this)
             {
                 if (task != null)
                 {
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                     task.Abort();
                     task = null;
                 }
@@ -191,7 +191,7 @@ namespace XT_CETC23.DAL
                 {
                     task = new Thread(CabinetTest);
                     task.Name = "测试柜" + this.ID + ": 启动线程";
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 新启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 新启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                     task.Start();
                 }
 
@@ -201,19 +201,19 @@ namespace XT_CETC23.DAL
 
         public bool cmdStop()
         {
-            Console.WriteLine("  ***   cmdStop：" + this.ID);
+            Logger.WriteLine("  ***   cmdStop：" + this.ID);
             base.cmdStop();
             stop();
             return true;
         }
         public bool stop()
         {
-            Console.WriteLine("  ***   stop：" + this.ID);
+            Logger.WriteLine("  ***   stop：" + this.ID);
             lock (this)
             {
                 if (task != null)
                 {
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                     task.Abort();
                     task = null;
                 }
@@ -221,7 +221,7 @@ namespace XT_CETC23.DAL
                 {
                     task = new Thread(CabinetTest);
                     task.Name = "测试柜" + this.ID + ": 停止线程";
-                    Console.WriteLine("  ***   测试柜:" + this.ID + " 新停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 新停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                     task.Start();
                 }
                 return true;
@@ -242,7 +242,7 @@ namespace XT_CETC23.DAL
 
         private void CabinetTest()
         {
-            Console.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
+            Logger.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
 
             if (Order == ORDER.Start)
             {
@@ -352,7 +352,7 @@ namespace XT_CETC23.DAL
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.StackTrace);
+                            Logger.printException(e);
                         }
 
                         try
@@ -365,7 +365,7 @@ namespace XT_CETC23.DAL
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.StackTrace);
+                            Logger.printException(e);
                         }
 
                         //  record the scan barcode to logs file
