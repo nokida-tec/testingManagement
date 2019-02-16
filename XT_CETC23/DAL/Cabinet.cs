@@ -339,7 +339,7 @@ namespace XT_CETC23.DAL
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
                         DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
-                        string productID = dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                        string productID = (dt == null || dt.Rows.Count == 0) ? "UNKNOWN" : dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
                         //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
 
                         dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
@@ -379,7 +379,7 @@ namespace XT_CETC23.DAL
                         //  record the scan barcode to logs file
                         DateTime currentTime = DateTime.Now;
                         StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
-                        sw.WriteLine(currentTime.ToString() + " \t" + productID + " \t" + ((testResult) ? "OK" : "NG"));
+                        sw.WriteLine(currentTime.ToString() + " \t" + productID);
                         sw.Flush();
                         sw.Close();
 
