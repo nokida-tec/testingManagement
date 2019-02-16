@@ -112,9 +112,12 @@ namespace XT_CETC23.DataCom
             DataTable dt = new DataTable();            
             while (true)
             {
+                
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
+                   
+
                     Thread.Sleep(100);
                     dt.Rows.Clear();
                     dt.Columns.Clear();
@@ -150,8 +153,12 @@ namespace XT_CETC23.DataCom
                                     //}
                                 }
                          }
+                        
+
                         Thread.Sleep(100);
                     }
+                    
+
                     Thread.Sleep(100);
                 }
             }
@@ -395,13 +402,15 @@ namespace XT_CETC23.DataCom
             dtr = new DataTable();
             while (true)
             {
+                
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
+                RobotTaskBegain:
                     dtr.Rows.Clear();
                     dtr.Columns.Clear();
                     dtr = db.DBQuery("select * from dbo.TaskRobot");
-                    if (dtr.Rows.Count == 1)
+                    if (dtr != null && dtr.Rows.Count == 1)
                     {
                         //rTask.Axlis7Pos = (int)dtr.Rows[0]["Axlis7Pos"];
                         rTask.OrderType = dtr.Rows[0]["OrderType"].ToString().Trim() ;
@@ -419,6 +428,11 @@ namespace XT_CETC23.DataCom
                             //等待机器人触发扫码
                             while (RobotData.Response != "ScanStart")
                             {
+                                if (Run.gSheduleExit == true)
+                                {
+                                    db.DBDelete("delete from dbo.TaskRobot"); ;
+                                    goto RobotTaskBegain;
+                                }                                
                                 Thread.Sleep(100);
                             }
 
@@ -428,6 +442,12 @@ namespace XT_CETC23.DataCom
                             //等待Plc扫码完成
                             while ((PlcData._axlis2Status != 33) && (PlcData._axlis2Status != 38))
                             {
+
+                                if (Run.gSheduleExit == true)
+                                {
+                                    db.DBDelete("delete from dbo.TaskRobot"); ;
+                                    goto RobotTaskBegain;
+                                }  
                                 Thread.Sleep(100);
                             }
 
@@ -451,10 +471,20 @@ namespace XT_CETC23.DataCom
                         String rspMsg = RobotData.Command.Trim() + "Done";
                         while (String.IsNullOrEmpty(RobotData.Response)) 
                         {
+                            if (Run.gSheduleExit == true)
+                            {
+                                db.DBDelete("delete from dbo.TaskRobot"); ;
+                                goto RobotTaskBegain;
+                            }  
                             Thread.Sleep(100);
                         }
                         while (!RobotData.Response.Trim().Equals(RobotData.Command.Trim() + "Done"))
                         {
+                            if (Run.gSheduleExit == true)
+                            {
+                                db.DBDelete("delete from dbo.TaskRobot"); ;
+                                goto RobotTaskBegain;
+                            }  
                             Thread.Sleep(100);
                         }
                         db.DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
@@ -475,8 +505,10 @@ namespace XT_CETC23.DataCom
                     {
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskRoot，正常情况下该表格中最多只有一条任务记录！");
                     }
+                    
                     Thread.Sleep(100);
                 }
+                
                 Thread.Sleep(100);
             }
         }
@@ -487,18 +519,25 @@ namespace XT_CETC23.DataCom
             dt7 = new DataTable();
             while (true)
             {
+                
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
+                Axlis7TaskBegain:
                     dt7.Rows.Clear();
                     dt7.Columns.Clear();
                     dt7 = db.DBQuery("select * from dbo.TaskAxlis7");
-                    if (dtr != null && dt7.Rows.Count == 1)
+                    if (dt7 != null && dt7.Rows.Count == 1)
                     {
                         a = Convert.ToInt32(dt7.Rows[0]["Axlis7Pos"]);
                         plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(a) });
                         while (PlcData._axlis7Status != (byte)55)
                         {
+                            if (Run.gSheduleExit == true)
+                            {
+                                db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
+                                goto Axlis7TaskBegain;
+                            }  
                             Thread.Sleep(100);
                         }
                         db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
@@ -517,8 +556,10 @@ namespace XT_CETC23.DataCom
                     {
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                     }
+                    
                     Thread.Sleep(100);
                 }
+                
                 Thread.Sleep(100);
             }            
         }
@@ -531,15 +572,27 @@ namespace XT_CETC23.DataCom
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
+                Axlis2TaskBegain:
                     dt2 = db.DBQuery("select * from dbo.TaskAxlis2");
                     DataTable dt3 = db.DBQuery("select * from dbo.SortData");
-                    if (dt2.Rows.Count == 1)
+                    if (dt2 !=null && dt2.Rows.Count == 1)
                     {
                         if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.ScanSort)
-                        {
+                        {                           
                             plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.ScanSort });
+                            //byte [] myByte=plc.DbRead(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1);
+                            //while (myByte[0] != (byte)EnumC.FrameW.ScanSort)
+                            //{                                
+                            //    Thread.Sleep(100);
+                            //    plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.ScanSort });
+                            //}
                             while (PlcData._axlis2Status != (byte)EnumC.Frame.ScanSort)
                             {
+                                if (Run.gSheduleExit == true)
+                                {
+                                    db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.FrameW.ScanSort + "");
+                                    goto Axlis2TaskBegain;
+                                }
                                 Thread.Sleep(100);
                             }
                             db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.FrameW.ScanSort + "");
@@ -571,8 +624,8 @@ namespace XT_CETC23.DataCom
                             TaskCycle.MainStep = TaskCycle.MainStep + 10;
                         }
                     }
-                    
-                    if (dt2.Rows.Count == 1)
+
+                    if (dt2 != null && dt2.Rows.Count == 1)
                     {
                         if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.GetPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
                         {
@@ -583,6 +636,11 @@ namespace XT_CETC23.DataCom
 
                             while (PlcData._axlis2Status != (byte)EnumC.Frame.GetPiece)
                             {
+                                if (Run.gSheduleExit == true)
+                                {
+                                    db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");
+                                    goto Axlis2TaskBegain;
+                                }
                                 Thread.Sleep(100);
                             }
                             db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");                            
@@ -602,7 +660,7 @@ namespace XT_CETC23.DataCom
                         }
                     }
 
-                    if (dt2.Rows.Count == 1)
+                    if (dt2 != null && dt2.Rows.Count == 1)
                     { 
                         if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.PutPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
                         {
@@ -611,6 +669,11 @@ namespace XT_CETC23.DataCom
 
                             while (PlcData._axlis2Status != (byte)EnumC.Frame.PutPiece)
                             {
+                                if (Run.gSheduleExit == true)
+                                {
+                                    db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");
+                                    goto Axlis2TaskBegain;
+                                }
                                 Thread.Sleep(100);
                             }
                             db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");                           
@@ -634,8 +697,10 @@ namespace XT_CETC23.DataCom
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis2，正常情况下该表格中最多只有一条任务记录！");
                     }
 
+                    
                     Thread.Sleep(100);
                 }
+                
                 Thread.Sleep(100);
             }
         }
@@ -652,7 +717,7 @@ namespace XT_CETC23.DataCom
                     IntPtr text = Marshal.StringToHGlobalAnsi(content);
                     int ret = SendMessage(hwndInput, WM_SETTEXT, IntPtr.Zero, text);
                     int errCode = Marshal.GetLastWin32Error();
-                    Console.WriteLine(new System.ComponentModel.Win32Exception(errCode).Message);
+                    Logger.WriteLine(new System.ComponentModel.Win32Exception(errCode).Message);
                     Marshal.FreeCoTaskMem(text);
                     ret = PostMessage(hwndInput, WM_KEYDOWN, (IntPtr)vbKeyReturn, IntPtr.Zero);
                     ret = PostMessage(hwndInput, WM_KEYUP, (IntPtr)vbKeyReturn, IntPtr.Zero);
@@ -660,13 +725,13 @@ namespace XT_CETC23.DataCom
                 }
                 else
                 {
-                    Console.WriteLine("请确认U8转移报工窗口打开");
+                    Logger.WriteLine("请确认U8转移报工窗口打开");
                     return -2;
                 }
             }
             else
             {
-                Console.WriteLine("请确认U8转移报工窗口打开");
+                Logger.WriteLine("请确认U8转移报工窗口打开");
                 return -1;
             }
             return 0;

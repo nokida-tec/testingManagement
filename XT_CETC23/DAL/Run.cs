@@ -70,7 +70,7 @@ namespace XT_CETC23.DataCom
         public static bool stepEnable = false;
         public static bool readyForStep = false;
         int preAlarmNo = 0;
-        private bool gSheduleExit = false;
+        public static bool gSheduleExit = false;
 
         static public Run GetInstanse(IRunForm iRunForm,IAutoForm iAutoForm,IMainForm iMainFrom,IManulForm iManulForm, ICameraForm iCameraForm)
         {
@@ -121,16 +121,19 @@ namespace XT_CETC23.DataCom
                         #region  测试柜状态读取
                         for (int i=0;i<6;i++)
                         {
-                            if((PlcData._cabinetStatus[i] & 1)!=0)
-                                GetCabinetStatus(i + 1, "可放料");
-                            else if ((PlcData._cabinetStatus[i] & 2) != 0)
-                                GetCabinetStatus(i + 1, "可测试");
-                            else if((PlcData._cabinetStatus[i] & 4) != 0)
-                                GetCabinetStatus(i + 1, "测试中");
-                            else if((PlcData._cabinetStatus[i] & 8) != 0)
-                                GetCabinetStatus(i + 1, "可取料");
-                            else
-                                GetCabinetStatus(i + 1, "准备中");
+                            if (stepEnable == false)
+                            {
+                                if ((PlcData._cabinetStatus[i] & 1) != 0)
+                                    GetCabinetStatus(i + 1, "可放料");
+                                else if ((PlcData._cabinetStatus[i] & 2) != 0)
+                                    GetCabinetStatus(i + 1, "可测试");
+                                else if ((PlcData._cabinetStatus[i] & 4) != 0)
+                                    GetCabinetStatus(i + 1, "测试中");
+                                else if ((PlcData._cabinetStatus[i] & 8) != 0)
+                                    GetCabinetStatus(i + 1, "可取料");
+                                else
+                                    GetCabinetStatus(i + 1, "准备中");
+                            }
                         }
                         #endregion
 
@@ -206,6 +209,8 @@ namespace XT_CETC23.DataCom
             db = DataBase.GetInstanse();
             taskCycle = TaskCycle.GetInstanse();
 
+            TestingSystem.GetInstanse().SetExitSystem();
+
             this.iCameraForm = iCameraForm;
             this.iRunForm = iRunForm;
             this.iAutoForm = iAutoForm;
@@ -257,7 +262,7 @@ namespace XT_CETC23.DataCom
             readPlcTh.Name = "读取PLC数据";
             readCabinetTh = new Thread(ReadCabinet);
             readCabinetTh.Name = "读取测试柜状态";
-            TransMessage("监控进程启动");
+            TransMessage("监控进程启动");            
 
             while (true)
             {
@@ -274,12 +279,13 @@ namespace XT_CETC23.DataCom
 
                     if (modeByPlc == "Auto" && commandByPlc == "Start" && !mainStarting && initializing == true)
                     {
+                        readyForStep = false;
                         mForm.clearTask();
                         mainSchedule = new Thread(MainSchedule);
                         mainSchedule.Name = "主调度流程";
                         mainSchedule.Start();
                         TransMessage("主调度进程启动");
-                        Console.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId );
+                        Logger.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
                         mainStarting = true;
                         gSheduleExit = false;
                         
@@ -292,8 +298,10 @@ namespace XT_CETC23.DataCom
                         {
                             if (mainSchedule != null && mainSchedule.IsAlive)
                             {
-                                Console.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
+                                mainSchedule.Abort();
+                                Logger.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
                                 gSheduleExit = true;
+                                TestingSystem.GetInstanse().ExitSystem();
                                 TransMessage("主调度进程退出");
                             }
                             mainStarting = false;
@@ -306,11 +314,12 @@ namespace XT_CETC23.DataCom
                     if (modeByPlc == "Auto" && commandByPlc == "Initialize" && !initializing)
                     {                       
                         mForm.clearTask();
-
+                        SetProdType2Plc();
                         InitStatus = getInitResult();
                         do
                         {
                             Thread.Sleep(100);
+
                         } while (!InitStatus || (statusByPlc != "Initalized"));
                                                 
                         Thread.Sleep(1000);
@@ -318,10 +327,10 @@ namespace XT_CETC23.DataCom
                         {
                             Thread.Sleep(100);
                         } while(!plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 1 }));
-                        Thread.Sleep(1000);
-                        SetProdType2Plc();
+                        Thread.Sleep(1000);                       
                         TransMessage("初始化成功");
-                        initializing = true;                       
+                        initializing = true;
+                        //readyForStep = true;
                         commandByPlc = "";                      
                     }
 
@@ -369,7 +378,7 @@ namespace XT_CETC23.DataCom
                         }
                     }
                 }
-                PrintAlarm(PlcData._alarmNumber);
+                PrintAlarm(PlcData._alarmNumber);                
                 Thread.Sleep(100);
             }                    
         }
@@ -430,6 +439,7 @@ namespace XT_CETC23.DataCom
             }
             plc.DBWrite(100, 2, 1, new Byte[] { 0 });
             plc.DBWrite(100, 3, 1, new Byte[] { 0 });
+            //taskCycle = TaskCycle.GetInstanse();
 
             return i == 2;
         }
@@ -451,47 +461,50 @@ namespace XT_CETC23.DataCom
                 int pieceNo = 0;
                 MTR mtr = MTR.GetIntanse();
                 bool frameEmptyInd=false;
+                bool isFirstTime = true;
 
                 //判断料架是否已经完成扫码，如果没有，则插入扫码任务
-                db.DBDelete("delete from dbo.MTR");
-                db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                //db.DBDelete("delete from dbo.MTR");
+                //db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
 
             ReStart:
-                TaskCycle.MainStep = 0;
-                dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
-                TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
-                if (TaskCycle.feedBinScanDone == "No")
+                if (!stepEnable)
                 {
+                    TaskCycle.MainStep = 0;
+                    dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
+                    TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
+                    if (TaskCycle.feedBinScanDone == "No")
                     {
-                        DataTable dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                        //设备只能有一条实时任务
-                        if (!(dt.Rows.Count > 0))
                         {
-                            if (plc.plcConnected)
+                            DataTable dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                            //设备只能有一条实时任务
+                            if (!(dt.Rows.Count > 0))
                             {
-                                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
-                                TransMessage("插入料架扫码任务");
+                                if (plc.plcConnected)
+                                {
+                                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
+                                    TransMessage("插入料架扫码任务");
+                                }
+                                else
+                                    MessageBox.Show("PLC未连接");
                             }
                             else
-                                MessageBox.Show("PLC未连接");
+                                MessageBox.Show("当前任务未完成");
                         }
-                        else
-                            MessageBox.Show("当前任务未完成");
-                    }
-                    do
-                    {
-                        if (gSheduleExit == true)
+                        do
                         {
-                            gSheduleExit = false;
-                            return;
-                        }
-                        Thread.Sleep(100);
-                    } while (TaskCycle.MainStep != 10);
-                    TaskCycle.feedBinScanDone = "Yes";
-                    db.DBUpdate("update dbo.FeedBin set Sort='" + "Yes" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
-                    FrameDataUpdate();
-                    frameEmptyInd=false;
-                    readyForStep = true;
+                            if (gSheduleExit == true)
+                            {
+                                return;
+                            }
+                            Thread.Sleep(100);
+                        } while (TaskCycle.MainStep != 10);
+                        TaskCycle.feedBinScanDone = "Yes";
+                        db.DBUpdate("update dbo.FeedBin set Sort='" + "Yes" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                        FrameDataUpdate();
+                        frameEmptyInd = false;
+                        //readyForStep = true;
+                    }
                 }
 
 
@@ -501,7 +514,6 @@ namespace XT_CETC23.DataCom
                     {
                         if (gSheduleExit == true)
                         {
-                            gSheduleExit = false;
                             return;
                         }
                         #region 根据数据库中的跟踪表MTR,区分不同的情况进行相应的处理.
@@ -515,7 +527,6 @@ namespace XT_CETC23.DataCom
                                 {
                                     if (gSheduleExit == true)
                                     {
-                                        gSheduleExit = false;
                                         return;
                                     }
                                     string tmpText = dtMTR.Rows[j]["CurrentStation"].ToString().Trim().Substring(2);
@@ -546,7 +557,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -559,7 +570,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -581,7 +592,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -595,7 +606,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -610,7 +621,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -642,8 +653,12 @@ namespace XT_CETC23.DataCom
                                     #endregion
 
                                     #region 物料在测试柜中且未测试完成,完成测试即可
-                                    else if (tmpText.Equals("号机台") && !statusTest)
-                                    {
+                                    else if (tmpText.Equals("号机台") && !statusTest && isFirstTime)
+                                    //else if (tmpText.Equals("号机台") && !statusTest)
+                                    {                                        
+                                        //插入测试任务
+                                        db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                                        TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
                                         //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
                                         // DialogResult result = MessageBox.Show("有未完成测试任务，请确认把产品从测试台中拿出，然后点击确定按钮", "重要提示");
                                         // db.DBDelete("delete from dbo.MTR");
@@ -654,14 +669,16 @@ namespace XT_CETC23.DataCom
                                     #endregion
 
                                     #region 其它,终止该过程
-                                    else
+                                    else if (!tmpText.Equals("号机台"))
+                                    //else
                                     {
                                         db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
                                     }
                                     #endregion
-                                    readyForStep = true;
+                                    //readyForStep = true;                                    
                                 }
                             }
+                            isFirstTime = false;
                         }
                         #endregion
 
@@ -682,6 +699,7 @@ namespace XT_CETC23.DataCom
                                 MessageBox.Show("料架已取空，请更换料架");
                                 while (!frameUpdate)
                                 {
+                                    
                                     Thread.Sleep(100);
                                 }
 
@@ -694,7 +712,7 @@ namespace XT_CETC23.DataCom
                             }
                             else if (dtMTR.Rows.Count > 0 && frameEmptyInd == true)
                             {
-                                readyForStep = true;
+                                //readyForStep = true;
                                 goto TakeBack;
                             }
                         }
@@ -713,7 +731,7 @@ namespace XT_CETC23.DataCom
                                 {
                                     if (gSheduleExit == true)
                                     {
-                                        gSheduleExit = false;
+                                        
                                         return;
                                     }
                                     string CabInMTR = dtMTR.Rows[m]["CurrentStation"].ToString().Trim();
@@ -760,7 +778,7 @@ namespace XT_CETC23.DataCom
                                     {
                                         if (gSheduleExit == true)
                                         {
-                                            gSheduleExit = false;
+                                            
                                             return;
                                         }
                                         Thread.Sleep(100);
@@ -822,7 +840,7 @@ namespace XT_CETC23.DataCom
                                     {
                                         if (gSheduleExit == true)
                                         {
-                                            gSheduleExit = false;
+                                            
                                             return;
                                         }
                                         Thread.Sleep(100);
@@ -854,6 +872,9 @@ namespace XT_CETC23.DataCom
                                     string CordinatorX = "0";
                                     string CordinatorY = "0";
                                     string CordinatorU = "0";
+
+                                    //D产品不对第4列进行拍照的处理
+                                    //=====================================================
                                     if (prodNumber == 4)
                                     {
                                         if (pieceNo % 4 == 0)
@@ -868,7 +889,7 @@ namespace XT_CETC23.DataCom
                                                 {
                                                     if (gSheduleExit == true)
                                                     {
-                                                        gSheduleExit = false;
+                                                        
                                                         return;
                                                     }
                                                     Thread.Sleep(100);
@@ -885,6 +906,9 @@ namespace XT_CETC23.DataCom
                                             }
                                         }
                                     }
+                                    //=======================================================
+
+                                    //触发拍照
                                     cFrom.CCDTrigger(prodNumber, pieceNo);
 
                                     if (cFrom.CCDDone == -1)                                  //拍照失败
@@ -899,7 +923,7 @@ namespace XT_CETC23.DataCom
                                             {
                                                 if (gSheduleExit == true)
                                                 {
-                                                    gSheduleExit = false;
+                                                    
                                                     return;
                                                 }
                                                 Thread.Sleep(100);
@@ -932,7 +956,7 @@ namespace XT_CETC23.DataCom
                                     {
                                         if (gSheduleExit == true)
                                         {
-                                            gSheduleExit = false;
+                                            
                                             return;
                                         }
                                         Thread.Sleep(100);
@@ -956,7 +980,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -968,7 +992,7 @@ namespace XT_CETC23.DataCom
                                         {
                                             if (gSheduleExit == true)
                                             {
-                                                gSheduleExit = false;
+                                                
                                                 return;
                                             }
                                             Thread.Sleep(100);
@@ -997,8 +1021,7 @@ namespace XT_CETC23.DataCom
                                     do
                                     {
                                         if (gSheduleExit == true)
-                                        {
-                                            gSheduleExit = false;
+                                        {                                            
                                             return;
                                         }
                                         Thread.Sleep(100);
@@ -1013,7 +1036,7 @@ namespace XT_CETC23.DataCom
                                     {
                                         if (gSheduleExit == true)
                                         {
-                                            gSheduleExit = false;
+                                            
                                             return;
                                         }
                                         Thread.Sleep(100);
@@ -1026,20 +1049,41 @@ namespace XT_CETC23.DataCom
                                 PickEnd:
                                     TaskCycle.PickStep = 0;
                                 }
-                                readyForStep = true;
+                                //readyForStep = true;
                             }
                         }
                         #endregion                        
                     }
                     Thread.Sleep(100);
+                    if (stepEnable && !readyForStep)
+                    {
+                        //插入机器人轨道到料架任务
+                        TaskCycle.actionType = "FrameToCabinet";
+                        TaskCycle.PickStep = 0;
+                        //判断机器人是否在原点
+                        db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
+
+                        //等待机器人轨道到位
+                        do
+                        {
+                            if (gSheduleExit == true)
+                            {
+
+                                return;
+                            }
+                            Thread.Sleep(100);
+                        } while (TaskCycle.PickStep != 10);
+                        TaskCycle.PickStep = 0;
+                        mForm.clearTask();
+                        readyForStep = true;
+                    }                                     
                 }
             }
             catch(Exception e)
             {
-                Console.WriteLine(" ***** " + e.Message);
-                Console.WriteLine(" ***** " + e.StackTrace);
+                Logger.printException(e);
             }
-            Console.WriteLine(" ***** exit 调度进程 thread");
+            Logger.WriteLine(" ***** exit 调度进程 thread");
 
         }
 
@@ -1137,7 +1181,10 @@ namespace XT_CETC23.DataCom
                     for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
                     {
                         TestingCabinet.STATUS cabinetStatus = TestingCabinets.getInstance(i).ReadData();
-                        GetCabinetResult(i + 1, EnumHelper.GetDescription(cabinetStatus));
+                        if (stepEnable == false)
+                        {
+                            GetCabinetResult(i + 1, EnumHelper.GetDescription(cabinetStatus));
+                        }
                         TestingCabinets.getInstance(i).Status = cabinetStatus;
                     }
                 }
