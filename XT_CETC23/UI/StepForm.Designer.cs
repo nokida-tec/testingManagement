@@ -83,7 +83,7 @@
             this.panel1.Controls.Add(this.manul_gbRobt);
             this.panel1.Controls.Add(this.manul_gbFrame);
             this.panel1.Location = new System.Drawing.Point(8, 67);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(973, 411);
             this.panel1.TabIndex = 0;
@@ -103,9 +103,9 @@
             this.groupBox2.Controls.Add(this.step_cbProductNo);
             this.groupBox2.Controls.Add(this.step_cbCabinetNo);
             this.groupBox2.Location = new System.Drawing.Point(501, 18);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(457, 229);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
@@ -158,7 +158,7 @@
             "H4",
             "H5"});
             this.step_cbTrayNo.Location = new System.Drawing.Point(142, 81);
-            this.step_cbTrayNo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_cbTrayNo.Margin = new System.Windows.Forms.Padding(2);
             this.step_cbTrayNo.Name = "step_cbTrayNo";
             this.step_cbTrayNo.Size = new System.Drawing.Size(109, 24);
             this.step_cbTrayNo.TabIndex = 4;
@@ -168,7 +168,7 @@
             this.step_btnFetch.BackColor = System.Drawing.Color.PowderBlue;
             this.step_btnFetch.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_btnFetch.Location = new System.Drawing.Point(287, 168);
-            this.step_btnFetch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_btnFetch.Margin = new System.Windows.Forms.Padding(2);
             this.step_btnFetch.Name = "step_btnFetch";
             this.step_btnFetch.Size = new System.Drawing.Size(146, 31);
             this.step_btnFetch.TabIndex = 6;
@@ -181,7 +181,7 @@
             this.button1.BackColor = System.Drawing.Color.PowderBlue;
             this.button1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button1.Location = new System.Drawing.Point(287, 122);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(146, 31);
             this.button1.TabIndex = 6;
@@ -194,7 +194,7 @@
             this.step_btnTestStart.BackColor = System.Drawing.Color.PowderBlue;
             this.step_btnTestStart.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_btnTestStart.Location = new System.Drawing.Point(287, 76);
-            this.step_btnTestStart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_btnTestStart.Margin = new System.Windows.Forms.Padding(2);
             this.step_btnTestStart.Name = "step_btnTestStart";
             this.step_btnTestStart.Size = new System.Drawing.Size(146, 31);
             this.step_btnTestStart.TabIndex = 6;
@@ -207,7 +207,7 @@
             this.step_btnTake.BackColor = System.Drawing.Color.PowderBlue;
             this.step_btnTake.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_btnTake.Location = new System.Drawing.Point(287, 30);
-            this.step_btnTake.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_btnTake.Margin = new System.Windows.Forms.Padding(2);
             this.step_btnTake.Name = "step_btnTake";
             this.step_btnTake.Size = new System.Drawing.Size(146, 31);
             this.step_btnTake.TabIndex = 6;
@@ -255,7 +255,7 @@
             this.step_cbProductSort.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_cbProductSort.FormattingEnabled = true;
             this.step_cbProductSort.Location = new System.Drawing.Point(142, 35);
-            this.step_cbProductSort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_cbProductSort.Margin = new System.Windows.Forms.Padding(2);
             this.step_cbProductSort.Name = "step_cbProductSort";
             this.step_cbProductSort.Size = new System.Drawing.Size(109, 24);
             this.step_cbProductSort.TabIndex = 5;
@@ -287,7 +287,7 @@
             "5#测试位",
             "6#测试位"});
             this.step_cbProductNo.Location = new System.Drawing.Point(142, 127);
-            this.step_cbProductNo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_cbProductNo.Margin = new System.Windows.Forms.Padding(2);
             this.step_cbProductNo.Name = "step_cbProductNo";
             this.step_cbProductNo.Size = new System.Drawing.Size(109, 24);
             this.step_cbProductNo.TabIndex = 3;
@@ -305,7 +305,7 @@
             "5#测试位",
             "6#测试位"});
             this.step_cbCabinetNo.Location = new System.Drawing.Point(142, 173);
-            this.step_cbCabinetNo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.step_cbCabinetNo.Margin = new System.Windows.Forms.Padding(2);
             this.step_cbCabinetNo.Name = "step_cbCabinetNo";
             this.step_cbCabinetNo.Size = new System.Drawing.Size(109, 24);
             this.step_cbCabinetNo.TabIndex = 3;
@@ -319,9 +319,9 @@
             this.groupBox1.Controls.Add(this.manul_cbCabineit);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Location = new System.Drawing.Point(501, 269);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(457, 114);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
@@ -333,7 +333,7 @@
             this.manul_cbCabineitType.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_cbCabineitType.FormattingEnabled = true;
             this.manul_cbCabineitType.Location = new System.Drawing.Point(142, 69);
-            this.manul_cbCabineitType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbCabineitType.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbCabineitType.Name = "manul_cbCabineitType";
             this.manul_cbCabineitType.Size = new System.Drawing.Size(109, 24);
             this.manul_cbCabineitType.TabIndex = 8;
@@ -344,7 +344,7 @@
             this.manul_btnStopT.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnStopT.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStopT.Location = new System.Drawing.Point(287, 63);
-            this.manul_btnStopT.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnStopT.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStopT.Name = "manul_btnStopT";
             this.manul_btnStopT.Size = new System.Drawing.Size(146, 31);
             this.manul_btnStopT.TabIndex = 35;
@@ -368,11 +368,11 @@
             this.manul_btnStartT.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnStartT.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStartT.Location = new System.Drawing.Point(287, 23);
-            this.manul_btnStartT.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnStartT.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStartT.Name = "manul_btnStartT";
             this.manul_btnStartT.Size = new System.Drawing.Size(146, 31);
             this.manul_btnStartT.TabIndex = 7;
-            this.manul_btnStartT.Text = "启动测试";
+            this.manul_btnStartT.Text = "开始测试";
             this.manul_btnStartT.UseVisualStyleBackColor = false;
             this.manul_btnStartT.Click += new System.EventHandler(this.manul_btnStartT_Click);
             // 
@@ -389,7 +389,7 @@
             "5#机台",
             "6#机台"});
             this.manul_cbCabineit.Location = new System.Drawing.Point(142, 27);
-            this.manul_cbCabineit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbCabineit.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbCabineit.Name = "manul_cbCabineit";
             this.manul_cbCabineit.Size = new System.Drawing.Size(109, 24);
             this.manul_cbCabineit.TabIndex = 34;
@@ -419,9 +419,9 @@
             this.manul_gbRobt.Controls.Add(this.manul_lbCommand1);
             this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_gbRobt.Location = new System.Drawing.Point(12, 170);
-            this.manul_gbRobt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_gbRobt.Margin = new System.Windows.Forms.Padding(2);
             this.manul_gbRobt.Name = "manul_gbRobt";
-            this.manul_gbRobt.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_gbRobt.Padding = new System.Windows.Forms.Padding(2);
             this.manul_gbRobt.Size = new System.Drawing.Size(460, 213);
             this.manul_gbRobt.TabIndex = 36;
             this.manul_gbRobt.TabStop = false;
@@ -431,7 +431,7 @@
             // 
             this.ckbAxis7Alone.AutoSize = true;
             this.ckbAxis7Alone.Location = new System.Drawing.Point(317, 162);
-            this.ckbAxis7Alone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ckbAxis7Alone.Margin = new System.Windows.Forms.Padding(2);
             this.ckbAxis7Alone.Name = "ckbAxis7Alone";
             this.ckbAxis7Alone.Size = new System.Drawing.Size(132, 16);
             this.ckbAxis7Alone.TabIndex = 8;
@@ -444,7 +444,7 @@
             this.manul_cbProductNum.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_cbProductNum.FormattingEnabled = true;
             this.manul_cbProductNum.Location = new System.Drawing.Point(159, 159);
-            this.manul_cbProductNum.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbProductNum.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbProductNum.Name = "manul_cbProductNum";
             this.manul_cbProductNum.Size = new System.Drawing.Size(109, 24);
             this.manul_cbProductNum.TabIndex = 7;
@@ -454,7 +454,7 @@
             this.manul_btnStart1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnStart1.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStart1.Location = new System.Drawing.Point(317, 53);
-            this.manul_btnStart1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnStart1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStart1.Name = "manul_btnStart1";
             this.manul_btnStart1.Size = new System.Drawing.Size(97, 94);
             this.manul_btnStart1.TabIndex = 6;
@@ -468,7 +468,7 @@
             this.manul_cbProductSort.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_cbProductSort.FormattingEnabled = true;
             this.manul_cbProductSort.Location = new System.Drawing.Point(159, 42);
-            this.manul_cbProductSort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbProductSort.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbProductSort.Name = "manul_cbProductSort";
             this.manul_cbProductSort.Size = new System.Drawing.Size(109, 24);
             this.manul_cbProductSort.TabIndex = 5;
@@ -489,7 +489,7 @@
             "5#测试位",
             "6#测试位"});
             this.manul_cbGoalPos.Location = new System.Drawing.Point(159, 120);
-            this.manul_cbGoalPos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbGoalPos.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbGoalPos.Name = "manul_cbGoalPos";
             this.manul_cbGoalPos.Size = new System.Drawing.Size(109, 24);
             this.manul_cbGoalPos.TabIndex = 3;
@@ -526,7 +526,7 @@
             "取料",
             "放料"});
             this.manul_cbCommand.Location = new System.Drawing.Point(159, 81);
-            this.manul_cbCommand.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbCommand.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbCommand.Name = "manul_cbCommand";
             this.manul_cbCommand.Size = new System.Drawing.Size(109, 24);
             this.manul_cbCommand.TabIndex = 4;
@@ -563,9 +563,9 @@
             this.manul_gbFrame.Controls.Add(this.manul_lbGoalPos2);
             this.manul_gbFrame.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_gbFrame.Location = new System.Drawing.Point(12, 18);
-            this.manul_gbFrame.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_gbFrame.Margin = new System.Windows.Forms.Padding(2);
             this.manul_gbFrame.Name = "manul_gbFrame";
-            this.manul_gbFrame.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_gbFrame.Padding = new System.Windows.Forms.Padding(2);
             this.manul_gbFrame.Size = new System.Drawing.Size(460, 138);
             this.manul_gbFrame.TabIndex = 37;
             this.manul_gbFrame.TabStop = false;
@@ -576,7 +576,7 @@
             this.manul_btnStartScan.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnStartScan.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStartScan.Location = new System.Drawing.Point(68, 15);
-            this.manul_btnStartScan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnStartScan.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStartScan.Name = "manul_btnStartScan";
             this.manul_btnStartScan.Size = new System.Drawing.Size(313, 41);
             this.manul_btnStartScan.TabIndex = 7;
@@ -589,7 +589,7 @@
             this.manul_btnStart2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnStart2.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStart2.Location = new System.Drawing.Point(317, 67);
-            this.manul_btnStart2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnStart2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStart2.Name = "manul_btnStart2";
             this.manul_btnStart2.Size = new System.Drawing.Size(97, 59);
             this.manul_btnStart2.TabIndex = 6;
@@ -606,7 +606,7 @@
             "取料",
             "放料"});
             this.manul_cbCommand2.Location = new System.Drawing.Point(159, 105);
-            this.manul_cbCommand2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbCommand2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbCommand2.Name = "manul_cbCommand2";
             this.manul_cbCommand2.Size = new System.Drawing.Size(109, 24);
             this.manul_cbCommand2.TabIndex = 4;
@@ -658,7 +658,7 @@
             "H4",
             "H5"});
             this.manul_cbGoalPos2.Location = new System.Drawing.Point(159, 67);
-            this.manul_cbGoalPos2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_cbGoalPos2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbGoalPos2.Name = "manul_cbGoalPos2";
             this.manul_cbGoalPos2.Size = new System.Drawing.Size(109, 24);
             this.manul_cbGoalPos2.TabIndex = 3;
@@ -706,7 +706,7 @@
             this.Controls.Add(this.auto_lbName);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "StepForm";
             this.Tag = "";
             this.Text = "StepForm";

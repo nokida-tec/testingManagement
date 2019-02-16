@@ -113,40 +113,64 @@ namespace XT_CETC23.SonForm
         {
             if (Run.stepEnable == true && Run.readyForStep == true)
             {
-                if (manul_cbProductSort.SelectedIndex > -1 && manul_cbGoalPos.SelectedIndex > -1 && manul_cbCommand.SelectedIndex > -1)
+                if (!ckbAxis7Alone.Checked)                 //机器人和轨道联动
                 {
-                    if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
+                    if (manul_cbProductSort.SelectedIndex > -1 && manul_cbGoalPos.SelectedIndex > -1 && manul_cbCommand.SelectedIndex > -1)
                     {
-                        if (manul_cbProductNum.Enabled)
+                        if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
                         {
-                            if (manul_cbProductNum.SelectedIndex > -1)
+                            if (manul_cbProductNum.Enabled)
                             {
+                                if (manul_cbProductNum.SelectedIndex > -1)
+                                {
+                                    Thread robotTh = new Thread(RobotOp);
+                                    if (!robotTh.IsAlive)
+                                    {
+                                        robotTh.Start();
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("输入信息不全！", "Information");
+                                }
+                            }
+                            else
+                            {                               
                                 Thread robotTh = new Thread(RobotOp);
                                 if (!robotTh.IsAlive)
                                 {
                                     robotTh.Start();
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("输入信息不全！", "Information");
+                                }                                
                             }
                         }
                         else
                         {
+                            Thread robotTh = new Thread(RobotOp);
+                            if (!robotTh.IsAlive)
                             {
-                                Thread robotTh = new Thread(RobotOp);
-                                if (!robotTh.IsAlive)
-                                {
-                                    robotTh.Start();
-                                }
+                                robotTh.Start();
                             }
                         }
                     }
+                    else
+                    {
+                        MessageBox.Show("输入信息不全！", "Information");
+                    }
                 }
-                else
+                else                        //轨道独立运动
                 {
-                    MessageBox.Show("输入信息不全！", "Information");
+                    if(manul_cbGoalPos.SelectedIndex > -1)
+                    {
+                        Thread robotTh = new Thread(RobotOp);
+                        if (!robotTh.IsAlive)
+                        {
+                            robotTh.Start();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("输入信息不全！", "Information");
+                    }
                 }
             }
             else
@@ -174,9 +198,10 @@ namespace XT_CETC23.SonForm
                     order = "PutProTray";
                 if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
                     order = "GetProTest";
-                if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
+                if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
                     order = "PutProTest";
                 string prodType = manul_cbProductSort.SelectedItem.ToString();
+                String rspMsg = order + "Done";
 
                 //判断机器人是否在原点
                 //机器人轨道移动机器人到动作位置
@@ -196,63 +221,64 @@ namespace XT_CETC23.SonForm
                 {                        
                     #region 料架位
                     int pieceNo = 1;
+                    
                     if (manul_cbProductNum.Enabled)
                     {
                         pieceNo = manul_cbProductNum.SelectedIndex + 1;
                     }                                            
                         
-                    //拍照
-                    int prodNumber = 0;
-                    switch (prodType)
+                                            
+                    if (order == "GetProTray")  //机器人取料
                     {
-                        case "A":
-                            prodNumber = 1;
-                            break;
-                        case "B":
-                            prodNumber = 2;
-                            break;
-                        case "C":
-                            prodNumber = 3;
-                            break;
-                        case "D":
-                            prodNumber = 4;
-                            break;
-                        case "E":
-                            prodNumber = 5;
-                            break;
-                        case "F":
-                            prodNumber = 6;
-                            break;
-                    }
-
-                    int shootTimes = 0;
-                ShootAgain:
-                    string CordinatorX = "0";
-                    string CordinatorY = "0";
-                    string CordinatorU = "0";
-                    cFrom.CCDTrigger(prodNumber, pieceNo);
-                    shootTimes = shootTimes + 1;
-
-                    if (cFrom.CCDDone == -1)
-                    {
-                        Thread.Sleep(200);
-                        if (shootTimes < 4)
+                        //拍照
+                        int prodNumber = 0;
+                        switch (prodType)
                         {
-                            goto ShootAgain;
+                            case "A":
+                                prodNumber = 1;
+                                break;
+                            case "B":
+                                prodNumber = 2;
+                                break;
+                            case "C":
+                                prodNumber = 3;
+                                break;
+                            case "D":
+                                prodNumber = 4;
+                                break;
+                            case "E":
+                                prodNumber = 5;
+                                break;
+                            case "F":
+                                prodNumber = 6;
+                                break;
                         }
-                        MessageBox.Show("视觉识别失败", "Information");
-                        return;
-                    }
-                        
-                    if (prodType == "D")
-                    {
-                        CordinatorX = cFrom.X;
-                        CordinatorY = cFrom.Y;
-                    }
 
-                    //机器人取料                        
-                    if (order == "GetProTray")
-                    {
+                        int shootTimes = 0;
+                    ShootAgain:
+                        string CordinatorX = "0";
+                        string CordinatorY = "0";
+                        string CordinatorU = "0";
+                        cFrom.CCDTrigger(prodNumber, pieceNo);
+                        shootTimes = shootTimes + 1;
+
+                        if (cFrom.CCDDone == -1)
+                        {
+                            Thread.Sleep(200);
+                            if (shootTimes < 4)
+                            {
+                                goto ShootAgain;
+                            }
+                            MessageBox.Show("视觉识别失败", "Information");
+                            return;
+                        }
+
+                        if (prodType == "D")
+                        {
+                            CordinatorX = cFrom.X;
+                            CordinatorY = cFrom.Y;
+                        }
+
                         robot.sendDataToRobot(order + "," + prodType + "," + pieceNo.ToString() + "," + CordinatorX + "," + CordinatorY + "," + CordinatorU);
 
                         //等待机器人触发扫码
@@ -264,23 +290,10 @@ namespace XT_CETC23.SonForm
                         Thread.Sleep(100);
                         robot.sendDataToRobot("ScanDone");              //给机器人发送扫码完成消息 
                     }
-                    else
+                    else if(order == "PutProTray")           //机器人放料
                     {
                         robot.sendDataToRobot(order + "," + prodType + "," + pieceNo.ToString());
-                    }
-                       
-                    //等待机器人取料完成消息
-                    String rspMsg = RobotData.Command.Trim() + "Done";
-                    while (String.IsNullOrEmpty(RobotData.Response)) 
-                    {
-                        Thread.Sleep(100);
-                    }
-                    while (!RobotData.Response.Trim().Equals(rspMsg))
-                    {
-                        Thread.Sleep(100);
-                    }                        
-                    RobotData.Command = "";
-                    RobotData.Response = "";
+                    }                                           
                     #endregion                    
                 }                          
                 else
@@ -288,30 +301,36 @@ namespace XT_CETC23.SonForm
                     #region 测试台
                     int cabinetNo = manul_cbGoalPos.SelectedIndex;
                     robot.sendDataToRobot(order + "," + prodType + "," + cabinetNo.ToString());
-                    }
-                       
-                    //等待机器人取料完成消息                    
-                    while (String.IsNullOrEmpty(RobotData.Response)) 
-                    {
-                        Thread.Sleep(100);
-                    }
-                    while (!RobotData.Response.Trim().Equals(RobotData.Command.Trim() + "Done"))
-                    {
-                        Thread.Sleep(100);
-                    }                        
-                    RobotData.Command = "";
-                    RobotData.Response = "";
                     #endregion
-                }               
-                #endregion
+                }
 
-            else
-            {
-                //判断机器人是否在原点
-                db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos(manul_cbGoalPos.SelectedItem.ToString()) + ")");
-                TaskCycle.PickStep = 0;
-                TaskCycle.PutStep = 0;
+                //等待机器人取料完成消息                    
+                while (String.IsNullOrEmpty(RobotData.Response))
+                {
+                    Thread.Sleep(100);
+                }
+                while (!RobotData.Response.Trim().Equals(rspMsg))
+                {
+                    Thread.Sleep(100);
+                }
+                RobotData.Command = "";
+                RobotData.Response = "";                
             }
+            #endregion
+
+            else        //轨道独立运动
+            {
+                TaskCycle.actionType = "FrameToCabinet";
+                TaskCycle.PickStep = 0;
+                //插入机器人轨道移动任务
+                db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos(manul_cbGoalPos.SelectedItem.ToString()) + ")");
+                do
+                {
+                    Thread.Sleep(100);
+                } while (TaskCycle.PickStep != 10);
+                TaskCycle.PickStep = 0;
+            }
+            MessageBox.Show("操作完成！", "Information");
             //}
             //else
             //{
@@ -572,7 +591,10 @@ namespace XT_CETC23.SonForm
             {
                 //if (db.DBInsert("insert into dbo.TaskCabinet(EquipmentName,OrderType) values('" + manul_cbCabineit.SelectedItem.ToString() + "','" + EnumHelper.GetDescription(EnumC.CabinetW.Start) + "')"))
                 //if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + CabinetData.getType(manul_cbCabineitType.SelectedItem.ToString())  + "',ProductType='"+ manul_cbCabineitType.SelectedItem.ToString()+ "' where EquipmentName='" + manul_cbCabineit.SelectedItem.ToString().Trim() + "'"))
-                TestingCabinets.getInstance(cabinet).cmdStart(prod, cabinet);
+                if(order== "Start")
+                    TestingCabinets.getInstance(cabinet).cmdStart(prod, cabinet);
+                if (order == "Stop")
+                    TestingCabinets.getInstance(cabinet).cmdStop();
                 //db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + order + "',ProductType='" + prod + "'," + "BasicID=" + 2998 + "where CabinetID=" + cabinet);
                 //if (db.DBUpdate("update dbo.TaskCabinet set OrderType= '" + "Start" + "',ProductType='" + prod + "' where CabinetID='" + cabinet + "'"))
                 //    TransMessage(manul_cbCabineit.SelectedItem.ToString() + "任务手动插入成功");
@@ -632,6 +654,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
+        int stepCycle = 0;
         private void step_btnTake_Click(object sender, EventArgs e)
         {
             if (Run.stepEnable == true && Run.readyForStep == true)
@@ -639,7 +662,7 @@ namespace XT_CETC23.SonForm
                 if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
                 {
                     Thread takeTh = new Thread(FrameToCabinet);
-                    takeTh.Start();
+                    takeTh.Start();                    
                 }
                 else
                 {
@@ -666,17 +689,17 @@ namespace XT_CETC23.SonForm
 
             string prodType = step_cbProductSort.SelectedItem.ToString().Trim();
 
-            int tmpIndex = step_cbTrayNo.SelectedIndex;
-            int colNo = (tmpIndex - 1) / 8;
-            int rowNo = (tmpIndex - 1) % 8;
-            int trayNo = (rowNo + 1) * 10 + (colNo + 1);
+            int tmpIndex = step_cbTrayNo.SelectedIndex+1;
+            int colNo = (tmpIndex - 1) / 5;
+            int rowNo = (tmpIndex - 1) % 5;
+            int trayNo = (colNo + 1) * 10 + (rowNo + 1);
             pieceNo = 1;
 
             if (step_cbProductNo.Enabled)
             {
-                pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString()) + 1;
+                pieceNo = step_cbProductNo.SelectedIndex + 1;
             }
-            int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
+            int cabinetNo = step_cbCabinetNo.SelectedIndex;
             cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
 
             if (cabinetType != prodType)
@@ -686,7 +709,8 @@ namespace XT_CETC23.SonForm
             }
 
             dtFeedBin = db.DBQuery("select * from dbo.FeedBin");
-            string trayType = dtFeedBin.Rows[tmpIndex]["Sort"].ToString().Trim();
+            int aIndex = rowNo * 8 + colNo;
+            string trayType = dtFeedBin.Rows[aIndex]["Sort"].ToString().Trim();
             if (trayType != prodType)
             {
                 MessageBox.Show("料盘类型与选择的产品类型不匹配！");
@@ -838,13 +862,13 @@ namespace XT_CETC23.SonForm
                 return;
             }
 
-            //读码成功
-            Byte[] myCode = new Byte[50];
-            myCode = plc.DbRead(104, 504, 50);
+            //读码成功            
+            Byte[] myCode = plc.DbRead(104, 0, 556);
             Thread.Sleep(2000);
             plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
-            int realLen = Convert.ToInt32(myCode[1]);
-            prodCode = Encoding.Default.GetString(myCode, 2, realLen).Trim();
+            int strLen = Convert.ToInt32(myCode[504]);
+            int realLen = Convert.ToInt32(myCode[505]);
+            prodCode = Encoding.Default.GetString(myCode, 506, realLen).Trim();
 
             db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
@@ -873,48 +897,55 @@ namespace XT_CETC23.SonForm
 
             //更新MTR表格
             db.DBUpdate("update dbo.MTR set CurrentStation = '" + TestingCabinets.getInstance(cabinetNo).Name + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+            stepCycle = 50;
+            MessageBox.Show("操作完成！", "Information");
         }
 
         private void step_btnTestStart_Click(object sender, EventArgs e)
         {
+            bool testStarted = false;
             if (Run.stepEnable == true && Run.readyForStep == true)
             {
-                if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
+                if (stepCycle == 50 && testStarted==false)
                 {
-                    DataTable dtMTR = new DataTable();
-                    DataTable dtFeedBin = new DataTable();
-                    DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
-
-                    String cabinetType = "";
-                    int pieceNo = 0;
-                    MTR mtr = MTR.GetIntanse();
-
-                    string prodType = step_cbProductSort.SelectedItem.ToString();
-
-                    int tmpIndex = step_cbTrayNo.SelectedIndex;
-                    int colNo = (tmpIndex - 1) / 8;
-                    int rowNo = (tmpIndex - 1) % 8;
-                    int trayNo = (rowNo + 1) * 10 + (colNo + 1);
-
-                    if (step_cbProductNo.Enabled)
+                    if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
                     {
-                        pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
-                    }
-                    int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-                    string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-                    cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
+                    
+                        DataTable dtMTR = new DataTable();
+                        DataTable dtFeedBin = new DataTable();
+                        DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
-                    if (cabinetType != prodType)
-                    {
-                        MessageBox.Show("目标测试柜类型与选择的产品类型不匹配！");
-                        return;
+                        String cabinetType = "";
+                        int pieceNo = 0;
+                        MTR mtr = MTR.GetIntanse();
+
+                        string prodType = step_cbProductSort.SelectedItem.ToString();
+                        if (step_cbProductNo.Enabled)
+                        {
+                            pieceNo = step_cbProductNo.SelectedIndex+1;
+                        }
+                        int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
+                        string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
+                        cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
+
+                        if (cabinetType != prodType)
+                        {
+                            MessageBox.Show("目标测试柜类型与选择的产品类型不匹配！");
+                            return;
+                        }
+                        testStarted = true;
+                        stepCycle = 60;
+                        //插入测试开始任务
+                        TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
                     }
-                    //插入测试开始任务
-                    TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
-                }
+                    else
+                    {
+                        MessageBox.Show("输入信息不全！", "Information");
+                    }
+                }                
                 else
                 {
-                    MessageBox.Show("输入信息不全！", "Information");
+                    MessageBox.Show("请先从料架取产品放入测试柜或者测试进行中！", "Information");
                 }
             }
             else
@@ -927,42 +958,45 @@ namespace XT_CETC23.SonForm
         {
             if (Run.stepEnable == true && Run.readyForStep == true)
             {
-                if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
+                if (stepCycle == 60)
                 {
-                    DataTable dtMTR = new DataTable();
-                    DataTable dtFeedBin = new DataTable();
-                    DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
-
-                    String cabinetType = "";
-                    int pieceNo = 0;
-                    MTR mtr = MTR.GetIntanse();
-
-                    string prodType = step_cbProductSort.SelectedItem.ToString();
-
-                    int tmpIndex = step_cbTrayNo.SelectedIndex;
-                    int colNo = (tmpIndex - 1) / 8;
-                    int rowNo = (tmpIndex - 1) % 8;
-                    int trayNo = (rowNo + 1) * 10 + (colNo + 1);
-
-                    if (step_cbProductNo.Enabled)
+                    if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
                     {
-                        pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
-                    }
-                    int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
-                    string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-                    cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
+                    
+                        DataTable dtMTR = new DataTable();
+                        DataTable dtFeedBin = new DataTable();
+                        DataTable dtSortData = db.DBQuery("select * from dbo.SortData");
 
-                    if (cabinetType != prodType)
-                    {
-                        MessageBox.Show("目标测试柜类型与选择的产品类型不匹配！");
-                        return;
+                        String cabinetType = "";
+                        int pieceNo = 0;
+                        MTR mtr = MTR.GetIntanse();
+
+                        string prodType = step_cbProductSort.SelectedItem.ToString();
+                        if (step_cbProductNo.Enabled)
+                        {
+                            pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
+                        }
+                        int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
+                        string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
+                        cabinetType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
+
+                        if (cabinetType != prodType)
+                        {
+                            MessageBox.Show("目标测试柜类型与选择的产品类型不匹配！");
+                            return;
+                        }
+                        stepCycle = 70;
+                        //插入测试停止任务
+                        TestingCabinets.getInstance(cabinetNo).cmdStop();
                     }
-                    //插入测试停止任务
-                    TestingCabinets.getInstance(cabinetNo).cmdStop();
-                }
+                    else
+                    {
+                        MessageBox.Show("输入信息不全！", "Information");
+                    }
+                }                
                 else
                 {
-                    MessageBox.Show("输入信息不全！", "Information");
+                    MessageBox.Show("没有产品正在测试！");
                 }
             }
             else
@@ -972,17 +1006,31 @@ namespace XT_CETC23.SonForm
         }
 
         private void step_btnFetch_Click(object sender, EventArgs e)
-        {            
+        {
             if (Run.stepEnable == true && Run.readyForStep == true)
             {
-                if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
+                bool testState=false;
+                DataTable dtMTR = new DataTable();
+                dtMTR = db.DBQuery("select * from dbo.MTR where BasicID=" + MTR.globalBasicID);
+                if (dtMTR !=null && dtMTR.Rows.Count !=0)
                 {
-                    Thread fetchTh = new Thread(CabinetToFrame);
-                    fetchTh.Start();
+                    testState = (bool)dtMTR.Rows[0]["StationSign"];
+                }
+                if ((stepCycle == 70) || ((stepCycle == 60) && testState))
+                {                   
+                    if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
+                    {
+                        Thread fetchTh = new Thread(CabinetToFrame);
+                        fetchTh.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show("输入信息不全！", "Information");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("输入信息不全！", "Information");
+                    MessageBox.Show("测试还没有完成！");
                 }
             }
             else
@@ -1003,16 +1051,29 @@ namespace XT_CETC23.SonForm
             int pieceNo = 0;
             MTR mtr = MTR.GetIntanse();
 
+            if (dtMTR !=null)
+            {
+                dtMTR = db.DBQuery("select * from dbo.MTR where BasicID=" + MTR.globalBasicID);
+            }
+
+            if (dtMTR.Rows.Count !=0)
+            {
+                prodCode=dtMTR.Rows[0]["ProductID"].ToString().Trim();
+                checkResult = dtMTR.Rows[0]["ProductCheckResult"].ToString().Trim();
+            }
+            
+
             string prodType = step_cbProductSort.SelectedItem.ToString();
 
-            int tmpIndex = step_cbTrayNo.SelectedIndex;
-            int colNo = (tmpIndex - 1) / 8;
-            int rowNo = (tmpIndex - 1) % 8;
-            int trayNo = (rowNo + 1) * 10 + (colNo + 1);
+            int tmpIndex = step_cbTrayNo.SelectedIndex + 1;
+            int colNo = (tmpIndex - 1) / 5;
+            int rowNo = (tmpIndex - 1) % 5;
+            int trayNo = (colNo + 1) * 10 + (rowNo + 1);
+            pieceNo = 1;
 
             if (step_cbProductNo.Enabled)
             {
-                pieceNo = Convert.ToInt32(step_cbProductNo.SelectedItem.ToString());
+                pieceNo = step_cbProductNo.SelectedIndex + 1;
             }
             int cabinetNo = Convert.ToInt32(step_cbCabinetNo.SelectedIndex);
             string cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
@@ -1025,24 +1086,15 @@ namespace XT_CETC23.SonForm
             }
 
             dtFeedBin = db.DBQuery("select * from dbo.FeedBin");
-            string trayType = dtFeedBin.Rows[tmpIndex]["Sort"].ToString().Trim();
+            int aIndex = rowNo * 8 + colNo;
+            string trayType = dtFeedBin.Rows[aIndex]["Sort"].ToString().Trim();
             if (trayType != prodType)
             {
                 MessageBox.Show("料盘类型与选择的产品类型不匹配！");
                 return;
             }
 
-            TaskCycle.actionType = "CabinetToFrame";
-            dtMTR = db.DBQuery("select * from dbo.MTR where BasicID=" + MTR.globalBasicID);
-            checkResult = dtMTR.Rows[0]["ProductCheckResult"].ToString().Trim();
-            bool testState = (bool)dtMTR.Rows[0]["StationSign"];
-
-            if (!testState)
-            {
-                MessageBox.Show("测试还没有完成！");
-                return;
-            }
-
+            TaskCycle.actionType = "CabinetToFrame";           
             TaskCycle.PutStep = 0;
             //插入机器人轨道任务到测试柜
             //判断机器人是否在原点
@@ -1114,6 +1166,8 @@ namespace XT_CETC23.SonForm
             db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + checkResult + "')");
             db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
             TaskCycle.PutStep = 0;
+            stepCycle = 0;
+            MessageBox.Show("操作完成！", "Information");
         }        
     }
 }
