@@ -217,13 +217,21 @@ namespace XT_CETC23.DAL
                     task.Abort();
                     task = null;
                 }
-                if (task == null)
+                if (Config.Config.ENABLED_PLC)
                 {
-                    task = new Thread(CabinetTest);
-                    task.Name = "测试柜" + this.ID + ": 停止线程";
-                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 新停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
-                    task.Start();
+                    //通知PLC测试完成，打开测试柜
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                    //等待PLC允许取料
+                    while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
+                    {
+                        Thread.Sleep(100);
+                    }
                 }
+                // 设置MTR表格，指示测试完成
+                DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
+
+                // 标记测试结果NG
+                DataBase.GetInstanse().DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "' where BasicID= " + this.TaskID);
                 return true;
             }
         }
@@ -371,7 +379,7 @@ namespace XT_CETC23.DAL
                         //  record the scan barcode to logs file
                         DateTime currentTime = DateTime.Now;
                         StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
-                        sw.WriteLine(currentTime.ToString() + " \t" + productID);
+                        sw.WriteLine(currentTime.ToString() + " \t" + productID + " \t" + ((testResult) ? "OK" : "NG"));
                         sw.Flush();
                         sw.Close();
 
