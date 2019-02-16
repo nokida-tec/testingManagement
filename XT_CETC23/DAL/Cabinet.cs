@@ -233,7 +233,7 @@ namespace XT_CETC23.DAL
                 // 标记测试结果NG
                 DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
                     + " ProductCheckResult = '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "'"
-                    + " EndTime = '" + DateTime.Now + "'"
+                    + " ,EndTime = '" + DateTime.Now + "'"
                     + " where BasicID= " + this.TaskID);
                 return true;
             }
@@ -342,7 +342,7 @@ namespace XT_CETC23.DAL
 
                             DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
                                 + " ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' "
-                                + " EndTime = '" + DateTime.Now + "' "
+                                + " ,EndTime = '" + DateTime.Now + "' "
                                 + " where BasicID = " + this.TaskID);
 
                             //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
@@ -415,7 +415,7 @@ namespace XT_CETC23.DAL
 
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
                             + " ProductCheckResult= '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "' "
-                            + " EndTime = '" + DateTime.Now + "' "
+                            + " ,EndTime = '" + DateTime.Now + "' "
                             + " where BasicID = " + this.TaskID);
 
                         if (Config.Config.ENABLED_PLC)
