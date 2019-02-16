@@ -44,8 +44,8 @@ namespace XT_CETC23.DataCom
                 + CurrentStation + "','" 
                 + StationSign + "','" 
                 + ProductChectResult + "',"
-                + lBasicID + ","
-                + DateTime.Now + ","
+                + lBasicID + ",'"
+                + DateTime.Now + "',"
                 + CabinetID + ")";
             db.DBInsert("insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('"
                 + ProductID + "'," 
@@ -55,8 +55,8 @@ namespace XT_CETC23.DataCom
                 + CurrentStation + "','"
                 + StationSign + "','"
                 + ProductChectResult + "'," 
-                + lBasicID + ","
-                + DateTime.Now + ","
+                + lBasicID + ",'"
+                + DateTime.Now + "',"
                 + CabinetID + ")");
             return lBasicID;
         }
