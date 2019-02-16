@@ -110,7 +110,7 @@ namespace XT_CETC23.DataCom
         {
             IPAddress ip = IPAddress.Parse("192.168.10.1");
             IPEndPoint iEndPoint = new IPEndPoint(ip, 1000);
-            Logger.WriteLine("socket tryConnectSocket:" + millisecond);
+//            Logger.WriteLine("socket tryConnectSocket:" + millisecond);
 
             int timeInter = 200;
             int tryCount = (millisecond < 0) ? 99999 : (millisecond + timeInter) / timeInter;
