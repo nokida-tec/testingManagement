@@ -208,39 +208,39 @@ namespace XT_CETC23.SonForm
 
         public void getCabinetResult(int CabinetNum, string message)
         {
-            if (this.IsHandleCreated)
-            {
-                if (CabinetNum == 1)
-                    lb_Cabinet11_rv.Invoke(new Action<string>((s) => { lb_Cabinet11_rv.Text = message; }), message);
-                if (CabinetNum == 2)
-                    lb_Cabinet21_rv.Invoke(new Action<string>((s) => { lb_Cabinet21_rv.Text = message; }), message);
-                if (CabinetNum == 3)
-                    lb_Cabinet31_rv.Invoke(new Action<string>((s) => { lb_Cabinet31_rv.Text = message; }), message);
-                if (CabinetNum == 4)
-                    lb_Cabinet41_rv.Invoke(new Action<string>((s) => { lb_Cabinet41_rv.Text = message; }), message);
-                if (CabinetNum == 5)
-                    lb_Cabinet51_rv.Invoke(new Action<string>((s) => { lb_Cabinet51_rv.Text = message; }), message);
-                if (CabinetNum == 6)
-                    lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
+                if (this.IsHandleCreated && Run.stepEnable == false)
+                {
+                    if (CabinetNum == 1)
+                        lb_Cabinet11_rv.Invoke(new Action<string>((s) => { lb_Cabinet11_rv.Text = message; }), message);
+                    if (CabinetNum == 2)
+                        lb_Cabinet21_rv.Invoke(new Action<string>((s) => { lb_Cabinet21_rv.Text = message; }), message);
+                    if (CabinetNum == 3)
+                        lb_Cabinet31_rv.Invoke(new Action<string>((s) => { lb_Cabinet31_rv.Text = message; }), message);
+                    if (CabinetNum == 4)
+                        lb_Cabinet41_rv.Invoke(new Action<string>((s) => { lb_Cabinet41_rv.Text = message; }), message);
+                    if (CabinetNum == 5)
+                        lb_Cabinet51_rv.Invoke(new Action<string>((s) => { lb_Cabinet51_rv.Text = message; }), message);
+                    if (CabinetNum == 6)
+                        lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
 
-                dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
-                TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
-                if (TaskCycle.feedBinScanDone == "No")
-                {
-                    run_lbGramStatusv.Text = "料架取空";                   
-                    btnFrameUpdate.BackColor = Color.Yellow;
+                    dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
+                    TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
+                    if (TaskCycle.feedBinScanDone == "No")
+                    {
+                        run_lbGramStatusv.Text = "料架取空";
+                        btnFrameUpdate.BackColor = Color.Yellow;
+                    }
+                    if (TaskCycle.feedBinScanDone == "Yes")
+                    {
+                        run_lbGramStatusv.Text = "使用中";
+                        btnFrameUpdate.BackColor = Color.PowderBlue;
+                    }
                 }
-                if (TaskCycle.feedBinScanDone == "Yes")
-                {
-                    run_lbGramStatusv.Text = "使用中";
-                    btnFrameUpdate.BackColor = Color.PowderBlue;
-                }              
-            }
         }
 
         public void getCabinetStatus(int CabinetNum, string message)
         {
-            if (this.IsHandleCreated)
+            if (this.IsHandleCreated && Run.stepEnable == false)
             {
                 if (CabinetNum == 1)
                     lb_Cabinet11_sv.Invoke(new Action<string>((s) => { lb_Cabinet11_sv.Text = message; }), message);
