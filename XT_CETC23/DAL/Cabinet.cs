@@ -231,7 +231,10 @@ namespace XT_CETC23.DAL
                 DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
 
                 // 标记测试结果NG
-                DataBase.GetInstanse().DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "' where BasicID= " + this.TaskID);
+                DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
+                    + " ProductCheckResult = '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "'"
+                    + " EndTime = '" + DateTime.Now + "'"
+                    + " where BasicID= " + this.TaskID);
                 return true;
             }
         }
@@ -335,7 +338,10 @@ namespace XT_CETC23.DAL
                             testResult = excelOp.CheckTestResults(sourceFile);
                         }
 
-                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' where BasicID= " + this.TaskID);
+                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set " 
+                            + " ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' "
+                            + " EndTime = '" + DateTime.Now + "' "
+                            + " where BasicID = " + this.TaskID);
 
                         //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
                         DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
@@ -365,7 +371,7 @@ namespace XT_CETC23.DAL
 
                         try
                         {
-                            string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName;
+                            string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName + ".xlsx";
                             FileOperation fileOp = new FileOperation();
                             fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
                             //删除源文件          
@@ -400,7 +406,6 @@ namespace XT_CETC23.DAL
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                         ResetData();
                     }
-
                 }
                 else
                 {

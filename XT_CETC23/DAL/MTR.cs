@@ -36,8 +36,28 @@ namespace XT_CETC23.DataCom
                 { lBasicID = GetID.getID(); }
             }
 
-            string tmpText = "insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,CabinetID)values('" + ProductID + "'," + FrameLocation + "," + SalverLocation + ",'" + ProductType + "','" + CurrentStation + "','" + StationSign + "','" + ProductChectResult + "'," + lBasicID + "," + CabinetID + ")";
-            db.DBInsert("insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,CabinetID)values('" + ProductID + "'," + FrameLocation + "," + SalverLocation + ",'" + ProductType + "','" + CurrentStation + "','" + StationSign + "','" + ProductChectResult + "'," + lBasicID + "," + CabinetID + ")");
+            string tmpText = "insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('" 
+                + ProductID + "'," 
+                + FrameLocation + "," 
+                + SalverLocation + ",'" 
+                + ProductType + "','" 
+                + CurrentStation + "','" 
+                + StationSign + "','" 
+                + ProductChectResult + "',"
+                + lBasicID + ","
+                + DateTime.Now + ","
+                + CabinetID + ")";
+            db.DBInsert("insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('"
+                + ProductID + "'," 
+                + FrameLocation + "," 
+                + SalverLocation + ",'" 
+                + ProductType + "','" 
+                + CurrentStation + "','"
+                + StationSign + "','"
+                + ProductChectResult + "'," 
+                + lBasicID + ","
+                + DateTime.Now + ","
+                + CabinetID + ")");
             return lBasicID;
         }
 
