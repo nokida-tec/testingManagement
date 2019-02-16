@@ -236,17 +236,24 @@ namespace XT_CETC23
 
         void pbStep()
         {
-            if (!sForm.IsDisposed)
-            {                
-                Run.stepEnable = true;
-                Run.readyForStep = false;
+            if (Run.modeByPlc == "Auto")
+            {
+                if (!sForm.IsDisposed)
+                {
+                    Run.stepEnable = true;
+                    //Run.readyForStep = false;
 
-                mForm.clearTask();
-                panel_Load.Controls.Clear();
-                sForm.TopLevel = false;
-                sForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(sForm);
-                sForm.Show();
+                    mForm.clearTask();
+                    panel_Load.Controls.Clear();
+                    sForm.TopLevel = false;
+                    sForm.Dock = DockStyle.Fill;
+                    panel_Load.Controls.Add(sForm);
+                    sForm.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("单步操作只能在自动模式下进行！", "Information");
             }
         }   
 
@@ -254,11 +261,16 @@ namespace XT_CETC23
         {
             if (!aForm.IsDisposed)
             {
+                //if (Run.stepEnable == true)
+                //{
+                //    mForm.clearTask();
+                //    Run.stepEnable = false;
+                //    Run.readyForStep = false;
+                //}
                 panel_Load.Controls.Clear();
                 aForm.TopLevel = false;
                 aForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(aForm);
-                Run.stepEnable = false;
+                panel_Load.Controls.Add(aForm);                
                 aForm.Show();
             }         
         }
@@ -266,11 +278,16 @@ namespace XT_CETC23
         {
             if (!cForm.IsDisposed)
             {
+                //if (Run.stepEnable == true)
+                //{
+                //    mForm.clearTask();
+                //    Run.stepEnable = false;
+                //    Run.readyForStep = false;
+                //}
                 panel_Load.Controls.Clear();
                 cForm.TopLevel = false;
                 cForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(cForm);
-                Run.stepEnable = false;
+                panel_Load.Controls.Add(cForm);                
                 cForm.Show();
             }
         }
@@ -278,59 +295,96 @@ namespace XT_CETC23
         {
             if (!dForm.IsDisposed)
             {
+                //if (Run.stepEnable == true)
+                //{
+                //    mForm.clearTask();
+                //    Run.stepEnable = false;
+                //    Run.readyForStep = false;
+                //}
                 panel_Load.Controls.Clear();
                 dForm.TopLevel = false;
                 dForm.Dock = DockStyle.Fill;
                 panel_Load.Controls.Add(dForm);
-                Run.stepEnable = false;
                 dForm.Show();
             }
         }
         void pbManul()
         {
-            //if (Common.Account.power == "system")
-            if(true)    
+            if (Run.modeByPlc == "Manul")
             {
-                if (!mForm.IsDisposed)
+                //if (Common.Account.power == "system")
+                if (true)
                 {
-                    panel_Load.Controls.Clear();
-                    mForm.TopLevel = false;
-                    mForm.Dock = DockStyle.Fill;
-                    panel_Load.Controls.Add(mForm);
+                    if (!mForm.IsDisposed)
+                    {
+                        Run.stepEnable = false;
+                        Run.readyForStep = false;
+                        mForm.clearTask();
+                        panel_Load.Controls.Clear();
+                        mForm.TopLevel = false;
+                        mForm.Dock = DockStyle.Fill;
+                        panel_Load.Controls.Add(mForm);
+                        mForm.Show();
+                    }
+                }
+                else
+                {
                     mForm.clearTask();
                     Run.stepEnable = false;
-                    mForm.Show();
+                    Run.readyForStep = false;
+                    //MessageBox.Show("当前用户无此权限");
+                    listBox_Alarm.Items.Add("当前用户无此权限");
                 }
             }
             else
             {
-                //MessageBox.Show("当前用户无此权限");
-                Run.stepEnable = false;
-                listBox_Alarm.Items.Add("当前用户无此权限");
+                MessageBox.Show("手动操作只能在手动模式下进行！", "Information");
             }
         }
         void pbPara()
         {
-            //if (Common.Account.power != "system") { MessageBox.Show("当前用户无此权限"); return; }
-            if (!pForm.IsDisposed)
+            if (Run.modeByPlc == "Manul")
             {
-                panel_Load.Controls.Clear();
-                pForm.TopLevel = false;
-                pForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(pForm);
-                Run.stepEnable = false;
-                pForm.Show();
+                //if (Common.Account.power != "system") { MessageBox.Show("当前用户无此权限"); return; }
+                if (!pForm.IsDisposed)
+                {
+                    //if (Run.stepEnable == true)
+                    //{
+                    //    mForm.clearTask();
+                    //    Run.stepEnable = false;
+                    //    Run.readyForStep = false;
+                    //}
+                    panel_Load.Controls.Clear();
+                    pForm.TopLevel = false;
+                    pForm.Dock = DockStyle.Fill;
+                    panel_Load.Controls.Add(pForm);
+                    pForm.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("手动操作只能在手动模式下进行！", "Information");
             }
         }
+
         void pbRun()
         {
             if (!rForm.IsDisposed)
             {
+                if (Run.stepEnable == true)
+                {
+                    if (MessageBox.Show("请确认单步动作已经执行完成!", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel) 
+                    {
+                        return;
+                    }
+                    mForm.clearTask();
+                    Run.stepEnable = false;
+                    Run.readyForStep = false;
+                }
                 panel_Load.Controls.Clear();
                 rForm.TopLevel = false;
                 rForm.Dock = DockStyle.Fill;
                 panel_Load.Controls.Add(rForm);
-                Run.stepEnable = false;
                 rForm.Show();
             }
         }
@@ -338,11 +392,16 @@ namespace XT_CETC23
         {
             if (!uForm.IsDisposed)
             {
+                //if (Run.stepEnable == true)
+                //{
+                //    mForm.clearTask();
+                //    Run.stepEnable = false;
+                //    Run.readyForStep = false;
+                //}
                 panel_Load.Controls.Clear();
                 uForm.TopLevel = false;
                 uForm.Dock = DockStyle.Fill;
                 panel_Load.Controls.Add(uForm);
-                Run.stepEnable = false;
                 uForm.Show();
             }
         }
@@ -677,19 +736,18 @@ namespace XT_CETC23
 
         public void manulEnable(string mode,string status)
         {
-            if (mode=="Auto")
-            {
-                pB_manul.Enabled = false;
-                pB_para.Enabled = false;
-                pB_step.Enabled = true;
-            }
-            if(mode=="Manul")
-            {
-                pB_manul.Enabled = true;
-                pB_para.Enabled = true;
-                pB_step.Enabled = false;
-            }
-
+            //if (mode == "Auto")
+            //{
+            //    pB_manul.Enabled = false;
+            //    pB_para.Enabled = false;
+            //    pB_step.Enabled = true;
+            //}
+            //if (mode == "Manul")
+            //{
+            //    pB_manul.Enabled = true;
+            //    pB_para.Enabled = true;
+            //    pB_step.Enabled = false;
+            //}
             if (status == "AutoRunning")
             {
                 labSystemStatus.Text = "自动运行";
