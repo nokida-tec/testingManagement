@@ -645,9 +645,7 @@ namespace XT_CETC23.DataCom
                                         FrameDataUpdate();
 
                                         //测试结果插入测试统计表格；
-                                        db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + checkResult + "')");
-                                        db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + checkResult + "')");
-                                        db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                        TestingTask.finish(MTR.globalBasicID, checkResult);
                                         TaskCycle.PutStep = 0;
                                     }
                                     #endregion
@@ -967,9 +965,8 @@ namespace XT_CETC23.DataCom
                                     if (!TaskCycle.scanStatus)      //读码失败
                                     {
                                         //db.DBUpdate("update dbo.MTR set ProductID = '" + "0" +"',"++ "'where BasicID=" + MTR.globalBasicID);
-                                        db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "NG" + "')");
-                                        db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "NG" + "')");
-                                        db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
+                                        TestingTask.finish(MTR.globalBasicID, "NG", "扫描失败");
+
                                         //插入机器人放料到料架任务
                                         db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
                                         plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
