@@ -25,9 +25,11 @@ namespace XT_CETC23
             String cabinetName = dt.Rows[0]["CabinetID"].ToString();
             String trayNo = dt.Rows[0]["FrameLocation"].ToString();
             String pieceNo = dt.Rows[0]["SalverLocation"].ToString();
+            String BeginTime = dt.Rows[0]["BeginTime"].ToString();
+            String EndTime = dt.Rows[0]["EndTime"].ToString();
 
             DataBase.GetInstanse().DBInsert("insert into dbo.ActualData("
-                + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult"
+                + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,CheckResult"
                 + " )values( '"
                 + prodCode + "','"
                 + prodType + "',"
@@ -38,16 +40,20 @@ namespace XT_CETC23
                 + "0" + "','"
                 + "0" + "','"
                 + "0" + "','"
+                + BeginTime + "','"
+                + EndTime + "','" 
                 + checkResult + "')");
             DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
-                + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult" 
+                + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult" 
                 + " )values(" 
                 + ID + ",'" 
                 + prodCode + "','" 
                 + prodType + "'," 
                 + trayNo + "," 
-                + pieceNo + ",'" 
-                + cabinetName + "','" 
+                + pieceNo + ",'"
+                + cabinetName + "','"
+                + BeginTime + "','"
+                + EndTime + "','"
                 + checkResult + "')");
             DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
             return ID;
