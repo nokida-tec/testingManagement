@@ -168,6 +168,7 @@ namespace XT_CETC23.DAL
         }
 
         private Thread task;
+        private bool taskIsRunning = false;
         public bool cmdStart(string productType, int taskId) 
         {
             Logger.WriteLine("  ***   cmdStart：" + this.ID);
@@ -183,19 +184,34 @@ namespace XT_CETC23.DAL
             {
                 if (task != null)
                 {
-                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    while (taskIsRunning)
+                    {   // 等待原有线程运行退出
+                        Logger.WriteLine("  ***   测试柜:" + this.ID + "在运行中 线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                        Thread.Sleep(100);
+                    }
+                    Thread.Sleep(100);
                     task.Abort();
                     task = null;
-                }
-                if (task == null)
+                 }
+                if (task == null && taskIsRunning == false)
                 {
                     task = new Thread(CabinetTest);
                     task.Name = "测试柜" + this.ID + ": 启动线程";
+                    taskIsRunning = true;
                     Logger.WriteLine("  ***   测试柜:" + this.ID + " 新启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                     task.Start();
+                    return true;
                 }
 
-                return true;
+                try 
+                {
+                    throw new Exception("没有启动测试柜：" + this.ID + "线程");
+                } 
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+                return false;
             }
         }
 
@@ -319,16 +335,9 @@ namespace XT_CETC23.DAL
                                     if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
                                     {
                                         sourceFile = filePath[i];
-                                    }
-                                    else
-                                    {
-                                        return;
+                                        break;
                                     }
                                 }
-                            }
-                            else
-                            {
-                                return;
                             }
 
                             //读取excel表格判断测试OK，NG
@@ -430,6 +439,7 @@ namespace XT_CETC23.DAL
                         }
                         //设置MTR表格，指示测试完成
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
+                        taskIsRunning = false;
                     }
                 }
                 else
@@ -504,6 +514,7 @@ namespace XT_CETC23.DAL
                     //=========================================================================================================================                    
                 }
             }
+            taskIsRunning = false;
         }
 
     }
