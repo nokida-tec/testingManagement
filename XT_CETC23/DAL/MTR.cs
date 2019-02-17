@@ -13,6 +13,8 @@ namespace XT_CETC23.DataCom
         public static int globalBasicID;
         DataBase db;
         DataTable dt_Mtr;
+        private Object lockObject = new Object();
+
         public static MTR GetIntanse()
         {
             if(mtr==null)
@@ -28,37 +30,48 @@ namespace XT_CETC23.DataCom
 
         public int InsertBasicID(string ProductID,int FrameLocation,int SalverLocation,string ProductType,string CurrentStation, bool StationSign,string ProductChectResult,int CabinetID)
         {
-            int lBasicID = GetID.getID();
-            dt_Mtr = db.DBQuery("select * from dbo.MTR");
-            for(int i=0;i<dt_Mtr.Rows.Count;i++)
+            lock (lockObject)
             {
-                if ((int)dt_Mtr.Rows[i]["BasicID"]== lBasicID)
-                { lBasicID = GetID.getID(); }
-            }
+                DataTable dt = db.DBQuery("select * from dbo.MTR where CabinetID = " + CabinetID);
+                if (dt!= null && dt.Rows.Count > 0)
+                {
+                    Logger.WriteLineWithStack("测试柜" + CabinetID + "任务已经存在");
+                    return -1;
+                }
+                int lBasicID = GetID.getID();
+                dt_Mtr = db.DBQuery("select * from dbo.MTR");
+                for (int i = 0; i < dt_Mtr.Rows.Count; i++)
+                {
+                    if ((int)dt_Mtr.Rows[i]["BasicID"] == lBasicID)
+                    { 
+                        lBasicID = GetID.getID();
+                    }
+                }
 
-            string tmpText = "insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('" 
-                + ProductID + "'," 
-                + FrameLocation + "," 
-                + SalverLocation + ",'" 
-                + ProductType + "','" 
-                + CurrentStation + "','" 
-                + StationSign + "','" 
-                + ProductChectResult + "',"
-                + lBasicID + ",'"
-                + DateTime.Now + "',"
-                + CabinetID + ")";
-            db.DBInsert("insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('"
-                + ProductID + "'," 
-                + FrameLocation + "," 
-                + SalverLocation + ",'" 
-                + ProductType + "','" 
-                + CurrentStation + "','"
-                + StationSign + "','"
-                + ProductChectResult + "'," 
-                + lBasicID + ",'"
-                + DateTime.Now + "',"
-                + CabinetID + ")");
-            return lBasicID;
+                string tmpText = "insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('"
+                    + ProductID + "',"
+                    + FrameLocation + ","
+                    + SalverLocation + ",'"
+                    + ProductType + "','"
+                    + CurrentStation + "','"
+                    + StationSign + "','"
+                    + ProductChectResult + "',"
+                    + lBasicID + ",'"
+                    + DateTime.Now + "',"
+                    + CabinetID + ")";
+                db.DBInsert("insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('"
+                    + ProductID + "',"
+                    + FrameLocation + ","
+                    + SalverLocation + ",'"
+                    + ProductType + "','"
+                    + CurrentStation + "','"
+                    + StationSign + "','"
+                    + ProductChectResult + "',"
+                    + lBasicID + ",'"
+                    + DateTime.Now + "',"
+                    + CabinetID + ")");
+                return lBasicID;
+            }
         }
 
         void updateBasicID(string ProductID, int FrameLocation, int SalverLocation, string ProductType, string ProductCurrentPos, string ProductSign, string ProductChectResult)

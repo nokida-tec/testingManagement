@@ -743,8 +743,13 @@ namespace XT_CETC23.SonForm
             TaskCycle.actionType = "FrameToCabinet";
             //int numRemain = 0;
             int layerID = trayNo;
-            MTR.globalBasicID = mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
-            Thread.Sleep(100);
+            int ret = mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
+            if (ret < 0)
+            {
+                MessageBox.Show("测试柜" + cabinetNo + "已有测试任务");
+                return;
+            }
+            MTR.globalBasicID = ret;
 
             //插入机器人轨道到料架任务
             TaskCycle.PickStep = 0;

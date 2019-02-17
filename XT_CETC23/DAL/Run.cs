@@ -751,7 +751,12 @@ namespace XT_CETC23.DataCom
                                     cabinetNo = i;
                                     prodType = TestingBedCapOfProduct.sTestingBedCapOfProduct[TestingCabinets.getInstance(cabinetNo).Type].ProductType;
                                     cabinetName = TestingCabinets.getInstance(cabinetNo).Name;
-                                    mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
+                                    int ret = mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
+                                    if (ret < 0)
+                                    {
+                                        goto Redo;
+                                    }
+
                                     Thread.Sleep(100);
 
                                     //针对MTR表格中多条纪录，选择还未取料的任务
