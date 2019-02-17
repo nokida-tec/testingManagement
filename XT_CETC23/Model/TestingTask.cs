@@ -20,42 +20,49 @@ namespace XT_CETC23
                 return -1;
             }
 
-            String prodCode = failedReason != null ? failedReason : dt.Rows[0]["ProductID"].ToString();
-            String prodType = dt.Rows[0]["ProductType"].ToString();
-            String cabinetName = dt.Rows[0]["CabinetID"].ToString();
-            String trayNo = dt.Rows[0]["FrameLocation"].ToString();
-            String pieceNo = dt.Rows[0]["SalverLocation"].ToString();
-            String BeginTime = dt.Rows[0]["BeginTime"].ToString();
-            String EndTime = dt.Rows[0]["EndTime"].ToString();
+            try 
+            {
+                String prodCode = failedReason != null ? failedReason : dt.Rows[0]["ProductID"].ToString();
+                String prodType = dt.Rows[0]["ProductType"].ToString();
+                String cabinetName = dt.Rows[0]["CabinetID"].ToString();
+                String trayNo = dt.Rows[0]["FrameLocation"].ToString();
+                String pieceNo = dt.Rows[0]["SalverLocation"].ToString();
+                String BeginTime = dt.Rows[0]["BeginTime"].ToString();
+                String EndTime = dt.Rows[0]["EndTime"].ToString();
 
-            DataBase.GetInstanse().DBInsert("insert into dbo.ActualData("
-                + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,CheckResult"
-                + " )values( '"
-                + prodCode + "','"
-                + prodType + "',"
-                + trayNo + ","
-                + pieceNo + ",'"
-                + cabinetName + "','"
-                + "0" + "','"
-                + "0" + "','"
-                + "0" + "','"
-                + "0" + "','"
-                + BeginTime + "','"
-                + EndTime + "','" 
-                + checkResult + "')");
-            DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
-                + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult" 
-                + " )values(" 
-                + ID + ",'" 
-                + prodCode + "','" 
-                + prodType + "'," 
-                + trayNo + "," 
-                + pieceNo + ",'"
-                + cabinetName + "','"
-                + BeginTime + "','"
-                + EndTime + "','"
-                + checkResult + "')");
-            DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
+                DataBase.GetInstanse().DBInsert("insert into dbo.ActualData("
+                    + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,CheckResult"
+                    + " )values( '"
+                    + prodCode + "','"
+                    + prodType + "',"
+                    + trayNo + ","
+                    + pieceNo + ",'"
+                    + cabinetName + "','"
+                    + "0" + "','"
+                    + "0" + "','"
+                    + "0" + "','"
+                    + "0" + "','"
+                    + BeginTime + "','"
+                    + EndTime + "','"
+                    + checkResult + "')");
+                DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
+                    + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult"
+                    + " )values("
+                    + ID + ",'"
+                    + prodCode + "','"
+                    + prodType + "',"
+                    + trayNo + ","
+                    + pieceNo + ",'"
+                    + cabinetName + "','"
+                    + BeginTime + "','"
+                    + EndTime + "','"
+                    + checkResult + "')");
+                DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
+            }
+            catch (Exception e) 
+            {
+                Logger.WriteLine(e);
+            }
             return ID;
         }
     }
