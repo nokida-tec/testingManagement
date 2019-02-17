@@ -24,5 +24,17 @@ namespace XT_CETC23
         {
             Console.WriteLine(" ***** " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss  ")  + message);
         }
+
+        static public void WriteLineWithStack(String message)
+        {
+            try
+            {
+                throw new Exception(message);
+            }
+            catch (Exception e)
+            {
+                WriteLine(e);
+            }
+        }
     }
 }
