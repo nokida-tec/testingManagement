@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XT_CETC23.Instances;
 
 namespace XT_CETC23
 {
@@ -31,6 +32,7 @@ namespace XT_CETC23
         public void ExitSystem ()
         {
             exitSystem = true;
+            TestingCabinets.abort();
         }
 
         public bool isSystemExisting()
