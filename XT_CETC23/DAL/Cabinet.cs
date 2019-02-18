@@ -169,6 +169,7 @@ namespace XT_CETC23.DAL
 
         private Thread task;
         private bool taskIsRunning = false;
+        private bool taskExisting = false;
         public bool cmdStart(string productType, int taskId) 
         {
             Logger.WriteLine("  ***   cmdStart：" + this.ID);
@@ -182,6 +183,7 @@ namespace XT_CETC23.DAL
             Logger.WriteLine("  ***   cmdStart：" + this.ID);
             lock (this)
             {
+                taskExisting = false;
                 if (task != null)
                 {
                     while (taskIsRunning)
@@ -231,6 +233,7 @@ namespace XT_CETC23.DAL
                 if (task != null)
                 {
                     Logger.WriteLine("  ***   测试柜:" + this.ID + " 停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
+                    taskExisting = true;
                     task.Abort();
                     task = null;
                 }
@@ -286,6 +289,10 @@ namespace XT_CETC23.DAL
 
                             while ((PlcData._cabinetStatus[this.ID] & 2) == 0)
                             {
+                                if (taskExisting == true)
+                                {
+                                    return;
+                                }
                                 Thread.Sleep(100);
                             }
                             if (Status != TestingCabinet.STATUS.Ready)
@@ -321,6 +328,10 @@ namespace XT_CETC23.DAL
                             {
                                 while (Status != TestingCabinet.STATUS.Finished)
                                 {
+                                    if (taskExisting == true)
+                                    {
+                                        return;
+                                    } 
                                     Thread.Sleep(100);
                                 }
                             }
@@ -411,6 +422,10 @@ namespace XT_CETC23.DAL
                                 //等待PLC允许取料
                                 while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
                                 {
+                                    if (taskExisting == true)
+                                    {
+                                        return;
+                                    }
                                     Thread.Sleep(100);
                                 }
                             }
@@ -422,24 +437,6 @@ namespace XT_CETC23.DAL
                     catch (Exception e1)
                     {
                         Logger.WriteLine(e1);
-
-                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                            + " ProductCheckResult= '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "' "
-                            + " ,EndTime = '" + DateTime.Now + "' "
-                            + " where BasicID = " + this.TaskID);
-
-                        if (Config.Config.ENABLED_PLC)
-                        {
-                            //通知PLC测试完成，打开测试柜
-                            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-                            // 等待PLC允许取料
-                            while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
-                            {
-                                Thread.Sleep(100);
-                            }
-                        }
-                        //设置MTR表格，指示测试完成
-                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                         taskIsRunning = false;
                     }
                 }
