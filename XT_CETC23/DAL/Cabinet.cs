@@ -518,7 +518,7 @@ namespace XT_CETC23.DAL
             taskIsRunning = false;
         }
 
-        public bool abort ()
+        public bool abort()
         {
             if (task != null)
             {
@@ -526,5 +526,6 @@ namespace XT_CETC23.DAL
                 task = null;
             }
             return true;
+        }
     }
 }
