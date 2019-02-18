@@ -222,6 +222,7 @@ namespace XT_CETC23.DAL
             stop();
             return true;
         }
+
         public bool stop()
         {
             Logger.WriteLine("  ***   stop：" + this.ID);
@@ -517,5 +518,13 @@ namespace XT_CETC23.DAL
             taskIsRunning = false;
         }
 
+        public bool abort ()
+        {
+            if (task != null)
+            {
+                task.Abort();
+                task = null;
+            }
+            return true;
     }
 }

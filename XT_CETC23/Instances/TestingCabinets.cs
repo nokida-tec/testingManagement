@@ -54,5 +54,17 @@ namespace XT_CETC23.Instances
             }
             return count;
         }
+
+        // 紧急停止
+        static public int abort()
+        {
+            int count = 0;
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
+            {
+                getInstance(i).abort();
+            }
+            return count;
+        }
+
     }
 }
