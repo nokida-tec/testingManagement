@@ -36,7 +36,6 @@
             this.label_para = new System.Windows.Forms.Label();
             this.label_db = new System.Windows.Forms.Label();
             this.label_manul = new System.Windows.Forms.Label();
-            this.label_auto = new System.Windows.Forms.Label();
             this.label_run = new System.Windows.Forms.Label();
             this.Power = new System.Windows.Forms.Label();
             this.Level = new System.Windows.Forms.Label();
@@ -60,7 +59,6 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.pB_Param = new System.Windows.Forms.PictureBox();
             this.pB_step = new System.Windows.Forms.PictureBox();
-            this.pB_auto = new System.Windows.Forms.PictureBox();
             this.pB_user = new System.Windows.Forms.PictureBox();
             this.pB_logo = new System.Windows.Forms.PictureBox();
             this.pB_ccd = new System.Windows.Forms.PictureBox();
@@ -77,7 +75,6 @@
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pB_Param)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_step)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pB_auto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_user)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_logo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_ccd)).BeginInit();
@@ -96,7 +93,7 @@
             this.label_user.BackColor = System.Drawing.Color.Transparent;
             this.label_user.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_user.ForeColor = System.Drawing.Color.Blue;
-            this.label_user.Location = new System.Drawing.Point(1111, 146);
+            this.label_user.Location = new System.Drawing.Point(977, 146);
             this.label_user.Name = "label_user";
             this.label_user.Size = new System.Drawing.Size(102, 21);
             this.label_user.TabIndex = 56;
@@ -132,7 +129,7 @@
             this.label_db.BackColor = System.Drawing.Color.Transparent;
             this.label_db.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_db.ForeColor = System.Drawing.Color.Blue;
-            this.label_db.Location = new System.Drawing.Point(986, 146);
+            this.label_db.Location = new System.Drawing.Point(858, 146);
             this.label_db.Name = "label_db";
             this.label_db.Size = new System.Drawing.Size(102, 21);
             this.label_db.TabIndex = 53;
@@ -149,18 +146,6 @@
             this.label_manul.Size = new System.Drawing.Size(102, 21);
             this.label_manul.TabIndex = 52;
             this.label_manul.Text = "手动界面";
-            // 
-            // label_auto
-            // 
-            this.label_auto.AutoSize = true;
-            this.label_auto.BackColor = System.Drawing.Color.Transparent;
-            this.label_auto.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_auto.ForeColor = System.Drawing.Color.Blue;
-            this.label_auto.Location = new System.Drawing.Point(861, 146);
-            this.label_auto.Name = "label_auto";
-            this.label_auto.Size = new System.Drawing.Size(102, 21);
-            this.label_auto.TabIndex = 51;
-            this.label_auto.Text = "数据查看";
             // 
             // label_run
             // 
@@ -323,7 +308,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 586);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1162, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1208, 22);
             this.statusStrip1.TabIndex = 58;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -350,7 +335,7 @@
             this.panel_Load.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel_Load.Location = new System.Drawing.Point(224, 185);
             this.panel_Load.Name = "panel_Load";
-            this.panel_Load.Size = new System.Drawing.Size(1107, 486);
+            this.panel_Load.Size = new System.Drawing.Size(1153, 486);
             this.panel_Load.TabIndex = 59;
             // 
             // label2
@@ -383,7 +368,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.ForeColor = System.Drawing.Color.Blue;
-            this.label3.Location = new System.Drawing.Point(1229, 147);
+            this.label3.Location = new System.Drawing.Point(1094, 146);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(102, 21);
             this.label3.TabIndex = 64;
@@ -406,7 +391,7 @@
             this.pB_Param.BackColor = System.Drawing.Color.Transparent;
             this.pB_Param.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pB_Param.BackgroundImage")));
             this.pB_Param.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pB_Param.Location = new System.Drawing.Point(1231, 58);
+            this.pB_Param.Location = new System.Drawing.Point(1096, 57);
             this.pB_Param.Name = "pB_Param";
             this.pB_Param.Size = new System.Drawing.Size(95, 84);
             this.pB_Param.TabIndex = 63;
@@ -423,23 +408,12 @@
             this.pB_step.TabIndex = 60;
             this.pB_step.TabStop = false;
             // 
-            // pB_auto
-            // 
-            this.pB_auto.BackColor = System.Drawing.Color.Transparent;
-            this.pB_auto.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pB_auto.BackgroundImage")));
-            this.pB_auto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pB_auto.Location = new System.Drawing.Point(863, 57);
-            this.pB_auto.Name = "pB_auto";
-            this.pB_auto.Size = new System.Drawing.Size(95, 84);
-            this.pB_auto.TabIndex = 40;
-            this.pB_auto.TabStop = false;
-            // 
             // pB_user
             // 
             this.pB_user.BackColor = System.Drawing.Color.Transparent;
             this.pB_user.BackgroundImage = global::XT_CETC23.Properties.Resources.user;
             this.pB_user.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pB_user.Location = new System.Drawing.Point(1113, 57);
+            this.pB_user.Location = new System.Drawing.Point(979, 57);
             this.pB_user.Name = "pB_user";
             this.pB_user.Size = new System.Drawing.Size(95, 85);
             this.pB_user.TabIndex = 45;
@@ -483,7 +457,7 @@
             this.pB_database.BackColor = System.Drawing.Color.Transparent;
             this.pB_database.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pB_database.BackgroundImage")));
             this.pB_database.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pB_database.Location = new System.Drawing.Point(988, 57);
+            this.pB_database.Location = new System.Drawing.Point(860, 57);
             this.pB_database.Name = "pB_database";
             this.pB_database.Size = new System.Drawing.Size(95, 85);
             this.pB_database.TabIndex = 42;
@@ -516,7 +490,7 @@
             this.BtnMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnMin.BackColor = System.Drawing.Color.Transparent;
             this.BtnMin.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_min;
-            this.BtnMin.Location = new System.Drawing.Point(1350, 1);
+            this.BtnMin.Location = new System.Drawing.Point(1396, 1);
             this.BtnMin.Margin = new System.Windows.Forms.Padding(2);
             this.BtnMin.Name = "BtnMin";
             this.BtnMin.Size = new System.Drawing.Size(17, 15);
@@ -528,7 +502,7 @@
             this.BtnMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnMax.BackColor = System.Drawing.Color.Transparent;
             this.BtnMax.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_max;
-            this.BtnMax.Location = new System.Drawing.Point(1365, 1);
+            this.BtnMax.Location = new System.Drawing.Point(1411, 1);
             this.BtnMax.Margin = new System.Windows.Forms.Padding(2);
             this.BtnMax.Name = "BtnMax";
             this.BtnMax.Size = new System.Drawing.Size(17, 15);
@@ -540,7 +514,7 @@
             this.BtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnClose.BackColor = System.Drawing.Color.Transparent;
             this.BtnClose.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_close;
-            this.BtnClose.Location = new System.Drawing.Point(1575, 1);
+            this.BtnClose.Location = new System.Drawing.Point(1621, 1);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(26, 23);
             this.BtnClose.TabIndex = 37;
@@ -551,7 +525,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.SkyBlue;
-            this.ClientSize = new System.Drawing.Size(1162, 608);
+            this.ClientSize = new System.Drawing.Size(1208, 608);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pB_Param);
@@ -566,13 +540,11 @@
             this.Controls.Add(this.label_para);
             this.Controls.Add(this.label_db);
             this.Controls.Add(this.label_manul);
-            this.Controls.Add(this.label_auto);
             this.Controls.Add(this.label_run);
             this.Controls.Add(this.Power);
             this.Controls.Add(this.Level);
             this.Controls.Add(this.User);
             this.Controls.Add(this.UserName);
-            this.Controls.Add(this.pB_auto);
             this.Controls.Add(this.pB_user);
             this.Controls.Add(this.pB_logo);
             this.Controls.Add(this.pB_ccd);
@@ -601,7 +573,6 @@
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pB_Param)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_step)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pB_auto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_user)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_logo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pB_ccd)).EndInit();
@@ -628,14 +599,12 @@
         private System.Windows.Forms.PictureBox pB_para;
         private System.Windows.Forms.PictureBox pB_database;
         private System.Windows.Forms.PictureBox pB_manul;
-        private System.Windows.Forms.PictureBox pB_auto;
         private System.Windows.Forms.PictureBox pB_run;
         private System.Windows.Forms.Label label_user;
         private System.Windows.Forms.Label label_ccd;
         private System.Windows.Forms.Label label_para;
         private System.Windows.Forms.Label label_db;
         private System.Windows.Forms.Label label_manul;
-        private System.Windows.Forms.Label label_auto;
         private System.Windows.Forms.Label label_run;
         private System.Windows.Forms.Label Power;
         private System.Windows.Forms.Label Level;

@@ -107,7 +107,7 @@ namespace XT_CETC23
             log(str[0] + " " + "登录成功");
             pB_manul.Enabled = true;
             pB_run.Enabled = true;
-            pB_auto.Enabled = true;
+ //           pB_auto.Enabled = true;
             pB_ccd.Enabled = true;
             pB_database.Enabled = true;
             pB_para.Enabled = true;
@@ -135,7 +135,7 @@ namespace XT_CETC23
         }
         void InitFormEvent()
         {
-            pB_auto.MouseUp += PB_MouseUp;
+ //           pB_auto.MouseUp += PB_MouseUp;
             pB_ccd.MouseUp += PB_MouseUp;
             pB_database.MouseUp += PB_MouseUp;
             pB_manul.MouseUp += PB_MouseUp;
@@ -145,7 +145,7 @@ namespace XT_CETC23
             pB_step.MouseUp += PB_MouseUp;
             pB_Param.MouseUp += PB_MouseUp;
 
-            pB_auto.MouseDown += PB_MouseDown;
+//            pB_auto.MouseDown += PB_MouseDown;
             pB_ccd.MouseDown += PB_MouseDown;
             pB_database.MouseDown += PB_MouseDown;
             pB_manul.MouseDown += PB_MouseDown;
@@ -162,7 +162,7 @@ namespace XT_CETC23
             switch (name)
             {
                 case "pB_auto":
-                    pB_auto.BorderStyle = BorderStyle.Fixed3D;
+ //                   pB_auto.BorderStyle = BorderStyle.Fixed3D;
                     pbAuto();
                     break;
                 case "pB_run":
@@ -205,7 +205,7 @@ namespace XT_CETC23
             switch (name)
             {
                 case "pB_auto":
-                    pB_auto.BorderStyle = BorderStyle.None;
+//                    pB_auto.BorderStyle = BorderStyle.None;
                     break;
                 case "pB_run":
                     pB_run.BorderStyle = BorderStyle.None;
