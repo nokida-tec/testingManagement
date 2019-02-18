@@ -211,6 +211,12 @@
     <Compile Include="UI\RunForm.Designer.cs">
       <DependentUpon>RunForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\TestingResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TestingResultForm.Designer.cs">
+      <DependentUpon>TestingResultForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\UserForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -274,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\RunForm.resx">
       <DependentUpon>RunForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\TestingResultForm.resx">
+      <DependentUpon>TestingResultForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserForm.resx">
       <DependentUpon>UserForm.cs</DependentUpon>
