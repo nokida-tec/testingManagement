@@ -304,7 +304,6 @@ namespace XT_CETC23.DataCom
                                 TestingSystem.GetInstanse().ExitSystem();
                                 TransMessage("主调度进程退出");
                             }
-                            TestingCabinets.abort();
                             mainStarting = false;
                             initializing = false;
                             commandByPlc = "";
