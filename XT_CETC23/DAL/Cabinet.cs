@@ -527,5 +527,24 @@ namespace XT_CETC23.DAL
             }
             return true;
         }
+
+        public bool Pause()
+        {
+            if (task != null && task.ThreadState == ThreadState.Running )
+            {
+                task.Suspend();
+            }
+            return true;
+        }
+
+        public bool Resume()
+        {
+            if (task != null && task.ThreadState == ThreadState.Suspended)
+            {
+                task.Resume();
+            }
+            return true;
+        }
+
     }
 }
