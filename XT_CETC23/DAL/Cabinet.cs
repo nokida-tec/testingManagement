@@ -180,7 +180,7 @@ namespace XT_CETC23.DAL
 
         public bool start()
         {
-            Logger.WriteLine("  ***   cmdStart：" + this.ID);
+            Logger.WriteLine("  ***   start：" + this.ID);
             lock (this)
             {
                 taskExisting = false;
