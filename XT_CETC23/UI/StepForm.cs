@@ -76,9 +76,9 @@ namespace XT_CETC23.SonForm
                     //manul_cbProductNum.Enabled = false;
                 }   
             }
-            catch (Exception exception)
+            catch (Exception e1)
             {
-
+                Logger.WriteLine(e1);
             }
         }
 

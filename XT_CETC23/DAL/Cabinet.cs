@@ -39,7 +39,7 @@ namespace XT_CETC23.DAL
                     }
                     catch (Exception e)
                     {
-                        Logger.printException(e);
+                        Logger.WriteLine(e);
                     }
                 }
 
@@ -103,7 +103,7 @@ namespace XT_CETC23.DAL
             }
             catch (Exception e)
             {
-
+                Logger.WriteLine(e);
             }
             return TestingCabinet.STATUS.NG;
         }
@@ -161,7 +161,7 @@ namespace XT_CETC23.DAL
             }
             catch (Exception e)
             {
-
+                Logger.WriteLine(e);
             }
             TestingCabinets.getInstance(this.ID).Status = TestingCabinet.STATUS.Ready;
             return false;
@@ -392,7 +392,7 @@ namespace XT_CETC23.DAL
                             }
                             catch (Exception e)
                             {
-                                Logger.printException(e);
+                                Logger.WriteLine(e);
                             }
 
                             try
@@ -405,7 +405,7 @@ namespace XT_CETC23.DAL
                             }
                             catch (Exception e)
                             {
-                                Logger.printException(e);
+                                Logger.WriteLine(e);
                             }
 
                             //  record the scan barcode to logs file

@@ -124,7 +124,7 @@ namespace XT_CETC23.SonForm
                 }
                 catch(Exception e)
                 {
-                    
+                    Logger.WriteLine(e);
                 }
             }         
         }
@@ -207,8 +207,10 @@ namespace XT_CETC23.SonForm
                             }
                         }
                     }
-                    catch(Exception exp)
-                    { }
+                    catch(Exception e1)
+                    {
+                        Logger.WriteLine(e1);
+                    }
                 }
                 prodType[0] = Convert.ToByte(cabinetStatus);
                 plc.DBWrite(PlcData.PlcWriteAddress, 20, 1, prodType);

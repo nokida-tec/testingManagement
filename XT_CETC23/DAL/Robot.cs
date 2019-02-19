@@ -93,9 +93,9 @@ namespace XT_CETC23.DataCom
                     socketClient.Shutdown(SocketShutdown.Both);
                     socketClient.Disconnect(true);
                 }
-                catch (Exception e2)
+                catch (Exception e)
                 {
-                    Logger.printException(e2);
+                    Logger.WriteLine(e);
                 }
                 socketClient.Close();
             }
@@ -139,7 +139,7 @@ namespace XT_CETC23.DataCom
                 }
                 catch (Exception e)
                 {
-                    Logger.printException(e);
+                    Logger.WriteLine(e);
                     CloseSocket();
                 }
                 Thread.Sleep(timeInter);
@@ -164,7 +164,7 @@ namespace XT_CETC23.DataCom
                     }
                     catch (Exception e)
                     {
-                        Logger.printException(e);
+                        Logger.WriteLine(e);
                     }
                 }
                 
@@ -194,7 +194,7 @@ namespace XT_CETC23.DataCom
                 }
                 catch (Exception e)
                 {
-                    Logger.printException(e);
+                    Logger.WriteLine(e);
                 }
         }
     }

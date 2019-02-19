@@ -1120,8 +1120,9 @@ namespace XT_CETC23.SonForm
                 PlcData.clearTask = true;
                 //TransMessage("任务清除完成");
             }
-            catch
+            catch (Exception e)
             {
+                Logger.WriteLine(e);
                 PlcData.clearTask = false;
                 TransMessage("任务清除失败");
             }

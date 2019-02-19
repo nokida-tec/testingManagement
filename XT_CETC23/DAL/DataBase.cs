@@ -79,9 +79,9 @@ namespace XT_CETC23.DataCom
                 conClose();
                 return true;
             }
-            catch (SqlException sex)
+            catch (SqlException e)
             {
-                Logger.printException(sex);
+                Logger.WriteLine(e);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
             }
@@ -94,8 +94,9 @@ namespace XT_CETC23.DataCom
                 conOpen();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                Logger.WriteLine(e);
                 return false;
             }
         }
@@ -106,9 +107,9 @@ namespace XT_CETC23.DataCom
                 conClose();
                 return true;
             }
-            catch (SqlException sex)
+            catch (SqlException e)
             {
-                Logger.printException(sex);
+                Logger.WriteLine(e);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
             }
@@ -132,9 +133,9 @@ namespace XT_CETC23.DataCom
                         return dt;
                     }
                 }
-                catch (SqlException sex)
+                catch (SqlException e)
                 {
-                    Logger.printException(sex);
+                    Logger.WriteLine(e);
                     //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                     return null;
                 }
@@ -154,10 +155,9 @@ namespace XT_CETC23.DataCom
                     return count;
                 }
             }
-            catch (SqlException sex)
+            catch (SqlException e)
             {
-                Console.WriteLine(" ***** " + sex.Message);
-                Console.WriteLine(" ***** " + sex.StackTrace);
+                Logger.WriteLine(e);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return 0;
             }
@@ -176,9 +176,9 @@ namespace XT_CETC23.DataCom
                     return true;
                 }
             }
-            catch (SqlException sex)
+            catch (SqlException e)
             {
-                Logger.printException(sex);
+                Logger.WriteLine(e);
                 //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
                 return false;
             }
@@ -197,11 +197,9 @@ namespace XT_CETC23.DataCom
                     return count;
                 }                
             }
-            catch (SqlException sex)
+            catch (SqlException e)
             {
-                Console.WriteLine(" ***** " + sex.Message);
-                Console.WriteLine(" ***** " + sex.StackTrace);
-                //dbMessage(sex.Message.ToString() + " " + DateTime.Now.ToString("G"));
+                Logger.WriteLine(e);
                 return 0;
             }
         }

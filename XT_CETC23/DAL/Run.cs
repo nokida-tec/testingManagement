@@ -196,7 +196,7 @@ namespace XT_CETC23.DataCom
                 }
                 catch (Exception e)
                 {
-
+                    Logger.WriteLine(e);
                     MessageBox.Show(e.Message);
                 }
                 Thread.Sleep(100);
@@ -308,8 +308,10 @@ namespace XT_CETC23.DataCom
                             initializing = false;
                             commandByPlc = "";
                         }
-                        catch(Exception exp)
-                        { }
+                        catch(Exception e)
+                        {
+                            Logger.WriteLine(e);
+                        }
                     }
                     if (modeByPlc == "Auto" && commandByPlc == "Initialize" && !initializing)
                     {                       
@@ -779,15 +781,15 @@ namespace XT_CETC23.DataCom
                                     db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
 
                                     //等待机器人轨道到位
-                                    do
-                                    {
-                                        if (gSheduleExit == true)
-                                        {
-                                            
-                                            return;
-                                        }
-                                        Thread.Sleep(100);
-                                    } while (TaskCycle.PickStep != 10);
+                                    //do
+                                    //{
+                                    //    if (gSheduleExit == true)
+                                    //    {
+                                    //        
+                                    //        return;
+                                    //    }
+                                    //    Thread.Sleep(100);
+                                    //} while (TaskCycle.PickStep != 10);
 
                                     //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
@@ -1085,7 +1087,7 @@ namespace XT_CETC23.DataCom
             }
             catch(Exception e)
             {
-                Logger.printException(e);
+                Logger.WriteLine(e);
             }
             Logger.WriteLine(" ***** exit 调度进程 thread");
 

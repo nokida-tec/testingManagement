@@ -145,8 +145,9 @@ namespace XT_CETC23.Common
                 worksheet.Cells.Dispose();
                 package.Dispose();
                 GetMessage(savaName + "保存成功");
-            }catch
+            }catch (Exception e)
             {
+                Logger.WriteLine(e);
                 GetMessage(savaName + "保存失败");
             }
         }

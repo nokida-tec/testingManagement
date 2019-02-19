@@ -269,7 +269,9 @@ namespace XT_CETC23.SonForm
                 TransMessageToMain(message);
             }
             catch (Exception e)
-            { }
+            {
+                Logger.WriteLine(e);
+            }
         }
 
         public void getGrab(string[] str)

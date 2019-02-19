@@ -667,9 +667,9 @@ namespace XT_CETC23
                         continue;
                     }
                 }
-                catch
+                catch (Exception e1)
                 {
-
+                    Logger.WriteLine(e1);
                 }
                 //每次使用的都是最初始的控件大小，保证准确无误。
             }
@@ -791,9 +791,9 @@ namespace XT_CETC23
                 sw.Close();
                 listBox_Alarm.Items.Add(strLog);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                
+                Logger.WriteLine(e);
             }
         }
 

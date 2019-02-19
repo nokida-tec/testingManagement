@@ -31,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using XT_CETC23;
 
 namespace Snap7
 {
@@ -363,8 +364,9 @@ namespace Snap7
             {
                 return new DateTime(Year, Month, Day, Hour, Min, Sec, MSec);
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (System.ArgumentOutOfRangeException e)
             {
+                Logger.WriteLine(e);
                 return new DateTime(0);
             }
         }
@@ -402,8 +404,9 @@ namespace Snap7
             {
                 return new DateTime(1990, 1, 1).AddDays(GetIntAt(Buffer, Pos));
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (System.ArgumentOutOfRangeException e)
             {
+                Logger.WriteLine(e);
                 return new DateTime(0);
             }
         }
@@ -421,8 +424,9 @@ namespace Snap7
             {
                 return new DateTime(0).AddMilliseconds(S7.GetDIntAt(Buffer, Pos));
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (System.ArgumentOutOfRangeException e)
             {
+                Logger.WriteLine(e);
                 return new DateTime(0);
             }
         }
@@ -441,8 +445,9 @@ namespace Snap7
             { 
                 return new DateTime(Math.Abs(GetLIntAt(Buffer,Pos)/100));
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (System.ArgumentOutOfRangeException e)
             {
+                Logger.WriteLine(e);
                 return new DateTime(0);
             }
         }
@@ -461,8 +466,9 @@ namespace Snap7
             { 
                 return new DateTime((GetLIntAt(Buffer, Pos) / 100) + bias); 
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (System.ArgumentOutOfRangeException e)
             {
+                Logger.WriteLine(e);
                 return new DateTime(0);
             }                 
         }
@@ -490,8 +496,9 @@ namespace Snap7
             {
                 return new DateTime(Year, Month, Day, Hour, Min, Sec, MSec);
             }
-            catch (System.ArgumentOutOfRangeException)
+            catch (System.ArgumentOutOfRangeException e)
             {
+                Logger.WriteLine(e);
                 return new DateTime(0);
             }
         }

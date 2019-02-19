@@ -164,6 +164,7 @@ namespace XT_CETC23.Model
             }
             catch (Exception e)
             {
+                Logger.WriteLine(e);
                 this.name = "#" + (ID + 1) + "号机台";
                 this.order = ORDER.Undefined;
                 this.taskID = 0;
