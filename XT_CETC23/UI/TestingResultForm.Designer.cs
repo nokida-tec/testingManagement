@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestingResultForm));
             this.dateTimePickerToday = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -36,20 +37,28 @@
             this.comboFrameLot = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
-            this.dB23DataSet = new XT_CETC23.DB23DataSet();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.productIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkResultDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkCabinetADataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.frameLocationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.salverLocationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkBatchDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.beginTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.endTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fillByToolStrip = new System.Windows.Forms.ToolStrip();
+            this.fillByToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.dB23DataSet = new XT_CETC23.DB23DataSet();
+            this.actualDataTableAdapter = new XT_CETC23.DB23DataSetTableAdapters.ActualDataTableAdapter();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.阿萨德ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelCommand.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dB23DataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.fillByToolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dB23DataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // dateTimePickerToday
@@ -94,7 +103,7 @@
             this.panelCommand.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelCommand.Location = new System.Drawing.Point(0, 0);
             this.panelCommand.Name = "panelCommand";
-            this.panelCommand.Size = new System.Drawing.Size(948, 54);
+            this.panelCommand.Size = new System.Drawing.Size(944, 54);
             this.panelCommand.TabIndex = 3;
             // 
             // comboFrameLot
@@ -129,108 +138,171 @@
             this.btnExport.Text = "导出";
             this.btnExport.UseVisualStyleBackColor = true;
             // 
+            // dataGridView
+            // 
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AutoGenerateColumns = false;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8,
+            this.dataGridViewTextBoxColumn9});
+            this.dataGridView.DataSource = this.bindingSource1;
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(0, 54);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
+            this.dataGridView.RowTemplate.Height = 23;
+            this.dataGridView.Size = new System.Drawing.Size(944, 389);
+            this.dataGridView.TabIndex = 4;
+            // 
+            // fillByToolStrip
+            // 
+            this.fillByToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fillByToolStripButton,
+            this.toolStripDropDownButton1});
+            this.fillByToolStrip.Location = new System.Drawing.Point(0, 54);
+            this.fillByToolStrip.Name = "fillByToolStrip";
+            this.fillByToolStrip.Size = new System.Drawing.Size(944, 25);
+            this.fillByToolStrip.TabIndex = 5;
+            this.fillByToolStrip.Text = "fillByToolStrip";
+            // 
+            // fillByToolStripButton
+            // 
+            this.fillByToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.fillByToolStripButton.Name = "fillByToolStripButton";
+            this.fillByToolStripButton.Size = new System.Drawing.Size(41, 22);
+            this.fillByToolStripButton.Text = "FillBy";
+            this.fillByToolStripButton.Click += new System.EventHandler(this.fillByToolStripButton_Click);
+            // 
+            // bindingSource1
+            // 
+            this.bindingSource1.DataMember = "ActualData";
+            this.bindingSource1.DataSource = this.dB23DataSet;
+            // 
             // dB23DataSet
             // 
             this.dB23DataSet.DataSetName = "DB23DataSet";
             this.dB23DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // dataGridView
+            // actualDataTableAdapter
             // 
-            this.dataGridView.AutoGenerateColumns = false;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.productIDDataGridViewTextBoxColumn,
-            this.productTypeDataGridViewTextBoxColumn,
-            this.checkResultDataGridViewTextBoxColumn,
-            this.checkCabinetADataGridViewTextBoxColumn,
-            this.frameLocationDataGridViewTextBoxColumn,
-            this.salverLocationDataGridViewTextBoxColumn,
-            this.checkBatchDataGridViewTextBoxColumn,
-            this.beginTimeDataGridViewTextBoxColumn,
-            this.endTimeDataGridViewTextBoxColumn});
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 54);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.RowTemplate.Height = 23;
-            this.dataGridView.Size = new System.Drawing.Size(948, 393);
-            this.dataGridView.TabIndex = 4;
-            this.dataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellContentClick);
+            this.actualDataTableAdapter.ClearBeforeFill = true;
             // 
-            // productIDDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn1
             // 
-            this.productIDDataGridViewTextBoxColumn.DataPropertyName = "ProductID";
-            this.productIDDataGridViewTextBoxColumn.HeaderText = "产品编码";
-            this.productIDDataGridViewTextBoxColumn.Name = "productIDDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "ProductID";
+            this.dataGridViewTextBoxColumn1.HeaderText = "产品编码";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
-            // productTypeDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn2
             // 
-            this.productTypeDataGridViewTextBoxColumn.DataPropertyName = "ProductType";
-            this.productTypeDataGridViewTextBoxColumn.HeaderText = "产品类型";
-            this.productTypeDataGridViewTextBoxColumn.Name = "productTypeDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "ProductType";
+            this.dataGridViewTextBoxColumn2.HeaderText = "产品类型";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
-            // checkResultDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn3
             // 
-            this.checkResultDataGridViewTextBoxColumn.DataPropertyName = "CheckResult";
-            this.checkResultDataGridViewTextBoxColumn.HeaderText = "测试结果";
-            this.checkResultDataGridViewTextBoxColumn.Name = "checkResultDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "FrameLocation";
+            this.dataGridViewTextBoxColumn3.HeaderText = "仓位";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
-            // checkCabinetADataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn4
             // 
-            this.checkCabinetADataGridViewTextBoxColumn.DataPropertyName = "CheckCabinetA";
-            this.checkCabinetADataGridViewTextBoxColumn.HeaderText = "测试柜";
-            this.checkCabinetADataGridViewTextBoxColumn.Name = "checkCabinetADataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "SalverLocation";
+            this.dataGridViewTextBoxColumn4.HeaderText = "盘位";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
-            // frameLocationDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn5
             // 
-            this.frameLocationDataGridViewTextBoxColumn.DataPropertyName = "FrameLocation";
-            this.frameLocationDataGridViewTextBoxColumn.HeaderText = "仓位";
-            this.frameLocationDataGridViewTextBoxColumn.Name = "frameLocationDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "CheckCabinetA";
+            this.dataGridViewTextBoxColumn5.HeaderText = "测试柜";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
-            // salverLocationDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn6
             // 
-            this.salverLocationDataGridViewTextBoxColumn.DataPropertyName = "SalverLocation";
-            this.salverLocationDataGridViewTextBoxColumn.HeaderText = "盘位";
-            this.salverLocationDataGridViewTextBoxColumn.Name = "salverLocationDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "CheckBatch";
+            this.dataGridViewTextBoxColumn6.HeaderText = "测试批次";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
             // 
-            // checkBatchDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn7
             // 
-            this.checkBatchDataGridViewTextBoxColumn.DataPropertyName = "CheckBatch";
-            this.checkBatchDataGridViewTextBoxColumn.HeaderText = "批号";
-            this.checkBatchDataGridViewTextBoxColumn.Name = "checkBatchDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "CheckResult";
+            this.dataGridViewTextBoxColumn7.HeaderText = "测试结果";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
             // 
-            // beginTimeDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn8
             // 
-            this.beginTimeDataGridViewTextBoxColumn.DataPropertyName = "BeginTime";
-            this.beginTimeDataGridViewTextBoxColumn.HeaderText = "测试开始时间";
-            this.beginTimeDataGridViewTextBoxColumn.Name = "beginTimeDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn8.DataPropertyName = "BeginTime";
+            this.dataGridViewTextBoxColumn8.HeaderText = "开始时间";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
             // 
-            // endTimeDataGridViewTextBoxColumn
+            // dataGridViewTextBoxColumn9
             // 
-            this.endTimeDataGridViewTextBoxColumn.DataPropertyName = "EndTime";
-            this.endTimeDataGridViewTextBoxColumn.HeaderText = "测试结束时间";
-            this.endTimeDataGridViewTextBoxColumn.Name = "endTimeDataGridViewTextBoxColumn";
+            this.dataGridViewTextBoxColumn9.DataPropertyName = "EndTime";
+            this.dataGridViewTextBoxColumn9.HeaderText = "结束时间";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.阿萨德ToolStripMenuItem});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 22);
+            this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
+            // 
+            // 阿萨德ToolStripMenuItem
+            // 
+            this.阿萨德ToolStripMenuItem.Name = "阿萨德ToolStripMenuItem";
+            this.阿萨德ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.阿萨德ToolStripMenuItem.Text = "阿萨德";
             // 
             // TestingResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 447);
+            this.ClientSize = new System.Drawing.Size(944, 443);
             this.ControlBox = false;
+            this.Controls.Add(this.fillByToolStrip);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.panelCommand);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TestingResultForm";
+            this.RightToLeftLayout = true;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Load += new System.EventHandler(this.TestingResultForm_Load);
             this.panelCommand.ResumeLayout(false);
             this.panelCommand.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dB23DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.fillByToolStrip.ResumeLayout(false);
+            this.fillByToolStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dB23DataSet)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -244,7 +316,6 @@
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.ComboBox comboFrameLot;
         private DB23DataSet dB23DataSet;
-        private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.BindingSource actualDataBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn productIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn productTypeDataGridViewTextBoxColumn;
@@ -255,5 +326,21 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn checkBatchDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn beginTimeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn endTimeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private DB23DataSetTableAdapters.ActualDataTableAdapter actualDataTableAdapter;
+        private System.Windows.Forms.ToolStrip fillByToolStrip;
+        private System.Windows.Forms.ToolStripButton fillByToolStripButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem 阿萨德ToolStripMenuItem;
     }
 }
