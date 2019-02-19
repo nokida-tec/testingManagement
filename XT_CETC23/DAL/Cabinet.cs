@@ -183,11 +183,13 @@ namespace XT_CETC23.DAL
             Logger.WriteLine("  ***   start：" + this.ID);
             lock (this)
             {
-                taskExisting = false;
                 if (task != null)
                 {
-                    while (taskIsRunning)
+                    int count = 50;
+                    taskExisting = true;
+                    while (taskIsRunning && task.ThreadState != ThreadState.Stopped && count-- > 0)
                     {   // 等待原有线程运行退出
+                        taskExisting = true;
                         Logger.WriteLine("  ***   测试柜:" + this.ID + "在运行中 线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
                         Thread.Sleep(100);
                     }
@@ -197,6 +199,7 @@ namespace XT_CETC23.DAL
                  }
                 if (task == null && taskIsRunning == false)
                 {
+                    taskExisting = false;
                     task = new Thread(CabinetTest);
                     task.Name = "测试柜" + this.ID + ": 启动线程";
                     taskIsRunning = true;
