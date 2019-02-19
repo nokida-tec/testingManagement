@@ -354,6 +354,7 @@ namespace XT_CETC23.DataCom
                             mainSchedule.Resume();
                             TransMessage("主调度进程恢复");
                         }
+                        TestingCabinets.Resume();
                     }
 
                 }
@@ -376,6 +377,7 @@ namespace XT_CETC23.DataCom
                             mainSchedule.Suspend();
                             TransMessage("主调度进程挂起");
                         }
+                        TestingCabinets.Pause();
                     }
                 }
                 PrintAlarm(PlcData._alarmNumber);                

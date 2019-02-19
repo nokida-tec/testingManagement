@@ -66,5 +66,24 @@ namespace XT_CETC23.Instances
             return count;
         }
 
+        static public int Pause()
+        {
+            int count = 0;
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
+            {
+                getInstance(i).Pause();
+            }
+            return count;
+        }
+
+        static public int Resume()
+        {
+            int count = 0;
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
+            {
+                getInstance(i).Resume();
+            }
+            return count;
+        }
     }
 }
