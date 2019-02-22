@@ -16,5 +16,7 @@ namespace XT_CETC23
         SystemExiting = -1,
         [EnumDescription("异常报警")]
         Exception = -2,
+        [EnumDescription("扫描错误")]
+        ScanFailed = -3,
     }
 }
