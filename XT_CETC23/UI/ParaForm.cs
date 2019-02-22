@@ -63,8 +63,8 @@ namespace XT_CETC23.SonForm
             db = DataBase.GetInstanse();
             DataTable dt = db.DBQuery("select * from dbo.Path");
             for (int i = 0; i < 4; i++)
-            {
-                if (dt.Rows[0]["CmdPathName"].ToString().Trim() == null || dt.Rows[0]["DataPathName"].ToString().Trim() == null)
+            { // Todo
+                if (dt.Rows.Count == 0 || dt.Rows[0]["CmdPathName"].ToString().Trim() == null || dt.Rows[0]["DataPathName"].ToString().Trim() == null)
                 {
                     MessageBox.Show("系统所需文件目录配置信息不完整，请通过参数配置页面配置完整！");
                     return;
