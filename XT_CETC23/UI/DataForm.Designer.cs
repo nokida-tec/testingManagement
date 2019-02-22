@@ -120,9 +120,7 @@
             this.data_cbQueryCondition.Items.AddRange(new object[] {
             "dbo.BasicID",
             "dbo.TaskAxlis2",
-            "dbo.TaskAxlis7",
             "dbo.TaskCabinet",
-            "dbo.TaskRobot",
             "dbo.MTR",
             "dbo.Frame",
             "dbo.SortData",
