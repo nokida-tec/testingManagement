@@ -554,74 +554,14 @@ namespace XT_CETC23.DataCom
                                         //插入机器轨道任务
                                         //插入机器人轨道任务：到测试柜
                                         //判断机器人是否在原点
-                                        lock (Rail.lockRail)
-                                        {
-                                            Logger.WriteLine("Rail to:" + cabinetNo);
-                                            while (db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")") < 1) ;
-                                            //等待机器人轨道到位
-                                            do
-                                            {
-                                                if (gSheduleExit == true)
-                                                {
-                                                    return;
-                                                }
-                                                Thread.Sleep(100);
-                                            } while (TaskCycle.PutStep != 10);
-                                        }
-
                                         //插入机器人从测试柜的取料任务；
-                                        db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'GetProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
-                                        //等待机器人取料完成
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PutStep != 20);
-                                        db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                                        Robot.GetInstanse().doGetProductFromCabinet(prodType, cabinetNo);
 
-                                        //通知PLC从测试柜取料完成
-                                        plc.DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 8 });
-
-                                        Logger.WriteLine("Rail to:" + "料架位");
-                                        lock (Rail.lockRail)
-                                        {
-                                            Logger.WriteLine("Rail to:" + "料架位");
-                                            //插入机器人轨道到料架任务
-                                            //判断机器人是否在原点
-                                            while (db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")") < 1);
-
-                                            //插入料架取料任务，取出托盘（要区分取出和放入）
-                                            while(db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")") < 1);
-
-                                            //等待和机器人轨道到位和料架取出托盘完成
-                                            do
-                                            {
-                                                if (gSheduleExit == true)
-                                                {
-
-                                                    return;
-                                                }
-                                                Thread.Sleep(100);
-                                            } while (TaskCycle.PutStep != 40);
-                                        }
-
+                                        //插入料架取料任务，取出托盘（要区分取出和放入）
+                                        while(db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")") < 1);
+                                        
                                         //插入机器人回料任务
-                                        db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ")");
-
-                                        //等待机器人回料完成
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PutStep != 50);
+                                        Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo);
 
                                         //插入料架放料任务，放回托盘；（要区分取出和放入）
                                         db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
@@ -784,23 +724,8 @@ namespace XT_CETC23.DataCom
 
                                     //插入机器人轨道到料架任务
                                     TaskCycle.PickStep = 0;
-                                    
-                                    lock (Rail.lockRail)
-                                    {
-                                        Logger.WriteLine("Rail to:" + "料架位");
-                                        //判断机器人是否在原点
-                                        while (db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")") < 1);
 
-                                        //等待机器人轨道到位
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PickStep != 10);
-                                    }
+                                    Robot.GetInstanse().doMoveToZeroPos();
 
                                     //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
@@ -967,18 +892,8 @@ namespace XT_CETC23.DataCom
 
                                     //插入机器人取料任务                         
                                     db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                                    db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'GetProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
+                                    Robot.GetInstanse().doGetProductFromFrame (prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
 
-                                    //等待机器人取料完成
-                                    do
-                                    {
-                                        if (gSheduleExit == true)
-                                        {
-                                            
-                                            return;
-                                        }
-                                        Thread.Sleep(100);
-                                    } while (TaskCycle.PickStep != 30);
 
                                     db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
 
@@ -988,7 +903,7 @@ namespace XT_CETC23.DataCom
                                         TestingTask.finish(MTR.globalBasicID, "NG", "扫描失败");
 
                                         //插入机器人放料到料架任务
-                                        db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation,CordinatorX,CordinatorY,CordinatorU)values(" + 0 + "," + "'PutProTray'" + ",'" + prodType + "'," + pieceNo + ",'" + CordinatorX + "','" + CordinatorY + "','" + CordinatorU + "')");
+                                        Robot.GetInstanse().doPutProductToFrame (prodType ,pieceNo, CordinatorX, CordinatorY, CordinatorU);
                                         plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
                                         FrameDataUpdate();
 
@@ -1030,39 +945,10 @@ namespace XT_CETC23.DataCom
                                     //插入放回料盘任务
                                     db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
 
-                                    //插入机器人轨道走位任务：到测试柜
-                                    //判断机器人是否在原点
-                                    Logger.WriteLine("Rail to:" + cabinetNo);
-                                    lock (Rail.lockRail)
-                                    {
-                                        Logger.WriteLine("Rail to:" + cabinetNo);
-                                        while (db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (101 + cabinetNo) + ")") < 1) ;
-
-                                        //等待机器人轨道到位
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PickStep != 50);
-                                    }
-
                                     //插入机器人放料任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                                    db.DBInsert("insert into dbo.TaskRobot(Axlis7Pos,OrderType,ProductType,SalverLocation)values(" + 0 + "," + "'PutProTest'" + ",'" + prodType + "'," + (1 + cabinetNo) + ")");
+                                    Robot.GetInstanse().doPutProductToCabinet(prodType, cabinetNo);
 
-                                    //等待机器人放料完成
-                                    do
-                                    {
-                                        if (gSheduleExit == true)
-                                        {
-                                            
-                                            return;
-                                        }
-                                        Thread.Sleep(100);
-                                    } while (TaskCycle.PickStep != 60);
 
                                     //插入测试任务
                                     db.DBUpdate("update dbo.MTR set CurrentStation = '" + cabinetName + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
@@ -1081,25 +967,7 @@ namespace XT_CETC23.DataCom
                     {
                         //插入机器人轨道到料架任务
                         TaskCycle.actionType = "FrameToCabinet";
-                        TaskCycle.PickStep = 0;
-                        //判断机器人是否在原点
-                        lock (Rail.lockRail)
-                        {
-                            Logger.WriteLine("Rail to:" + "料架位");
-                            while (db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")") < 1) ;
-
-                            //等待机器人轨道到位
-                            do
-                            {
-                                if (gSheduleExit == true)
-                                {
-
-                                    return;
-                                }
-                                Thread.Sleep(100);
-                            } while (TaskCycle.PickStep != 10);
-                        }
-                        TaskCycle.PickStep = 0;
+                        Robot.GetInstanse().doMoveToZeroPos();
                         mForm.clearTask();
                         readyForStep = true;
                     }                                     
