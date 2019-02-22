@@ -88,7 +88,6 @@ namespace XT_CETC23.DataCom
         }
         public bool DBConnect()
         {
-
             try
             {
                 conOpen();
@@ -118,6 +117,10 @@ namespace XT_CETC23.DataCom
         {
             lock (lockQuery)
             {
+                if (Config.Config.ENABLED_LOG_SQL)
+                {
+                    Logger.WriteLine(questr);
+                }
                 try
                 {
                     GC.Collect();
@@ -146,6 +149,10 @@ namespace XT_CETC23.DataCom
         {
             try
             {
+                if (Config.Config.ENABLED_LOG_SQL)
+                {
+                    Logger.WriteLine(questr);
+                }
                 GC.Collect();
                 conOpen();
                 using (com = new SqlCommand(questr, con))
@@ -168,6 +175,10 @@ namespace XT_CETC23.DataCom
         {
             try
             {
+                if (Config.Config.ENABLED_LOG_SQL)
+                {
+                    Logger.WriteLine(questr);
+                }
                 GC.Collect();
                 conOpen();
                 using (com = new SqlCommand(questr, con))
@@ -190,6 +201,10 @@ namespace XT_CETC23.DataCom
         {
             try
             {
+                if (Config.Config.ENABLED_LOG_SQL)
+                {
+                    Logger.WriteLine(questr);
+                }
                 GC.Collect();
                 conOpen();
                 using (com = new SqlCommand(questr, con))
