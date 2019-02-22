@@ -119,7 +119,7 @@ namespace XT_CETC23.DataCom
             {
                 if (Config.Config.ENABLED_LOG_SQL)
                 {
-                    Logger.WriteLine(questr);
+                    Logger.WriteLine("SQL: " + questr);
                 }
                 try
                 {
@@ -151,7 +151,7 @@ namespace XT_CETC23.DataCom
             {
                 if (Config.Config.ENABLED_LOG_SQL)
                 {
-                    Logger.WriteLine(questr);
+                    Logger.WriteLine("SQL: " + questr);
                 }
                 GC.Collect();
                 conOpen();
@@ -177,7 +177,7 @@ namespace XT_CETC23.DataCom
             {
                 if (Config.Config.ENABLED_LOG_SQL)
                 {
-                    Logger.WriteLine(questr);
+                    Logger.WriteLine("SQL: " + questr);
                 }
                 GC.Collect();
                 conOpen();
@@ -203,7 +203,7 @@ namespace XT_CETC23.DataCom
             {
                 if (Config.Config.ENABLED_LOG_SQL)
                 {
-                    Logger.WriteLine(questr);
+                    Logger.WriteLine("SQL: " + questr);
                 }
                 GC.Collect();
                 conOpen();
