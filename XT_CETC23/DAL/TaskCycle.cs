@@ -11,7 +11,6 @@ using XT_CETC23.DataManager;
 using XT_CETC23_GK.Task;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
-using XT_CETC23.Model;
 using XT_CETC23.Instances;
 using Excel;
 using System.Windows.Forms;
@@ -39,7 +38,7 @@ namespace XT_CETC23.DataCom
         private const int WM_KEYUP = 0x0101;
         private const int vbKeyReturn = 0x0D;
 
-        Thread axlis2Task, axlis7Task, robotTask, cabinetTask;
+        Thread axlis2Task, axlis7Task, cabinetTask;
         static TaskCycle taskCycle;
         static object lockTaskCycle = new object();
         static String[] prodType = new String[40];
@@ -93,12 +92,7 @@ namespace XT_CETC23.DataCom
             {
                 axlis7Task.Start();
             }
-            robotTask = new Thread(RobotTask);
-            robotTask.Name = "机器人任务";
-            if (!robotTask.IsAlive)
-            {
-                robotTask.Start();
-            }
+
             cabinetTask = new Thread(CabinetTask);
             cabinetTask.Name = "检测柜项目";
             if (!cabinetTask.IsAlive)
@@ -391,126 +385,6 @@ namespace XT_CETC23.DataCom
         //    }          
         //}
         
-        private void RobotTask()
-        {
-            string cordX = "";
-            string cordY = "";
-            string cordU = "";
-            dtr = new DataTable();
-            //db.DBDelete("delete from dbo.TaskRobot"); ;
-            while (true)
-            {
-                
-                Thread.Sleep(10);
-                while (PlcData.clearTask)
-                {
-                RobotTaskBegain:
-                    dtr.Rows.Clear();
-                    dtr.Columns.Clear();
-                    dtr = db.DBQuery("select * from dbo.TaskRobot");
-                    if (dtr != null && dtr.Rows.Count == 1)
-                    {
-                        //rTask.Axlis7Pos = (int)dtr.Rows[0]["Axlis7Pos"];
-                        rTask.OrderType = dtr.Rows[0]["OrderType"].ToString().Trim() ;
-                        RobotData.Command = rTask.OrderType;
-                        rTask.ProductType = dtr.Rows[0]["ProductType"].ToString().Trim();
-                        rTask.Position = (int)dtr.Rows[0]["SalverLocation"];
-                        cordX = dtr.Rows[0]["CordinatorX"].ToString().Trim();
-                        cordY = dtr.Rows[0]["CordinatorY"].ToString().Trim();
-                        cordU = dtr.Rows[0]["CordinatorU"].ToString().Trim();
-
-                        if (rTask.OrderType == "GetProTray")
-                        {
-                            Robot.GetInstanse().sendDataToRobot(rTask.OrderType + "," + rTask.ProductType + "," + rTask.Position.ToString() + "," + cordX + "," + cordY + "," + cordU);
-
-                            //等待机器人触发扫码
-                            while (RobotData.Response != "ScanStart")
-                            {
-                                if (Run.gSheduleExit == true)
-                                {
-                                    db.DBDelete("delete from dbo.TaskRobot"); ;
-                                    goto RobotTaskBegain;
-                                }                                
-                                Thread.Sleep(100);
-                            }
-
-                            //通知Plc扫码
-                            plc.DBWrite(PlcData.PlcWriteAddress, 3, 1, new Byte[] { 33 });
-
-                            //等待Plc扫码完成
-                            while ((PlcData._axlis2Status != 33) && (PlcData._axlis2Status != 38))
-                            {
-
-                                if (Run.gSheduleExit == true)
-                                {
-                                    db.DBDelete("delete from dbo.TaskRobot"); ;
-                                    goto RobotTaskBegain;
-                                }  
-                                Thread.Sleep(100);
-                            }
-
-                            if (PlcData._axlis2Status  == 38)
-                            {
-                                scanStatus = false;
-                            }
-                            if (PlcData._axlis2Status == 33)
-                            {
-                                scanStatus = true;
-                            }
-                            RobotData.Response = "";
-                            Robot.GetInstanse().sendDataToRobot("ScanDone");              //给机器人发送扫码完成消息 
-                        }
-                        else
-                        {
-                            Robot.GetInstanse().sendDataToRobot(rTask.OrderType + "," + rTask.ProductType + "," + rTask.Position.ToString());
-                        }
-                       
-                        //等待机器人取料完成消息
-                        String rspMsg = RobotData.Command.Trim() + "Done";
-                        while (String.IsNullOrEmpty(RobotData.Response)) 
-                        {
-                            if (Run.gSheduleExit == true)
-                            {
-                                db.DBDelete("delete from dbo.TaskRobot"); ;
-                                goto RobotTaskBegain;
-                            }  
-                            Thread.Sleep(100);
-                        }
-                        while (!RobotData.Response.Trim().Equals(RobotData.Command.Trim() + "Done"))
-                        {
-                            if (Run.gSheduleExit == true)
-                            {
-                                db.DBDelete("delete from dbo.TaskRobot"); ;
-                                goto RobotTaskBegain;
-                            }  
-                            Thread.Sleep(100);
-                        }
-                        db.DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
-                        db.DBDelete("delete from dbo.TaskRobot");
-                        Thread.Sleep(1000);
-                        if (TaskCycle.actionType == "FrameToCabinet")
-                        {
-                            TaskCycle.PickStep = PickStep + 10;
-                        }
-                        if (TaskCycle.actionType == "CabinetToFrame")
-                        {
-                            TaskCycle.PutStep = PutStep + 10;
-                        }
-                        RobotData.Command = "";
-                        RobotData.Response = "";
-                    }
-                    else if(dtr.Rows.Count>1)
-                    {
-                        MessageBox.Show("任务队列异常，请查看数据库表格TaskRoot，正常情况下该表格中最多只有一条任务记录！");
-                    }
-                    
-                    Thread.Sleep(100);
-                }
-                
-                Thread.Sleep(100);
-            }
-        }
-
         int a;
         private void Axlis7Task()
         {
