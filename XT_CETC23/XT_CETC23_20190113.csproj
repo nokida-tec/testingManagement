@@ -111,6 +111,7 @@
     <Compile Include="Common\Account.cs" />
     <Compile Include="Common\AutoStatus.cs" />
     <Compile Include="Common\EnumStr.cs" />
+    <Compile Include="Common\ErrorCode.cs" />
     <Compile Include="Common\ExportExcel.cs" />
     <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\snap7.net.cs" />
