@@ -172,22 +172,13 @@ namespace XT_CETC23.DAL
         private bool taskExisting = false;
         public bool cmdStart(string productType, int taskId) 
         {
-            Logger.WriteLine("  ***   cmdStart：" + this.ID + " Running:" + taskIsRunning + " ThreadState:" + ( task != null ? task.ThreadState.ToString() : "NULL") + " productType：" + productType + " taskId：" + taskId);
+            Logger.WriteLine("  ***   cmdStart：" + this.ID + " Running:" + taskIsRunning + " productType：" + productType + " taskId：" + taskId);
             lock (this)
             {
-                if (task != null)
+                if (task != null && task.ThreadState == ThreadState.Running && taskId == this.TaskID)
                 {
-                    if (task.ThreadState == ThreadState.Stopped || task.ThreadState == ThreadState.Aborted)
-                    {
-                        Thread.Sleep(100);
-                        Thread.Sleep(100);
-                        task = null;
-                    }
-                    else
-                    {
-                        Logger.WriteLine("重复任务，返回");
-                        return false;
-                    }
+                    Logger.WriteLine("重复任务，返回");
+                    return false;
                 }
                 base.cmdStart(productType, taskId);
                 return start();
