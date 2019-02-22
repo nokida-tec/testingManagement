@@ -1080,30 +1080,6 @@ namespace XT_CETC23.SonForm
                 dt.Rows.Clear();
                 dt.Columns.Clear();
                 dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                Axlis7Lable:
-                if (dt.Rows.Count > 0)
-                {
-                    db.DBDelete("delete from dbo.TaskAxlis7");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis7");
-                if (dt.Rows.Count > 0)
-                    goto Axlis7Lable;
-                //
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskRobot");
-                RobotLable:
-                if (dt.Rows.Count > 0)
-                {
-                    db.DBDelete("delete from dbo.TaskRobot");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskRobot");
-                if (dt.Rows.Count > 0)
-                    goto RobotLable;
                 //
                 CabinetLable:
                     for(int i=0;i<DeviceCount.TestingCabinetCount;++i)
