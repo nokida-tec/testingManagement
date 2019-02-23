@@ -727,6 +727,7 @@ namespace XT_CETC23.DataCom
 
                                     Robot.GetInstanse().doMoveToZeroPos();
 
+                                    TaskCycle.PickStep = 10;
                                     //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
@@ -892,12 +893,12 @@ namespace XT_CETC23.DataCom
 
                                     //插入机器人取料任务                         
                                     db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                                    Robot.GetInstanse().doGetProductFromFrame (prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
+                                    ReturnCode retCode = Robot.GetInstanse().doGetProductFromFrame (prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
 
 
                                     db.DBUpdate("update dbo.FeedBin set NumRemain = " + (numRemain - 1) + "where LayerID=" + layerID);
 
-                                    if (!TaskCycle.scanStatus)      //读码失败
+                                    if (retCode == ReturnCode.ScanFailed)      //读码失败
                                     {
                                         //db.DBUpdate("update dbo.MTR set ProductID = '" + "0" +"',"++ "'where BasicID=" + MTR.globalBasicID);
                                         TestingTask.finish(MTR.globalBasicID, "NG", "扫描失败");
@@ -907,17 +908,7 @@ namespace XT_CETC23.DataCom
                                         plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
                                         FrameDataUpdate();
 
-                                        //等待放料任务完成
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PickStep != 40);
-
+                                        TaskCycle.PickStep = 40;
                                         //插入放回料盘任务
                                         db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
                                         do

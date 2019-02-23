@@ -501,13 +501,21 @@ namespace XT_CETC23.DAL
         {
             lock (lockCabinet)
             {
-                Logger.WriteLine("为取料打开测试台: " + ID + " 开始");
-                //通知PLC连接测试件，打开测试柜
-                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-                ReturnCode ret = WaitCondition.waitCondition(canGet);
-                Logger.WriteLine("为取料打开测试台: " + ID + " 结束");
+                try
+                {
+                    Logger.WriteLine("为取料打开测试台: " + ID + " 开始");
+                    //通知PLC连接测试件，打开测试柜
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                    ReturnCode ret = WaitCondition.waitCondition(canGet);
+                    Logger.WriteLine("为取料打开测试台: " + ID + " 结束");
 
-                return ret;
+                    return ret;
+                } 
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                    throw e;
+                }
             }
         }
 
@@ -515,13 +523,21 @@ namespace XT_CETC23.DAL
         {
             lock (lockCabinet)
             {
-                Logger.WriteLine("为放料打开测试台: " + ID + " 开始");
-                //通知PLC连接测试件，打开测试柜
-                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-                ReturnCode ret = WaitCondition.waitCondition(canPut);
-                Logger.WriteLine("为放料打开测试台: " + ID + " 结束");
+                try
+                {
+                    Logger.WriteLine("为放料打开测试台: " + ID + " 开始");
+                    //通知PLC连接测试件，打开测试柜
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                    ReturnCode ret = WaitCondition.waitCondition(canPut);
+                    Logger.WriteLine("为放料打开测试台: " + ID + " 结束");
 
-                return ret;
+                    return ret;
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                    throw e;
+                }
             }
         }
 
@@ -529,13 +545,21 @@ namespace XT_CETC23.DAL
         {
             lock (lockCabinet)
             {
-                Logger.WriteLine("关闭测试台: " + ID + " 开始");
-                //通知PLC连接测试件，关闭测试柜
-                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
-                ReturnCode ret = WaitCondition.waitCondition(canTesting);
-                Logger.WriteLine("关闭测试台: " + ID + " 结束");
+                try
+                {
+                    Logger.WriteLine("关闭测试台: " + ID + " 开始");
+                    //通知PLC连接测试件，关闭测试柜
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
+                    ReturnCode ret = WaitCondition.waitCondition(canTesting);
+                    Logger.WriteLine("关闭测试台: " + ID + " 结束");
 
-                return ret;
+                    return ret;
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                    throw e;
+                }
             }
         }
 

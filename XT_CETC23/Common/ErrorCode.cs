@@ -18,5 +18,7 @@ namespace XT_CETC23
         Exception = -2,
         [EnumDescription("扫描错误")]
         ScanFailed = -3,
+        [EnumDescription("系统忙")]
+        SysBusy = -4,
     }
 }
