@@ -84,12 +84,6 @@ namespace XT_CETC23.DataCom
             {
                 axlis2Task.Start();
             }
-            axlis7Task = new Thread(Axlis7Task);
-            axlis7Task.Name = "7轴任务";
-            if (!axlis7Task.IsAlive)
-            {
-                axlis7Task.Start();
-            }
 
             cabinetTask = new Thread(CabinetTask);
             cabinetTask.Name = "检测柜项目";
@@ -383,63 +377,6 @@ namespace XT_CETC23.DataCom
         //    }          
         //}
         
-        int a;
-        private void Axlis7Task()
-        {
-            //db.DBDelete("delete from dbo.TaskAxlis7");
-            while (true)
-            {
-                
-                Thread.Sleep(10);
-                while (PlcData.clearTask)
-                {
-                Axlis7TaskBegain:
-                    try
-                    {
-                        DataTable dt7 = db.DBQuery("select * from dbo.TaskAxlis7");
-                        if (dt7 != null && dt7.Rows.Count == 1)
-                        {
-                            a = Convert.ToInt32(dt7.Rows[0]["Axlis7Pos"]);
-                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(a) });
-                            while (PlcData._axlis7Status != (byte)55)
-                            {
-                                if (Run.gSheduleExit == true)
-                                {
-                                    db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
-                                    goto Axlis7TaskBegain;
-                                }
-                                Thread.Sleep(100);
-                            }
-                            db.DBDelete("delete from dbo.TaskAxlis7 where Axlis7Pos=" + a + "");
-                            Thread.Sleep(2000);
-                            plc.DBWrite(100, 2, 1, new Byte[] { 0 });
-                            if (TaskCycle.actionType == "FrameToCabinet")
-                            {
-                                TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                            }
-                            if (TaskCycle.actionType == "CabinetToFrame")
-                            {
-                                TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                            }
-                        }
-                        else if (dt7 != null && dt7.Rows.Count > 1)
-                        {
-                            Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
-                            MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
-                        }
-                    } 
-                    catch (Exception e)
-                    {
-                        Logger.WriteLine(e);
-                    }
-                    
-                    Thread.Sleep(100);
-                }
-                
-                Thread.Sleep(100);
-            }            
-        }
-
         private void Axlis2Task()
         {
             //db.DBDelete("delete from dbo.TaskAxlis2");

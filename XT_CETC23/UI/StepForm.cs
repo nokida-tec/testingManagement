@@ -208,15 +208,7 @@ namespace XT_CETC23.SonForm
                 TaskCycle.actionType = "FrameToCabinet";
                 TaskCycle.PickStep = 0;
 
-
-                db.DBUpdate("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + PlcData.getAxlis7Pos(manul_cbGoalPos.SelectedItem.ToString()) + ")");
-                
-                //等待机器人轨道到位
-                do
-                {
-                    Thread.Sleep(100);
-                } while (TaskCycle.PickStep != 10); 
-                TaskCycle.PickStep = 0;
+                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
 
                 //根据位置和命令类型选择不同的操作
                 if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
@@ -314,14 +306,8 @@ namespace XT_CETC23.SonForm
             else        //轨道独立运动
             {
                 TaskCycle.actionType = "FrameToCabinet";
-                TaskCycle.PickStep = 0;
                 //插入机器人轨道移动任务
-                db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos(manul_cbGoalPos.SelectedItem.ToString()) + ")");
-                do
-                {
-                    Thread.Sleep(100);
-                } while (TaskCycle.PickStep != 10);
-                TaskCycle.PickStep = 0;
+                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
             }
             MessageBox.Show("操作完成！", "Information");
             //}
@@ -747,15 +733,9 @@ namespace XT_CETC23.SonForm
             //插入机器人轨道到料架任务
             TaskCycle.PickStep = 0;
             //判断机器人是否在原点
-            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
+            Robot.GetInstanse().doMoveToZeroPos();
 
-            //等待机器人轨道到位
-            do
-            {
-                Thread.Sleep(100);
-            } while (TaskCycle.PickStep != 10);
-
-            //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
+            TaskCycle.PickStep = 10;            //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
             db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
             db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
             db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
@@ -1085,8 +1065,9 @@ namespace XT_CETC23.SonForm
 
             //插入机器人轨道到料架任务
             //判断机器人是否在原点
-            db.DBInsert("insert into dbo.TaskAxlis7(Axlis7Pos)values(" + (int)PlcData.getAxlis7Pos("料架位") + ")");
+            Robot.GetInstanse().doMoveToZeroPos();
 
+            TaskCycle.PutStep = 30;
             //插入料架取料任务，取出托盘（要区分取出和放入）
             db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
 
@@ -1102,6 +1083,7 @@ namespace XT_CETC23.SonForm
 
             //插入料架放料任务，放回托盘；（要区分取出和放入）
             db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+            TaskCycle.PutStep = 50;
             db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
 
             //等待料架放回托盘完成

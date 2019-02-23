@@ -22,28 +22,28 @@ namespace XT_CETC23.DataCom
            static private Object lockRail = new Object();
 
            public enum Position
-           {
+           { // 需要和PLC对应
                [EnumDescription("料架位置")]
-               FramePos = 0,
+               FramePos = 100,
                [EnumDescription("测试台1")]
-               Cabinet1 = 31,
+               Cabinet1 = 101,
                [EnumDescription("测试台2")]
-               Cabinet2 = 32,
+               Cabinet2 = 102,
                [EnumDescription("测试台3")]
-               Cabinet3 = 33,
+               Cabinet3 = 103,
                [EnumDescription("测试台4")]
-               Cabinet4 = 34,
+               Cabinet4 = 104,
                [EnumDescription("测试台5")]
-               Cabinet5 = 35,
+               Cabinet5 = 105,
                [EnumDescription("测试台6")]
-               Cabinet6 = 36,
+               Cabinet6 = 106,
            }
 
            public ReturnCode doMoveToFrame()
            {
                lock (lockRail)
                {
-                   Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(0) });
+                   Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(Position.FramePos) });
                    while (PlcData._axlis7Status != (byte)55)
                    {
                        if (TestingSystem.GetInstanse().isSystemExisting() == true)
@@ -70,7 +70,7 @@ namespace XT_CETC23.DataCom
                lock (lockRail)
                {
                    Logger.WriteLine("移动轨道到:" + (cabinetNo + 1) + " 开始");
-                   Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(101 + cabinetNo) });
+                   Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(Position.Cabinet1 + cabinetNo) });
                    while (PlcData._axlis7Status != (byte)55)
                    {
                        if (TestingSystem.GetInstanse().isSystemExisting() == true)
@@ -91,6 +91,7 @@ namespace XT_CETC23.DataCom
                    return ReturnCode.OK;
                }
            }
+
        }
 
        static public Object lockRobot = new Object();
@@ -465,5 +466,35 @@ namespace XT_CETC23.DataCom
                 return ReturnCode.OK;
             }
         }
+
+        public ReturnCode doStepRailMove(String pos)
+        {
+            /* *
+            料架位
+            1#测试位
+            2#测试位
+            3#测试位
+            4#测试位
+            5#测试位
+            6#测试位
+             * */
+            lock (lockRobot)
+            {
+                Logger.WriteLine("单步移动轨道到: " + pos + " 开始");
+                ReturnCode ret = ReturnCode.Exception;
+                if (pos == "料架位") 
+                {
+                    ret = mRail.doMoveToFrame();
+                } 
+                else
+                {
+                    int cabinetNo = Convert.ToInt32(pos.Substring(0, 1));
+                    ret = mRail.doMoveToCabinet(cabinetNo);
+                }
+                Logger.WriteLine("单步移动轨道到: " + pos + " 完成");
+                return ret;
+            }
+        }
+       
     }
 }

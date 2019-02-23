@@ -11,7 +11,7 @@ namespace XT_CETC23.Config
         static public bool ENABLED_VISIONPRO = true;
         static public bool ENABLED_PLC = true;
         static public bool ENABLED_DEBUG = false;
-        static public bool ENABLED_LOG_SQL = true;
+        static public bool ENABLED_LOG_SQL = false;
 
     }
 }
