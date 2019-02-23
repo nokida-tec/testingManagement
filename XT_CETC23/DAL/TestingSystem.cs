@@ -55,8 +55,7 @@ namespace XT_CETC23
 
         public bool isSystemExisting()
         {
-            //return exitSystem;
-            return true;
+            return exitSystem;
         }
 
         public void SetExitSystem ()
