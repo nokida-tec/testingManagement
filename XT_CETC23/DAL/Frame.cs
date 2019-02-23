@@ -121,6 +121,11 @@ namespace XT_CETC23
             }
         }
 
+        public void doGetSync(int FrameLocation)
+        {
+            DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + FrameLocation + ")");
+        }
+
         public ReturnCode doGet(int FrameLocation)
         {
             lock (lockFrame)
@@ -157,6 +162,11 @@ namespace XT_CETC23
                     DataBase.GetInstanse().DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");
                 }
             }
+        }
+
+        public void doPutSync(int FrameLocation)
+        {
+            DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + FrameLocation + ")");
         }
 
         public ReturnCode doPut(int FrameLocation)

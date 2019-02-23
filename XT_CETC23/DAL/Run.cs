@@ -535,25 +535,15 @@ namespace XT_CETC23.DataCom
                                         Robot.GetInstanse().doGetProductFromCabinet(prodType, cabinetNo);
 
                                         //插入料架取料任务，取出托盘（要区分取出和放入）
-                                        while(db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")") < 1);
+                                        Frame.getInstance().doGetSync(trayNo);  // 异步方式, Robot.doPutProductToFrame中会检查结果
                                         
                                         //插入机器人回料任务
                                         Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo);
 
                                         //插入料架放料任务，放回托盘；（要区分取出和放入）
                                         db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-                                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
 
-                                        //等待料架放回托盘完成
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PutStep != 60);
+                                        Frame.getInstance().doPutSync(trayNo);
 
                                         //根据结果更新FeedBin表格                                                      
                                         int colNo = trayNo % 10;
@@ -911,7 +901,7 @@ namespace XT_CETC23.DataCom
                                     db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
                                     //插入放回料盘任务
-                                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+                                    Frame.getInstance().doPutSync(trayNo); 
 
                                     //插入机器人放料任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
