@@ -22,7 +22,10 @@ namespace XT_CETC23.DAL
 {
     class Cabinet: TestingCabinet
     {
-        public Cabinet(int ID) : base(ID)
+        static public Object lockCabinet = new Object();
+
+        public Cabinet(int ID)
+            : base(ID)
         {
         }
 
@@ -175,10 +178,18 @@ namespace XT_CETC23.DAL
             Logger.WriteLine("  ***   cmdStart：" + this.ID + " Running:" + taskIsRunning + " productType：" + productType + " taskId：" + taskId);
             lock (this)
             {
-                if (task != null && task.ThreadState == ThreadState.Running && taskId == this.TaskID)
+                if (task != null)
                 {
-                    Logger.WriteLine("重复任务，返回");
-                    return false;
+                    if (task.ThreadState == ThreadState.Stopped || task.ThreadState == ThreadState.Aborted)
+                    {
+                        Thread.Sleep(100);
+                        task = null;
+                    }
+                    else 
+                    {
+                        Logger.WriteLine("重复任务，返回");
+                        return false;
+                    }
                 }
                 base.cmdStart(productType, taskId);
                 return start();
@@ -248,12 +259,10 @@ namespace XT_CETC23.DAL
                 }
                 if (Config.Config.ENABLED_PLC)
                 {
-                    //通知PLC测试完成，打开测试柜
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-                    //等待PLC允许取料
-                    while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
+                    ReturnCode ret = doOpenForGet();
+                    if (ret != ReturnCode.OK)
                     {
-                        Thread.Sleep(100);
+                        return false;
                     }
                 }
                 // 设置MTR表格，指示测试完成
@@ -293,16 +302,11 @@ namespace XT_CETC23.DAL
                         // 1. 等待PLC允许测量
                         if (Config.Config.ENABLED_PLC)
                         {
-                            //通知PLC连接测试件，关闭测试柜
-                            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
-
-                            while ((PlcData._cabinetStatus[this.ID] & 2) == 0)
+                            //关闭测试柜
+                            ReturnCode ret = doCloseForTesting();
+                            if (ret != ReturnCode.OK)
                             {
-                                if (taskExisting == true)
-                                {
-                                    return;
-                                }
-                                Thread.Sleep(100);
+                                return;
                             }
                             if (Status != TestingCabinet.STATUS.Ready)
                             {
@@ -427,15 +431,10 @@ namespace XT_CETC23.DAL
                             if (Config.Config.ENABLED_PLC)
                             {
                                 //通知PLC测试完成，打开测试柜
-                                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-                                //等待PLC允许取料
-                                while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
+                                ReturnCode ret = doOpenForGet();
+                                if (ret != ReturnCode.OK)
                                 {
-                                    if (taskExisting == true)
-                                    {
-                                        return;
-                                    }
-                                    Thread.Sleep(100);
+                                    return;
                                 }
                             }
                             //设置MTR表格，指示测试完成
@@ -448,41 +447,6 @@ namespace XT_CETC23.DAL
                         Logger.WriteLine(e1);
                         taskIsRunning = false;
                     }
-                }
-                else
-                {
-                    //=================================================模拟测试过程,最终放入测试进程中========================================
-                    //通知PLC连接测试件，关闭测试柜                
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
-
-                    //等待PLC允许测量
-                    while ((PlcData._cabinetStatus[this.ID] & 2) == 0)
-                    {
-                        Thread.Sleep(100);
-                    }
-
-                    //等待plc
-                    Thread.Sleep(20000);
-                    //通知PLC测试开始了
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 2 });
-
-                    //模拟测试
-                    Thread.Sleep(20000);
-
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + "OK" + "' where BasicID=" + this.TaskID);
-
-                    //通知PLC测试完成，打开测试柜
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-                    Thread.Sleep(100);
-
-                    //等待PLC允许取料
-                    while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
-                    {
-                        Thread.Sleep(100);
-                    }
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + this.TaskID);
-                    //=========================================================================================================================
                 }
             }
             if (this.Order == ORDER.Stop)
@@ -500,25 +464,6 @@ namespace XT_CETC23.DAL
                     }
                     TestingCabinets.getInstance(this.ID).Order = TestingCabinet.ORDER.Undefined;
                     DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + this.TaskID);
-                }
-                else
-                {
-                    //=================================================模拟测试过程,最终放入测试进程中========================================
-
-                    Thread.Sleep(2000);
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "',ProductCheckResult = '" + "NG" + "' where BasicID=" + this.TaskID);
-                    //通知PLC测试完成，打开测试柜
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
-
-                    //等待PLC允许取料
-                    while ((PlcData._cabinetStatus[this.ID] & 8) == 0)
-                    {
-                        Thread.Sleep(100);
-                    }
-                    //设置MTR表格，指示测试完成
-
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID= " + this.TaskID);
-                    //=========================================================================================================================                    
                 }
             }
             taskIsRunning = false;
@@ -552,5 +497,70 @@ namespace XT_CETC23.DAL
             return true;
         }
 
+        public ReturnCode doOpenForGet()
+        {
+            lock (lockCabinet)
+            {
+                Logger.WriteLine("为取料打开测试台: " + ID + " 开始");
+                //通知PLC连接测试件，打开测试柜
+                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                ReturnCode ret = WaitCondition.waitCondition(canGet);
+                Logger.WriteLine("为取料打开测试台: " + ID + " 结束");
+
+                return ret;
+            }
+        }
+
+        public ReturnCode doOpenForPut()
+        {
+            lock (lockCabinet)
+            {
+                Logger.WriteLine("为放料打开测试台: " + ID + " 开始");
+                //通知PLC连接测试件，打开测试柜
+                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 4 });
+                ReturnCode ret = WaitCondition.waitCondition(canPut);
+                Logger.WriteLine("为放料打开测试台: " + ID + " 结束");
+
+                return ret;
+            }
+        }
+
+        public ReturnCode doCloseForTesting()
+        {
+            lock (lockCabinet)
+            {
+                Logger.WriteLine("关闭测试台: " + ID + " 开始");
+                //通知PLC连接测试件，关闭测试柜
+                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 1 });
+                ReturnCode ret = WaitCondition.waitCondition(canTesting);
+                Logger.WriteLine("关闭测试台: " + ID + " 结束");
+
+                return ret;
+            }
+        }
+
+        public ReturnCode finishGet()
+        {
+            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 8 });
+            return ReturnCode.OK;
+        }
+        public ReturnCode finishPut()
+        {
+            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 8 });
+            return ReturnCode.OK;
+        }
+
+        public bool canGet()
+        {
+            return (PlcData._cabinetStatus[this.ID] & 8) != 0;
+        }
+        public bool canPut()
+        {
+            return (PlcData._cabinetStatus[this.ID] & 1) != 0;
+        }
+        public bool canTesting()
+        {
+            return (PlcData._cabinetStatus[this.ID] & 2) != 0;
+        }
     }
 }
