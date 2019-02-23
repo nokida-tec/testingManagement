@@ -50,10 +50,8 @@ namespace XT_CETC23.DataCom
         public static bool scanStatus = false;
 
         DataBase db;
-        DataTable dt;
         Plc plc;
         MTR mtr;
-        DataTable dt2, dt7, dtr;
 
         //Task task;
         XT_CETC23_GK.Task.RobotTask rTask = XT_CETC23_GK.Task.RobotTask.GetInstanse();
@@ -424,7 +422,7 @@ namespace XT_CETC23.DataCom
                                 TaskCycle.PutStep = TaskCycle.PutStep + 10;
                             }
                         }
-                        else if (dtr != null && dtr.Rows.Count > 1)
+                        else if (dt7 != null && dt7.Rows.Count > 1)
                         {
                             Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                             MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
@@ -445,14 +443,13 @@ namespace XT_CETC23.DataCom
         private void Axlis2Task()
         {
             //db.DBDelete("delete from dbo.TaskAxlis2");
-            dt2 = new DataTable();
             while (true)
             {
                 Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
                 Axlis2TaskBegain:
-                    dt2 = db.DBQuery("select * from dbo.TaskAxlis2");
+                    DataTable dt2 = db.DBQuery("select * from dbo.TaskAxlis2");
                     DataTable dt3 = db.DBQuery("select * from dbo.SortData");
                     if (dt2 !=null && dt2.Rows.Count == 1)
                     {
@@ -571,7 +568,7 @@ namespace XT_CETC23.DataCom
                             }
                         }
                     }
-                    else if(dtr.Rows.Count > 1)
+                    else if (dt2 != null && dt2.Rows.Count > 1)
                     {
                         Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis2，正常情况下该表格中最多只有一条任务记录！");
