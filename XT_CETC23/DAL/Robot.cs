@@ -12,6 +12,7 @@ using XT_CETC23.DataManager;
 using System.Threading;
 using XT_CETC23.Common;
 using XT_CETC23.DataCom;
+using XT_CETC23.Instances;
 
 namespace XT_CETC23.DataCom
 {
@@ -43,11 +44,13 @@ namespace XT_CETC23.DataCom
            {
                lock (lockRail)
                {
+                   Logger.WriteLine("移动轨道到料架" + " 开始");
                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis7Pos, PlcData._writeLength1, new byte[] { Convert.ToByte(Position.FramePos) });
                    while (PlcData._axlis7Status != (byte)55)
                    {
                        if (TestingSystem.GetInstanse().isSystemExisting() == true)
                        {
+                           Logger.WriteLine("移动轨道到料架" + " 系统终止");
                            return ReturnCode.SystemExiting;
                        }
                    }
@@ -60,6 +63,7 @@ namespace XT_CETC23.DataCom
                    //{
                    //    TaskCycle.PutStep = TaskCycle.PutStep + 10;
                    //}
+                   Logger.WriteLine("移动轨道到料架" + " 结束");
                    return ReturnCode.OK;
                }
            }
@@ -75,18 +79,12 @@ namespace XT_CETC23.DataCom
                    {
                        if (TestingSystem.GetInstanse().isSystemExisting() == true)
                        {
+                           Logger.WriteLine("移动轨道到:" + (cabinetNo + 1) + " 系统终止");
                            return ReturnCode.SystemExiting;
                        }
                    }
                    Plc.GetInstanse().DBWrite(100, 2, 1, new Byte[] { 0 }); // Todo: 什么意思
-                   //if (TaskCycle.actionType == "FrameToCabinet")
-                   //{
-                   //    TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                   //}
-                   //if (TaskCycle.actionType == "CabinetToFrame")
-                   //{
-                   //    TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                   //}
+
                    Logger.WriteLine("移动轨道到:" + (cabinetNo + 1) + " 完成");
                    return ReturnCode.OK;
                }
@@ -94,8 +92,8 @@ namespace XT_CETC23.DataCom
 
        }
 
-       static public Object lockRobot = new Object();
-
+       public Object lockRobot = new Object();
+       
        private static Robot robot = null;
        protected Rail mRail = new Rail();
 
@@ -264,8 +262,12 @@ namespace XT_CETC23.DataCom
 
         private ReturnCode sendDataToRobotSync(String command, string param = null)
         {  // 同步方式发送命令
+            RobotData.Command = command;
             sendDataToRobotAsync(command, param);
-            return waitResponse(RobotData.Command + "Done");
+            ReturnCode ret = waitResponse(RobotData.Command + "Done");
+            RobotData.Command = "";
+            RobotData.Response = "";
+            return ret;
         }
 
         private void sendDataToRobotAsync(String command, string param = null)
@@ -274,7 +276,8 @@ namespace XT_CETC23.DataCom
                 {
                     Logger.WriteLine("sendDataToRobot Command:" + command);
                     Logger.WriteLine("sendDataToRobot Param:" + param);
-                    RobotData.Command = command;
+                    // 不能设置命令名，因为有命令返回前有其他交互
+                    // RobotData.Command = command;
                     RobotData.Response = "";
                     string strMsg = (param != null) ? (command + "," + param) : command;
                     byte[] arrMsg = Encoding.UTF8.GetBytes(strMsg);
@@ -302,22 +305,8 @@ namespace XT_CETC23.DataCom
             }
             return ReturnCode.OK;
         }
-
-        public ReturnCode waitCondition(bool condition)
-        {
-            while (!condition)
-            {
-                if (TestingSystem.GetInstanse().isSystemExisting() == true)
-                {
-                    return ReturnCode.SystemExiting;
-                }
-                Thread.Sleep(100);
-            }
-            return ReturnCode.OK;
-        }
-
         
-        public int doScanCodeDone ()
+        private int doScanCodeDone ()
         {
              sendDataToRobotAsync("ScanDone");              //给机器人发送扫码完成消息 
              return 10;
@@ -342,6 +331,8 @@ namespace XT_CETC23.DataCom
                 }
 
                 ReturnCode ret = ReturnCode.Exception;
+
+                // 移动到料架位置
                 ret = mRail.doMoveToFrame();
                 if (ret != ReturnCode.OK)
                 {
@@ -349,6 +340,11 @@ namespace XT_CETC23.DataCom
                     return ret;
                 }
 
+                // 等待料架准备好物品
+                WaitCondition.waitCondition(Frame.getInstance().canGetProduct);
+
+                // 机器人取料
+                RobotData.Command = "GetProTray";
                 sendDataToRobotAsync("GetProTray", productType + "," + position + "," + x + "," + y + "," + z);
 
                 //等待机器人触发扫码
@@ -362,13 +358,14 @@ namespace XT_CETC23.DataCom
                 Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 3, 1, new Byte[] { 33 });
 
                 //等待Plc扫码完成
-                if (waitCondition((PlcData._axlis2Status == 33) || (PlcData._axlis2Status == 38)) != ReturnCode.OK)
+                if (WaitCondition.waitCondition(isCodeScanFinished) != ReturnCode.OK)
                 {
                     return ReturnCode.SystemExiting;
                 }
 
                 if (PlcData._axlis2Status == 38)
                 {
+                    ret = ReturnCode.ScanFailed;
                     //  scanStatus = false;
                 }
                 if (PlcData._axlis2Status == 33)
@@ -376,10 +373,25 @@ namespace XT_CETC23.DataCom
                     //  scanStatus = true;
                 }
 
-                doScanCodeDone();              // 给机器人发送扫码完成消息 
+                doScanCodeDone();    // 给机器人发送扫码完成消息 
+                //等待机器人完成从料架取料
+                ret = waitResponse("GetProTray" + "Done");
+                RobotData.Command = "";
+                RobotData.Response = "";
+                if (ret != ReturnCode.OK)
+                {
+                    return ret;
+                }
+                Thread.Sleep(2000);  // Todo：等待机器人离开危险位置？
+
                 Logger.WriteLine("取产品: " + productType + " 从料架: " + position + " 结束");
                 return ReturnCode.OK;
             }
+        }
+
+        bool isCodeScanFinished()
+        {    // 扫码结束
+            return (PlcData._axlis2Status == 33) || (PlcData._axlis2Status == 38);
         }
 
         public ReturnCode doPutProductToFrame(String productType, int position, String x = null, String y = null, String z = null)
@@ -393,6 +405,7 @@ namespace XT_CETC23.DataCom
                 }
 
                 ReturnCode ret = ReturnCode.Exception;
+                // 机器人移动到料架位置
                 ret = mRail.doMoveToFrame();
                 if (ret != ReturnCode.OK)
                 {
@@ -400,6 +413,10 @@ namespace XT_CETC23.DataCom
                     return ret;
                 }
 
+                // 等待料架准备好
+                WaitCondition.waitCondition(Frame.getInstance().canPutProduct);
+
+                // 机器人放料
                 ret = sendDataToRobotSync("PutProTray", productType + "," + position 
                     + ((x != null) ? ("," + x + "," + y + "," + z) : ""));
                 if (ret != ReturnCode.OK)
@@ -407,6 +424,7 @@ namespace XT_CETC23.DataCom
                     Logger.WriteLine("放产品: " + productType + " 到料架: " + position + " 系统终止");
                     return ret;
                 }
+
                 Logger.WriteLine("放产品: " + productType + " 到料架: " + position + " 结束");
                 return ReturnCode.OK;
             }
@@ -417,8 +435,9 @@ namespace XT_CETC23.DataCom
             lock (lockRobot)
             {
                 Logger.WriteLine("取产品: " + productType + " 从测试台: " + (cabinetNo + 1) + " 开始");
-
+                
                 ReturnCode ret = ReturnCode.Exception;
+                // 移动轨道到测试柜
                 ret = mRail.doMoveToCabinet(cabinetNo);
                 if (ret != ReturnCode.OK)
                 {
@@ -426,6 +445,10 @@ namespace XT_CETC23.DataCom
                     return ret;
                 }
 
+                // 检查测试柜是否打开且可取料
+                WaitCondition.waitCondition(TestingCabinets.getInstance(cabinetNo).canGet);
+
+                // 取料
                 ret = sendDataToRobotSync("GetProTest", productType + "," + (cabinetNo + 1));
                 if (ret != ReturnCode.OK)
                 {
@@ -434,7 +457,7 @@ namespace XT_CETC23.DataCom
                 }
 
                 //通知PLC从测试柜取料完成
-                Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + cabinetNo), 1, new Byte[] { 8 });
+                TestingCabinets.getInstance(cabinetNo).finishGet();
 
                 DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
                 Logger.WriteLine("取产品: " + productType + " 从测试台: " + (cabinetNo + 1) + " 完成");
@@ -448,12 +471,18 @@ namespace XT_CETC23.DataCom
             {
                 Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 开始");
                 ReturnCode ret = ReturnCode.Exception;
+                // 机器人移动到测试柜位置
                 ret = mRail.doMoveToCabinet(cabinetNo);
                 if (ret != ReturnCode.OK)
                 {
                     Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 系统终止");
                     return ret;
                 }
+
+                // 检查测试柜是否打开且可放料
+                WaitCondition.waitCondition(TestingCabinets.getInstance(cabinetNo).canPut);
+
+                // 机器人放料
                 ret = sendDataToRobotSync("PutProTest", productType + "," + (cabinetNo + 1));
                 if (ret != ReturnCode.OK) 
                 {
@@ -461,7 +490,9 @@ namespace XT_CETC23.DataCom
                     return ret;
                 }
 
+                // 更新任务状态
                 DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
+
                 Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 完成");
                 return ReturnCode.OK;
             }
