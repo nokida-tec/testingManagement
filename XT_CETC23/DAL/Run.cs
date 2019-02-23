@@ -474,35 +474,12 @@ namespace XT_CETC23.DataCom
             ReStart:
                 if (!stepEnable)
                 {
-                    TaskCycle.MainStep = 0;
                     dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
                     TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
                     if (TaskCycle.feedBinScanDone == "No")
                     {
-                        {
-                            DataTable dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                            //设备只能有一条实时任务
-                            if (!(dt.Rows.Count > 0))
-                            {
-                                if (plc.plcConnected)
-                                {
-                                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
-                                    TransMessage("插入料架扫码任务");
-                                }
-                                else
-                                    MessageBox.Show("PLC未连接");
-                            }
-                            else
-                                MessageBox.Show("当前任务未完成");
-                        }
-                        do
-                        {
-                            if (gSheduleExit == true)
-                            {
-                                return;
-                            }
-                            Thread.Sleep(100);
-                        } while (TaskCycle.MainStep != 10);
+                        Frame.getInstance().doScan();
+                        
                         TaskCycle.feedBinScanDone = "Yes";
                         db.DBUpdate("update dbo.FeedBin set Sort='" + "Yes" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
                         FrameDataUpdate();

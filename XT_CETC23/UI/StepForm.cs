@@ -486,39 +486,11 @@ namespace XT_CETC23.SonForm
         {
             if (Run.stepEnable == true && Run.readyForStep == true)
             {
-                InsertScan();
+                Frame.getInstance().doScan();
             }
             else
             {
                 MessageBox.Show("自动流程还未完成，请耐心等待！", "Information");
-            }
-        }
-
-        public void InsertScan()
-        {
-            using (dt = new DataTable())
-            {
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                //设备只能有一条实时任务
-                if (!(dt.Rows.Count > 0))
-                    if (plc.plcConnected)
-                    {
-                        //if (Common.Account.power == "system" || Common.Account.power == "operator")
-                        //{
-                        string tmpText = "insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)";
-                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
-                        //if (db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)"))
-                        //TransMessage("扫码任务手动插入成功");
-                        //else
-                        //TransMessage("扫码任务手动插入失败");
-                        //}
-                        //else
-                        //{ MessageBox.Show("当前用户无此权限"); }
-                    }
-                    else
-                    { MessageBox.Show("PLC未连接"); }
-                else { MessageBox.Show("当前任务未完成"); }
-                dt.Dispose();
             }
         }
 

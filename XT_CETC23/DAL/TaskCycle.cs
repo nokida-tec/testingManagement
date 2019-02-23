@@ -41,10 +41,8 @@ namespace XT_CETC23.DataCom
         Thread axlis2Task, axlis7Task, cabinetTask;
         static TaskCycle taskCycle;
         static object lockTaskCycle = new object();
-        static String[] prodType = new String[40];
         public static string feedBinScanDone = "";
         public static string actionType="";
-        public static int MainStep;
         public static int PickStep;
         public static int PutStep;
         public static bool scanStatus = false;
@@ -382,59 +380,15 @@ namespace XT_CETC23.DataCom
             //db.DBDelete("delete from dbo.TaskAxlis2");
             while (true)
             {
-                Thread.Sleep(10);
                 while (PlcData.clearTask)
                 {
-                Axlis2TaskBegain:
                     DataTable dt2 = db.DBQuery("select * from dbo.TaskAxlis2");
                     DataTable dt3 = db.DBQuery("select * from dbo.SortData");
                     if (dt2 !=null && dt2.Rows.Count == 1)
                     {
                         if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.ScanSort)
-                        {                           
-                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.ScanSort });
-                            //byte [] myByte=plc.DbRead(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1);
-                            //while (myByte[0] != (byte)EnumC.FrameW.ScanSort)
-                            //{                                
-                            //    Thread.Sleep(100);
-                            //    plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.ScanSort });
-                            //}
-                            while (PlcData._axlis2Status != (byte)EnumC.Frame.ScanSort)
-                            {
-                                if (Run.gSheduleExit == true)
-                                {
-                                    db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.FrameW.ScanSort + "");
-                                    goto Axlis2TaskBegain;
-                                }
-                                Thread.Sleep(100);
-                            }
-                            db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.FrameW.ScanSort + "");
-                            dt2.Rows.Clear();
-                            dt2.Columns.Clear();
-
-                            Byte[] mySort=new Byte[504];
-                            mySort = plc.DbRead(104, 0, 504);
-                            Thread.Sleep(2000);
-                            plc.DBWrite(100, 3, 1, new Byte[] { 0 });
-                        
-                            for (int i = 0; i < 40; i++)
-                            {
-                                int realLen = Convert.ToInt32(mySort[(i+2) * 12 + 1]);
-                                int numForType=0;                
-                                prodType[i] = Encoding.Default .GetString(mySort, (i+2)*12+2,realLen).Trim();
-
-                                for(int j=0;j<dt3.Rows.Count;j++)
-                                {
-                                    if (dt3.Rows[j]["sortname"].ToString().Trim().Equals(prodType[i]))
-                                    {
-                                        numForType = (int)dt3.Rows[j]["number"];
-                                        break;
-                                    }
-                                }
-                                String tmpText = "update dbo.FeedBin set Sort='" + prodType[i] + "',NumRemain=" + numForType + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + (i + 1);
-                                db.DBUpdate("update dbo.FeedBin set Sort='"+ prodType[i]+ "',NumRemain="+ numForType+",ResultOK="+0+",ResultNG="+0+" where LayerID="+(i+1)) ;                                
-                            }
-                            TaskCycle.MainStep = TaskCycle.MainStep + 10;
+                        {
+                            Frame.getInstance().doScan();
                         }
                     }
 
@@ -442,34 +396,7 @@ namespace XT_CETC23.DataCom
                     {
                         if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.GetPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
                         {
-                            //int tmpInt=(int)dt2.Rows[0]["FrameLocation"];
-                            //Convert.ToByte(tmpInt);
-                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { Convert.ToByte((int)dt2.Rows[0]["FrameLocation"]) });
-                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.GetPiece });
-
-                            while (PlcData._axlis2Status != (byte)EnumC.Frame.GetPiece)
-                            {
-                                if (Run.gSheduleExit == true)
-                                {
-                                    db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");
-                                    goto Axlis2TaskBegain;
-                                }
-                                Thread.Sleep(100);
-                            }
-                            db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");                            
-                            dt2.Rows.Clear();
-                            dt2.Columns.Clear();
-                            Thread.Sleep(2000);
-                            plc.DBWrite(100, 3, 1, new Byte[] { 0 });
-                            if (TaskCycle.actionType == "FrameToCabinet")
-                            {
-                                db.DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
-                                TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                            }
-                            if (TaskCycle.actionType == "CabinetToFrame")
-                            {
-                                TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                            }
+                            Frame.getInstance().doGet((int)dt2.Rows[0]["FrameLocation"]);
                         }
                     }
 
@@ -477,32 +404,7 @@ namespace XT_CETC23.DataCom
                     { 
                         if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.PutPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
                         {
-                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { Convert.ToByte((int)dt2.Rows[0]["FrameLocation"]) });
-                            plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.PutPiece });
-
-                            while (PlcData._axlis2Status != (byte)EnumC.Frame.PutPiece)
-                            {
-                                if (Run.gSheduleExit == true)
-                                {
-                                    db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");
-                                    goto Axlis2TaskBegain;
-                                }
-                                Thread.Sleep(100);
-                            }
-                            db.DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");                           
-                            dt2.Rows.Clear();
-                            dt2.Columns.Clear();
-                            Thread.Sleep(2000);
-                            plc.DBWrite(100, 3, 1, new Byte[] { 0 });
-                            if (TaskCycle.actionType == "FrameToCabinet")
-                            {
-                                TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                            }
-                            if (TaskCycle.actionType == "CabinetToFrame")
-                            {
-                                db.DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
-                                TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                            }
+                            Frame.getInstance().doPut((int)dt2.Rows[0]["FrameLocation"]);       
                         }
                     }
                     else if (dt2 != null && dt2.Rows.Count > 1)
@@ -510,7 +412,6 @@ namespace XT_CETC23.DataCom
                         Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
                         MessageBox.Show("任务队列异常，请查看数据库表格TaskAxlis2，正常情况下该表格中最多只有一条任务记录！");
                     }
-
                     
                     Thread.Sleep(100);
                 }
