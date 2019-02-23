@@ -119,8 +119,6 @@
             this.data_cbQueryCondition.FormattingEnabled = true;
             this.data_cbQueryCondition.Items.AddRange(new object[] {
             "dbo.BasicID",
-            "dbo.TaskAxlis2",
-            "dbo.TaskCabinet",
             "dbo.MTR",
             "dbo.Frame",
             "dbo.SortData",

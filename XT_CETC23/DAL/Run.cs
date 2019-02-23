@@ -535,7 +535,7 @@ namespace XT_CETC23.DataCom
                                         Robot.GetInstanse().doGetProductFromCabinet(prodType, cabinetNo);
 
                                         //插入料架取料任务，取出托盘（要区分取出和放入）
-                                        Frame.getInstance().doGetSync(trayNo);  // 异步方式, Robot.doPutProductToFrame中会检查结果
+                                        Frame.getInstance().doGetAsync(trayNo);  // 异步方式, Robot.doPutProductToFrame中会检查结果
                                         
                                         //插入机器人回料任务
                                         Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo);
@@ -543,7 +543,7 @@ namespace XT_CETC23.DataCom
                                         //插入料架放料任务，放回托盘；（要区分取出和放入）
                                         db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
-                                        Frame.getInstance().doPutSync(trayNo);
+                                        Frame.getInstance().doPutAsync(trayNo);
 
                                         //根据结果更新FeedBin表格                                                      
                                         int colNo = trayNo % 10;
@@ -714,7 +714,7 @@ namespace XT_CETC23.DataCom
                                             pieceNo = (int)dtTmp.Rows[0]["number"] - numRemain + 1;       //从0开始编号
 
                                             db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
-                                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
+                                            Frame.getInstance().doGetAsync(trayNo);
                                             break;
                                         }
                                         else
@@ -794,18 +794,8 @@ namespace XT_CETC23.DataCom
                                             //db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
                                             if ((numRemain - 1) == 0)
                                             {
-                                                //插入放回料盘任务
-                                                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-                                                do
-                                                {
-                                                    if (gSheduleExit == true)
-                                                    {
-                                                        
-                                                        return;
-                                                    }
-                                                    Thread.Sleep(100);
-                                                } while (TaskCycle.PickStep != 30);
-                                                TaskCycle.PickStep = 10;
+                                                // 插入放回料盘任务
+                                                Frame.getInstance().doPut(trayNo);
                                                 goto pickAnotherTray;               //换盘
                                             }
                                             if ((numRemain - 1) > 0)
@@ -829,17 +819,7 @@ namespace XT_CETC23.DataCom
                                         if ((numRemain - 1) == 0)
                                         {
                                             //插入放回料盘任务
-                                            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-                                            do
-                                            {
-                                                if (gSheduleExit == true)
-                                                {
-                                                    
-                                                    return;
-                                                }
-                                                Thread.Sleep(100);
-                                            } while (TaskCycle.PickStep != 30);
-                                            TaskCycle.PickStep = 10;
+                                            Frame.getInstance().doPut(trayNo);
                                             goto pickAnotherTray;               //换盘
                                         }
                                         if ((numRemain - 1) > 0)
@@ -877,16 +857,7 @@ namespace XT_CETC23.DataCom
 
                                         TaskCycle.PickStep = 40;
                                         //插入放回料盘任务
-                                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-                                        do
-                                        {
-                                            if (gSheduleExit == true)
-                                            {
-                                                
-                                                return;
-                                            }
-                                            Thread.Sleep(100);
-                                        } while (TaskCycle.PickStep != 50);
+                                        Frame.getInstance().doPut(trayNo);
                                         goto Redo;
                                     }
 
@@ -901,7 +872,7 @@ namespace XT_CETC23.DataCom
                                     db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
                                     //插入放回料盘任务
-                                    Frame.getInstance().doPutSync(trayNo); 
+                                    Frame.getInstance().doPutAsync(trayNo); 
 
                                     //插入机器人放料任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);

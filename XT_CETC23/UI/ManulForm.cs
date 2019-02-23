@@ -1063,23 +1063,8 @@ namespace XT_CETC23.SonForm
             try
             {
                 DataTable dt = new DataTable();
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                Axlis2Lable:
-                if (dt.Rows.Count > 0)
-                {
-                    db.DBDelete("delete from dbo.TaskAxlis2");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                if (dt.Rows.Count > 0)
-                    goto Axlis2Lable;
-                //
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                db.DBDelete("delete from dbo.TaskAxlis2");
+
                 //
                 CabinetLable:
                     for(int i=0;i<DeviceCount.TestingCabinetCount;++i)

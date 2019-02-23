@@ -415,13 +415,13 @@ namespace XT_CETC23.SonForm
                 {
                     //if (MaterielData.FrameHavePiece)
                     //{ MessageBox.Show("货架区有料");return; }
-                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + (int)writeByte2[0] + ")");
+                    Frame.getInstance().doGet((int)writeByte2[0]);
                 }
                 else if (order.Equals("放料"))
                 {
                     //if (!MaterielData.FrameHavePiece)
                     //{ MessageBox.Show("货架区无料"); return; }
-                    db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + (int)writeByte2[0] + ")");
+                    Frame.getInstance().doPut((int)writeByte2[0]);
                 }
                 else
                     mQueue.Clear();
@@ -710,13 +710,8 @@ namespace XT_CETC23.SonForm
             TaskCycle.PickStep = 10;            //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
             db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
             db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
-            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
 
-            //等待料架取料盘完成
-            do
-            {
-                Thread.Sleep(100);
-            } while (TaskCycle.PickStep != 20);
+            Frame.getInstance().doGet(trayNo);
 
             int prodNumber = 0;
             switch (prodType)
@@ -759,11 +754,7 @@ namespace XT_CETC23.SonForm
 
                 db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
                 //插入放回料盘任务
-                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-                do
-                {
-                    Thread.Sleep(100);
-                } while (TaskCycle.PickStep != 30);
+                Frame.getInstance().doPut(trayNo);
                 MessageBox.Show("视觉识别失败", "Information");
                 return;
             }
@@ -803,11 +794,7 @@ namespace XT_CETC23.SonForm
                 } while (TaskCycle.PickStep != 40);
 
                 //插入放回料盘任务
-                db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-                do
-                {
-                    Thread.Sleep(100);
-                } while (TaskCycle.PickStep != 50);
+                Frame.getInstance().doPut(trayNo);
                 MessageBox.Show("产品码识别失败", "Information");
                 return;
             }
@@ -823,7 +810,7 @@ namespace XT_CETC23.SonForm
             db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
             //插入放回料盘任务
-            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
+            Frame.getInstance().doPutAsync(trayNo);
 
             //插入机器人放料任务
             db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
@@ -1041,13 +1028,7 @@ namespace XT_CETC23.SonForm
 
             TaskCycle.PutStep = 30;
             //插入料架取料任务，取出托盘（要区分取出和放入）
-            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + trayNo + ")");
-
-            //等待和机器人轨道到位和料架取出托盘完成
-            do
-            {
-                Thread.Sleep(100);
-            } while (TaskCycle.PutStep != 40);
+            Frame.getInstance().doGet(trayNo);
 
             //插入机器人回料任务
             Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo);
@@ -1056,13 +1037,7 @@ namespace XT_CETC23.SonForm
             //插入料架放料任务，放回托盘；（要区分取出和放入）
             db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
             TaskCycle.PutStep = 50;
-            db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + trayNo + ")");
-
-            //等待料架放回托盘完成
-            do
-            {
-                Thread.Sleep(100);
-            } while (TaskCycle.PutStep != 60);
+            Frame.getInstance().doPut(trayNo);
 
             //根据结果更新FeedBin表格                                                      
             int layerID = tmpIndex;

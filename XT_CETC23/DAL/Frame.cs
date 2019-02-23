@@ -121,7 +121,7 @@ namespace XT_CETC23
             }
         }
 
-        public void doGetSync(int FrameLocation)
+        public void doGetAsync(int FrameLocation)
         {
             DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + FrameLocation + ")");
         }
@@ -164,7 +164,7 @@ namespace XT_CETC23
             }
         }
 
-        public void doPutSync(int FrameLocation)
+        public void doPutAsync(int FrameLocation)
         {
             DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + FrameLocation + ")");
         }
