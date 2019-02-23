@@ -14,7 +14,7 @@ using XT_CETC23.Common;
 using XT_CETC23.DataCom;
 using System.Data;
 
-namespace XT_CETC23.DAL
+namespace XT_CETC23
 {
     class Frame
     {
@@ -70,6 +70,21 @@ namespace XT_CETC23.DAL
                     break;
             }
             return false;
+        }
+
+        public bool canPutProduct()
+        {
+            return PlcData._axlis2Status == (byte)EnumC.Frame.PutPiece;
+        }
+
+        public bool canGetProduct()
+        {
+            return PlcData._axlis2Status == (byte)EnumC.Frame.GetPiece;
+        }
+
+        public bool isScanDone()
+        {
+            return PlcData._axlis2Status == (byte)EnumC.Frame.ScanSort;
         }
     }
 }
