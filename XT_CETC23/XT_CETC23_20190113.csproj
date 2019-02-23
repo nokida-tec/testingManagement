@@ -116,6 +116,7 @@
     <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\snap7.net.cs" />
     <Compile Include="Common\StatusFeedBack.cs" />
+    <Compile Include="Common\WaitCondition.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\Database.cs" />
     <Compile Include="DAL\ActualData.cs" />
