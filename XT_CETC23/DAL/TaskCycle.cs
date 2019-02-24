@@ -38,7 +38,7 @@ namespace XT_CETC23.DataCom
         private const int WM_KEYUP = 0x0101;
         private const int vbKeyReturn = 0x0D;
 
-        Thread axlis2Task, axlis7Task, cabinetTask;
+        Thread axlis2Task, cabinetTask;
         static TaskCycle taskCycle;
         static object lockTaskCycle = new object();
         public static string feedBinScanDone = "";
