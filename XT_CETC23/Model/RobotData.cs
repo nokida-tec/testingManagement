@@ -12,8 +12,8 @@ namespace XT_CETC23.DataManager
         public static string robotStatus_orderOver = "指令完成";
         //public static byte[] robotData=new byte[10];
 
-        public static string Command;
-        public static string Response;
+        public static string Command = "";
+        public static string Response = "";
 
         /* byte[0]判断机器人是否在原点
          * byte[1]判断机器人料架操作的状态
