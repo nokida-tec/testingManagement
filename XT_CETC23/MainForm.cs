@@ -29,7 +29,7 @@ namespace XT_CETC23
     public partial class MainForm : Form, IMainForm
     {
         AutoForm aForm;
-        CameraForm cForm;
+        public static CameraForm cForm;
         DataForm dForm;
         ManulForm mForm;
         ParaForm pForm;

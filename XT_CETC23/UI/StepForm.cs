@@ -206,7 +206,6 @@ namespace XT_CETC23.SonForm
                 //判断机器人是否在原点
                 //机器人轨道移动机器人到动作位置
                 TaskCycle.actionType = "FrameToCabinet";
-                TaskCycle.PickStep = 0;
 
                 Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
 
@@ -703,14 +702,12 @@ namespace XT_CETC23.SonForm
             MTR.globalBasicID = ret;
 
             //插入机器人轨道到料架任务
-            TaskCycle.PickStep = 0;
             //判断机器人是否在原点
             Robot.GetInstanse().doMoveToZeroPos();
 
-            TaskCycle.PickStep = 10;            //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
             db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
             db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
-
+            //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
             Frame.getInstance().doGet(trayNo);
 
             int prodNumber = 0;
@@ -767,15 +764,9 @@ namespace XT_CETC23.SonForm
 
             //插入机器人取料任务                         
             db.DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-            Robot.GetInstanse().doGetProductFromFrame(prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
+            ReturnCode returnCode = Robot.GetInstanse().doGetProductFromFrame(prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
 
-            //等待机器人取料完成
-            do
-            {
-                Thread.Sleep(100);
-            } while (TaskCycle.PickStep != 30);
-
-            if (!TaskCycle.scanStatus)      //读码失败
+            if (returnCode == ReturnCode.ScanFailed)      //读码失败
             {
                 //db.DBUpdate("update dbo.MTR set ProductID = '" + "0" + "'where BasicID=" + MTR.globalBasicID);
                 //db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + "Failed" + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "NG" + "')");
@@ -786,12 +777,6 @@ namespace XT_CETC23.SonForm
                 Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
                 plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
                 //FrameDataUpdate();
-
-                //等待放料任务完成
-                do
-                {
-                    Thread.Sleep(100);
-                } while (TaskCycle.PickStep != 40);
 
                 //插入放回料盘任务
                 Frame.getInstance().doPut(trayNo);
@@ -1016,7 +1001,6 @@ namespace XT_CETC23.SonForm
             }
 
             TaskCycle.actionType = "CabinetToFrame";           
-            TaskCycle.PutStep = 0;
             //插入机器人轨道任务到测试柜
             //判断机器人是否在原点
             //插入机器人从测试柜的取料任务；
@@ -1026,7 +1010,6 @@ namespace XT_CETC23.SonForm
             //判断机器人是否在原点
             Robot.GetInstanse().doMoveToZeroPos();
 
-            TaskCycle.PutStep = 30;
             //插入料架取料任务，取出托盘（要区分取出和放入）
             Frame.getInstance().doGet(trayNo);
 
@@ -1036,7 +1019,6 @@ namespace XT_CETC23.SonForm
 
             //插入料架放料任务，放回托盘；（要区分取出和放入）
             db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-            TaskCycle.PutStep = 50;
             Frame.getInstance().doPut(trayNo);
 
             //根据结果更新FeedBin表格                                                      
@@ -1054,7 +1036,6 @@ namespace XT_CETC23.SonForm
             db.DBInsert("insert into dbo.ActualData(ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,CheckResult)values('" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + "0" + "','" + "0" + "','" + "0" + "','" + "0" + "','" + checkResult + "')");
             db.DBInsert("insert into dbo.FrameData(BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,CheckResult)values(" + MTR.globalBasicID + ",'" + prodCode + "','" + prodType + "'," + trayNo + "," + pieceNo + ",'" + cabinetName + "','" + checkResult + "')");
             db.DBDelete("delete from dbo.MTR where BasicID = " + MTR.globalBasicID);
-            TaskCycle.PutStep = 0;
             stepCycle = 0;
             MessageBox.Show("操作完成！", "Information");
         }        

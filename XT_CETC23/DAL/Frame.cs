@@ -34,6 +34,42 @@ namespace XT_CETC23
             }
 
         }
+
+        public class Location 
+        {
+            public String mProdType;
+            public int mTray
+            {
+                get
+                {
+                    return mTray;
+                }
+                set 
+                {
+                }
+            }
+            public int mSlot
+            {
+                get
+                {
+                    return mSlot;
+                }
+                set
+                {
+                }
+            }
+
+            public string CordinatorX = "0";
+            public string CordinatorY = "0";
+            public string CordinatorU = "0";
+
+            public Location(int tray, int slot)
+            {
+                mTray = tray;
+                mSlot = slot;
+            }
+        }
+
         static private Frame mInstance;
         private static readonly object lockRoot = new object();
         private readonly object lockFrame = new object();
@@ -143,11 +179,11 @@ namespace XT_CETC23
                     if (TaskCycle.actionType == "FrameToCabinet")
                     {
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
-                        TaskCycle.PickStep = TaskCycle.PickStep + 10;
+                        // TaskCycle.PickStep = TaskCycle.PickStep + 10;
                     }
                     if (TaskCycle.actionType == "CabinetToFrame")
                     {
-                        TaskCycle.PutStep = TaskCycle.PutStep + 10;
+                        // TaskCycle.PutStep = TaskCycle.PutStep + 10;
                     }
 
                     return ReturnCode.OK;
@@ -183,12 +219,12 @@ namespace XT_CETC23
                     Plc.GetInstanse().DBWrite(100, 3, 1, new Byte[] { 0 });
                     if (TaskCycle.actionType == "FrameToCabinet")
                     {
-                        TaskCycle.PickStep = TaskCycle.PickStep + 10;
+                        // TaskCycle.PickStep = TaskCycle.PickStep + 10;
                     }
                     if (TaskCycle.actionType == "CabinetToFrame")
                     {
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
-                        TaskCycle.PutStep = TaskCycle.PutStep + 10;
+                        // TaskCycle.PutStep = TaskCycle.PutStep + 10;
                     }
 
                     return ReturnCode.OK;
@@ -202,6 +238,158 @@ namespace XT_CETC23
                 {
                     DataBase.GetInstanse().DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");
                 }
+            }
+        }
+
+        private int remainProducts(int trayNo)
+        {
+            try
+            {
+                DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID='" + trayNo + "'");
+                int remain = (int)dt.Rows[0]["NumRemain"];
+                return remain;
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return 0;
+            }
+            return 0;
+        }
+
+        private Location findProduct(String productType)
+        {
+            try
+            {
+                DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where sort='" + productType + "'");
+                for (int j = 0; j < dt.Rows.Count; j ++)
+                {
+                    int remain = (int)dt.Rows[j]["NumRemain"];
+                    if (remain != 0)
+                    {
+                        int layerID = (int)dt.Rows[j]["LayerID"];
+                        int colNo = (layerID - 1) / 8;
+                        int rowNo = (layerID - 1) % 8;
+                        int trayNo = (rowNo + 1) * 10 + (colNo + 1);
+
+                        DataTable dtSort = DataBase.GetInstanse().DBQuery("select * from dbo.SortData where sortname='" + productType + "'");
+                        int pieceNo = (int)dtSort.Rows[0]["number"] - remain + 1;       //从0开始编号
+                        Location location = new Location(trayNo, pieceNo);
+                        return location;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return null;
+            }
+            return null;
+        }
+
+        private int markProduct(Location location, int status)
+        {
+            try
+            {
+                int remain = remainProducts(location.mTray);
+                if (remain > 0)
+                {
+                    DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set NumRemain = NumRemain - 1 where LayerID = " + location.mTray);
+                    return remain - 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return 0;
+            }
+            return 0;
+        }
+
+        private int shoot(ref Location location)
+        {
+            try
+            {
+                int prodNumber = 0;
+                switch (location.mProdType)
+                {
+                    case "A":
+                        prodNumber = 1;
+                        break;
+                    case "B":
+                        prodNumber = 2;
+                        break;
+                    case "C":
+                        prodNumber = 3;
+                        break;
+                    case "D":
+                        prodNumber = 4;
+                        break;
+                    case "E":
+                        prodNumber = 5;
+                        break;
+                    case "F":
+                        prodNumber = 6;
+                        break;
+                }
+                //D产品不对第4列进行拍照的处理
+                //=====================================================
+                if (prodNumber == 4)
+                {
+                    if (location.mSlot % 4 == 0)
+                    {
+                        return (int)ReturnCode.NoProduct;
+                    }
+                }
+
+                //触发拍照
+                MainForm.cForm.CCDTrigger(prodNumber, location.mSlot);
+
+                if (MainForm.cForm.CCDDone == -1)     //拍照失败
+                {
+                    return (int)ReturnCode.NoProduct;
+                }
+
+                if (location.mProdType == "D")
+                {
+                    location.CordinatorX = MainForm.cForm.X;
+                    location.CordinatorY = MainForm.cForm.Y;
+                }
+            } 
+            catch(Exception e)
+            {
+                Logger.WriteLine(e);
+                return (int)ReturnCode.Exception;
+            }
+            return (int)ReturnCode.OK;
+        }
+
+        public ReturnCode doGetProduct(String productType)
+        {
+            lock (lockFrame)
+            {
+                try
+                {
+                    do
+                    {
+                        // 找到一个没有测试的产品（可能不存在，需要视觉识别）
+                        Location location = findProduct(productType);
+                        if (location == null)
+                        {
+                            return ReturnCode.NoProduct;
+                        }
+                        // DataBase.GetInstanse().DBUpdate("update dbo.MTR set FrameLocation = " + location.mTray + "," + "SalverLocation=" + location.mSlot + " where BasicID=" + MTR.globalBasicID);
+                        Frame.getInstance().doGet(location.mTray);
+
+                        shoot(ref location);
+                    } while (true);
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                    throw e;
+                }
+                return ReturnCode.OK;
             }
         }
 

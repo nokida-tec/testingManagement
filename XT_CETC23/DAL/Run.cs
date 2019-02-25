@@ -526,8 +526,6 @@ namespace XT_CETC23.DataCom
                                     #region 测试柜中且测试完成,把测量完成的物料从测试柜取出放回料架，删除测试跟踪记录，把测试结果插入测试记录表
                                     if (tmpText.Equals("号机台") && statusTest)
                                     {
-                                        TaskCycle.PutStep = 0;
-
                                         //插入机器轨道任务
                                         //插入机器人轨道任务：到测试柜
                                         //判断机器人是否在原点
@@ -543,7 +541,7 @@ namespace XT_CETC23.DataCom
                                         //插入料架放料任务，放回托盘；（要区分取出和放入）
                                         db.DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
-                                        Frame.getInstance().doPutAsync(trayNo);
+                                        Frame.getInstance().doPut(trayNo);
 
                                         //根据结果更新FeedBin表格                                                      
                                         int colNo = trayNo % 10;
@@ -564,7 +562,6 @@ namespace XT_CETC23.DataCom
 
                                         //测试结果插入测试统计表格；
                                         TestingTask.finish(MTR.globalBasicID, checkResult);
-                                        TaskCycle.PutStep = 0;
                                     }
                                     #endregion
 
@@ -690,11 +687,11 @@ namespace XT_CETC23.DataCom
                                     //加入机器人是否空闲并处在安全位置的判断
 
                                     //插入机器人轨道到料架任务
-                                    TaskCycle.PickStep = 0;
+                                    // TaskCycle.PickStep = 0;
 
                                     Robot.GetInstanse().doMoveToZeroPos();
 
-                                    TaskCycle.PickStep = 10;
+                                    // TaskCycle.PickStep = 10;
                                     //查FeedBin表，确定料盘位置和物料在料盘中的位置，插于取料盘任务
                                     db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
@@ -714,7 +711,7 @@ namespace XT_CETC23.DataCom
                                             pieceNo = (int)dtTmp.Rows[0]["number"] - numRemain + 1;       //从0开始编号
 
                                             db.DBUpdate("update dbo.MTR set FrameLocation = " + trayNo + "," + "SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
-                                            Frame.getInstance().doGetAsync(trayNo);
+                                            Frame.getInstance().doGet(trayNo);
                                             break;
                                         }
                                         else
@@ -722,21 +719,6 @@ namespace XT_CETC23.DataCom
                                             if ((testedCabinetNo == TestingCabinets.getEnableCount()) && (j == (dtFeedBin.Rows.Count - 1)))       //如果料架取空，设置扫描状态“No”
                                             {
                                                 frameEmptyInd = true;
-                                                //Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
-                                                //db.DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
-                                                //frameUpdate = false;
-                                                //testedCabinetNo = 0;
-                                                ////plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
-                                                //MessageBox.Show("料架已取空，请更换料架");
-                                                //while (!frameUpdate)
-                                                //{
-                                                //    Thread.Sleep(100);
-                                                //}
-
-                                                ////plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 0 });
-                                                //Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
-
-                                                //frameUpdate = false;
                                                 goto PickEnd;
                                             }
                                             if ((j == (dtFeedBin.Rows.Count - 1)))                                   //如果某种产品取空，跳过本次操作
@@ -745,17 +727,6 @@ namespace XT_CETC23.DataCom
                                             }
                                         }
                                     }
-
-                                    //等待料架取料盘完成
-                                    do
-                                    {
-                                        if (gSheduleExit == true)
-                                        {
-                                            
-                                            return;
-                                        }
-                                        Thread.Sleep(100);
-                                    } while (TaskCycle.PickStep != 20);
 
                                     int prodNumber = 0;
                                     switch (prodType)
@@ -855,7 +826,7 @@ namespace XT_CETC23.DataCom
                                         plc.DBWrite(PlcData.PlcStatusAddress, 3, 1, new Byte[] { 0 });
                                         FrameDataUpdate();
 
-                                        TaskCycle.PickStep = 40;
+                                      //  TaskCycle.PickStep = 40;
                                         //插入放回料盘任务
                                         Frame.getInstance().doPut(trayNo);
                                         goto Redo;
@@ -884,7 +855,8 @@ namespace XT_CETC23.DataCom
                                     TestingCabinets.getInstance(cabinetNo).cmdStart(prodType, MTR.globalBasicID);
 
                                 PickEnd:
-                                    TaskCycle.PickStep = 0;
+                                    int PickEndI = 0;
+//                                    TaskCycle.PickStep = 0;
                                 }
                                 //readyForStep = true;
                             }

@@ -43,9 +43,6 @@ namespace XT_CETC23.DataCom
         static object lockTaskCycle = new object();
         public static string feedBinScanDone = "";
         public static string actionType="";
-        public static int PickStep;
-        public static int PutStep;
-        public static bool scanStatus = false;
 
         DataBase db;
         Plc plc;
