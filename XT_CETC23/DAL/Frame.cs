@@ -157,7 +157,7 @@ namespace XT_CETC23
             }
         }
 
-        public void doGetAsync(int FrameLocation)
+        public void doAsyncGet(int FrameLocation)
         {
             DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + FrameLocation + ")");
         }
@@ -185,7 +185,6 @@ namespace XT_CETC23
                     {
                         // TaskCycle.PutStep = TaskCycle.PutStep + 10;
                     }
-
                     return ReturnCode.OK;
                 }
                 catch (Exception e)
@@ -200,7 +199,7 @@ namespace XT_CETC23
             }
         }
 
-        public void doPutAsync(int FrameLocation)
+        public void doAsyncPut(int FrameLocation)
         {
             DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + FrameLocation + ")");
         }
@@ -211,6 +210,8 @@ namespace XT_CETC23
             {
                 try
                 {
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { (byte)FrameLocation });
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.PutPiece });
 
@@ -379,7 +380,7 @@ namespace XT_CETC23
                             return ReturnCode.NoProduct;
                         }
                         // DataBase.GetInstanse().DBUpdate("update dbo.MTR set FrameLocation = " + location.mTray + "," + "SalverLocation=" + location.mSlot + " where BasicID=" + MTR.globalBasicID);
-                        Frame.getInstance().doGet(location.mTray);
+                        doGet(location.mTray);
 
                         shoot(ref location);
                     } while (true);

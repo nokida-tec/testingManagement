@@ -795,7 +795,7 @@ namespace XT_CETC23.SonForm
             db.DBUpdate("update dbo.MTR set ProductID = '" + prodCode + "'where BasicID=" + MTR.globalBasicID);
 
             //插入放回料盘任务
-            Frame.getInstance().doPutAsync(trayNo);
+            Frame.getInstance().doPut(trayNo);
 
             //插入机器人放料任务
             db.DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);

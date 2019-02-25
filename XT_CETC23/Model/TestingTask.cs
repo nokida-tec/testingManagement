@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Data;
 using XT_CETC23.DataCom;
 using XT_CETC23.Model;
@@ -12,6 +12,11 @@ namespace XT_CETC23
 {
     class TestingTask
     {
+        private int mID;        // 任务号
+        private int mCabinetID; // 分配的测试柜
+        private Thread mThread;
+
+
         static public int finish(int ID, String checkResult, String failedReason = null)
         {
             DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID = " + ID);

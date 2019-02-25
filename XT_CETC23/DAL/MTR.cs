@@ -85,7 +85,7 @@ namespace XT_CETC23.DataCom
         static int BasicID = 2000;
         public static int getID()
         {
-            if (BasicID < 2999)
+            if (BasicID < 9999)
                 return BasicID++;
             else
             {

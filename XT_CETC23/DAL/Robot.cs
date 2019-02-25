@@ -66,7 +66,12 @@ namespace XT_CETC23.DataCom
 
                        Logger.WriteLine("移动轨道到料架" + " 结束");
                        return ReturnCode.OK;
-                   } 
+                   }
+                   catch (AbortException ae)
+                   {
+                       Logger.WriteLine(ae);
+                       throw ae;
+                   }
                    catch (Exception e)
                    {
                        Logger.WriteLine(e);
@@ -77,7 +82,7 @@ namespace XT_CETC23.DataCom
 
 
            public ReturnCode doMoveToCabinet(int cabinetNo)
-           {
+           {   // 移动到测试柜
                lock (lockRail)
                {
                    try 
@@ -95,6 +100,11 @@ namespace XT_CETC23.DataCom
                        Logger.WriteLine("移动轨道到:" + (cabinetNo + 1) + " 完成");
                        return ReturnCode.OK;
                    }
+                   catch (AbortException ae)
+                   {
+                       Logger.WriteLine(ae);
+                       throw ae;
+                   }
                    catch (Exception e)
                    {
                        Logger.WriteLine(e);
@@ -104,7 +114,7 @@ namespace XT_CETC23.DataCom
            }
 
            bool isMoveFinished()
-           {
+           {  // 移动结束
                bool finished = (PlcData._axlis7Status == (byte)55);
                return finished;
            }
@@ -328,7 +338,7 @@ namespace XT_CETC23.DataCom
             {
                 if (TestingSystem.GetInstanse().isSystemExisting() == true)
                 {
-                    throw new Exception(ReturnCode.SystemExiting.ToString());
+                    throw new AbortException(ReturnCode.SystemExiting.ToString());
                 } 
                 Thread.Sleep(100);
             }
@@ -481,6 +491,7 @@ namespace XT_CETC23.DataCom
                 TestingCabinets.getInstance(cabinetNo).finishGet();
 
                 DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                
                 Logger.WriteLine("取产品: " + productType + " 从测试台: " + (cabinetNo + 1) + " 完成");
                 return ReturnCode.OK;
             }
@@ -493,6 +504,8 @@ namespace XT_CETC23.DataCom
                 try
                 {
                     Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 开始");
+
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
                     // 机器人移动到测试柜位置
                     mRail.doMoveToCabinet(cabinetNo);
