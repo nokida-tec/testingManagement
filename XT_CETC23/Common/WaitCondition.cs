@@ -17,7 +17,7 @@ namespace XT_CETC23
             {
                 if (TestingSystem.GetInstanse().isSystemExisting() == true)
                 {
-                    throw new Exception(ReturnCode.SystemExiting.ToString());
+                    throw new AbortException(ReturnCode.SystemExiting.ToString());
                 }
                 Thread.Sleep(100);
             }
