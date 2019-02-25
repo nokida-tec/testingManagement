@@ -20,5 +20,7 @@ namespace XT_CETC23
         ScanFailed = -3,
         [EnumDescription("系统忙")]
         SysBusy = -4,
+        [EnumDescription("没有产品")]
+        NoProduct = -5,
     }
 }
