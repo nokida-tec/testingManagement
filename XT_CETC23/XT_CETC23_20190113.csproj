@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="BForm\ControlState.cs" />
     <Compile Include="BForm\ResUtils.cs" />
+    <Compile Include="Common\AbortException.cs" />
     <Compile Include="Common\Account.cs" />
     <Compile Include="Common\AutoStatus.cs" />
     <Compile Include="Common\EnumStr.cs" />
