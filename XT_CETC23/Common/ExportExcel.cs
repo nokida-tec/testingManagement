@@ -30,6 +30,27 @@ namespace XT_CETC23.Common
         {
             GetMessage = iDataBaseForm.getStatus;
         }
+
+        public DataTable ToDataTable(DataGridView myDGV)
+        {
+            DataTable dt = new DataTable();
+            for (int i = 0; i < myDGV.ColumnCount; i++)
+            {
+                dt.Columns.Add(myDGV.Columns[i].HeaderText);
+            }
+            //写入数值
+            for (int r = 0; r < myDGV.Rows.Count; r++)
+            {
+                List<object> values = new List<object>();
+                for (int i = 0; i < myDGV.ColumnCount; i++)
+                {
+                    values.Add(myDGV.Rows[r].Cells[i].Value);
+                }
+                dt.Rows.Add(values.ToArray());
+            }
+            return dt;
+        }
+
         public void ExportTable(DataTable dt, string savaName)
         {
             try
@@ -37,7 +58,7 @@ namespace XT_CETC23.Common
                 package = new ExcelPackage();
 
                 // 添加一个 sheet 表
-                worksheet = package.Workbook.Worksheets.Add(dt.TableName);
+                worksheet = package.Workbook.Worksheets.Add("数据");
 
                 int rowIndex = 1;   // 起始行为 1
                 int colIndex = 1;   // 起始列为 1

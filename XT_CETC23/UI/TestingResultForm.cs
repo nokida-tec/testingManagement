@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XT_CETC23.Common;
+using XT_CETC23.INTransfer;
 
-namespace XT_CETC23.UI
+namespace XT_CETC23.SonForm
 {
-    public partial class TestingResultForm : Form
+    public partial class TestingResultForm : Form, IDatabaseForm
     {
         public TestingResultForm()
         {
@@ -41,5 +43,30 @@ namespace XT_CETC23.UI
 
         }
 
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            DataTable dt = ExportExcel.GetInstanse(this).ToDataTable(dataGridView);
+            String fileName = "export";
+            ExportExcel.GetInstanse(this).ExportTable(dt, fileName);
+        }
+
+        public DataTable getRunData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void getStatus(string str)
+        {
+         //   GetMessage(str);
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            bindingSource1.Filter = "[BeginTime] >= '"
+                + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
+                + "' AND [BeginTime] < '"
+                + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
+                + "'";
+        }
     }
 }
