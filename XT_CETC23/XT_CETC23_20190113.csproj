@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="BForm\ControlState.cs" />
     <Compile Include="BForm\ResUtils.cs" />
+    <Compile Include="Common\AlarmException.cs" />
     <Compile Include="Common\AbortException.cs" />
     <Compile Include="Common\Account.cs" />
     <Compile Include="Common\AutoStatus.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Model\TestingBed.cs" />
     <Compile Include="Model\TestingCabinet.cs" />
     <Compile Include="Model\TestingTask.cs" />
+    <Compile Include="Model\TestingTasks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AutoForm.cs">
