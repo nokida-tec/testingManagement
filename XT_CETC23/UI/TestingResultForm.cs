@@ -136,5 +136,18 @@ namespace XT_CETC23.SonForm
                 comboFrameBatch.Items.Add(batchID);
             }
         }
+
+        private void btnSearchLast_Click(object sender, EventArgs e)
+        {
+            DataTable dt = DataBase.GetInstanse().DBQuery(
+                "select max(ID) from dbo.Batch");
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                MessageBox.Show("没有最近批次");
+            }
+            String batchID = dt.Rows[0][0].ToString();
+
+            bindingSource1.Filter = "BatchID = " + batchID;
+        }
     }
 }

@@ -49,6 +49,7 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnSearchLast = new System.Windows.Forms.Button();
             this.panelCommand.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -90,6 +91,7 @@
             // 
             // panelCommand
             // 
+            this.panelCommand.Controls.Add(this.btnSearchLast);
             this.panelCommand.Controls.Add(this.comboFrameBatch);
             this.panelCommand.Controls.Add(this.label2);
             this.panelCommand.Controls.Add(this.btnExport);
@@ -121,7 +123,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 20);
             this.label2.TabIndex = 7;
-            this.label2.Text = "料架批号:";
+            this.label2.Text = "测试批次:";
             // 
             // btnExport
             // 
@@ -239,6 +241,18 @@
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.ReadOnly = true;
             // 
+            // btnSearchLast
+            // 
+            this.btnSearchLast.AutoSize = true;
+            this.btnSearchLast.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSearchLast.Location = new System.Drawing.Point(702, 11);
+            this.btnSearchLast.Name = "btnSearchLast";
+            this.btnSearchLast.Size = new System.Drawing.Size(99, 30);
+            this.btnSearchLast.TabIndex = 9;
+            this.btnSearchLast.Text = "最近批次";
+            this.btnSearchLast.UseVisualStyleBackColor = true;
+            this.btnSearchLast.Click += new System.EventHandler(this.btnSearchLast_Click);
+            // 
             // TestingResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -297,5 +311,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.Button btnSearchLast;
     }
 }
