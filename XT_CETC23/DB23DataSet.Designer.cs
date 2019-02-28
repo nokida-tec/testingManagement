@@ -948,6 +948,8 @@ namespace XT_CETC23 {
             
             private global::System.Data.DataColumn columnEndTime;
             
+            private global::System.Data.DataColumn columnBatchID;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public ActualDataDataTable() {
@@ -1055,6 +1057,14 @@ namespace XT_CETC23 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BatchIDColumn {
+                get {
+                    return this.columnBatchID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1090,7 +1100,7 @@ namespace XT_CETC23 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ActualDataRow AddActualDataRow(string ProductID, string ProductType, int FrameLocation, int SalverLocation, string CheckCabinetA, string CheckBatch, string CheckResult, System.DateTime BeginTime, System.DateTime EndTime) {
+            public ActualDataRow AddActualDataRow(string ProductID, string ProductType, int FrameLocation, int SalverLocation, string CheckCabinetA, string CheckBatch, string CheckResult, System.DateTime BeginTime, System.DateTime EndTime, string BatchID) {
                 ActualDataRow rowActualDataRow = ((ActualDataRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ProductID,
@@ -1101,7 +1111,8 @@ namespace XT_CETC23 {
                         CheckBatch,
                         CheckResult,
                         BeginTime,
-                        EndTime};
+                        EndTime,
+                        BatchID};
                 rowActualDataRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowActualDataRow);
                 return rowActualDataRow;
@@ -1133,6 +1144,7 @@ namespace XT_CETC23 {
                 this.columnCheckResult = base.Columns["CheckResult"];
                 this.columnBeginTime = base.Columns["BeginTime"];
                 this.columnEndTime = base.Columns["EndTime"];
+                this.columnBatchID = base.Columns["BatchID"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1156,6 +1168,8 @@ namespace XT_CETC23 {
                 base.Columns.Add(this.columnBeginTime);
                 this.columnEndTime = new global::System.Data.DataColumn("EndTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEndTime);
+                this.columnBatchID = new global::System.Data.DataColumn("BatchID", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBatchID);
                 this.columnProductID.MaxLength = 50;
                 this.columnProductType.MaxLength = 10;
                 this.columnCheckCabinetA.MaxLength = 10;
@@ -1560,6 +1574,22 @@ namespace XT_CETC23 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string BatchID {
+                get {
+                    try {
+                        return ((string)(this[this.tableActualData.BatchIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("表“ActualData”中列“BatchID”的值为 DBNull。", e);
+                    }
+                }
+                set {
+                    this[this.tableActualData.BatchIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsProductIDNull() {
                 return this.IsNull(this.tableActualData.ProductIDColumn);
             }
@@ -1664,6 +1694,18 @@ namespace XT_CETC23 {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetEndTimeNull() {
                 this[this.tableActualData.EndTimeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBatchIDNull() {
+                return this.IsNull(this.tableActualData.BatchIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBatchIDNull() {
+                this[this.tableActualData.BatchIDColumn] = global::System.Convert.DBNull;
             }
         }
         

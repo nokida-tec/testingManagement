@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using XT_CETC23.Common;
 using XT_CETC23.INTransfer;
+using XT_CETC23.DataCom;
+using XT_CETC23.Model;
+using XT_CETC23.DAL;
+using XT_CETC23.Common;
+using XT_CETC23.DataCom;
+using XT_CETC23.Instances;
 
 namespace XT_CETC23.SonForm
 {
@@ -60,13 +66,75 @@ namespace XT_CETC23.SonForm
          //   GetMessage(str);
         }
 
+        private static String sComboAll = "全部";
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            bindingSource1.Filter = "[BeginTime] >= '"
+            if (comboFrameBatch.SelectedText == sComboAll 
+                || comboFrameBatch.SelectedText == "")
+            {  // 全部
+                String collects = "";
+                bool bFirst = true;
+
+                for (int i = 1; i < comboFrameBatch.Items.Count; i ++)
+                {
+                    if(bFirst)
+                    {
+                        collects += comboFrameBatch.Items[i].ToString();
+                    } 
+                    else 
+                    {
+                        collects += "," + comboFrameBatch.Items[i].ToString();
+                    }
+                    bFirst = false;
+                }
+                if (collects != "")
+                {
+                    bindingSource1.Filter = "(BatchID is NULL AND [BeginTime] >= '"
+                        + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
+                        + "' AND [BeginTime] < '"
+                        + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
+                        + "') OR BatchID IN ("
+                        + collects
+                        + ")";
+                }
+                else
+                {
+                    bindingSource1.Filter = "(BatchID is NULL AND [BeginTime] >= '"
+                        + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
+                        + "' AND [BeginTime] < '"
+                        + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
+                        + "')";
+                }
+            }
+            else
+            {
+                bindingSource1.Filter = "[BatchID] >= '"
+                    + comboFrameBatch.SelectedText
+                    + "'";
+            }
+        }
+
+        private void dateTimePickerToday_ValueChanged(object sender, EventArgs e)
+        {
+            comboFrameBatch.Items.Clear();
+            DataTable dt = DataBase.GetInstanse().DBQuery(
+                "select ID from dbo.Batch where " 
+                + "[BeginTime] >= '"
                 + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
                 + "' AND [BeginTime] < '"
                 + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
-                + "'";
+                + "'");
+            comboFrameBatch.Items.Add(sComboAll);
+            if(dt == null)
+            {
+                return;
+            }
+            for(int i = 0; i < dt.Rows.Count; i ++)
+            {
+                String batchID = dt.Rows[i]["ID"].ToString();
+                comboFrameBatch.Items.Add(batchID);
+            }
         }
     }
 }

@@ -172,7 +172,7 @@ SELECT Type, SerialNo, Name FROM ProductDef WHERE (Type = @Type)</CommandText>
   <xs:element name="DB23DataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="DB23DataSet" msprop:Generator_UserDSName="DB23DataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="OperateDef" msprop:Generator_TableClassName="OperateDefDataTable" msprop:Generator_TableVarName="tableOperateDef" msprop:Generator_RowChangedName="OperateDefRowChanged" msprop:Generator_TablePropName="OperateDef" msprop:Generator_RowDeletingName="OperateDefRowDeleting" msprop:Generator_RowChangingName="OperateDefRowChanging" msprop:Generator_RowEvHandlerName="OperateDefRowChangeEventHandler" msprop:Generator_RowDeletedName="OperateDefRowDeleted" msprop:Generator_RowClassName="OperateDefRow" msprop:Generator_UserTableName="OperateDef" msprop:Generator_RowEvArgName="OperateDefRowChangeEvent">
+        <xs:element name="OperateDef" msprop:Generator_TableClassName="OperateDefDataTable" msprop:Generator_TableVarName="tableOperateDef" msprop:Generator_TablePropName="OperateDef" msprop:Generator_RowDeletingName="OperateDefRowDeleting" msprop:Generator_RowChangingName="OperateDefRowChanging" msprop:Generator_RowEvHandlerName="OperateDefRowChangeEventHandler" msprop:Generator_RowDeletedName="OperateDefRowDeleted" msprop:Generator_UserTableName="OperateDef" msprop:Generator_RowChangedName="OperateDefRowChanged" msprop:Generator_RowEvArgName="OperateDefRowChangeEvent" msprop:Generator_RowClassName="OperateDefRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ProductType" msprop:Generator_ColumnVarNameInTable="columnProductType" msprop:Generator_ColumnPropNameInRow="ProductType" msprop:Generator_ColumnPropNameInTable="ProductTypeColumn" msprop:Generator_UserColumnName="ProductType">
@@ -199,7 +199,7 @@ SELECT Type, SerialNo, Name FROM ProductDef WHERE (Type = @Type)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="ProductDef" msprop:Generator_TableClassName="ProductDefDataTable" msprop:Generator_TableVarName="tableProductDef" msprop:Generator_RowChangedName="ProductDefRowChanged" msprop:Generator_TablePropName="ProductDef" msprop:Generator_RowDeletingName="ProductDefRowDeleting" msprop:Generator_RowChangingName="ProductDefRowChanging" msprop:Generator_RowEvHandlerName="ProductDefRowChangeEventHandler" msprop:Generator_RowDeletedName="ProductDefRowDeleted" msprop:Generator_RowClassName="ProductDefRow" msprop:Generator_UserTableName="ProductDef" msprop:Generator_RowEvArgName="ProductDefRowChangeEvent">
+        <xs:element name="ProductDef" msprop:Generator_TableClassName="ProductDefDataTable" msprop:Generator_TableVarName="tableProductDef" msprop:Generator_TablePropName="ProductDef" msprop:Generator_RowDeletingName="ProductDefRowDeleting" msprop:Generator_RowChangingName="ProductDefRowChanging" msprop:Generator_RowEvHandlerName="ProductDefRowChangeEventHandler" msprop:Generator_RowDeletedName="ProductDefRowDeleted" msprop:Generator_UserTableName="ProductDef" msprop:Generator_RowChangedName="ProductDefRowChanged" msprop:Generator_RowEvArgName="ProductDefRowChangeEvent" msprop:Generator_RowClassName="ProductDefRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Type" msprop:Generator_ColumnVarNameInTable="columnType" msprop:Generator_ColumnPropNameInRow="Type" msprop:Generator_ColumnPropNameInTable="TypeColumn" msprop:Generator_UserColumnName="Type">
@@ -226,7 +226,7 @@ SELECT Type, SerialNo, Name FROM ProductDef WHERE (Type = @Type)</CommandText>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="ActualData" msprop:Generator_TableClassName="ActualDataDataTable" msprop:Generator_TableVarName="tableActualData" msprop:Generator_TablePropName="ActualData" msprop:Generator_RowDeletingName="ActualDataRowDeleting" msprop:Generator_RowChangingName="ActualDataRowChanging" msprop:Generator_RowEvHandlerName="ActualDataRowChangeEventHandler" msprop:Generator_RowDeletedName="ActualDataRowDeleted" msprop:Generator_UserTableName="ActualData" msprop:Generator_RowChangedName="ActualDataRowChanged" msprop:Generator_RowEvArgName="ActualDataRowChangeEvent" msprop:Generator_RowClassName="ActualDataRow">
+        <xs:element name="ActualData" msprop:Generator_TableClassName="ActualDataDataTable" msprop:Generator_TableVarName="tableActualData" msprop:Generator_RowChangedName="ActualDataRowChanged" msprop:Generator_TablePropName="ActualData" msprop:Generator_RowDeletingName="ActualDataRowDeleting" msprop:Generator_RowChangingName="ActualDataRowChanging" msprop:Generator_RowEvHandlerName="ActualDataRowChangeEventHandler" msprop:Generator_RowDeletedName="ActualDataRowDeleted" msprop:Generator_RowClassName="ActualDataRow" msprop:Generator_UserTableName="ActualData" msprop:Generator_RowEvArgName="ActualDataRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ProductID" msprop:Generator_ColumnVarNameInTable="columnProductID" msprop:Generator_ColumnPropNameInRow="ProductID" msprop:Generator_ColumnPropNameInTable="ProductIDColumn" msprop:Generator_UserColumnName="ProductID" minOccurs="0">
@@ -268,6 +268,7 @@ SELECT Type, SerialNo, Name FROM ProductDef WHERE (Type = @Type)</CommandText>
               </xs:element>
               <xs:element name="BeginTime" msprop:Generator_ColumnVarNameInTable="columnBeginTime" msprop:Generator_ColumnPropNameInRow="BeginTime" msprop:Generator_ColumnPropNameInTable="BeginTimeColumn" msprop:Generator_UserColumnName="BeginTime" type="xs:dateTime" minOccurs="0" />
               <xs:element name="EndTime" msprop:Generator_ColumnVarNameInTable="columnEndTime" msprop:Generator_ColumnPropNameInRow="EndTime" msprop:Generator_ColumnPropNameInTable="EndTimeColumn" msprop:Generator_UserColumnName="EndTime" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="BatchID" msprop:Generator_ColumnVarNameInTable="columnBatchID" msprop:Generator_ColumnPropNameInRow="BatchID" msprop:Generator_ColumnPropNameInTable="BatchIDColumn" msprop:Generator_UserColumnName="BatchID" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

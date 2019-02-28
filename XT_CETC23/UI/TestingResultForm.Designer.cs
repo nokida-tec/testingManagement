@@ -33,22 +33,22 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.panelCommand = new System.Windows.Forms.Panel();
-            this.comboFrameLot = new System.Windows.Forms.ComboBox();
+            this.comboFrameBatch = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dB23DataSet = new XT_CETC23.DB23DataSet();
             this.actualDataTableAdapter = new XT_CETC23.DB23DataSetTableAdapters.ActualDataTableAdapter();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelCommand.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -62,6 +62,7 @@
             this.dateTimePickerToday.Name = "dateTimePickerToday";
             this.dateTimePickerToday.Size = new System.Drawing.Size(200, 30);
             this.dateTimePickerToday.TabIndex = 0;
+            this.dateTimePickerToday.ValueChanged += new System.EventHandler(this.dateTimePickerToday_ValueChanged);
             // 
             // label1
             // 
@@ -89,7 +90,7 @@
             // 
             // panelCommand
             // 
-            this.panelCommand.Controls.Add(this.comboFrameLot);
+            this.panelCommand.Controls.Add(this.comboFrameBatch);
             this.panelCommand.Controls.Add(this.label2);
             this.panelCommand.Controls.Add(this.btnExport);
             this.panelCommand.Controls.Add(this.label1);
@@ -101,14 +102,14 @@
             this.panelCommand.Size = new System.Drawing.Size(932, 54);
             this.panelCommand.TabIndex = 3;
             // 
-            // comboFrameLot
+            // comboFrameBatch
             // 
-            this.comboFrameLot.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.comboFrameLot.FormattingEnabled = true;
-            this.comboFrameLot.Location = new System.Drawing.Point(392, 12);
-            this.comboFrameLot.Name = "comboFrameLot";
-            this.comboFrameLot.Size = new System.Drawing.Size(213, 28);
-            this.comboFrameLot.TabIndex = 8;
+            this.comboFrameBatch.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboFrameBatch.FormattingEnabled = true;
+            this.comboFrameBatch.Location = new System.Drawing.Point(392, 12);
+            this.comboFrameBatch.Name = "comboFrameBatch";
+            this.comboFrameBatch.Size = new System.Drawing.Size(213, 28);
+            this.comboFrameBatch.TabIndex = 8;
             // 
             // label2
             // 
@@ -145,11 +146,11 @@
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn6,
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4,
             this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn6,
-            this.dataGridViewTextBoxColumn7,
             this.dataGridViewTextBoxColumn8,
             this.dataGridViewTextBoxColumn9});
             this.dataGridView.DataSource = this.bindingSource1;
@@ -160,6 +161,20 @@
             this.dataGridView.RowTemplate.Height = 23;
             this.dataGridView.Size = new System.Drawing.Size(932, 377);
             this.dataGridView.TabIndex = 4;
+            // 
+            // bindingSource1
+            // 
+            this.bindingSource1.DataMember = "ActualData";
+            this.bindingSource1.DataSource = this.dB23DataSet;
+            // 
+            // dB23DataSet
+            // 
+            this.dB23DataSet.DataSetName = "DB23DataSet";
+            this.dB23DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // actualDataTableAdapter
+            // 
+            this.actualDataTableAdapter.ClearBeforeFill = true;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -174,6 +189,20 @@
             this.dataGridViewTextBoxColumn2.HeaderText = "产品类型";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "CheckResult";
+            this.dataGridViewTextBoxColumn7.HeaderText = "测试结果";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "BatchID";
+            this.dataGridViewTextBoxColumn6.HeaderText = "测试批次";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn3
             // 
@@ -196,20 +225,6 @@
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "CheckBatch";
-            this.dataGridViewTextBoxColumn6.HeaderText = "测试批次";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "CheckResult";
-            this.dataGridViewTextBoxColumn7.HeaderText = "测试结果";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
             // dataGridViewTextBoxColumn8
             // 
             this.dataGridViewTextBoxColumn8.DataPropertyName = "BeginTime";
@@ -223,20 +238,6 @@
             this.dataGridViewTextBoxColumn9.HeaderText = "结束时间";
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            // 
-            // bindingSource1
-            // 
-            this.bindingSource1.DataMember = "ActualData";
-            this.bindingSource1.DataSource = this.dB23DataSet;
-            // 
-            // dB23DataSet
-            // 
-            this.dB23DataSet.DataSetName = "DB23DataSet";
-            this.dB23DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // actualDataTableAdapter
-            // 
-            this.actualDataTableAdapter.ClearBeforeFill = true;
             // 
             // TestingResultForm
             // 
@@ -272,7 +273,7 @@
         private System.Windows.Forms.Panel panelCommand;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.ComboBox comboFrameLot;
+        private System.Windows.Forms.ComboBox comboFrameBatch;
         private DB23DataSet dB23DataSet;
         private System.Windows.Forms.BindingSource actualDataBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn productIDDataGridViewTextBoxColumn;
@@ -289,11 +290,11 @@
         private DB23DataSetTableAdapters.ActualDataTableAdapter actualDataTableAdapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
     }
