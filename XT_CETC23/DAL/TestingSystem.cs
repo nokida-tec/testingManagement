@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using XT_CETC23.Instances;
 using XT_CETC23.Common;
 using XT_CETC23.DataCom;
@@ -27,16 +27,26 @@ namespace XT_CETC23
             Disable = 4 //当控件不可用时
         }
 
-        private static TestingSystem instance = null;
-        private  bool exitSystem = false;
+        private static TestingSystem mInstance = null;
+        private static Object lockInstance = new Object();
+        private bool mSystemExisting = false;
+        private bool mSystemRunning = true;
+        private Thread mTaskSchedule = null;
 
-        public static TestingSystem GetInstanse()
+        public static TestingSystem GetInstance()
         {
-            if (instance == null)
+            if (mInstance == null)
             {
-                instance = new TestingSystem();
+                lock (lockInstance)
+                {
+                    if (mInstance == null)
+                    {
+                        mInstance = new TestingSystem();
+                    }
+                    return mInstance;
+                }
             }
-            return instance;
+            return mInstance;
         }
 
          private TestingSystem()
@@ -47,20 +57,56 @@ namespace XT_CETC23
         {
         }
 
+        public void StartSystem ()
+        {
+            Logger.WriteLine("主调度线程启动!!!");
+            lock (lockInstance)
+            {
+                if (mSystemRunning == true)
+                {   // 
+                    if (mSystemExisting == true)
+                    {
+                        Thread.Sleep(100);
+                        mTaskSchedule = null;
+                    }
+                    else 
+                    {   // 异常，系统重入两次
+                        throw new AlarmException("系统重入两次,报警!!!");
+                    }
+                }
+                mSystemExisting = false;
+                mSystemRunning = true;
+
+                mTaskSchedule = new Thread(TaskSchedule);
+                mTaskSchedule.Name = "主调度流程";
+                mTaskSchedule.Start();
+                // TransMessage("主调度进程启动");
+            }
+        }
+
         public void ExitSystem ()
         {
-            exitSystem = true;
+            Logger.WriteLine("主调度线程退出!!!");
+            mSystemExisting = true;
+            mTaskSchedule.Abort();
             TestingCabinets.abort();
+            
+            mSystemRunning = false;
+        }
+
+        private void TaskSchedule ()
+        {
+
         }
 
         public bool isSystemExisting()
         {
-            return exitSystem;
+            return mSystemExisting;
         }
 
         public void SetExitSystem ()
         {
-            exitSystem = false;
+            mSystemExisting = false;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace XT_CETC23
         AutoForm aForm;
         public static CameraForm cForm;
         DataForm dForm;
+        TestingResultForm resultForm;
         ManulForm mForm;
         ParaForm pForm;
         RunForm rForm;
@@ -47,6 +48,7 @@ namespace XT_CETC23
             InitFormEvent();       
             aForm = new AutoForm();
             cForm = new CameraForm();
+            resultForm = new TestingResultForm();
             dForm = new DataForm();
             mForm = new ManulForm();
             rForm = RunForm.GetInstanse(aForm, cForm, dForm, mForm,this);
@@ -302,10 +304,10 @@ namespace XT_CETC23
                 //    Run.readyForStep = false;
                 //}
                 panel_Load.Controls.Clear();
-                dForm.TopLevel = false;
-                dForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(dForm);
-                dForm.Show();
+                resultForm.TopLevel = false;
+                resultForm.Dock = DockStyle.Fill;
+                panel_Load.Controls.Add(resultForm);
+                resultForm.Show();
             }
         }
         void pbManul()

@@ -336,7 +336,7 @@ namespace XT_CETC23.DataCom
         {
             while (RobotData.Response == null || RobotData.Response != response)
             {
-                if (TestingSystem.GetInstanse().isSystemExisting() == true)
+                if (TestingSystem.GetInstance().isSystemExisting() == true)
                 {
                     throw new AbortException(ReturnCode.SystemExiting.ToString());
                 } 

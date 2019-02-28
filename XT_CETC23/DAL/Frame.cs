@@ -63,6 +63,10 @@ namespace XT_CETC23
             public string CordinatorY = "0";
             public string CordinatorU = "0";
 
+            public Location()
+            {
+            }
+
             public Location(int tray, int slot)
             {
                 mTray = tray;
@@ -307,7 +311,7 @@ namespace XT_CETC23
             return 0;
         }
 
-        private int shoot(ref Location location)
+        private ReturnCode shoot(ref Location location)
         {
             try
             {
@@ -339,7 +343,7 @@ namespace XT_CETC23
                 {
                     if (location.mSlot % 4 == 0)
                     {
-                        return (int)ReturnCode.NoProduct;
+                        return ReturnCode.NoProduct;
                     }
                 }
 
@@ -348,7 +352,7 @@ namespace XT_CETC23
 
                 if (MainForm.cForm.CCDDone == -1)     //拍照失败
                 {
-                    return (int)ReturnCode.NoProduct;
+                    return ReturnCode.NoProduct;
                 }
 
                 if (location.mProdType == "D")
@@ -360,12 +364,13 @@ namespace XT_CETC23
             catch(Exception e)
             {
                 Logger.WriteLine(e);
-                return (int)ReturnCode.Exception;
+                return ReturnCode.Exception;
             }
-            return (int)ReturnCode.OK;
+            return ReturnCode.OK;
         }
 
-        public ReturnCode doGetProduct(String productType)
+        // 从料仓取料
+        public ReturnCode doGetProduct(String productType, ref Location location)
         {
             lock (lockFrame)
             {
@@ -374,21 +379,33 @@ namespace XT_CETC23
                     do
                     {
                         // 找到一个没有测试的产品（可能不存在，需要视觉识别）
-                        Location location = findProduct(productType);
-                        if (location == null)
+                        Location loc = findProduct(productType);
+                        if (loc == null)
                         {
                             return ReturnCode.NoProduct;
                         }
                         // DataBase.GetInstanse().DBUpdate("update dbo.MTR set FrameLocation = " + location.mTray + "," + "SalverLocation=" + location.mSlot + " where BasicID=" + MTR.globalBasicID);
-                        doGet(location.mTray);
+                        doGet(loc.mTray);
 
-                        shoot(ref location);
+                        do
+                        {
+                            ReturnCode ret = shoot(ref loc);
+                            if (ret == ReturnCode.OK)
+                            {
+                                return ReturnCode.OK;
+                            }
+                            else
+                            {
+                                markProduct(loc, -1);
+                            }
+                        } while (true);
                     } while (true);
                 }
                 catch (Exception e)
                 {
                     Logger.WriteLine(e);
                     throw e;
+                    return ReturnCode.Exception;
                 }
                 return ReturnCode.OK;
             }

@@ -22,5 +22,7 @@ namespace XT_CETC23
         SysBusy = -4,
         [EnumDescription("没有产品")]
         NoProduct = -5,
+        [EnumDescription("任务已存在")]
+        TaskExist = -6,
     }
 }

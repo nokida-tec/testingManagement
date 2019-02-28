@@ -15,7 +15,7 @@ namespace XT_CETC23
         {
             while (!condition())
             {
-                if (TestingSystem.GetInstanse().isSystemExisting() == true)
+                if (TestingSystem.GetInstance().isSystemExisting() == true)
                 {
                     throw new AbortException(ReturnCode.SystemExiting.ToString());
                 }

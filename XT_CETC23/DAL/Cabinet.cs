@@ -290,6 +290,11 @@ namespace XT_CETC23.DAL
             }
         }
 
+        public void doTest ()
+        {
+            CabinetTest();
+        }
+
         private void CabinetTest()
         {
             lock(mLock)

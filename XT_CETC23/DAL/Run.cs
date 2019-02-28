@@ -209,7 +209,7 @@ namespace XT_CETC23.DataCom
             db = DataBase.GetInstanse();
             taskCycle = TaskCycle.GetInstanse();
 
-            TestingSystem.GetInstanse().SetExitSystem();
+            TestingSystem.GetInstance().SetExitSystem();
 
             this.iCameraForm = iCameraForm;
             this.iRunForm = iRunForm;
@@ -279,14 +279,18 @@ namespace XT_CETC23.DataCom
 
                     if (modeByPlc == "Auto" && commandByPlc == "Start" && !mainStarting && initializing == true)
                     {
+                        /*
                         readyForStep = false;
                         mForm.clearTask();
                         mainSchedule = new Thread(MainSchedule);
                         mainSchedule.Name = "主调度流程";
                         mainSchedule.Start();
                         TransMessage("主调度进程启动");
+                         */
+                        TestingSystem.GetInstance().StartSystem();
                         Logger.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
                         mainStarting = true;
+      
                         gSheduleExit = false;
                         
                         commandByPlc = "";
@@ -298,10 +302,12 @@ namespace XT_CETC23.DataCom
                         {
                             if (mainSchedule != null && mainSchedule.IsAlive)
                             {
+                                /*
                                 mainSchedule.Abort();
                                 Logger.WriteLine("mainSchedule thread exit, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
                                 gSheduleExit = true;
-                                TestingSystem.GetInstanse().ExitSystem();
+                                 */
+                                TestingSystem.GetInstance().ExitSystem();
                                 TransMessage("主调度进程退出");
                             }
                             mainStarting = false;
@@ -793,16 +799,15 @@ namespace XT_CETC23.DataCom
                                         {
                                             //插入放回料盘任务
                                             Frame.getInstance().doPut(trayNo);
-                                            goto pickAnotherTray;               //换盘
+                                            goto pickAnotherTray;               // 换盘
                                         }
                                         if ((numRemain - 1) > 0)
                                         {
-                                            pieceNo = pieceNo + 1;              //换位置
+                                            pieceNo = pieceNo + 1;              // 换位置
                                             numRemain = numRemain - 1;
                                             db.DBUpdate("update dbo.MTR set SalverLocation=" + pieceNo + " where BasicID=" + MTR.globalBasicID);
                                             goto shootAgain;
                                         }
-
                                     }
 
                                     if (prodType == "D")
