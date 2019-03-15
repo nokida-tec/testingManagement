@@ -151,29 +151,33 @@ namespace XT_CETC23
                     
                     Frame.getInstance().doPut(location.mTray);
 
-                    //根据结果更新FeedBin表格                                                      
-                                        int colNo = location.mTray % 10;
-                                        int rowNo = location.mTray / 10;
-                                        int layerID = (colNo - 1) * 8 + rowNo;
-                                        String checkResult = "OK";
-                                        DataTable dtFeedBin = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=" + layerID);
-                                        if (checkResult == "OK")
-                                        {
-                                            int okNum = (int)dtFeedBin.Rows[0]["ResultOK"] + 1;
-                                            DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set ResultOK = " + okNum + "where LayerID=" + layerID);
-                                        }
-                                        else
-                                        {
-                                            int ngNum = (int)dtFeedBin.Rows[0]["ResultNG"] + 1;
-                                            DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set ResultNG = " + ngNum + "where LayerID=" + layerID);
-                                        }
-                                        //FrameDataUpdate();
+                    // 根据结果更新FeedBin表格                                                      
+                    int colNo = location.mTray % 10;
+                    int rowNo = location.mTray / 10;
+                    int layerID = (colNo - 1) * 8 + rowNo;
+                    String checkResult = "OK";
+                    DataTable dtFeedBin = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=" + layerID);
+                    if (checkResult == "OK")
+                    {
+                        int okNum = (int)dtFeedBin.Rows[0]["ResultOK"] + 1;
+                        DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set ResultOK = " + okNum + "where LayerID=" + layerID);
+                    }
+                    else
+                    {
+                        int ngNum = (int)dtFeedBin.Rows[0]["ResultNG"] + 1;
+                        DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set ResultNG = " + ngNum + "where LayerID=" + layerID);
+                    }
+                    //FrameDataUpdate();
 
-                                        //测试结果插入测试统计表格；
-                                        TestingTask.finish(MTR.globalBasicID, checkResult);
+                    //测试结果插入测试统计表格；
+                    TestingTask.finish(MTR.globalBasicID, checkResult);
                     return ;
                 }
                 catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+                finally
                 {
                     isRunning = false;
                 }
