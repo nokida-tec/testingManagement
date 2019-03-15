@@ -84,18 +84,19 @@ namespace XT_CETC23
                 {
                     if (isRunning)
                     {
-                        Logger.WriteLine("  ***   测试柜: Running" + this.mCabinetID + "在运行中 线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
+                        Logger.WriteLine("  ***   测试线程: " + this.mCabinetID + "在运行中 线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
                         return ReturnCode.SysBusy;
                     }
 
+                    isRunning = true;
+
                     mProductType = productType;
 
-                    isRunning = true;
                     if (mTask != null)
                     {
                         while (mTask.ThreadState != ThreadState.Stopped && mTask.ThreadState != ThreadState.Aborted)
                         {   // 等待原有线程运行退出
-                            Logger.WriteLine("  ***   测试柜: Thread" + this.mCabinetID + "在运行中 线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
+                            Logger.WriteLine("  ***   测试线程: Thread" + this.mCabinetID + "在运行中 线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
                             Thread.Sleep(100);
                         }
                         Thread.Sleep(100);
@@ -104,8 +105,8 @@ namespace XT_CETC23
                     if (mTask == null)
                     {
                         mTask = new Thread(runOne);
-                        mTask.Name = "测试柜" + this.mCabinetID + ": 启动线程";
-                        Logger.WriteLine("  ***   测试柜:" + this.mCabinetID + " 新启动线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
+                        mTask.Name = "测试线程：" + this.mCabinetID + " 启动";
+                        Logger.WriteLine("  ***   测试线程:" + this.mCabinetID + " 新启动线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
                         mTask.Start();
                     }
                     return ReturnCode.OK;
@@ -119,7 +120,7 @@ namespace XT_CETC23
         }
 
         private void runOne()
-        {
+        {   // 运行一次
             lock (lockObject)
             {
                 try
