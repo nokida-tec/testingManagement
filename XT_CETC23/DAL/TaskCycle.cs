@@ -38,7 +38,7 @@ namespace XT_CETC23.DataCom
         private const int WM_KEYUP = 0x0101;
         private const int vbKeyReturn = 0x0D;
 
-        Thread axlis2Task, cabinetTask;
+        Thread axlis2Task;
         static TaskCycle taskCycle;
         static object lockTaskCycle = new object();
         public static string feedBinScanDone = "";
@@ -79,68 +79,9 @@ namespace XT_CETC23.DataCom
             {
                 axlis2Task.Start();
             }
-
-            cabinetTask = new Thread(CabinetTask);
-            cabinetTask.Name = "检测柜项目";
-            if (!cabinetTask.IsAlive)
-            {
-                cabinetTask.Start();
-            }
             //}
         }
-        private void CabinetTask()
-        {
-            DataTable dt = new DataTable();            
-            while (true)
-            {
-                Thread.Sleep(10);
-                while (PlcData.clearTask)
-                {
-                    Thread.Sleep(100);
-                    dt.Rows.Clear();
-                    dt.Columns.Clear();
-                    dt = db.DBQuery("select * from dbo.TaskCabinet");
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        lock (dt)
-                            {
-                                int basicID = (int)Convert.ToDouble(dt.Rows[i]["BasicID"]);
-                                if (basicID > 0)
-                                {
-                                    //TestingCabinets.getInstance(i).startTask();
-                                    //if (order == "Stop" && threadCab[i].ThreadState == ThreadState.Running)
-                                    //{
-                                    //    threadCab[i].Abort();
-                                    //}
-                                    //string productType = dt.Rows[i]["ProductType"].ToString();
 
-                                    //ArrayList paraCabTask = new ArrayList();
-                                    //paraCabTask.Add(order);
-                                    //paraCabTask.Add(i);
-                                    //paraCabTask.Add(basicID);
-                                    //paraCabTask.Add(productType);
-                                    //threadCab[i] = new Thread(CabinetTest);
-                                    //threadCab[i].Name = "CabinetTest" + i;
-                                    //if (!order.Equals("Free") && threadCab[i].ThreadState != ThreadState.Running)
-                                    //{
-                                    //    threadCab[i].Start(paraCabTask);
-                                    //}
-                                    //else
-                                    //{
-                                    //    threadCab[i].Abort();
-                                    //}
-                                }
-                         }
-                        
-
-                        Thread.Sleep(100);
-                    }
-                    
-
-                    Thread.Sleep(100);
-                }
-            }
-        }
         //private void CabinetTest(object list)
         //{
         //    ArrayList myList=(ArrayList)list;
