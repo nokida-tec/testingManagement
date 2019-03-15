@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XT_CETC23_20190113", "XT_CETC23\XT_CETC23_20190113.csproj", "{4C6B67F1-CADB-403D-92D4-E63D9C78DE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XT_CETC23_GK", "XT_CETC23_GK\XT_CETC23_GK.csproj", "{3326BAB1-3828-4B29-B40D-1C1486D87512}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{4C6B67F1-CADB-403D-92D4-E63D9C78DE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6B67F1-CADB-403D-92D4-E63D9C78DE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C6B67F1-CADB-403D-92D4-E63D9C78DE41}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3326BAB1-3828-4B29-B40D-1C1486D87512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3326BAB1-3828-4B29-B40D-1C1486D87512}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3326BAB1-3828-4B29-B40D-1C1486D87512}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3326BAB1-3828-4B29-B40D-1C1486D87512}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

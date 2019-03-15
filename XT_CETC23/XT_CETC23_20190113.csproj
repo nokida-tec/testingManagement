@@ -132,6 +132,7 @@
     <Compile Include="DAL\Run.cs" />
     <Compile Include="DAL\TaskCycle.cs" />
     <Compile Include="DAL\TestingSystem.cs" />
+    <Compile Include="DAL\U8Connector.cs" />
     <Compile Include="DB23DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -396,12 +397,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Image\Image\s71200.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\XT_CETC23_GK\XT_CETC23_GK.csproj">
-      <Project>{3326bab1-3828-4b29-b40d-1c1486d87512}</Project>
-      <Name>XT_CETC23_GK</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

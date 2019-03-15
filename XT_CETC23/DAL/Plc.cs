@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using Snap7;
 using XT_CETC23.Config;
+using XT_CETC23.DataManager;
 
 namespace XT_CETC23
 {
@@ -94,7 +95,6 @@ namespace XT_CETC23
             lock (lockDbRead)
             {
                 if (plcConnected)
-
                 {
                     int Result = s7clientRead.DBRead(DbNumber, Start, Size, myBytes);
                     ShowResult(Result);
@@ -134,5 +134,136 @@ namespace XT_CETC23
             // This function returns a textual explaination of the error code
             //PlcMessage(s7client.ErrorText(Result) + " (" + s7client.ExecTime().ToString() + " ms)");
         }
+
+        private Thread mThreadMonitor;
+        public void start()
+       {
+           mThreadMonitor = new Thread(ReadPlc);
+           mThreadMonitor.Name = "读取PLC数据";
+       }
+
+       private void ReadPlc()
+       {
+           int flag = 0;
+           while (true)
+           {
+               try
+               {
+                   PlcData.PlcStatusValue = plc.DbRead(100, 0, 21);
+                   if (PlcData.PlcStatusValue != null)
+                   {
+                       flag = 0;
+                       PlcData._robotStatus = PlcData.PlcStatusValue[0];
+
+                       PlcData._plcMode = PlcData.PlcStatusValue[1];
+
+                       PlcData._axlis7Status = PlcData.PlcStatusValue[2];
+                       PlcData._axlis2Status = PlcData.PlcStatusValue[3];
+                       PlcData._axlis2Pos = PlcData.PlcStatusValue[4];
+                       PlcData._cabinetStatus_old = PlcData.PlcStatusValue[5];
+
+                       PlcData._frameFeedBack = PlcData.PlcStatusValue[6];                //料架气缸
+
+                       PlcData._limitFeedBack1 = PlcData.PlcStatusValue[7];
+                       PlcData._limitFeedBack2 = PlcData.PlcStatusValue[8];
+                       PlcData._limitFeedBack3 = PlcData.PlcStatusValue[9];
+                       PlcData._limitFeedBack4 = PlcData.PlcStatusValue[10];
+                       PlcData._limitFeedBack5 = PlcData.PlcStatusValue[11];
+                       PlcData._limitFeedBack6 = PlcData.PlcStatusValue[12];
+
+                       PlcData._cabinetStatus[0] = PlcData.PlcStatusValue[13];
+                       PlcData._cabinetStatus[1] = PlcData.PlcStatusValue[14];
+                       PlcData._cabinetStatus[2] = PlcData.PlcStatusValue[15];
+                       PlcData._cabinetStatus[3] = PlcData.PlcStatusValue[16];
+                       PlcData._cabinetStatus[4] = PlcData.PlcStatusValue[17];
+                       PlcData._cabinetStatus[5] = PlcData.PlcStatusValue[18];
+                       PlcData._alarmNumber = PlcData.PlcStatusValue[20];
+                       /*
+                       #region  测试柜状态读取
+                       for (int i = 0; i < 6; i++)
+                       {
+
+                           if (stepEnable == false)
+                           {
+                               if ((PlcData._cabinetStatus[i] & 1) != 0)
+                                   GetCabinetStatus(i + 1, "可放料");
+                               else if ((PlcData._cabinetStatus[i] & 2) != 0)
+                                   GetCabinetStatus(i + 1, "可测试");
+                               else if ((PlcData._cabinetStatus[i] & 4) != 0)
+                                   GetCabinetStatus(i + 1, "测试中");
+                               else if ((PlcData._cabinetStatus[i] & 8) != 0)
+                                   GetCabinetStatus(i + 1, "可取料");
+                               else
+                                   GetCabinetStatus(i + 1, "准备中");
+                           }
+                       }
+                       #endregion
+
+                       #region  PLC控制状态读取和解析
+                       if ((PlcData._plcMode & PlcData._readPlcMode) != 0)
+                       {
+                           modeByPlc = "Auto";
+                       }
+                       else
+                       {
+                           modeByPlc = "Manul";
+                       }
+
+                       if ((PlcData._plcMode & PlcData._readPlcInited) != 0)
+                       {
+                           commandByPlc = "Initialize";
+                       }
+                       if ((PlcData._plcMode & PlcData._readPlcStart) != 0)
+                       {
+                           commandByPlc = "Start";
+                       }
+                       if ((PlcData._plcMode & PlcData._readPlcEmergency) != 0)
+                       {
+                           commandByPlc = "Emergency";
+                       }
+
+                       if ((PlcData._plcMode & PlcData._readPlcAutoRunning) != 0)
+                       {
+                           statusByPlc = "AutoRunning";
+                       }
+                       if ((PlcData._plcMode & PlcData._readPlcPausing) != 0)
+                       {
+                           statusByPlc = "Pausing";
+                       }
+                       if ((PlcData._plcMode & PlcData._readPlcAlarming) != 0)
+                       {
+                           statusByPlc = "Alarming";
+                       }
+                       if ((PlcData._plcMode & PlcData._readPlcInited) != 0)
+                       {
+                           statusByPlc = "Initalized";
+                       }
+                       #endregion
+
+                       GetRobotMode(PlcData._robotStatus);
+                       GetPlcMode(modeByPlc, statusByPlc);
+                       ManulEnable(modeByPlc, statusByPlc);
+
+                       Thread.Sleep(100);
+                        */
+                   }
+                   else
+                   {
+                       if (flag == 0)
+                       {
+                           Logger.WriteLine("PLC数据读取失败");
+                       }
+                       flag = 1;
+                       Thread.Sleep(100);
+                   }
+               }
+               catch (Exception e)
+               {
+                   Logger.WriteLine(e);
+                   //MessageBox.Show(e.Message);
+               }
+               Thread.Sleep(100);
+           }
+       }
     }
 }

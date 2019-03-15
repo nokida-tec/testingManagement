@@ -108,5 +108,19 @@ namespace XT_CETC23
         {
             mSystemExisting = false;
         }
+
+        private void SystemMonitor()
+        {
+            Robot.GetInstanse();
+
+            Logger.WriteLine("监控进程启动");            
+
+            while (true)
+            {
+                if (Plc.GetInstanse().plcConnected)
+                {
+                }
+            }                    
+        }
     }
 }

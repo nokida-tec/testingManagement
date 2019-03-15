@@ -12,7 +12,6 @@ using XT_CETC23.INTransfer;
 using XT_CETC23.DataCom;
 using XT_CETC23.DataManager;
 using XT_CETC23.Common;
-using XT_CETC23_GK.Task;
 using System.Threading;
 using XT_CETC23.Model;
 using XT_CETC23.Instances;
@@ -22,7 +21,6 @@ namespace XT_CETC23.SonForm
     public partial class ManulForm : Form, IManulForm
     {
         DataBase db;
-        ManulTask mTask;
         Queue<string> mQueue = new System.Collections.Generic.Queue<string>();
         delegate void mCycle(Queue<string> mQueue);
         public delegate void tansMessage(string str);
@@ -46,7 +44,6 @@ namespace XT_CETC23.SonForm
             InitializeComponent();
             db = DataBase.GetInstanse();
             mtr = MTR.GetIntanse();
-            mTask = ManulTask.GetInstanse();
             
             plc = Plc.GetInstanse();
             robot = Robot.GetInstanse();

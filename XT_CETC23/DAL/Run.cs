@@ -288,7 +288,7 @@ namespace XT_CETC23.DataCom
                         TransMessage("主调度进程启动");
                          */
                         TestingSystem.GetInstance().StartSystem();
-                        Logger.WriteLine("mainSchedule thread started, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
+                        Logger.WriteLine("系统线程启动, Thread Name is: " + mainSchedule.Name + "  ID: " + mainSchedule.ManagedThreadId);
                         mainStarting = true;
       
                         gSheduleExit = false;
@@ -945,7 +945,7 @@ namespace XT_CETC23.DataCom
 
         void grabTypeQuery()
         {
-            MaterielData.grabType = db.DBQuery("select * from sortdata");
+            MaterielData.grabType = DataBase.GetInstanse().DBQuery("select * from sortdata");
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

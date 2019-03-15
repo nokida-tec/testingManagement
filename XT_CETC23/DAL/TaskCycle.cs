@@ -8,7 +8,6 @@ using System.Threading;
 using System.Data;
 using System.IO;
 using XT_CETC23.DataManager;
-using XT_CETC23_GK.Task;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
 using XT_CETC23.Instances;
@@ -47,9 +46,6 @@ namespace XT_CETC23.DataCom
         DataBase db;
         Plc plc;
         MTR mtr;
-
-        //Task task;
-        XT_CETC23_GK.Task.RobotTask rTask = XT_CETC23_GK.Task.RobotTask.GetInstanse();
 
         public static TaskCycle GetInstanse()
         {
