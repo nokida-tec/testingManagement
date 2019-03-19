@@ -31,7 +31,6 @@ namespace XT_CETC23.SonForm
         Plc plc;
         Robot robot;
         MTR mtr;
-        Run myRun;
         Thread limitRead;        
 
         byte[] writeByte = new byte[1];

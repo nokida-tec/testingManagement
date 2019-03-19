@@ -28,7 +28,6 @@ namespace XT_CETC23.SonForm
         ComboBox[] cb;
         CheckBox[] chb;
         IRunForm rform;
-        Run paraRun;
         Plc plc;
         UserForms.SortAdd sortAdd1;
         string[] str=new string[6];

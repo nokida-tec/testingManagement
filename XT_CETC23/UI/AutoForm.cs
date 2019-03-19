@@ -15,7 +15,6 @@ namespace XT_CETC23.SonForm
     public partial class AutoForm : Form,IAutoForm
     {
         public DataBase db;
-        Run run;
         TextBox[] tbSort,tbNum;
         public AutoForm()
         {
