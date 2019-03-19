@@ -42,6 +42,11 @@ namespace XT_CETC23.Instances
             return mTestingCabinet[ID];
         }
 
+        static public int getCount()
+        {
+            return DeviceCount.TestingCabinetCount;
+        }
+
         static public int getEnableCount()
         {
             int count = 0;
@@ -56,7 +61,7 @@ namespace XT_CETC23.Instances
         }
 
         // 紧急停止
-        static public int abort()
+        static public int Abort()
         {
             int count = 0;
             for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)

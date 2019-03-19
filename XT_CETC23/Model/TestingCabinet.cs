@@ -10,7 +10,7 @@ using System.Data;
 namespace XT_CETC23.Model
 {
     class TestingCabinet
-    {   // 测试柜
+    {   // 测试柜, 甲方提供
         public enum STATUS
         {
             [EnumDescription("NotReady")]

@@ -129,8 +129,6 @@
     <Compile Include="DAL\MTR.cs" />
     <Compile Include="DAL\Plc.cs" />
     <Compile Include="DAL\Robot.cs" />
-    <Compile Include="DAL\Run.cs" />
-    <Compile Include="DAL\TaskCycle.cs" />
     <Compile Include="DAL\TestingSystem.cs" />
     <Compile Include="DAL\U8Connector.cs" />
     <Compile Include="DB23DataSet.Designer.cs">
@@ -144,6 +142,7 @@
     <Compile Include="Model\DeviceCount.cs" />
     <Compile Include="Model\MaterielData.cs" />
     <Compile Include="Model\PlcData.cs" />
+    <Compile Include="Model\Product.cs" />
     <Compile Include="Model\TestingBedCapOfProduct.cs" />
     <Compile Include="Model\RobotData.cs" />
     <Compile Include="EnumC\EnumRead.cs" />

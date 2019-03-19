@@ -8,7 +8,7 @@ using XT_CETC23.Common;
 namespace XT_CETC23.Model
 {
     class TestingBed
-    {
+    {   // 测试台
         enum Cabinet
         {
             [EnumDescription("NotReady")]

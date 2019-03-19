@@ -44,7 +44,10 @@ namespace XT_CETC23
             db = DataBase.GetInstanse();
             InitializeComponent();
             InitForm();
-            InitFormEvent();       
+            InitFormEvent();
+
+            Logger.getInstance().RegistryDelegate(RForm_TransMessageToMain);
+
             aForm = new AutoForm();
             cForm = new CameraForm();
             resultForm = new TestingResultForm();
@@ -55,7 +58,6 @@ namespace XT_CETC23
             uForm = new UserForm();
             sForm = new StepForm(mForm, cForm);
             paramForm = new ParamForm();
-         
            
             rForm.TransMessageToMain += RForm_TransMessageToMain;
             rForm.TransStatusToMain += RForm_TransStatusToMain;
@@ -237,12 +239,11 @@ namespace XT_CETC23
 
         void pbStep()
         {
-            if (Run.modeByPlc == "Auto")
+            if (TestingSystem.Mode.Auto == TestingSystem.GetInstance().mode)
             {
                 if (!sForm.IsDisposed)
                 {
-                    Run.stepEnable = true;
-                    //Run.readyForStep = false;
+                    TestingSystem.readyForStep = false;
 
                     mForm.clearTask();
                     panel_Load.Controls.Clear();
@@ -262,11 +263,11 @@ namespace XT_CETC23
         {
             if (!aForm.IsDisposed)
             {
-                //if (Run.stepEnable == true)
+                //if (TestingSystem.stepEnable == true)
                 //{
                 //    mForm.clearTask();
-                //    Run.stepEnable = false;
-                //    Run.readyForStep = false;
+                //    TestingSystem.stepEnable = false;
+                //    TestingSystem.readyForStep = false;
                 //}
                 panel_Load.Controls.Clear();
                 aForm.TopLevel = false;
@@ -279,11 +280,11 @@ namespace XT_CETC23
         {
             if (!cForm.IsDisposed)
             {
-                //if (Run.stepEnable == true)
+                //if (TestingSystem.stepEnable == true)
                 //{
                 //    mForm.clearTask();
-                //    Run.stepEnable = false;
-                //    Run.readyForStep = false;
+                //    TestingSystem.stepEnable = false;
+                //    TestingSystem.readyForStep = false;
                 //}
                 panel_Load.Controls.Clear();
                 cForm.TopLevel = false;
@@ -296,11 +297,11 @@ namespace XT_CETC23
         {
             if (!dForm.IsDisposed)
             {
-                //if (Run.stepEnable == true)
+                //if (TestingSystem.stepEnable == true)
                 //{
                 //    mForm.clearTask();
-                //    Run.stepEnable = false;
-                //    Run.readyForStep = false;
+                //    TestingSystem.stepEnable = false;
+                //    TestingSystem.readyForStep = false;
                 //}
                 panel_Load.Controls.Clear();
                 resultForm.TopLevel = false;
@@ -311,15 +312,15 @@ namespace XT_CETC23
         }
         void pbManul()
         {
-            if (Run.modeByPlc == "Manul")
+            if (TestingSystem.GetInstance().mode == TestingSystem.Mode.Auto)
             {
                 //if (Common.Account.power == "system")
                 if (true)
                 {
                     if (!mForm.IsDisposed)
                     {
-                        Run.stepEnable = false;
-                        Run.readyForStep = false;
+                        TestingSystem.stepEnable = false;
+                        TestingSystem.readyForStep = false;
                         mForm.clearTask();
                         panel_Load.Controls.Clear();
                         mForm.TopLevel = false;
@@ -331,8 +332,8 @@ namespace XT_CETC23
                 else
                 {
                     mForm.clearTask();
-                    Run.stepEnable = false;
-                    Run.readyForStep = false;
+                    TestingSystem.stepEnable = false;
+                    TestingSystem.readyForStep = false;
                     //MessageBox.Show("当前用户无此权限");
                     listBox_Alarm.Items.Add("当前用户无此权限");
                 }
@@ -344,16 +345,16 @@ namespace XT_CETC23
         }
         void pbPara()
         {
-            if (Run.modeByPlc == "Manul")
+            if (TestingSystem.GetInstance().mode == TestingSystem.Mode.Manual)
             {
                 //if (Common.Account.power != "system") { MessageBox.Show("当前用户无此权限"); return; }
                 if (!pForm.IsDisposed)
                 {
-                    //if (Run.stepEnable == true)
+                    //if (TestingSystem.stepEnable == true)
                     //{
                     //    mForm.clearTask();
-                    //    Run.stepEnable = false;
-                    //    Run.readyForStep = false;
+                    //    TestingSystem.stepEnable = false;
+                    //    TestingSystem.readyForStep = false;
                     //}
                     panel_Load.Controls.Clear();
                     pForm.TopLevel = false;
@@ -372,15 +373,15 @@ namespace XT_CETC23
         {
             if (!rForm.IsDisposed)
             {
-                if (Run.stepEnable == true)
+                if (TestingSystem.stepEnable == true)
                 {
                     if (MessageBox.Show("请确认单步动作已经执行完成!", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel) 
                     {
                         return;
                     }
                     mForm.clearTask();
-                    Run.stepEnable = false;
-                    Run.readyForStep = false;
+                    TestingSystem.stepEnable = false;
+                    TestingSystem.readyForStep = false;
                 }
                 panel_Load.Controls.Clear();
                 rForm.TopLevel = false;
@@ -393,11 +394,11 @@ namespace XT_CETC23
         {
             if (!uForm.IsDisposed)
             {
-                //if (Run.stepEnable == true)
+                //if (TestingSystem.stepEnable == true)
                 //{
                 //    mForm.clearTask();
-                //    Run.stepEnable = false;
-                //    Run.readyForStep = false;
+                //    TestingSystem.stepEnable = false;
+                //    TestingSystem.readyForStep = false;
                 //}
                 panel_Load.Controls.Clear();
                 uForm.TopLevel = false;
@@ -415,7 +416,7 @@ namespace XT_CETC23
                 form.TopLevel = false;
                 form.Dock = DockStyle.Fill;
                 panel_Load.Controls.Add(form);
-                Run.stepEnable = false;
+                TestingSystem.stepEnable = false;
                 form.Show();
             }
         }
@@ -779,22 +780,13 @@ namespace XT_CETC23
 
         public void log(string message)
         {
-
             try
             {
-                byte[] fsByte = new byte[1000];
-                string path = DataBase.logPath+@"\log.txt";
-                DateTime currentTime = DateTime.Now;
-                StreamWriter sw = File.AppendText(path);
-                string strLog = currentTime.ToString() + ": " + message;
-                sw.WriteLine(strLog);
-                sw.Flush();
-                sw.Close();
-                listBox_Alarm.Items.Add(strLog);
+                listBox_Alarm.Items.Add(message);
             }
             catch (Exception e)
             {
-                Logger.WriteLine(e);
+                //Logger.WriteLine(e);
             }
         }
 

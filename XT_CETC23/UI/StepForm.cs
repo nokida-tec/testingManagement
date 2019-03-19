@@ -110,7 +110,7 @@ namespace XT_CETC23.SonForm
 
         private void manul_btnStart1_Click(object sender, EventArgs e)
         {
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (!ckbAxis7Alone.Checked)                 //机器人和轨道联动
                 {
@@ -204,7 +204,7 @@ namespace XT_CETC23.SonForm
 
                 //判断机器人是否在原点
                 //机器人轨道移动机器人到动作位置
-                TaskCycle.actionType = "FrameToCabinet";
+                //TaskCycle.actionType = "FrameToCabinet";
 
                 Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
 
@@ -303,7 +303,7 @@ namespace XT_CETC23.SonForm
 
             else        //轨道独立运动
             {
-                TaskCycle.actionType = "FrameToCabinet";
+                //TaskCycle.actionType = "FrameToCabinet";
                 //插入机器人轨道移动任务
                 Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
             }
@@ -431,8 +431,8 @@ namespace XT_CETC23.SonForm
         }
 
         private void manul_btnStart2_Click(object sender, EventArgs e)
-        {         
-            if (Run.stepEnable == true && Run.readyForStep == true)
+        {
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 String layerNo = manul_cbGoalPos2.SelectedItem.ToString();
                 String commandNo = manul_cbCommand2.SelectedItem.ToString();
@@ -482,7 +482,7 @@ namespace XT_CETC23.SonForm
         //插入扫码任务
         private void manul_btnStartScan_Click(object sender, EventArgs e)
         {
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 Frame.getInstance().doScan();
             }
@@ -494,7 +494,7 @@ namespace XT_CETC23.SonForm
 
         private void manul_btnStopT_Click(object sender, EventArgs e)
         {
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (manul_cbCabineit.SelectedIndex > -1)
                 {
@@ -515,7 +515,7 @@ namespace XT_CETC23.SonForm
 
         private void manul_btnStartT_Click(object sender, EventArgs e)
         {            
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (manul_cbCabineit.SelectedIndex > -1)
                 {
@@ -606,7 +606,7 @@ namespace XT_CETC23.SonForm
         int stepCycle = 0;
         private void step_btnTake_Click(object sender, EventArgs e)
         {
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
                 {
@@ -689,7 +689,7 @@ namespace XT_CETC23.SonForm
                 }
             }
 
-            TaskCycle.actionType = "FrameToCabinet";
+            //TaskCycle.actionType = "FrameToCabinet";
             //int numRemain = 0;
             int layerID = trayNo;
             int ret = mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
@@ -809,7 +809,7 @@ namespace XT_CETC23.SonForm
         private void step_btnTestStart_Click(object sender, EventArgs e)
         {
             bool testStarted = false;
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (stepCycle == 50 && testStarted==false)
                 {
@@ -861,7 +861,7 @@ namespace XT_CETC23.SonForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (stepCycle == 60)
                 {
@@ -912,7 +912,7 @@ namespace XT_CETC23.SonForm
 
         private void step_btnFetch_Click(object sender, EventArgs e)
         {
-            if (Run.stepEnable == true && Run.readyForStep == true)
+            if (TestingSystem.GetInstance().isReadyForStep())
             {
                 bool testState=false;
                 DataTable dtMTR = new DataTable();
@@ -999,7 +999,7 @@ namespace XT_CETC23.SonForm
                 return;
             }
 
-            TaskCycle.actionType = "CabinetToFrame";           
+            //TaskCycle.actionType = "CabinetToFrame";           
             //插入机器人轨道任务到测试柜
             //判断机器人是否在原点
             //插入机器人从测试柜的取料任务；

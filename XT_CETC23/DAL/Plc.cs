@@ -6,11 +6,17 @@ using System.Threading;
 using Snap7;
 using XT_CETC23.Config;
 using XT_CETC23.DataManager;
+using System.Collections;
 
 namespace XT_CETC23
 {
    public class Plc
     {
+       public interface Listener
+       {
+           void nodify();
+       }
+
         static Plc plc;
         S7Client s7client = new S7Client();
         S7Client s7clientRead = new S7Client();
@@ -41,6 +47,7 @@ namespace XT_CETC23
         {
             //plc = this;
         }
+
         public bool ConnectPlc(string IPdress, int Rack, int Slot)
         {
             //int rack=Convert.ToInt16(Rack.ToString())
@@ -140,6 +147,7 @@ namespace XT_CETC23
        {
            mThreadMonitor = new Thread(ReadPlc);
            mThreadMonitor.Name = "读取PLC数据";
+           mThreadMonitor.Start();
        }
 
        private void ReadPlc()
@@ -263,6 +271,35 @@ namespace XT_CETC23
                    //MessageBox.Show(e.Message);
                }
                Thread.Sleep(100);
+           }
+       }
+
+       public void Suspend()
+       {
+           try
+           {
+               mThreadMonitor.Suspend();
+               Logger.WriteLine("读取PLC状态进程 suspend");
+           }
+           catch (Exception e)
+           {
+               Logger.WriteLine(e);
+           }
+       }
+
+       public void Resume()
+       {
+           try
+           {
+               if (mThreadMonitor.ThreadState == ThreadState.Suspended)
+               {
+                   mThreadMonitor.Resume();
+                   Logger.WriteLine("读取PLC状态进程恢复");
+               }
+           }
+           catch (Exception e)
+           {
+               Logger.WriteLine(e);
            }
        }
     }

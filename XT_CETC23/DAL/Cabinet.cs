@@ -28,6 +28,11 @@ namespace XT_CETC23.DAL
         {
         }
 
+        public String[] getCap()
+        {
+            return new String[] { ProductType };
+        }
+
         public void WriteData(string data)
         {
             lock (this)
@@ -403,7 +408,7 @@ namespace XT_CETC23.DAL
                     sw.Close();
 
                     // send scancode to U8
-                    TaskCycle.sendToU8(productID);
+                    U8Connector.sendToU8(productID);
 
                     ResetData();
 
@@ -544,7 +549,7 @@ namespace XT_CETC23.DAL
                     sw.Close();
 
                     // send scancode to U8
-                    TaskCycle.sendToU8(productID);
+                    U8Connector.sendToU8(productID);
 
                     ResetData();
 
@@ -686,6 +691,47 @@ namespace XT_CETC23.DAL
         public bool canTesting()
         {
             return (PlcData._cabinetStatus[this.ID] & 2) != 0;
+        }
+
+        public delegate void delegateShowMessage(int cabinetNo, string message);
+        private delegateShowMessage mDelegateOfShow = null;
+
+        public void RegistryDelegate(delegateShowMessage delegateOfShow)
+        {
+            mDelegateOfShow = delegateOfShow;
+        }
+
+        public void UnregistryDelegate(delegateShowMessage delegateOfShow)
+        {
+            mDelegateOfShow = null;
+        }
+
+        Thread readCabinetTh;
+        public void monitor() 
+        {
+            readCabinetTh = new Thread(ReadCabinet);
+            readCabinetTh.Name = "读取测试柜状态";
+            readCabinetTh.Start();
+        }
+
+        void ReadCabinet()
+        {
+            while (true)
+            {
+                if (CabinetData.pathCabinetStatus != null)
+                {
+                    for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
+                    {
+                        TestingCabinet.STATUS cabinetStatus = TestingCabinets.getInstance(i).ReadData();
+                        if (mDelegateOfShow != null)
+                        {
+                            mDelegateOfShow(i + 1, EnumHelper.GetDescription(cabinetStatus));
+                        }
+                        TestingCabinets.getInstance(i).Status = cabinetStatus;
+                    }
+                }
+                Thread.Sleep(100);
+            }
         }
     }
 }

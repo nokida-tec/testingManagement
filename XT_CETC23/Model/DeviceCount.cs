@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XT_CETC23.Model
+namespace XT_CETC23
 {
     class DeviceCount
     {

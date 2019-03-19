@@ -38,7 +38,8 @@ namespace XT_CETC23
         public class Location 
         {
             public String mProdType;
-            public int mTray
+            private int mTray;
+            public int tray
             {
                 get
                 {
@@ -48,7 +49,9 @@ namespace XT_CETC23
                 {
                 }
             }
-            public int mSlot
+
+            private int mSlot;
+            public int slot
             {
                 get
                 {
@@ -69,7 +72,7 @@ namespace XT_CETC23
 
             public Location(int tray, int slot)
             {
-                mTray = tray;
+                tray = tray;
                 mSlot = slot;
             }
         }
@@ -91,6 +94,19 @@ namespace XT_CETC23
                 }
             }
             return mInstance;
+        }
+
+        Thread axlis2Task;
+        private Frame()
+        {
+            axlis2Task = new Thread(Axlis2Task);
+            axlis2Task.Name = "2轴任务";
+            //if (PlcData._plcMode == 25)
+            //{
+            if (!axlis2Task.IsAlive)
+            {
+                axlis2Task.Start();
+            }
         }
 
         public bool excuteCommand(Lock.Command command)
@@ -180,15 +196,7 @@ namespace XT_CETC23
                     WaitCondition.waitCondition(this.canGetProduct);
 
                     Plc.GetInstanse().DBWrite(100, 3, 1, new Byte[] { 0 });
-                    if (TaskCycle.actionType == "FrameToCabinet")
-                    {
-                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
-                        // TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                    }
-                    if (TaskCycle.actionType == "CabinetToFrame")
-                    {
-                        // TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                    }
+                    //DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
                     return ReturnCode.OK;
                 }
                 catch (Exception e)
@@ -222,15 +230,15 @@ namespace XT_CETC23
                     WaitCondition.waitCondition(canPutProduct);
          
                     Plc.GetInstanse().DBWrite(100, 3, 1, new Byte[] { 0 });
-                    if (TaskCycle.actionType == "FrameToCabinet")
-                    {
+                    //if (TaskCycle.actionType == "FrameToCabinet")
+                    //{
                         // TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                    }
-                    if (TaskCycle.actionType == "CabinetToFrame")
-                    {
+                    //}
+                    //if (TaskCycle.actionType == "CabinetToFrame")
+                    //{
                         DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
                         // TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                    }
+                    //}
 
                     return ReturnCode.OK;
                 }
@@ -247,7 +255,7 @@ namespace XT_CETC23
         }
 
         private int remainProducts(int trayNo)
-        {
+        {   // 托盘中还有多少产品(组件)未测试()
             try
             {
                 DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID='" + trayNo + "'");
@@ -296,10 +304,10 @@ namespace XT_CETC23
         {
             try
             {
-                int remain = remainProducts(location.mTray);
+                int remain = remainProducts(location.tray);
                 if (remain > 0)
                 {
-                    DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set NumRemain = NumRemain - 1 where LayerID = " + location.mTray);
+                    DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set NumRemain = NumRemain - 1 where LayerID = " + location.tray);
                     return remain - 1;
                 }
             }
@@ -341,14 +349,14 @@ namespace XT_CETC23
                 //=====================================================
                 if (prodNumber == 4)
                 {
-                    if (location.mSlot % 4 == 0)
+                    if (location.slot % 4 == 0)
                     {
                         return ReturnCode.NoProduct;
                     }
                 }
 
                 //触发拍照
-                MainForm.cForm.CCDTrigger(prodNumber, location.mSlot);
+                MainForm.cForm.CCDTrigger(prodNumber, location.slot);
 
                 if (MainForm.cForm.CCDDone == -1)     //拍照失败
                 {
@@ -384,8 +392,8 @@ namespace XT_CETC23
                         {
                             return ReturnCode.NoProduct;
                         }
-                        // DataBase.GetInstanse().DBUpdate("update dbo.MTR set FrameLocation = " + location.mTray + "," + "SalverLocation=" + location.mSlot + " where BasicID=" + MTR.globalBasicID);
-                        doGet(loc.mTray);
+                        // DataBase.GetInstanse().DBUpdate("update dbo.MTR set FrameLocation = " + location.tray + "," + "SalverLocation=" + location.mSlot + " where BasicID=" + MTR.globalBasicID);
+                        doGet(loc.tray);
 
                         do
                         {
@@ -425,5 +433,61 @@ namespace XT_CETC23
         {
             return PlcData._axlis2Status == (byte)EnumC.Frame.ScanSort;
         }
+
+        private void Axlis2Task()
+        {
+            //db.DBDelete("delete from dbo.TaskAxlis2");
+            while (true)
+            {
+                while (PlcData.clearTask)
+                {
+                    DataTable dt2 = DataBase.GetInstanse().DBQuery("select * from dbo.TaskAxlis2");
+                    if (dt2 !=null && dt2.Rows.Count == 1)
+                    {
+                        if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.ScanSort)
+                        {
+                            Frame.getInstance().doScan();
+                        }
+                    }
+
+                    if (dt2 != null && dt2.Rows.Count == 1)
+                    {
+                        if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.GetPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
+                        {
+                            Frame.getInstance().doGet((int)dt2.Rows[0]["FrameLocation"]);
+                        }
+                    }
+
+                    if (dt2 != null && dt2.Rows.Count == 1)
+                    { 
+                        if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.PutPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
+                        {
+                            Frame.getInstance().doPut((int)dt2.Rows[0]["FrameLocation"]);       
+                        }
+                    }
+                    else if (dt2 != null && dt2.Rows.Count > 1)
+                    {
+                        Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
+                    }
+                    
+                    Thread.Sleep(100);
+                }
+                
+                Thread.Sleep(100);
+            }
+        }
+
+        public bool hasTestedAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int hasUntestedProduct(string product)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool frameUpdate { get; set; }
     }
 }

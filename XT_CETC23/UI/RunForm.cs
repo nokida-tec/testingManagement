@@ -21,7 +21,7 @@ namespace XT_CETC23.SonForm
         public event transMessageToMain TransMessageToMain;
         public delegate void transStatusToMain(string name,string message);
         public event transStatusToMain TransStatusToMain;
-        public Run run;
+        //public Run run;
         //bool InitStatus = false;
         IAutoForm AutoForm;
         ICameraForm CameraForm;
@@ -55,7 +55,8 @@ namespace XT_CETC23.SonForm
             this.DataForm = DataForm;
             this.ManulForm = ManulForm;
             this.MainForm = MainForm;
-            run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
+            TestingSystem.GetInstance();
+            // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
             grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
@@ -90,7 +91,7 @@ namespace XT_CETC23.SonForm
         }
         void run_BtnAuto()
         {
-            if(Run.InitStatus)
+            //if(Run.InitStatus)
             {
                 //plcModeValue[0] =(byte)EnumC.PlcModeW.AutoMode;
                 //run.writePlcMode(plcModeValue);
@@ -98,7 +99,7 @@ namespace XT_CETC23.SonForm
         }
         void run_BtnManul()
         {
-            if (Run.InitStatus)
+            //if (Run.InitStatus)
             {
                 //plcModeValue[0] = (byte)EnumC.PlcModeW.ManulMode;
                 //run.writePlcMode(plcModeValue);
@@ -106,7 +107,7 @@ namespace XT_CETC23.SonForm
         }
         void run_BtnOff()
         {
-            if (Run.InitStatus)
+            //if (Run.InitStatus)
             {
                 //plcModeValue[0] = (byte)EnumC.PlcModeW.OffMode;
                 //run.writePlcMode(plcModeValue);
@@ -208,7 +209,7 @@ namespace XT_CETC23.SonForm
 
         public void getCabinetResult(int CabinetNum, string message)
         {
-                if (this.IsHandleCreated && Run.stepEnable == false)
+                if (this.IsHandleCreated && TestingSystem.stepEnable == false)
                 {
                     if (CabinetNum == 1)
                         lb_Cabinet11_rv.Invoke(new Action<string>((s) => { lb_Cabinet11_rv.Text = message; }), message);
@@ -224,13 +225,13 @@ namespace XT_CETC23.SonForm
                         lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
 
                     dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
-                    TaskCycle.feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
-                    if (TaskCycle.feedBinScanDone == "No")
+                    String feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
+                    if (feedBinScanDone == "No")
                     {
                         run_lbGramStatusv.Text = "料架取空";
                         btnFrameUpdate.BackColor = Color.Yellow;
                     }
-                    if (TaskCycle.feedBinScanDone == "Yes")
+                    if (feedBinScanDone == "Yes")
                     {
                         run_lbGramStatusv.Text = "使用中";
                         btnFrameUpdate.BackColor = Color.PowderBlue;
@@ -240,7 +241,7 @@ namespace XT_CETC23.SonForm
 
         public void getCabinetStatus(int CabinetNum, string message)
         {
-            if (this.IsHandleCreated && Run.stepEnable == false)
+            if (this.IsHandleCreated && TestingSystem.stepEnable == false)
             {
                 if (CabinetNum == 1)
                     lb_Cabinet11_sv.Invoke(new Action<string>((s) => { lb_Cabinet11_sv.Text = message; }), message);
@@ -305,11 +306,11 @@ namespace XT_CETC23.SonForm
 
         private void btnFrameUpdate_Click(object sender, EventArgs e)
         {
-            if(!Run.frameUpdate)               
+            if (!Frame.getInstance().frameUpdate)               
             {
                 if (MessageBox.Show("请确认料架更换已经完成", "确认消息", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
-                    Run.frameUpdate = true;
+                    Frame.getInstance().frameUpdate = true;
                     //transMessage("确认料架更换已经完成");
                 }
             }

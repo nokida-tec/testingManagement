@@ -20,7 +20,14 @@ namespace XT_CETC23
         private String mProductType; // 测试产品类型
         private Thread mTask;
         private Object lockObject = new Object();
-        private bool isRunning = false;
+        private bool mIsRunning = false;
+        public bool isRunning
+        {
+            get
+            {
+                return mIsRunning;
+            }
+        }
 
         public enum status
         { // 需要和PLC对应
@@ -82,13 +89,13 @@ namespace XT_CETC23
             {
                 try
                 {
-                    if (isRunning)
+                    if (mIsRunning)
                     {
                         Logger.WriteLine("  ***   测试线程: " + this.mCabinetID + "在运行中 线程:" + mTask.ManagedThreadId + " 状态：" + mTask.ThreadState);
                         return ReturnCode.SysBusy;
                     }
 
-                    isRunning = true;
+                    mIsRunning = true;
 
                     mProductType = productType;
 
@@ -125,15 +132,19 @@ namespace XT_CETC23
             {
                 try
                 {
-                    isRunning = true;
+                    mIsRunning = true;
 
                     Frame.Location location = new Frame.Location();
 
                     // 料仓取料
-                    Frame.getInstance().doGetProduct(mProductType, ref location);
+                    ReturnCode ret = Frame.getInstance().doGetProduct(mProductType, ref location);
+                    if (ret != ReturnCode.OK)
+                    {
+                        return;
+                    }
 
                     // 机器人从料仓取料
-                    Robot.GetInstanse().doGetProductFromFrame(mProductType, location.mSlot, location.CordinatorX, location.CordinatorY, location.CordinatorU);
+                    Robot.GetInstanse().doGetProductFromFrame(mProductType, location.slot, location.CordinatorX, location.CordinatorY, location.CordinatorU);
                     
                     // 机器人放料到测试台
                     Robot.GetInstanse().doPutProductToCabinet(mProductType, mCabinetID);
@@ -145,16 +156,16 @@ namespace XT_CETC23
                     Robot.GetInstanse().doGetProductFromCabinet(mProductType, mCabinetID);
 
                     // 插入料架取料任务，取出托盘（要区分取出和放入）
-                    Frame.getInstance().doGet(location.mTray);
+                    Frame.getInstance().doGet(location.tray);
                     
                     // 插入机器人回料任务
-                    Robot.GetInstanse().doPutProductToFrame(mProductType, location.mSlot);
+                    Robot.GetInstanse().doPutProductToFrame(mProductType, location.slot);
                     
-                    Frame.getInstance().doPut(location.mTray);
+                    Frame.getInstance().doPut(location.tray);
 
                     // 根据结果更新FeedBin表格                                                      
-                    int colNo = location.mTray % 10;
-                    int rowNo = location.mTray / 10;
+                    int colNo = location.tray % 10;
+                    int rowNo = location.tray / 10;
                     int layerID = (colNo - 1) * 8 + rowNo;
                     String checkResult = "OK";
                     DataTable dtFeedBin = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=" + layerID);
@@ -180,7 +191,7 @@ namespace XT_CETC23
                 }
                 finally
                 {
-                    isRunning = false;
+                    mIsRunning = false;
                 }
             }
         }
@@ -246,7 +257,7 @@ namespace XT_CETC23
             }
             finally
             {
-                isRunning = false;
+                mIsRunning = false;
             }
         }
 
@@ -312,7 +323,7 @@ namespace XT_CETC23
         }
 
 
-        public bool abort()
+        public bool Abort()
         {
             if (mTask != null)
             {
@@ -339,6 +350,5 @@ namespace XT_CETC23
             }
             return true;
         }
-
     }
 }
