@@ -10,26 +10,26 @@ using System.Data;
 namespace XT_CETC23.Model
 {
     class TestingCabinet
-    {   // 测试柜, 甲方提供
+    {   // 测试柜
         public enum STATUS
         {
-            [EnumDescription("NotReady")]
+            [EnumDescription("---")]
             NotReady = 0,
-            [EnumDescription("Ready")]
+            [EnumDescription("准备好")]
             Ready = 30,
-            [EnumDescription("Testing")]
+            [EnumDescription("测试中")]
             Testing = 31,
-            [EnumDescription("Fault_Config")]
+            [EnumDescription("配置错误")]
             Fault_Config = 32,
-            [EnumDescription("Fault_Control")]
+            [EnumDescription("控制错误")]
             Fault_Control = 33,
-            [EnumDescription("Fault_Report")]
+            [EnumDescription("报告错误")]
             Fault_Report = 34,
-            [EnumDescription("Finished")]
+            [EnumDescription("测试完成")]
             Finished = 40,
-            [EnumDescription("OK")]
+            [EnumDescription("测试成功")]
             OK = 100,
-            [EnumDescription("NG")]
+            [EnumDescription("测试失败")]
             NG = 101,
         }
 
@@ -154,7 +154,7 @@ namespace XT_CETC23.Model
                     this.name = "#" + (ID + 1) + "号机台";
                     this.type = 0;
                     this.enable = ENABLE.Disable;
-                    this.status = STATUS.NG;
+                    this.status = STATUS.NotReady;
                     this.order = ORDER.Undefined;
                     this.productType = "";
                     this.taskID = 0;
@@ -169,7 +169,7 @@ namespace XT_CETC23.Model
                 this.order = ORDER.Undefined;
                 this.taskID = 0;
                 this.enable = ENABLE.Disable;
-                this.status = STATUS.NG;
+                this.status = STATUS.NotReady;
             }
             return true;
         }

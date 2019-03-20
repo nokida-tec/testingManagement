@@ -297,6 +297,170 @@ namespace XT_CETC23.DAL
             }
         }
 
+        private void CabinetTest()
+        {
+            lock(mLock)
+            {
+                try
+                {
+                    Logger.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
+                    // 1. 等待PLC允许测量
+
+                    //DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = '" + Name + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+
+                    //关闭测试柜
+                    ReturnCode ret = doCloseForTesting();
+
+                    if (Status != TestingCabinet.STATUS.Ready)
+                    {
+                        ResetData();
+                    }
+
+                    DateTime currentTime = DateTime.Now;
+
+                    if (TestingCabinets.getInstance(this.ID).Status == TestingCabinet.STATUS.Ready)
+                    {
+
+                                    string command = (ProductType == "B") ? "21" : "11";
+
+                                    // 通知PLC测试开始了
+                                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 2 });
+
+                                    //通知测试设备测试开始
+                                    WriteData(currentTime.ToString() + "\t" + command);
+                    }
+
+                    // 等待测试结束
+                    while (Status != TestingCabinet.STATUS.Finished)
+                    {
+                        if (taskExisting == true)
+                        {
+                            return;
+                        }
+                        Thread.Sleep(100);
+                    }
+                    //处理结果
+
+                    //获取测量结果的excel源文件
+                    String[] filePath = Directory.GetFiles(CabinetData.sourcePath[this.ID]);
+                    string sourceFile = null;
+                    if (filePath != null)
+                    {
+                        for (int i = 0; i < filePath.Length; i++)
+                        {
+                            if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
+                            {
+                                sourceFile = filePath[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    //读取excel表格判断测试OK，NG
+
+                    bool testResult = true;
+                    if (sourceFile != null && sourceFile.Length > 0)
+                    {
+                        ExcelOperation excelOp = new ExcelOperation();
+                        testResult = excelOp.CheckTestResults(sourceFile);
+                    }
+
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
+                        + " ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' "
+                        + " ,EndTime = '" + DateTime.Now + "' "
+                        + " where BasicID = " + this.TaskID);
+
+                    //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
+                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
+                    string productID = (dt == null || dt.Rows.Count == 0) ? "UNKNOWN" : dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                    //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
+
+                    dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
+                    string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
+                    string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
+                    string[] strings = productID.Split(new char[2] { '$', '#' });
+
+                    string opName = "常温";
+                                try
+                                {
+                                    if (Config.Config.getInstance().enableU8)
+                                    {
+                                        string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
+                                        DataBase dbOfU8 = DataBase.GetU8DBInstanse();
+                                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
+                                            + productSerial + "' and define22 = '" + defineID + "'");
+                                        int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
+                                        dt = DataBase.GetInstanse().DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
+                                        opName = dt.Rows[0]["Name"].ToString().Trim();
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Logger.WriteLine(e);
+                                    MessageBox.Show("U8数据库未连接！请确保网络连接");
+                                }
+
+                    try
+                    {
+                        string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName + ".xlsx";
+                        FileOperation fileOp = new FileOperation();
+                        fileOp.FileCopy(targetFileName, sourceFile, Config.Config.getInstance().targetPath);
+                        //删除源文件          
+                        File.Delete(sourceFile);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.WriteLine(e);
+                    }
+
+                    //  record the scan barcode to logs file
+                    StreamWriter sw = File.AppendText(Config.Config.getInstance().logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
+                    sw.WriteLine(currentTime.ToString() + " \t" + productID);
+                    sw.Flush();
+                    sw.Close();
+
+                    // send scancode to U8
+					if (Config.Config.getInstance().enableU8)
+					{
+                       U8Connector.sendToU8(productID);
+			 		}
+
+                    doOpenForGet();
+                    //设置MTR表格，指示测试完成
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
+                    ResetData();
+         		}
+                catch(IOException e1)
+                {
+                     Logger.WriteLine(e1);
+                            Status = STATUS.Fault_Config;
+                            MessageBox.Show("网络异常! 请确保测试柜网络是否可以访问。网络正常后请复位启动！");
+                }
+				catch (AbortException ae)
+                {
+                    Logger.WriteLine(ae);
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                            DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
+                                + " ProductCheckResult= '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "' "
+                                + " ,EndTime = '" + DateTime.Now + "' "
+                                + " where BasicID = " + this.TaskID);
+								
+                    doOpenForGet();
+                    //设置MTR表格，指示测试完成
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
+                    Logger.WriteLine(e);
+                }
+                finally
+                {
+                    taskIsRunning = false;
+                    Logger.WriteLine("Finish:  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
+               }
+            }
+        }
+
         public void doTest ()
         {
             {
@@ -436,148 +600,7 @@ namespace XT_CETC23.DAL
                 }
             }
         }
-
-        private void CabinetTest()
-        {
-            lock(mLock)
-            {
-                try
-                {
-                    Logger.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
-
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = '" + Name + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
-
-                    //关闭测试柜
-                    ReturnCode ret = doCloseForTesting();
-
-                    if (Status != TestingCabinet.STATUS.Ready)
-                    {
-                        ResetData();
-                    }
-
-                    if (TestingCabinets.getInstance(this.ID).Status == TestingCabinet.STATUS.Ready)
-                    {
-                        string command = (ProductType == "B") ? "21" : "11";
-
-                        //通知测试设备测试开始
-                        WriteData(DateTime.Now.ToString() + "\t" + command);
-                        //通知PLC测试开始了
-                        Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 2 });
-                    }
-
-                    // 等待测试结束
-                    while (Status != TestingCabinet.STATUS.Finished)
-                    {
-                        if (taskExisting == true)
-                        {
-                            return;
-                        }
-                        Thread.Sleep(100);
-                    }
-                    //处理结果
-
-                    //获取测量结果的excel源文件
-                    String[] filePath = Directory.GetFiles(CabinetData.sourcePath[this.ID]);
-                    string sourceFile = null;
-                    if (filePath != null)
-                    {
-                        for (int i = 0; i < filePath.Length; i++)
-                        {
-                            if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
-                            {
-                                sourceFile = filePath[i];
-                                break;
-                            }
-                        }
-                    }
-
-                    //读取excel表格判断测试OK，NG
-
-                    bool testResult = true;
-                    if (sourceFile != null && sourceFile.Length > 0)
-                    {
-                        ExcelOperation excelOp = new ExcelOperation();
-                        testResult = excelOp.CheckTestResults(sourceFile);
-                    }
-
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                        + " ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' "
-                        + " ,EndTime = '" + DateTime.Now + "' "
-                        + " where BasicID = " + this.TaskID);
-
-                    //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
-                    string productID = (dt == null || dt.Rows.Count == 0) ? "UNKNOWN" : dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
-                    //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
-
-                    dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
-                    string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
-                    string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
-                    string[] strings = productID.Split(new char[2] { '$', '#' });
-
-                    string opName = "常温";
-                    try
-                    {
-                        string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
-                        DataBase dbOfU8 = DataBase.GetU8DBInstanse();
-                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
-                            + productSerial + "' and define22 = '" + defineID + "'");
-                        int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
-                        dt = DataBase.GetInstanse().DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
-                        opName = dt.Rows[0]["Name"].ToString().Trim();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.WriteLine(e);
-                    }
-
-                    try
-                    {
-                        string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName + ".xlsx";
-                        FileOperation fileOp = new FileOperation();
-                        fileOp.FileCopy(targetFileName, sourceFile, Config.Config.getInstance().targetPath);
-                        //删除源文件          
-                        File.Delete(sourceFile);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.WriteLine(e);
-                    }
-
-                    //  record the scan barcode to logs file
-                    DateTime currentTime = DateTime.Now;
-                    StreamWriter sw = File.AppendText(Config.Config.getInstance().logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
-                    sw.WriteLine(currentTime.ToString() + " \t" + productID);
-                    sw.Flush();
-                    sw.Close();
-
-                    // send scancode to U8
-                    U8Connector.sendToU8(productID);
-
-                    ResetData();
-
-                    doOpenForGet();
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
-                }
-                catch (AbortException ae)
-                {
-                    Logger.WriteLine(ae);
-                }
-                catch (Exception e)
-                {
-                    doOpenForGet();
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
-                    Logger.WriteLine(e);
-                }
-                finally
-                {
-                    taskIsRunning = false;
-                }
-            }
-        }
-
+		
         public bool abort()
         {
             if (task != null)

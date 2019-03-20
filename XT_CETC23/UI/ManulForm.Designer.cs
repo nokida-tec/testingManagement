@@ -137,7 +137,7 @@
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Location = new System.Drawing.Point(8, 54);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(973, 424);
             this.panel1.TabIndex = 3;
@@ -153,20 +153,20 @@
             this.groupBox9.Controls.Add(this.manul_btnChK2Cy1);
             this.groupBox9.Controls.Add(this.manul_btnChK2Cy31);
             this.groupBox9.Location = new System.Drawing.Point(13, 314);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox9.Size = new System.Drawing.Size(460, 98);
             this.groupBox9.TabIndex = 13;
             this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "测试柜2气缸控制";
+            this.groupBox9.Text = "2#测试柜气缸控制";
             // 
             // manul_btnChK2Cy21
             // 
             this.manul_btnChK2Cy21.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy21.Location = new System.Drawing.Point(349, 17);
-            this.manul_btnChK2Cy21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy21.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy21.Name = "manul_btnChK2Cy21";
             this.manul_btnChK2Cy21.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy21.TabIndex = 50;
@@ -178,7 +178,7 @@
             this.manul_btnChK2Cy2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy2.Location = new System.Drawing.Point(236, 17);
-            this.manul_btnChK2Cy2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy2.Name = "manul_btnChK2Cy2";
             this.manul_btnChK2Cy2.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy2.TabIndex = 35;
@@ -190,7 +190,7 @@
             this.manul_btnChK2Cy4.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy4.Location = new System.Drawing.Point(236, 59);
-            this.manul_btnChK2Cy4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy4.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy4.Name = "manul_btnChK2Cy4";
             this.manul_btnChK2Cy4.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy4.TabIndex = 42;
@@ -202,7 +202,7 @@
             this.manul_btnChK2Cy41.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy41.Location = new System.Drawing.Point(349, 59);
-            this.manul_btnChK2Cy41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy41.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy41.Name = "manul_btnChK2Cy41";
             this.manul_btnChK2Cy41.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy41.TabIndex = 52;
@@ -214,11 +214,12 @@
             this.manul_btnChK2Cy11.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy11.Location = new System.Drawing.Point(123, 17);
-            this.manul_btnChK2Cy11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy11.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy11.Name = "manul_btnChK2Cy11";
             this.manul_btnChK2Cy11.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy11.TabIndex = 49;
-            this.manul_btnChK2Cy11.Text = "2#位1#气缸缩回";
+            this.manul_btnChK2Cy11.Tag = "2#位1#气缸缩回";
+            this.manul_btnChK2Cy11.Text = "屏蔽盖气缸缩回";
             this.manul_btnChK2Cy11.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK2Cy3
@@ -226,7 +227,7 @@
             this.manul_btnChK2Cy3.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy3.Location = new System.Drawing.Point(9, 59);
-            this.manul_btnChK2Cy3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy3.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy3.Name = "manul_btnChK2Cy3";
             this.manul_btnChK2Cy3.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy3.TabIndex = 39;
@@ -238,11 +239,12 @@
             this.manul_btnChK2Cy1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy1.Location = new System.Drawing.Point(9, 17);
-            this.manul_btnChK2Cy1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy1.Name = "manul_btnChK2Cy1";
             this.manul_btnChK2Cy1.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy1.TabIndex = 34;
-            this.manul_btnChK2Cy1.Text = "2#位1#气缸伸出";
+            this.manul_btnChK2Cy1.Tag = "2#位1#气缸伸出";
+            this.manul_btnChK2Cy1.Text = "屏蔽盖气缸伸出";
             this.manul_btnChK2Cy1.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK2Cy31
@@ -250,7 +252,7 @@
             this.manul_btnChK2Cy31.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK2Cy31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK2Cy31.Location = new System.Drawing.Point(123, 59);
-            this.manul_btnChK2Cy31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK2Cy31.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK2Cy31.Name = "manul_btnChK2Cy31";
             this.manul_btnChK2Cy31.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK2Cy31.TabIndex = 51;
@@ -268,20 +270,20 @@
             this.groupBox8.Controls.Add(this.manul_btnChK3Cy31);
             this.groupBox8.Controls.Add(this.manul_btnChK3Cy2);
             this.groupBox8.Location = new System.Drawing.Point(499, 10);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox8.Size = new System.Drawing.Size(460, 98);
             this.groupBox8.TabIndex = 12;
             this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "测试柜3气缸控制";
+            this.groupBox8.Text = "3#测试柜气缸控制";
             // 
             // manul_btnChK3Cy41
             // 
             this.manul_btnChK3Cy41.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy41.Location = new System.Drawing.Point(349, 59);
-            this.manul_btnChK3Cy41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy41.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy41.Name = "manul_btnChK3Cy41";
             this.manul_btnChK3Cy41.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK3Cy41.TabIndex = 56;
@@ -293,11 +295,12 @@
             this.manul_btnChK3Cy1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy1.Location = new System.Drawing.Point(9, 18);
-            this.manul_btnChK3Cy1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy1.Name = "manul_btnChK3Cy1";
             this.manul_btnChK3Cy1.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK3Cy1.TabIndex = 36;
-            this.manul_btnChK3Cy1.Text = "3#位1#气缸伸出";
+            this.manul_btnChK3Cy1.Tag = "3#位1#气缸伸出";
+            this.manul_btnChK3Cy1.Text = "屏蔽盖气缸伸出";
             this.manul_btnChK3Cy1.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK3Cy4
@@ -305,7 +308,7 @@
             this.manul_btnChK3Cy4.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy4.Location = new System.Drawing.Point(236, 59);
-            this.manul_btnChK3Cy4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy4.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy4.Name = "manul_btnChK3Cy4";
             this.manul_btnChK3Cy4.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK3Cy4.TabIndex = 43;
@@ -317,7 +320,7 @@
             this.manul_btnChK3Cy21.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy21.Location = new System.Drawing.Point(349, 18);
-            this.manul_btnChK3Cy21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy21.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy21.Name = "manul_btnChK3Cy21";
             this.manul_btnChK3Cy21.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK3Cy21.TabIndex = 55;
@@ -329,7 +332,7 @@
             this.manul_btnChK3Cy3.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy3.Location = new System.Drawing.Point(9, 59);
-            this.manul_btnChK3Cy3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy3.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy3.Name = "manul_btnChK3Cy3";
             this.manul_btnChK3Cy3.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK3Cy3.TabIndex = 45;
@@ -341,11 +344,12 @@
             this.manul_btnChK3Cy11.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy11.Location = new System.Drawing.Point(123, 18);
-            this.manul_btnChK3Cy11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy11.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy11.Name = "manul_btnChK3Cy11";
             this.manul_btnChK3Cy11.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK3Cy11.TabIndex = 53;
-            this.manul_btnChK3Cy11.Text = "3#位1#气缸缩回";
+            this.manul_btnChK3Cy11.Tag = "3#位1#气缸缩回 ";
+            this.manul_btnChK3Cy11.Text = "屏蔽盖气缸缩回";
             this.manul_btnChK3Cy11.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK3Cy31
@@ -353,7 +357,7 @@
             this.manul_btnChK3Cy31.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy31.Location = new System.Drawing.Point(123, 59);
-            this.manul_btnChK3Cy31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy31.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy31.Name = "manul_btnChK3Cy31";
             this.manul_btnChK3Cy31.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK3Cy31.TabIndex = 54;
@@ -365,7 +369,7 @@
             this.manul_btnChK3Cy2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK3Cy2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK3Cy2.Location = new System.Drawing.Point(236, 18);
-            this.manul_btnChK3Cy2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK3Cy2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK3Cy2.Name = "manul_btnChK3Cy2";
             this.manul_btnChK3Cy2.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK3Cy2.TabIndex = 37;
@@ -378,9 +382,9 @@
             this.groupBox1.Controls.Add(this.manul_btnAxlis7Home);
             this.groupBox1.Controls.Add(this.manul_btnAxlis7Reverse);
             this.groupBox1.Location = new System.Drawing.Point(13, 7);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(460, 51);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
@@ -390,10 +394,10 @@
             // 
             this.manul_btnAxlis7Forward.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnAxlis7Forward.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnAxlis7Forward.Location = new System.Drawing.Point(9, 12);
-            this.manul_btnAxlis7Forward.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnAxlis7Forward.Location = new System.Drawing.Point(9, 14);
+            this.manul_btnAxlis7Forward.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnAxlis7Forward.Name = "manul_btnAxlis7Forward";
-            this.manul_btnAxlis7Forward.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnAxlis7Forward.Size = new System.Drawing.Size(120, 30);
             this.manul_btnAxlis7Forward.TabIndex = 18;
             this.manul_btnAxlis7Forward.Text = "机器人轨道前进\r\n";
             this.manul_btnAxlis7Forward.UseVisualStyleBackColor = false;
@@ -402,10 +406,10 @@
             // 
             this.manul_btnAxlis7Home.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnAxlis7Home.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnAxlis7Home.Location = new System.Drawing.Point(320, 12);
-            this.manul_btnAxlis7Home.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnAxlis7Home.Location = new System.Drawing.Point(320, 14);
+            this.manul_btnAxlis7Home.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnAxlis7Home.Name = "manul_btnAxlis7Home";
-            this.manul_btnAxlis7Home.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnAxlis7Home.Size = new System.Drawing.Size(120, 30);
             this.manul_btnAxlis7Home.TabIndex = 26;
             this.manul_btnAxlis7Home.Text = "轨道回原点";
             this.manul_btnAxlis7Home.UseVisualStyleBackColor = false;
@@ -414,10 +418,10 @@
             // 
             this.manul_btnAxlis7Reverse.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnAxlis7Reverse.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnAxlis7Reverse.Location = new System.Drawing.Point(165, 12);
-            this.manul_btnAxlis7Reverse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnAxlis7Reverse.Location = new System.Drawing.Point(165, 14);
+            this.manul_btnAxlis7Reverse.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnAxlis7Reverse.Name = "manul_btnAxlis7Reverse";
-            this.manul_btnAxlis7Reverse.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnAxlis7Reverse.Size = new System.Drawing.Size(120, 30);
             this.manul_btnAxlis7Reverse.TabIndex = 19;
             this.manul_btnAxlis7Reverse.Text = "机器人轨道后退";
             this.manul_btnAxlis7Reverse.UseVisualStyleBackColor = false;
@@ -433,24 +437,25 @@
             this.groupBox7.Controls.Add(this.manul_btnChK5Cy2);
             this.groupBox7.Controls.Add(this.manul_btnChK5Cy41);
             this.groupBox7.Location = new System.Drawing.Point(499, 212);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox7.Size = new System.Drawing.Size(460, 98);
             this.groupBox7.TabIndex = 11;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "测试柜5气缸控制";
+            this.groupBox7.Text = "5#测试柜气缸控制";
             // 
             // manul_btnChK5Cy11
             // 
             this.manul_btnChK5Cy11.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy11.Location = new System.Drawing.Point(123, 18);
-            this.manul_btnChK5Cy11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy11.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy11.Name = "manul_btnChK5Cy11";
             this.manul_btnChK5Cy11.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK5Cy11.TabIndex = 36;
-            this.manul_btnChK5Cy11.Text = "5#位1#气缸缩回";
+            this.manul_btnChK5Cy11.Tag = "5#位1#气缸缩回";
+            this.manul_btnChK5Cy11.Text = "屏蔽盖气缸缩回";
             this.manul_btnChK5Cy11.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK5Cy4
@@ -458,7 +463,7 @@
             this.manul_btnChK5Cy4.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy4.Location = new System.Drawing.Point(236, 60);
-            this.manul_btnChK5Cy4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy4.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy4.Name = "manul_btnChK5Cy4";
             this.manul_btnChK5Cy4.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK5Cy4.TabIndex = 30;
@@ -470,7 +475,7 @@
             this.manul_btnChK5Cy21.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy21.Location = new System.Drawing.Point(349, 18);
-            this.manul_btnChK5Cy21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy21.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy21.Name = "manul_btnChK5Cy21";
             this.manul_btnChK5Cy21.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK5Cy21.TabIndex = 37;
@@ -482,11 +487,12 @@
             this.manul_btnChK5Cy1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy1.Location = new System.Drawing.Point(9, 18);
-            this.manul_btnChK5Cy1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy1.Name = "manul_btnChK5Cy1";
             this.manul_btnChK5Cy1.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK5Cy1.TabIndex = 20;
-            this.manul_btnChK5Cy1.Text = "5#位1#气缸伸出";
+            this.manul_btnChK5Cy1.Tag = "5#位1#气缸伸出";
+            this.manul_btnChK5Cy1.Text = "屏蔽盖气缸伸出";
             this.manul_btnChK5Cy1.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK5Cy31
@@ -494,7 +500,7 @@
             this.manul_btnChK5Cy31.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy31.Location = new System.Drawing.Point(123, 60);
-            this.manul_btnChK5Cy31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy31.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy31.Name = "manul_btnChK5Cy31";
             this.manul_btnChK5Cy31.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK5Cy31.TabIndex = 38;
@@ -506,7 +512,7 @@
             this.manul_btnChK5Cy3.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy3.Location = new System.Drawing.Point(9, 60);
-            this.manul_btnChK5Cy3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy3.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy3.Name = "manul_btnChK5Cy3";
             this.manul_btnChK5Cy3.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK5Cy3.TabIndex = 27;
@@ -518,7 +524,7 @@
             this.manul_btnChK5Cy2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy2.Location = new System.Drawing.Point(236, 18);
-            this.manul_btnChK5Cy2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy2.Name = "manul_btnChK5Cy2";
             this.manul_btnChK5Cy2.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK5Cy2.TabIndex = 21;
@@ -530,7 +536,7 @@
             this.manul_btnChK5Cy41.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK5Cy41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK5Cy41.Location = new System.Drawing.Point(349, 60);
-            this.manul_btnChK5Cy41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK5Cy41.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK5Cy41.Name = "manul_btnChK5Cy41";
             this.manul_btnChK5Cy41.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK5Cy41.TabIndex = 39;
@@ -548,24 +554,25 @@
             this.groupBox6.Controls.Add(this.manul_btnChK4Cy31);
             this.groupBox6.Controls.Add(this.manul_btnChK4Cy2);
             this.groupBox6.Location = new System.Drawing.Point(499, 113);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox6.Size = new System.Drawing.Size(460, 98);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "测试柜4气缸控制";
+            this.groupBox6.Text = "4#测试柜气缸控制";
             // 
             // manul_btnChK4Cy1
             // 
             this.manul_btnChK4Cy1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy1.Location = new System.Drawing.Point(9, 17);
-            this.manul_btnChK4Cy1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy1.Name = "manul_btnChK4Cy1";
             this.manul_btnChK4Cy1.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK4Cy1.TabIndex = 18;
-            this.manul_btnChK4Cy1.Text = "4#位1#气缸伸出";
+            this.manul_btnChK4Cy1.Tag = "4#位1#气缸伸出";
+            this.manul_btnChK4Cy1.Text = "屏蔽盖气缸伸出";
             this.manul_btnChK4Cy1.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK4Cy4
@@ -573,7 +580,7 @@
             this.manul_btnChK4Cy4.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy4.Location = new System.Drawing.Point(236, 57);
-            this.manul_btnChK4Cy4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy4.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy4.Name = "manul_btnChK4Cy4";
             this.manul_btnChK4Cy4.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK4Cy4.TabIndex = 29;
@@ -585,7 +592,7 @@
             this.manul_btnChK4Cy3.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy3.Location = new System.Drawing.Point(9, 57);
-            this.manul_btnChK4Cy3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy3.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy3.Name = "manul_btnChK4Cy3";
             this.manul_btnChK4Cy3.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK4Cy3.TabIndex = 26;
@@ -597,7 +604,7 @@
             this.manul_btnChK4Cy41.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy41.Location = new System.Drawing.Point(349, 57);
-            this.manul_btnChK4Cy41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy41.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy41.Name = "manul_btnChK4Cy41";
             this.manul_btnChK4Cy41.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK4Cy41.TabIndex = 35;
@@ -609,11 +616,12 @@
             this.manul_btnChK4Cy11.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy11.Location = new System.Drawing.Point(123, 17);
-            this.manul_btnChK4Cy11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy11.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy11.Name = "manul_btnChK4Cy11";
             this.manul_btnChK4Cy11.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK4Cy11.TabIndex = 32;
-            this.manul_btnChK4Cy11.Text = "4#位1#气缸缩回";
+            this.manul_btnChK4Cy11.Tag = "4#位1#气缸缩回";
+            this.manul_btnChK4Cy11.Text = "屏蔽盖气缸缩回";
             this.manul_btnChK4Cy11.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK4Cy21
@@ -621,7 +629,7 @@
             this.manul_btnChK4Cy21.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy21.Location = new System.Drawing.Point(349, 17);
-            this.manul_btnChK4Cy21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy21.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy21.Name = "manul_btnChK4Cy21";
             this.manul_btnChK4Cy21.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK4Cy21.TabIndex = 33;
@@ -633,7 +641,7 @@
             this.manul_btnChK4Cy31.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy31.Location = new System.Drawing.Point(123, 57);
-            this.manul_btnChK4Cy31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy31.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy31.Name = "manul_btnChK4Cy31";
             this.manul_btnChK4Cy31.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK4Cy31.TabIndex = 34;
@@ -645,7 +653,7 @@
             this.manul_btnChK4Cy2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK4Cy2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK4Cy2.Location = new System.Drawing.Point(236, 17);
-            this.manul_btnChK4Cy2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK4Cy2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK4Cy2.Name = "manul_btnChK4Cy2";
             this.manul_btnChK4Cy2.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK4Cy2.TabIndex = 19;
@@ -663,20 +671,20 @@
             this.groupBox5.Controls.Add(this.manul_btnChK6Cy3);
             this.groupBox5.Controls.Add(this.manul_btnChK6Cy4);
             this.groupBox5.Location = new System.Drawing.Point(499, 314);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox5.Size = new System.Drawing.Size(460, 98);
             this.groupBox5.TabIndex = 9;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "测试柜6气缸控制";
+            this.groupBox5.Text = "6#测试柜气缸控制";
             // 
             // manul_btnChK6Cy41
             // 
             this.manul_btnChK6Cy41.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy41.Location = new System.Drawing.Point(349, 59);
-            this.manul_btnChK6Cy41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy41.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy41.Name = "manul_btnChK6Cy41";
             this.manul_btnChK6Cy41.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK6Cy41.TabIndex = 43;
@@ -688,7 +696,7 @@
             this.manul_btnChK6Cy31.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy31.Location = new System.Drawing.Point(123, 59);
-            this.manul_btnChK6Cy31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy31.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy31.Name = "manul_btnChK6Cy31";
             this.manul_btnChK6Cy31.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK6Cy31.TabIndex = 42;
@@ -700,11 +708,12 @@
             this.manul_btnChK6Cy1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy1.Location = new System.Drawing.Point(9, 17);
-            this.manul_btnChK6Cy1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy1.Name = "manul_btnChK6Cy1";
             this.manul_btnChK6Cy1.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK6Cy1.TabIndex = 22;
-            this.manul_btnChK6Cy1.Text = "6#位1#气缸伸出";
+            this.manul_btnChK6Cy1.Tag = "6#位1#气缸伸出";
+            this.manul_btnChK6Cy1.Text = "屏蔽盖气缸伸出";
             this.manul_btnChK6Cy1.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK6Cy21
@@ -712,7 +721,7 @@
             this.manul_btnChK6Cy21.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy21.Location = new System.Drawing.Point(349, 17);
-            this.manul_btnChK6Cy21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy21.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy21.Name = "manul_btnChK6Cy21";
             this.manul_btnChK6Cy21.Size = new System.Drawing.Size(103, 30);
             this.manul_btnChK6Cy21.TabIndex = 41;
@@ -724,7 +733,7 @@
             this.manul_btnChK6Cy2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy2.Location = new System.Drawing.Point(236, 17);
-            this.manul_btnChK6Cy2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy2.Name = "manul_btnChK6Cy2";
             this.manul_btnChK6Cy2.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK6Cy2.TabIndex = 23;
@@ -736,11 +745,12 @@
             this.manul_btnChK6Cy11.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy11.Location = new System.Drawing.Point(123, 17);
-            this.manul_btnChK6Cy11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy11.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy11.Name = "manul_btnChK6Cy11";
             this.manul_btnChK6Cy11.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK6Cy11.TabIndex = 40;
-            this.manul_btnChK6Cy11.Text = "6#位1#气缸缩回";
+            this.manul_btnChK6Cy11.Tag = "6#位1#气缸缩回";
+            this.manul_btnChK6Cy11.Text = "屏蔽盖气缸缩回";
             this.manul_btnChK6Cy11.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK6Cy3
@@ -748,7 +758,7 @@
             this.manul_btnChK6Cy3.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy3.Location = new System.Drawing.Point(9, 59);
-            this.manul_btnChK6Cy3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy3.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy3.Name = "manul_btnChK6Cy3";
             this.manul_btnChK6Cy3.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK6Cy3.TabIndex = 28;
@@ -760,7 +770,7 @@
             this.manul_btnChK6Cy4.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK6Cy4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK6Cy4.Location = new System.Drawing.Point(236, 59);
-            this.manul_btnChK6Cy4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK6Cy4.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK6Cy4.Name = "manul_btnChK6Cy4";
             this.manul_btnChK6Cy4.Size = new System.Drawing.Size(100, 30);
             this.manul_btnChK6Cy4.TabIndex = 31;
@@ -778,24 +788,25 @@
             this.groupBox4.Controls.Add(this.manul_btnChK1Cy11);
             this.groupBox4.Controls.Add(this.manul_btnChK1Cy21);
             this.groupBox4.Location = new System.Drawing.Point(13, 213);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox4.Size = new System.Drawing.Size(460, 98);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "测试柜1气缸控制";
+            this.groupBox4.Text = "1#测试柜气缸控制";
             // 
             // manul_btnChK1Cy1
             // 
             this.manul_btnChK1Cy1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy1.Location = new System.Drawing.Point(9, 16);
-            this.manul_btnChK1Cy1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy1.Name = "manul_btnChK1Cy1";
             this.manul_btnChK1Cy1.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy1.TabIndex = 32;
-            this.manul_btnChK1Cy1.Text = "1#位1#气缸伸出";
+            this.manul_btnChK1Cy1.Tag = "1#位1#气缸伸出";
+            this.manul_btnChK1Cy1.Text = "屏蔽盖气缸伸出";
             this.manul_btnChK1Cy1.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK1Cy3
@@ -803,7 +814,7 @@
             this.manul_btnChK1Cy3.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy3.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy3.Location = new System.Drawing.Point(9, 57);
-            this.manul_btnChK1Cy3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy3.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy3.Name = "manul_btnChK1Cy3";
             this.manul_btnChK1Cy3.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy3.TabIndex = 38;
@@ -815,7 +826,7 @@
             this.manul_btnChK1Cy41.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy41.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy41.Location = new System.Drawing.Point(349, 57);
-            this.manul_btnChK1Cy41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy41.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy41.Name = "manul_btnChK1Cy41";
             this.manul_btnChK1Cy41.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy41.TabIndex = 48;
@@ -827,7 +838,7 @@
             this.manul_btnChK1Cy2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy2.Location = new System.Drawing.Point(236, 16);
-            this.manul_btnChK1Cy2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy2.Name = "manul_btnChK1Cy2";
             this.manul_btnChK1Cy2.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy2.TabIndex = 33;
@@ -839,7 +850,7 @@
             this.manul_btnChK1Cy31.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy31.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy31.Location = new System.Drawing.Point(123, 57);
-            this.manul_btnChK1Cy31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy31.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy31.Name = "manul_btnChK1Cy31";
             this.manul_btnChK1Cy31.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy31.TabIndex = 47;
@@ -851,7 +862,7 @@
             this.manul_btnChK1Cy4.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy4.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy4.Location = new System.Drawing.Point(236, 57);
-            this.manul_btnChK1Cy4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy4.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy4.Name = "manul_btnChK1Cy4";
             this.manul_btnChK1Cy4.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy4.TabIndex = 41;
@@ -863,11 +874,12 @@
             this.manul_btnChK1Cy11.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy11.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy11.Location = new System.Drawing.Point(123, 16);
-            this.manul_btnChK1Cy11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy11.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy11.Name = "manul_btnChK1Cy11";
             this.manul_btnChK1Cy11.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy11.TabIndex = 46;
-            this.manul_btnChK1Cy11.Text = "1#位1#气缸缩回";
+            this.manul_btnChK1Cy11.Tag = "1#位1#气缸缩回";
+            this.manul_btnChK1Cy11.Text = "屏蔽盖气缸缩回";
             this.manul_btnChK1Cy11.UseVisualStyleBackColor = false;
             // 
             // manul_btnChK1Cy21
@@ -875,7 +887,7 @@
             this.manul_btnChK1Cy21.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnChK1Cy21.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnChK1Cy21.Location = new System.Drawing.Point(349, 16);
-            this.manul_btnChK1Cy21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnChK1Cy21.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnChK1Cy21.Name = "manul_btnChK1Cy21";
             this.manul_btnChK1Cy21.Size = new System.Drawing.Size(101, 30);
             this.manul_btnChK1Cy21.TabIndex = 45;
@@ -889,9 +901,9 @@
             this.groupBox3.Controls.Add(this.manul_btnFrameRealese2);
             this.groupBox3.Controls.Add(this.manul_btnFrameRealese1);
             this.groupBox3.Location = new System.Drawing.Point(13, 153);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(460, 57);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
@@ -902,7 +914,7 @@
             this.manul_btnFrameGrab2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameGrab2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnFrameGrab2.Location = new System.Drawing.Point(241, 15);
-            this.manul_btnFrameGrab2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameGrab2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameGrab2.Name = "manul_btnFrameGrab2";
             this.manul_btnFrameGrab2.Size = new System.Drawing.Size(93, 35);
             this.manul_btnFrameGrab2.TabIndex = 25;
@@ -914,7 +926,7 @@
             this.manul_btnFrameGrab1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameGrab1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnFrameGrab1.Location = new System.Drawing.Point(9, 15);
-            this.manul_btnFrameGrab1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameGrab1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameGrab1.Name = "manul_btnFrameGrab1";
             this.manul_btnFrameGrab1.Size = new System.Drawing.Size(93, 35);
             this.manul_btnFrameGrab1.TabIndex = 24;
@@ -926,7 +938,7 @@
             this.manul_btnFrameRealese2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameRealese2.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnFrameRealese2.Location = new System.Drawing.Point(357, 15);
-            this.manul_btnFrameRealese2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameRealese2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameRealese2.Name = "manul_btnFrameRealese2";
             this.manul_btnFrameRealese2.Size = new System.Drawing.Size(93, 35);
             this.manul_btnFrameRealese2.TabIndex = 31;
@@ -938,7 +950,7 @@
             this.manul_btnFrameRealese1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameRealese1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnFrameRealese1.Location = new System.Drawing.Point(125, 15);
-            this.manul_btnFrameRealese1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameRealese1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameRealese1.Name = "manul_btnFrameRealese1";
             this.manul_btnFrameRealese1.Size = new System.Drawing.Size(93, 35);
             this.manul_btnFrameRealese1.TabIndex = 30;
@@ -954,9 +966,9 @@
             this.groupBox2.Controls.Add(this.manul_btnFrameHome1);
             this.groupBox2.Controls.Add(this.manul_btnFrameForward);
             this.groupBox2.Location = new System.Drawing.Point(13, 61);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(460, 90);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
@@ -966,10 +978,10 @@
             // 
             this.manul_btnFrameHome2.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameHome2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnFrameHome2.Location = new System.Drawing.Point(320, 51);
-            this.manul_btnFrameHome2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameHome2.Location = new System.Drawing.Point(320, 52);
+            this.manul_btnFrameHome2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameHome2.Name = "manul_btnFrameHome2";
-            this.manul_btnFrameHome2.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnFrameHome2.Size = new System.Drawing.Size(120, 30);
             this.manul_btnFrameHome2.TabIndex = 28;
             this.manul_btnFrameHome2.Text = "料架升降回原点";
             this.manul_btnFrameHome2.UseVisualStyleBackColor = false;
@@ -978,10 +990,10 @@
             // 
             this.manul_btnFrameUp.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameUp.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnFrameUp.Location = new System.Drawing.Point(9, 51);
-            this.manul_btnFrameUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameUp.Location = new System.Drawing.Point(9, 52);
+            this.manul_btnFrameUp.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameUp.Name = "manul_btnFrameUp";
-            this.manul_btnFrameUp.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnFrameUp.Size = new System.Drawing.Size(120, 30);
             this.manul_btnFrameUp.TabIndex = 22;
             this.manul_btnFrameUp.Text = "料架升降下降";
             this.manul_btnFrameUp.UseVisualStyleBackColor = false;
@@ -990,10 +1002,10 @@
             // 
             this.manul_btnFrameDown.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameDown.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnFrameDown.Location = new System.Drawing.Point(165, 51);
-            this.manul_btnFrameDown.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameDown.Location = new System.Drawing.Point(165, 52);
+            this.manul_btnFrameDown.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameDown.Name = "manul_btnFrameDown";
-            this.manul_btnFrameDown.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnFrameDown.Size = new System.Drawing.Size(120, 30);
             this.manul_btnFrameDown.TabIndex = 23;
             this.manul_btnFrameDown.Text = "料架升降上升";
             this.manul_btnFrameDown.UseVisualStyleBackColor = false;
@@ -1002,10 +1014,10 @@
             // 
             this.manul_btnFrameReverse.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameReverse.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnFrameReverse.Location = new System.Drawing.Point(165, 12);
-            this.manul_btnFrameReverse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameReverse.Location = new System.Drawing.Point(165, 16);
+            this.manul_btnFrameReverse.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameReverse.Name = "manul_btnFrameReverse";
-            this.manul_btnFrameReverse.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnFrameReverse.Size = new System.Drawing.Size(120, 30);
             this.manul_btnFrameReverse.TabIndex = 21;
             this.manul_btnFrameReverse.Text = "料架横移后退";
             this.manul_btnFrameReverse.UseVisualStyleBackColor = false;
@@ -1014,10 +1026,10 @@
             // 
             this.manul_btnFrameHome1.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameHome1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnFrameHome1.Location = new System.Drawing.Point(320, 12);
-            this.manul_btnFrameHome1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameHome1.Location = new System.Drawing.Point(320, 16);
+            this.manul_btnFrameHome1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameHome1.Name = "manul_btnFrameHome1";
-            this.manul_btnFrameHome1.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnFrameHome1.Size = new System.Drawing.Size(120, 30);
             this.manul_btnFrameHome1.TabIndex = 27;
             this.manul_btnFrameHome1.Text = "料架横移回原点";
             this.manul_btnFrameHome1.UseVisualStyleBackColor = false;
@@ -1026,10 +1038,10 @@
             // 
             this.manul_btnFrameForward.BackColor = System.Drawing.Color.PowderBlue;
             this.manul_btnFrameForward.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnFrameForward.Location = new System.Drawing.Point(9, 12);
-            this.manul_btnFrameForward.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.manul_btnFrameForward.Location = new System.Drawing.Point(9, 16);
+            this.manul_btnFrameForward.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnFrameForward.Name = "manul_btnFrameForward";
-            this.manul_btnFrameForward.Size = new System.Drawing.Size(131, 35);
+            this.manul_btnFrameForward.Size = new System.Drawing.Size(120, 30);
             this.manul_btnFrameForward.TabIndex = 20;
             this.manul_btnFrameForward.Text = "料架横移前进";
             this.manul_btnFrameForward.UseVisualStyleBackColor = false;
@@ -1043,9 +1055,10 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.auto_lbName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ManulForm";
             this.Text = "ManulForm";
+            this.Load += new System.EventHandler(this.ManulForm_Load);
             this.Enter += new System.EventHandler(this.ManulForm_Enter);
             this.Leave += new System.EventHandler(this.ManulForm_Leave);
             this.panel1.ResumeLayout(false);

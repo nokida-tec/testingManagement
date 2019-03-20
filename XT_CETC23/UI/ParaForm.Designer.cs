@@ -30,6 +30,8 @@
         {
             this.para_lbName = new System.Windows.Forms.Label();
             this.para_pn = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkBoxU8 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnData6 = new System.Windows.Forms.Button();
             this.btnCmd6 = new System.Windows.Forms.Button();
@@ -102,7 +104,9 @@
             this.para_lbCabinet3 = new System.Windows.Forms.Label();
             this.para_lbCabinet2 = new System.Windows.Forms.Label();
             this.para_lbCabinet1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.para_pn.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.para_gbPara.SuspendLayout();
             this.SuspendLayout();
@@ -112,7 +116,7 @@
             this.para_lbName.AutoSize = true;
             this.para_lbName.Font = new System.Drawing.Font("楷体", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.para_lbName.ForeColor = System.Drawing.Color.MediumBlue;
-            this.para_lbName.Location = new System.Drawing.Point(413, 37);
+            this.para_lbName.Location = new System.Drawing.Point(413, 13);
             this.para_lbName.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbName.Name = "para_lbName";
             this.para_lbName.Size = new System.Drawing.Size(137, 30);
@@ -122,13 +126,40 @@
             // para_pn
             // 
             this.para_pn.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.para_pn.Controls.Add(this.groupBox2);
             this.para_pn.Controls.Add(this.groupBox1);
             this.para_pn.Controls.Add(this.para_gbPara);
-            this.para_pn.Location = new System.Drawing.Point(8, 81);
+            this.para_pn.Location = new System.Drawing.Point(8, 52);
             this.para_pn.Margin = new System.Windows.Forms.Padding(1);
             this.para_pn.Name = "para_pn";
-            this.para_pn.Size = new System.Drawing.Size(973, 397);
+            this.para_pn.Size = new System.Drawing.Size(973, 426);
             this.para_pn.TabIndex = 3;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.chkBoxU8);
+            this.groupBox2.Location = new System.Drawing.Point(11, 354);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(1);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(1);
+            this.groupBox2.Size = new System.Drawing.Size(353, 63);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "其他设置";
+            // 
+            // chkBoxU8
+            // 
+            this.chkBoxU8.AutoSize = true;
+            this.chkBoxU8.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chkBoxU8.Location = new System.Drawing.Point(62, 27);
+            this.chkBoxU8.Margin = new System.Windows.Forms.Padding(1);
+            this.chkBoxU8.Name = "chkBoxU8";
+            this.chkBoxU8.Size = new System.Drawing.Size(68, 18);
+            this.chkBoxU8.TabIndex = 14;
+            this.chkBoxU8.Text = "U8启用";
+            this.chkBoxU8.UseVisualStyleBackColor = true;
+            this.chkBoxU8.CheckedChanged += new System.EventHandler(this.chkBoxU8_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -393,7 +424,7 @@
             // btnTargetSave
             // 
             this.btnTargetSave.BackColor = System.Drawing.Color.PowderBlue;
-            this.btnTargetSave.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTargetSave.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnTargetSave.Location = new System.Drawing.Point(466, 26);
             this.btnTargetSave.Margin = new System.Windows.Forms.Padding(1);
             this.btnTargetSave.Name = "btnTargetSave";
@@ -406,7 +437,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label20.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label20.Location = new System.Drawing.Point(299, 331);
             this.label20.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label20.Name = "label20";
@@ -417,7 +448,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label19.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label19.Location = new System.Drawing.Point(299, 241);
             this.label19.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label19.Name = "label19";
@@ -428,8 +459,8 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.Location = new System.Drawing.Point(23, 331);
+            this.label11.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label11.Location = new System.Drawing.Point(16, 331);
             this.label11.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(88, 16);
@@ -439,7 +470,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label18.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label18.Location = new System.Drawing.Point(299, 150);
             this.label18.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label18.Name = "label18";
@@ -450,8 +481,8 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.Location = new System.Drawing.Point(23, 241);
+            this.label8.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(16, 241);
             this.label8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(88, 16);
@@ -461,8 +492,8 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(23, 150);
+            this.label4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(16, 150);
             this.label4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 16);
@@ -480,8 +511,8 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label17.Location = new System.Drawing.Point(372, 283);
+            this.label17.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label17.Location = new System.Drawing.Point(426, 283);
             this.label17.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(72, 16);
@@ -507,8 +538,8 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(86, 283);
+            this.label10.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.Location = new System.Drawing.Point(140, 283);
             this.label10.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(72, 16);
@@ -518,8 +549,8 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label16.Location = new System.Drawing.Point(372, 191);
+            this.label16.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label16.Location = new System.Drawing.Point(426, 191);
             this.label16.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(72, 16);
@@ -545,8 +576,8 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(96, 191);
+            this.label7.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(140, 191);
             this.label7.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 16);
@@ -556,8 +587,8 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label15.Location = new System.Drawing.Point(295, 307);
+            this.label15.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label15.Location = new System.Drawing.Point(299, 307);
             this.label15.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(88, 16);
@@ -575,8 +606,8 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label14.Location = new System.Drawing.Point(372, 101);
+            this.label14.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label14.Location = new System.Drawing.Point(426, 99);
             this.label14.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(72, 16);
@@ -586,8 +617,8 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.Location = new System.Drawing.Point(19, 307);
+            this.label9.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.Location = new System.Drawing.Point(16, 307);
             this.label9.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(88, 16);
@@ -597,8 +628,8 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.Location = new System.Drawing.Point(295, 216);
+            this.label13.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.Location = new System.Drawing.Point(299, 216);
             this.label13.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(88, 16);
@@ -608,8 +639,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(96, 101);
+            this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(140, 98);
             this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 16);
@@ -619,8 +650,8 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(19, 216);
+            this.label6.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(16, 216);
             this.label6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(88, 16);
@@ -630,8 +661,8 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.Location = new System.Drawing.Point(300, 126);
+            this.label12.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.Location = new System.Drawing.Point(299, 126);
             this.label12.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(88, 16);
@@ -649,8 +680,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(19, 126);
+            this.label3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(16, 126);
             this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 16);
@@ -660,8 +691,8 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(23, 56);
+            this.label5.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(16, 59);
             this.label5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(152, 16);
@@ -679,8 +710,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(19, 25);
+            this.label2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(16, 25);
             this.label2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 16);
@@ -714,7 +745,7 @@
             this.para_gbPara.Margin = new System.Windows.Forms.Padding(1);
             this.para_gbPara.Name = "para_gbPara";
             this.para_gbPara.Padding = new System.Windows.Forms.Padding(1);
-            this.para_gbPara.Size = new System.Drawing.Size(353, 371);
+            this.para_gbPara.Size = new System.Drawing.Size(353, 339);
             this.para_gbPara.TabIndex = 0;
             this.para_gbPara.TabStop = false;
             this.para_gbPara.Text = "参数设置";
@@ -722,8 +753,8 @@
             // para_btnAdd
             // 
             this.para_btnAdd.BackColor = System.Drawing.Color.PowderBlue;
-            this.para_btnAdd.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_btnAdd.Location = new System.Drawing.Point(25, 307);
+            this.para_btnAdd.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_btnAdd.Location = new System.Drawing.Point(25, 292);
             this.para_btnAdd.Margin = new System.Windows.Forms.Padding(1);
             this.para_btnAdd.Name = "para_btnAdd";
             this.para_btnAdd.Size = new System.Drawing.Size(105, 37);
@@ -735,80 +766,80 @@
             // para_chbService6
             // 
             this.para_chbService6.AutoSize = true;
-            this.para_chbService6.Font = new System.Drawing.Font("楷体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_chbService6.Location = new System.Drawing.Point(238, 269);
+            this.para_chbService6.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_chbService6.Location = new System.Drawing.Point(238, 259);
             this.para_chbService6.Margin = new System.Windows.Forms.Padding(1);
             this.para_chbService6.Name = "para_chbService6";
-            this.para_chbService6.Size = new System.Drawing.Size(89, 18);
+            this.para_chbService6.Size = new System.Drawing.Size(54, 18);
             this.para_chbService6.TabIndex = 19;
-            this.para_chbService6.Text = "InService";
+            this.para_chbService6.Text = "启用";
             this.para_chbService6.UseVisualStyleBackColor = true;
             // 
             // para_chbService5
             // 
             this.para_chbService5.AutoSize = true;
-            this.para_chbService5.Font = new System.Drawing.Font("楷体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_chbService5.Location = new System.Drawing.Point(238, 228);
+            this.para_chbService5.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_chbService5.Location = new System.Drawing.Point(238, 218);
             this.para_chbService5.Margin = new System.Windows.Forms.Padding(1);
             this.para_chbService5.Name = "para_chbService5";
-            this.para_chbService5.Size = new System.Drawing.Size(89, 18);
+            this.para_chbService5.Size = new System.Drawing.Size(54, 18);
             this.para_chbService5.TabIndex = 18;
-            this.para_chbService5.Text = "InService";
+            this.para_chbService5.Text = "启用";
             this.para_chbService5.UseVisualStyleBackColor = true;
             // 
             // para_chbService4
             // 
             this.para_chbService4.AutoSize = true;
-            this.para_chbService4.Font = new System.Drawing.Font("楷体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_chbService4.Location = new System.Drawing.Point(238, 187);
+            this.para_chbService4.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_chbService4.Location = new System.Drawing.Point(238, 177);
             this.para_chbService4.Margin = new System.Windows.Forms.Padding(1);
             this.para_chbService4.Name = "para_chbService4";
-            this.para_chbService4.Size = new System.Drawing.Size(89, 18);
+            this.para_chbService4.Size = new System.Drawing.Size(54, 18);
             this.para_chbService4.TabIndex = 17;
-            this.para_chbService4.Text = "InService";
+            this.para_chbService4.Text = "启用";
             this.para_chbService4.UseVisualStyleBackColor = true;
             // 
             // para_chbService3
             // 
             this.para_chbService3.AutoSize = true;
-            this.para_chbService3.Font = new System.Drawing.Font("楷体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_chbService3.Location = new System.Drawing.Point(238, 147);
+            this.para_chbService3.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_chbService3.Location = new System.Drawing.Point(238, 137);
             this.para_chbService3.Margin = new System.Windows.Forms.Padding(1);
             this.para_chbService3.Name = "para_chbService3";
-            this.para_chbService3.Size = new System.Drawing.Size(89, 18);
+            this.para_chbService3.Size = new System.Drawing.Size(54, 18);
             this.para_chbService3.TabIndex = 16;
-            this.para_chbService3.Text = "InService";
+            this.para_chbService3.Text = "启用";
             this.para_chbService3.UseVisualStyleBackColor = true;
             // 
             // para_chbService2
             // 
             this.para_chbService2.AutoSize = true;
-            this.para_chbService2.Font = new System.Drawing.Font("楷体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_chbService2.Location = new System.Drawing.Point(238, 106);
+            this.para_chbService2.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_chbService2.Location = new System.Drawing.Point(238, 96);
             this.para_chbService2.Margin = new System.Windows.Forms.Padding(1);
             this.para_chbService2.Name = "para_chbService2";
-            this.para_chbService2.Size = new System.Drawing.Size(89, 18);
+            this.para_chbService2.Size = new System.Drawing.Size(54, 18);
             this.para_chbService2.TabIndex = 15;
-            this.para_chbService2.Text = "InService";
+            this.para_chbService2.Text = "启用";
             this.para_chbService2.UseVisualStyleBackColor = true;
             // 
             // para_chbService1
             // 
             this.para_chbService1.AutoSize = true;
-            this.para_chbService1.Font = new System.Drawing.Font("楷体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_chbService1.Location = new System.Drawing.Point(238, 65);
+            this.para_chbService1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_chbService1.Location = new System.Drawing.Point(238, 55);
             this.para_chbService1.Margin = new System.Windows.Forms.Padding(1);
             this.para_chbService1.Name = "para_chbService1";
-            this.para_chbService1.Size = new System.Drawing.Size(89, 18);
+            this.para_chbService1.Size = new System.Drawing.Size(54, 18);
             this.para_chbService1.TabIndex = 14;
-            this.para_chbService1.Text = "InService";
+            this.para_chbService1.Text = "启用";
             this.para_chbService1.UseVisualStyleBackColor = true;
             // 
             // para_btnWrite
             // 
             this.para_btnWrite.BackColor = System.Drawing.Color.PowderBlue;
-            this.para_btnWrite.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_btnWrite.Location = new System.Drawing.Point(223, 307);
+            this.para_btnWrite.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_btnWrite.Location = new System.Drawing.Point(223, 292);
             this.para_btnWrite.Margin = new System.Windows.Forms.Padding(1);
             this.para_btnWrite.Name = "para_btnWrite";
             this.para_btnWrite.Size = new System.Drawing.Size(105, 37);
@@ -829,7 +860,7 @@
             "AB组件",
             "C组件",
             "D组件"});
-            this.para_cbCabinet6.Location = new System.Drawing.Point(127, 265);
+            this.para_cbCabinet6.Location = new System.Drawing.Point(127, 255);
             this.para_cbCabinet6.Margin = new System.Windows.Forms.Padding(1);
             this.para_cbCabinet6.Name = "para_cbCabinet6";
             this.para_cbCabinet6.Size = new System.Drawing.Size(81, 24);
@@ -847,7 +878,7 @@
             "AB组件",
             "C组件",
             "D组件"});
-            this.para_cbCabinet5.Location = new System.Drawing.Point(127, 224);
+            this.para_cbCabinet5.Location = new System.Drawing.Point(127, 214);
             this.para_cbCabinet5.Margin = new System.Windows.Forms.Padding(1);
             this.para_cbCabinet5.Name = "para_cbCabinet5";
             this.para_cbCabinet5.Size = new System.Drawing.Size(81, 24);
@@ -865,7 +896,7 @@
             "AB组件",
             "C组件",
             "D组件"});
-            this.para_cbCabinet4.Location = new System.Drawing.Point(127, 183);
+            this.para_cbCabinet4.Location = new System.Drawing.Point(127, 173);
             this.para_cbCabinet4.Margin = new System.Windows.Forms.Padding(1);
             this.para_cbCabinet4.Name = "para_cbCabinet4";
             this.para_cbCabinet4.Size = new System.Drawing.Size(81, 24);
@@ -883,7 +914,7 @@
             "AB组件",
             "C组件",
             "D组件"});
-            this.para_cbCabinet3.Location = new System.Drawing.Point(127, 143);
+            this.para_cbCabinet3.Location = new System.Drawing.Point(127, 133);
             this.para_cbCabinet3.Margin = new System.Windows.Forms.Padding(1);
             this.para_cbCabinet3.Name = "para_cbCabinet3";
             this.para_cbCabinet3.Size = new System.Drawing.Size(81, 24);
@@ -901,7 +932,7 @@
             "AB组件",
             "C组件",
             "D组件"});
-            this.para_cbCabinet2.Location = new System.Drawing.Point(127, 101);
+            this.para_cbCabinet2.Location = new System.Drawing.Point(127, 91);
             this.para_cbCabinet2.Margin = new System.Windows.Forms.Padding(1);
             this.para_cbCabinet2.Name = "para_cbCabinet2";
             this.para_cbCabinet2.Size = new System.Drawing.Size(81, 24);
@@ -920,7 +951,7 @@
             "AB组件",
             "C组件",
             "D组件"});
-            this.para_cbCabinet1.Location = new System.Drawing.Point(127, 61);
+            this.para_cbCabinet1.Location = new System.Drawing.Point(127, 51);
             this.para_cbCabinet1.Margin = new System.Windows.Forms.Padding(1);
             this.para_cbCabinet1.Name = "para_cbCabinet1";
             this.para_cbCabinet1.Size = new System.Drawing.Size(81, 24);
@@ -931,7 +962,7 @@
             this.para_lbGrab.AutoSize = true;
             this.para_lbGrab.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.para_lbGrab.ForeColor = System.Drawing.Color.Black;
-            this.para_lbGrab.Location = new System.Drawing.Point(124, 26);
+            this.para_lbGrab.Location = new System.Drawing.Point(124, 16);
             this.para_lbGrab.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbGrab.Name = "para_lbGrab";
             this.para_lbGrab.Size = new System.Drawing.Size(89, 19);
@@ -941,8 +972,8 @@
             // para_lbCabinet6
             // 
             this.para_lbCabinet6.AutoSize = true;
-            this.para_lbCabinet6.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_lbCabinet6.Location = new System.Drawing.Point(23, 269);
+            this.para_lbCabinet6.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_lbCabinet6.Location = new System.Drawing.Point(23, 259);
             this.para_lbCabinet6.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbCabinet6.Name = "para_lbCabinet6";
             this.para_lbCabinet6.Size = new System.Drawing.Size(88, 16);
@@ -952,8 +983,8 @@
             // para_lbCabinet5
             // 
             this.para_lbCabinet5.AutoSize = true;
-            this.para_lbCabinet5.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_lbCabinet5.Location = new System.Drawing.Point(23, 228);
+            this.para_lbCabinet5.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_lbCabinet5.Location = new System.Drawing.Point(23, 218);
             this.para_lbCabinet5.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbCabinet5.Name = "para_lbCabinet5";
             this.para_lbCabinet5.Size = new System.Drawing.Size(88, 16);
@@ -963,8 +994,8 @@
             // para_lbCabinet4
             // 
             this.para_lbCabinet4.AutoSize = true;
-            this.para_lbCabinet4.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_lbCabinet4.Location = new System.Drawing.Point(23, 187);
+            this.para_lbCabinet4.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_lbCabinet4.Location = new System.Drawing.Point(23, 177);
             this.para_lbCabinet4.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbCabinet4.Name = "para_lbCabinet4";
             this.para_lbCabinet4.Size = new System.Drawing.Size(88, 16);
@@ -974,8 +1005,8 @@
             // para_lbCabinet3
             // 
             this.para_lbCabinet3.AutoSize = true;
-            this.para_lbCabinet3.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_lbCabinet3.Location = new System.Drawing.Point(23, 145);
+            this.para_lbCabinet3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_lbCabinet3.Location = new System.Drawing.Point(23, 135);
             this.para_lbCabinet3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbCabinet3.Name = "para_lbCabinet3";
             this.para_lbCabinet3.Size = new System.Drawing.Size(88, 16);
@@ -985,8 +1016,8 @@
             // para_lbCabinet2
             // 
             this.para_lbCabinet2.AutoSize = true;
-            this.para_lbCabinet2.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_lbCabinet2.Location = new System.Drawing.Point(23, 104);
+            this.para_lbCabinet2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_lbCabinet2.Location = new System.Drawing.Point(23, 94);
             this.para_lbCabinet2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbCabinet2.Name = "para_lbCabinet2";
             this.para_lbCabinet2.Size = new System.Drawing.Size(88, 16);
@@ -996,13 +1027,26 @@
             // para_lbCabinet1
             // 
             this.para_lbCabinet1.AutoSize = true;
-            this.para_lbCabinet1.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.para_lbCabinet1.Location = new System.Drawing.Point(23, 63);
+            this.para_lbCabinet1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.para_lbCabinet1.Location = new System.Drawing.Point(23, 53);
             this.para_lbCabinet1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.para_lbCabinet1.Name = "para_lbCabinet1";
             this.para_lbCabinet1.Size = new System.Drawing.Size(88, 16);
             this.para_lbCabinet1.TabIndex = 0;
             this.para_lbCabinet1.Text = "1#测试台：";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Red;
+            this.button1.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Location = new System.Drawing.Point(223, 16);
+            this.button1.Margin = new System.Windows.Forms.Padding(1);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(105, 37);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "任务清除";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ParaForm
             // 
@@ -1018,6 +1062,8 @@
             this.Text = "ParaForm";
             this.Load += new System.EventHandler(this.ParaForm_Load);
             this.para_pn.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.para_gbPara.ResumeLayout(false);
@@ -1103,5 +1149,8 @@
         private System.Windows.Forms.Button btnCmd3;
         private System.Windows.Forms.Button btnData2;
         private System.Windows.Forms.Button btnCmd2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox chkBoxU8;
     }
 }

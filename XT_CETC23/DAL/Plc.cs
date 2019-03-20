@@ -12,11 +12,6 @@ namespace XT_CETC23
 {
    public class Plc
     {
-       public interface Listener
-       {
-           void nodify();
-       }
-
         static Plc plc;
         S7Client s7client = new S7Client();
         S7Client s7clientRead = new S7Client();

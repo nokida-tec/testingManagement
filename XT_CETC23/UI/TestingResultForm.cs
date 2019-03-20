@@ -29,6 +29,7 @@ namespace XT_CETC23.SonForm
         {
             // TODO:  这行代码将数据加载到表“dB23DataSet.ActualData”中。您可以根据需要移动或删除它。
             this.actualDataTableAdapter.Fill(this.dB23DataSet.ActualData);
+            datePick();
         }
 
         private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -70,8 +71,13 @@ namespace XT_CETC23.SonForm
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (comboFrameBatch.SelectedText == sComboAll 
-                || comboFrameBatch.SelectedText == "")
+            String selectedText = "";
+            if (comboFrameBatch.SelectedIndex >= 0)
+            {
+                selectedText = comboFrameBatch.Items[comboFrameBatch.SelectedIndex].ToString();
+            }
+            if (selectedText == sComboAll 
+                || selectedText == "")
             {  // 全部
                 String collects = "";
                 bool bFirst = true;
@@ -80,57 +86,66 @@ namespace XT_CETC23.SonForm
                 {
                     if(bFirst)
                     {
-                        collects += comboFrameBatch.Items[i].ToString();
+                        collects += "'" + comboFrameBatch.Items[i].ToString() + "'";
                     } 
                     else 
                     {
-                        collects += "," + comboFrameBatch.Items[i].ToString();
+                        collects += ",'" + comboFrameBatch.Items[i].ToString() + "'";
                     }
                     bFirst = false;
                 }
                 if (collects != "")
                 {
-                    bindingSource1.Filter = "(BatchID is NULL AND [BeginTime] >= '"
+                    String filter = "(BatchID is NULL AND [BeginTime] >= '"
                         + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
                         + "' AND [BeginTime] < '"
                         + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
                         + "') OR BatchID IN ("
                         + collects
                         + ")";
+                    bindingSource1.Filter = filter;
                 }
                 else
                 {
-                    bindingSource1.Filter = "(BatchID is NULL AND [BeginTime] >= '"
+                    String filter =  "(BatchID is NULL AND [BeginTime] >= '"
                         + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
                         + "' AND [BeginTime] < '"
                         + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
                         + "')";
+                    bindingSource1.Filter = filter;
                 }
             }
             else
             {
-                bindingSource1.Filter = "[BatchID] >= '"
-                    + comboFrameBatch.SelectedText
+                String filter = "[BatchID] = '"
+                    + selectedText
                     + "'";
+                bindingSource1.Filter = filter;
             }
+            dataGridView.Refresh();
         }
 
         private void dateTimePickerToday_ValueChanged(object sender, EventArgs e)
         {
+            datePick();
+        }
+
+        private void datePick()
+        {
             comboFrameBatch.Items.Clear();
             DataTable dt = DataBase.GetInstanse().DBQuery(
-                "select ID from dbo.Batch where " 
+                "select ID from dbo.Batch where "
                 + "[BeginTime] >= '"
                 + dateTimePickerToday.Value.ToString("yyyy-MM-dd")
                 + "' AND [BeginTime] < '"
                 + dateTimePickerToday.Value.AddDays(1).ToString("yyyy-MM-dd")
                 + "'");
             comboFrameBatch.Items.Add(sComboAll);
-            if(dt == null)
+            if (dt == null)
             {
                 return;
             }
-            for(int i = 0; i < dt.Rows.Count; i ++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 String batchID = dt.Rows[i]["ID"].ToString();
                 comboFrameBatch.Items.Add(batchID);
@@ -139,15 +154,12 @@ namespace XT_CETC23.SonForm
 
         private void btnSearchLast_Click(object sender, EventArgs e)
         {
-            DataTable dt = DataBase.GetInstanse().DBQuery(
-                "select max(ID) from dbo.Batch");
-            if (dt == null || dt.Rows.Count == 0)
-            {
-                MessageBox.Show("没有最近批次");
-            }
-            String batchID = dt.Rows[0][0].ToString();
+            String batchID = Batch.LastFinished();
 
-            bindingSource1.Filter = "BatchID = " + batchID;
+            String filter = "BatchID = '" + batchID + "'";
+            bindingSource1.Filter  = filter;
+            dataGridView.Refresh();
         }
+
     }
 }

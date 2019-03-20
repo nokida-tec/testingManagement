@@ -209,6 +209,19 @@ namespace XT_CETC23
             mSystemExisting = false;
         }
 
+        public bool Clear()
+        {
+            try
+            {
+                DataBase.GetInstanse().DBDelete("delete from dbo.MTR");
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+            }
+            return true;
+        }
+
         private void SystemMonitor()
         {
             Robot.GetInstanse();

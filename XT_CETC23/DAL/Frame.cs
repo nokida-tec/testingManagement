@@ -177,6 +177,39 @@ namespace XT_CETC23
             }
         }
 
+        public String convertFrameLocation (String frameLocation)
+        {
+            try
+            {
+                char[] newFrameLocation = frameLocation.ToArray();
+                char firstChar = newFrameLocation[0];
+                if (firstChar >= '1' && firstChar <= '8')
+                {
+                    newFrameLocation[0] = (char)('A' + newFrameLocation[0] - '1');
+                }
+                return new String(newFrameLocation);
+            } 
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return frameLocation;
+            }
+        }
+
+       public bool Clear()
+        {
+            try
+            {
+                DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
+                DataBase.GetInstanse().DBDelete("delete from dbo.FrameData");
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+            }
+            return true;
+        }
+
         public void doAsyncGet(int FrameLocation)
         {
             DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + FrameLocation + ")");

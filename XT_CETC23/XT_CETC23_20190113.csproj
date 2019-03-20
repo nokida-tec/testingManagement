@@ -137,6 +137,7 @@
       <DependentUpon>DB23DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Instances\TestingCabinets.cs" />
+    <Compile Include="Model\Batch.cs" />
     <Compile Include="Model\CabinetData.cs" />
     <Compile Include="Model\DBstr.cs" />
     <Compile Include="Model\DeviceCount.cs" />

@@ -28,7 +28,7 @@ namespace XT_CETC23.DataCom
             db = DataBase.GetInstanse();
         }       
 
-        public int InsertBasicID(string ProductID,int FrameLocation,int SalverLocation,string ProductType,string CurrentStation, bool StationSign,string ProductChectResult,int CabinetID)
+        public int InsertBasicID(string ProductID,int FrameLocation,int SalverLocation,string ProductType,string CurrentStation, bool StationSign,string ProductChectResult,String BatchID, int CabinetID)
         {
             lock (lockObject)
             {
@@ -68,7 +68,8 @@ namespace XT_CETC23.DataCom
                     + StationSign + "','"
                     + ProductChectResult + "',"
                     + lBasicID + ",'"
-                    + DateTime.Now + "',"
+                    + DateTime.Now + "','"
+                    + BatchID + "',"
                     + CabinetID + ")");
                 return lBasicID;
             }
@@ -82,15 +83,39 @@ namespace XT_CETC23.DataCom
     }
     class GetID
     {
+        static Object mLock = new Object();
         static int BasicID = 2000;
         public static int getID()
         {
-            if (BasicID < 9999)
-                return BasicID++;
-            else
+            lock (mLock)
             {
-                BasicID = 2000;
-                return BasicID++;
+                int ID;
+                int ID1 = 0;
+                int ID2 = 0;
+                try {
+                    DataTable dt = DataBase.GetInstanse().DBQuery("select max(BasicID) from dbo.MTR");
+                    ID1 = Convert.ToInt32(dt.Rows[0][0]);
+                } 
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                    ID1 = 0;
+                }
+
+                try {
+                    DataTable dt = DataBase.GetInstanse().DBQuery("select max(BasicID) from dbo.FrameData");
+                    ID2 = Convert.ToInt32(dt.Rows[0][0]);
+                } 
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                    ID2 = 0;
+                }
+
+                ID = Math.Max(ID1, ID2);
+                ID = Math.Max(ID, 1000);
+
+                return ID + 1;
             }
         }
     }

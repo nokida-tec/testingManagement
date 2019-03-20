@@ -604,7 +604,7 @@ namespace XT_CETC23.SonForm
                             break;
                     }
                     #region 1#气缸操作
-                    if ((sender as Button).Text== "1#位1#气缸伸出")
+                    if ((sender as Button).Tag== "1#位1#气缸伸出")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet1CY1Extend;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder3, PlcData._writeLength1, writeByte);
@@ -613,7 +613,7 @@ namespace XT_CETC23.SonForm
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder3, PlcData._writeLength1, writeByte1);
                         this.manul_btnChK1Cy1.BackColor = Color.Green;
                     }
-                    if ((sender as Button).Text == "1#位1#气缸缩回")
+                    if ((sender as Button).Tag == "1#位1#气缸缩回")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet1CY1Back;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder3, PlcData._writeLength1, writeByte);
@@ -673,7 +673,7 @@ namespace XT_CETC23.SonForm
                     }
                     #endregion
                     #region 2#气缸操作
-                    if ((sender as Button).Text == "2#位1#气缸伸出")
+                    if ((sender as Button).Tag == "2#位1#气缸伸出")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet2CY1Extend;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder4, PlcData._writeLength1, writeByte);
@@ -683,7 +683,7 @@ namespace XT_CETC23.SonForm
                         manul_btnChK2Cy1.BackColor = Color.Green;
                         manul_btnChK2Cy11.BackColor = Color.PowderBlue;
                     }
-                    if ((sender as Button).Text == "2#位1#气缸缩回")
+                    if ((sender as Button).Tag == "2#位1#气缸缩回")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet2CY1Back;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder4, PlcData._writeLength1, writeByte);
@@ -745,7 +745,7 @@ namespace XT_CETC23.SonForm
                     }
                     #endregion
                     #region 3#气缸操作
-                    if ((sender as Button).Text == "3#位1#气缸伸出")
+                    if ((sender as Button).Tag == "3#位1#气缸伸出")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet3CY1Extend;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder5, PlcData._writeLength1, writeByte);
@@ -753,7 +753,7 @@ namespace XT_CETC23.SonForm
                         writeByte1[0] = 0;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder5, PlcData._writeLength1, writeByte1);
                     }
-                    if ((sender as Button).Text == "3#位1#气缸缩回")
+                    if ((sender as Button).Tag == "3#位1#气缸缩回")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet3CY1Back;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder5, PlcData._writeLength1, writeByte);
@@ -814,7 +814,7 @@ namespace XT_CETC23.SonForm
                     }
                     #endregion
                     #region 4#气缸操作
-                    if ((sender as Button).Text == "4#位1#气缸伸出")
+                    if ((sender as Button).Tag == "4#位1#气缸伸出")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet4CY1Extend;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder6, PlcData._writeLength1, writeByte);
@@ -822,7 +822,7 @@ namespace XT_CETC23.SonForm
                         writeByte1[0] = 0;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder6, PlcData._writeLength1, writeByte1);
                     }
-                    if ((sender as Button).Text == "4#位1#气缸缩回")
+                    if ((sender as Button).Tag == "4#位1#气缸缩回")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet4CY1Back;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder6, PlcData._writeLength1, writeByte);
@@ -882,7 +882,7 @@ namespace XT_CETC23.SonForm
                     }
                     #endregion
                     #region 5#气缸操作
-                    if ((sender as Button).Text == "5#位1#气缸伸出")
+                    if ((sender as Button).Tag == "5#位1#气缸伸出")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet5CY1Extend;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder7, PlcData._writeLength1, writeByte);
@@ -890,7 +890,7 @@ namespace XT_CETC23.SonForm
                         writeByte1[0] = 0;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder7, PlcData._writeLength1, writeByte1);
                     }
-                    if ((sender as Button).Text == "5#位1#气缸缩回")
+                    if ((sender as Button).Tag == "5#位1#气缸缩回")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet5CY1Back;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder7, PlcData._writeLength1, writeByte);
@@ -950,7 +950,7 @@ namespace XT_CETC23.SonForm
                     }
                     #endregion
                     #region 6#气缸操作
-                    if ((sender as Button).Text == "6#位1#气缸伸出")
+                    if ((sender as Button).Tag == "6#位1#气缸伸出")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet6CY1Extend;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder8, PlcData._writeLength1, writeByte);
@@ -958,7 +958,7 @@ namespace XT_CETC23.SonForm
                         writeByte1[0] = 0;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder8, PlcData._writeLength1, writeByte1);
                     }
-                    if ((sender as Button).Text == "6#位1#气缸缩回")
+                    if ((sender as Button).Tag == "6#位1#气缸缩回")
                     {
                         writeByte[0] = (byte)PlcData._writeCabinet6CY1Back;
                         manulWrite(PlcData.PlcWriteAddress, PlcData._writeManulOrder8, PlcData._writeLength1, writeByte);
@@ -1059,8 +1059,47 @@ namespace XT_CETC23.SonForm
             try
             {
                 DataTable dt = new DataTable();
-                db.DBDelete("delete from dbo.TaskAxlis2");
-
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                Axlis2Lable:
+                if (dt.Rows.Count > 0)
+                {
+                    db.DBDelete("delete from dbo.TaskAxlis2");
+                }
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                if (dt.Rows.Count > 0)
+                    goto Axlis2Lable;
+                //
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                Axlis7Lable:
+                if (dt.Rows.Count > 0)
+                {
+                    db.DBDelete("delete from dbo.TaskAxlis7");
+                }
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                dt = db.DBQuery("select * from dbo.TaskAxlis7");
+                if (dt.Rows.Count > 0)
+                    goto Axlis7Lable;
+                //
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                dt = db.DBQuery("select * from dbo.TaskRobot");
+                RobotLable:
+                if (dt.Rows.Count > 0)
+                {
+                    db.DBDelete("delete from dbo.TaskRobot");
+                }
+                dt.Rows.Clear();
+                dt.Columns.Clear();
+                dt = db.DBQuery("select * from dbo.TaskRobot");
+                if (dt.Rows.Count > 0)
+                    goto RobotLable;
                 //
                 CabinetLable:
                     for(int i=0;i<DeviceCount.TestingCabinetCount;++i)

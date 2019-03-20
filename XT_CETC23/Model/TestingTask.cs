@@ -278,14 +278,24 @@ namespace XT_CETC23
                 String pieceNo = dt.Rows[0]["SalverLocation"].ToString();
                 String BeginTime = dt.Rows[0]["BeginTime"].ToString();
                 String EndTime = dt.Rows[0]["EndTime"].ToString();
+                String BatchID = dt.Rows[0]["BatchID"].ToString();
+                trayNo = Frame.getInstance().convertFrameLocation(trayNo);
+                try 
+                {
+                    cabinetName = (Convert.ToInt32(cabinetName) + 1) + "#测试柜";
+                } 
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
 
                 DataBase.GetInstanse().DBInsert("insert into dbo.ActualData("
-                    + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,CheckResult"
+                    + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,BatchID,CheckResult"
                     + " )values( '"
                     + prodCode + "','"
-                    + prodType + "',"
-                    + trayNo + ","
-                    + pieceNo + ",'"
+                    + prodType + "','"
+                    + trayNo + "','"
+                    + pieceNo + "','"
                     + cabinetName + "','"
                     + "0" + "','"
                     + "0" + "','"
@@ -293,26 +303,21 @@ namespace XT_CETC23
                     + "0" + "','"
                     + BeginTime + "','"
                     + EndTime + "','"
+                    + BatchID + "','"
                     + checkResult + "')");
-                try
-                {
-                    DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
-                        + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult"
-                        + " )values("
-                        + ID + ",'"
-                        + prodCode + "','"
-                        + prodType + "',"
-                        + trayNo + ","
-                        + pieceNo + ",'"
-                        + cabinetName + "','"
-                        + BeginTime + "','"
-                        + EndTime + "','"
-                        + checkResult + "')");
-                }
-                catch (Exception e1)
-                {
-                    Logger.WriteLine(e1);
-                }
+                DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
+                    + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,BatchID,CheckResult"
+                    + " )values("
+                    + ID + ",'"
+                    + prodCode + "','"
+                    + prodType + "','"
+                    + trayNo + "','"
+                    + pieceNo + "','"
+                    + cabinetName + "','"
+                    + BeginTime + "','"
+                    + EndTime + "','"
+                    + BatchID + "','"
+                    + checkResult + "')");
                 DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
             }
             catch (Exception e)

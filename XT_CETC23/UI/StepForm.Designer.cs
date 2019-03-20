@@ -102,6 +102,7 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.step_cbProductNo);
             this.groupBox2.Controls.Add(this.step_cbCabinetNo);
+            this.groupBox2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox2.Location = new System.Drawing.Point(501, 18);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
@@ -166,7 +167,7 @@
             // step_btnFetch
             // 
             this.step_btnFetch.BackColor = System.Drawing.Color.PowderBlue;
-            this.step_btnFetch.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.step_btnFetch.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_btnFetch.Location = new System.Drawing.Point(287, 168);
             this.step_btnFetch.Margin = new System.Windows.Forms.Padding(2);
             this.step_btnFetch.Name = "step_btnFetch";
@@ -179,7 +180,7 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.PowderBlue;
-            this.button1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.button1.Location = new System.Drawing.Point(287, 122);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
@@ -192,7 +193,7 @@
             // step_btnTestStart
             // 
             this.step_btnTestStart.BackColor = System.Drawing.Color.PowderBlue;
-            this.step_btnTestStart.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.step_btnTestStart.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_btnTestStart.Location = new System.Drawing.Point(287, 76);
             this.step_btnTestStart.Margin = new System.Windows.Forms.Padding(2);
             this.step_btnTestStart.Name = "step_btnTestStart";
@@ -205,7 +206,7 @@
             // step_btnTake
             // 
             this.step_btnTake.BackColor = System.Drawing.Color.PowderBlue;
-            this.step_btnTake.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.step_btnTake.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.step_btnTake.Location = new System.Drawing.Point(287, 30);
             this.step_btnTake.Margin = new System.Windows.Forms.Padding(2);
             this.step_btnTake.Name = "step_btnTake";
@@ -218,33 +219,33 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label4.Location = new System.Drawing.Point(22, 127);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 19);
+            this.label4.Size = new System.Drawing.Size(85, 19);
             this.label4.TabIndex = 0;
             this.label4.Text = "位置号：";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(22, 171);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 19);
+            this.label1.Size = new System.Drawing.Size(85, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "测试柜：";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.Location = new System.Drawing.Point(22, 82);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 19);
+            this.label2.Size = new System.Drawing.Size(85, 19);
             this.label2.TabIndex = 1;
             this.label2.Tag = "";
             this.label2.Text = "料盘号：";
@@ -265,11 +266,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.Location = new System.Drawing.Point(22, 37);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(109, 19);
+            this.label3.Size = new System.Drawing.Size(104, 19);
             this.label3.TabIndex = 2;
             this.label3.Text = "产品类型：";
             // 
@@ -318,6 +319,7 @@
             this.groupBox1.Controls.Add(this.manul_btnStartT);
             this.groupBox1.Controls.Add(this.manul_cbCabineit);
             this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(501, 269);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
@@ -342,7 +344,7 @@
             // manul_btnStopT
             // 
             this.manul_btnStopT.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStopT.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_btnStopT.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStopT.Location = new System.Drawing.Point(287, 63);
             this.manul_btnStopT.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStopT.Name = "manul_btnStopT";
@@ -355,18 +357,18 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label5.Location = new System.Drawing.Point(22, 29);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 19);
+            this.label5.Size = new System.Drawing.Size(85, 19);
             this.label5.TabIndex = 0;
             this.label5.Text = "测试柜：";
             // 
             // manul_btnStartT
             // 
             this.manul_btnStartT.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStartT.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_btnStartT.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStartT.Location = new System.Drawing.Point(287, 23);
             this.manul_btnStartT.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStartT.Name = "manul_btnStartT";
@@ -397,11 +399,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.Location = new System.Drawing.Point(22, 71);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(109, 19);
+            this.label6.Size = new System.Drawing.Size(104, 19);
             this.label6.TabIndex = 2;
             this.label6.Text = "产品类型：";
             // 
@@ -417,7 +419,7 @@
             this.manul_gbRobt.Controls.Add(this.manul_cbCommand);
             this.manul_gbRobt.Controls.Add(this.manul_lbProductSort);
             this.manul_gbRobt.Controls.Add(this.manul_lbCommand1);
-            this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_gbRobt.Location = new System.Drawing.Point(12, 170);
             this.manul_gbRobt.Margin = new System.Windows.Forms.Padding(2);
             this.manul_gbRobt.Name = "manul_gbRobt";
@@ -430,10 +432,11 @@
             // ckbAxis7Alone
             // 
             this.ckbAxis7Alone.AutoSize = true;
-            this.ckbAxis7Alone.Location = new System.Drawing.Point(317, 162);
+            this.ckbAxis7Alone.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ckbAxis7Alone.Location = new System.Drawing.Point(296, 162);
             this.ckbAxis7Alone.Margin = new System.Windows.Forms.Padding(2);
             this.ckbAxis7Alone.Name = "ckbAxis7Alone";
-            this.ckbAxis7Alone.Size = new System.Drawing.Size(132, 16);
+            this.ckbAxis7Alone.Size = new System.Drawing.Size(152, 18);
             this.ckbAxis7Alone.TabIndex = 8;
             this.ckbAxis7Alone.Text = "机器人轨道独立运动";
             this.ckbAxis7Alone.UseVisualStyleBackColor = true;
@@ -452,7 +455,7 @@
             // manul_btnStart1
             // 
             this.manul_btnStart1.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStart1.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_btnStart1.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_btnStart1.Location = new System.Drawing.Point(317, 53);
             this.manul_btnStart1.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStart1.Name = "manul_btnStart1";
@@ -498,22 +501,22 @@
             // manul_lbGoalPos1
             // 
             this.manul_lbGoalPos1.AutoSize = true;
-            this.manul_lbGoalPos1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbGoalPos1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_lbGoalPos1.Location = new System.Drawing.Point(35, 122);
             this.manul_lbGoalPos1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.manul_lbGoalPos1.Name = "manul_lbGoalPos1";
-            this.manul_lbGoalPos1.Size = new System.Drawing.Size(109, 19);
+            this.manul_lbGoalPos1.Size = new System.Drawing.Size(104, 19);
             this.manul_lbGoalPos1.TabIndex = 0;
             this.manul_lbGoalPos1.Text = "轨道位置：";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label7.Location = new System.Drawing.Point(35, 161);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(89, 19);
+            this.label7.Size = new System.Drawing.Size(85, 19);
             this.label7.TabIndex = 0;
             this.label7.Text = "位置号：";
             // 
@@ -534,22 +537,22 @@
             // manul_lbProductSort
             // 
             this.manul_lbProductSort.AutoSize = true;
-            this.manul_lbProductSort.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbProductSort.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_lbProductSort.Location = new System.Drawing.Point(25, 44);
             this.manul_lbProductSort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.manul_lbProductSort.Name = "manul_lbProductSort";
-            this.manul_lbProductSort.Size = new System.Drawing.Size(119, 19);
+            this.manul_lbProductSort.Size = new System.Drawing.Size(114, 19);
             this.manul_lbProductSort.TabIndex = 2;
             this.manul_lbProductSort.Text = " 产品类型：";
             // 
             // manul_lbCommand1
             // 
             this.manul_lbCommand1.AutoSize = true;
-            this.manul_lbCommand1.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbCommand1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_lbCommand1.Location = new System.Drawing.Point(35, 83);
             this.manul_lbCommand1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.manul_lbCommand1.Name = "manul_lbCommand1";
-            this.manul_lbCommand1.Size = new System.Drawing.Size(109, 19);
+            this.manul_lbCommand1.Size = new System.Drawing.Size(104, 19);
             this.manul_lbCommand1.TabIndex = 1;
             this.manul_lbCommand1.Text = "动作类型：";
             // 
@@ -561,7 +564,7 @@
             this.manul_gbFrame.Controls.Add(this.manul_cbGoalPos2);
             this.manul_gbFrame.Controls.Add(this.manul_lbCommand2);
             this.manul_gbFrame.Controls.Add(this.manul_lbGoalPos2);
-            this.manul_gbFrame.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_gbFrame.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_gbFrame.Location = new System.Drawing.Point(12, 18);
             this.manul_gbFrame.Margin = new System.Windows.Forms.Padding(2);
             this.manul_gbFrame.Name = "manul_gbFrame";
@@ -574,8 +577,8 @@
             // manul_btnStartScan
             // 
             this.manul_btnStartScan.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStartScan.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStartScan.Location = new System.Drawing.Point(68, 15);
+            this.manul_btnStartScan.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_btnStartScan.Location = new System.Drawing.Point(68, 20);
             this.manul_btnStartScan.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStartScan.Name = "manul_btnStartScan";
             this.manul_btnStartScan.Size = new System.Drawing.Size(313, 41);
@@ -587,8 +590,8 @@
             // manul_btnStart2
             // 
             this.manul_btnStart2.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStart2.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStart2.Location = new System.Drawing.Point(317, 67);
+            this.manul_btnStart2.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_btnStart2.Location = new System.Drawing.Point(317, 69);
             this.manul_btnStart2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_btnStart2.Name = "manul_btnStart2";
             this.manul_btnStart2.Size = new System.Drawing.Size(97, 59);
@@ -657,7 +660,7 @@
             "H3",
             "H4",
             "H5"});
-            this.manul_cbGoalPos2.Location = new System.Drawing.Point(159, 67);
+            this.manul_cbGoalPos2.Location = new System.Drawing.Point(159, 69);
             this.manul_cbGoalPos2.Margin = new System.Windows.Forms.Padding(2);
             this.manul_cbGoalPos2.Name = "manul_cbGoalPos2";
             this.manul_cbGoalPos2.Size = new System.Drawing.Size(109, 24);
@@ -666,22 +669,22 @@
             // manul_lbCommand2
             // 
             this.manul_lbCommand2.AutoSize = true;
-            this.manul_lbCommand2.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbCommand2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.manul_lbCommand2.Location = new System.Drawing.Point(35, 107);
             this.manul_lbCommand2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.manul_lbCommand2.Name = "manul_lbCommand2";
-            this.manul_lbCommand2.Size = new System.Drawing.Size(109, 19);
+            this.manul_lbCommand2.Size = new System.Drawing.Size(104, 19);
             this.manul_lbCommand2.TabIndex = 1;
             this.manul_lbCommand2.Text = "动作类型：";
             // 
             // manul_lbGoalPos2
             // 
             this.manul_lbGoalPos2.AutoSize = true;
-            this.manul_lbGoalPos2.Font = new System.Drawing.Font("楷体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbGoalPos2.Location = new System.Drawing.Point(35, 69);
+            this.manul_lbGoalPos2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.manul_lbGoalPos2.Location = new System.Drawing.Point(35, 71);
             this.manul_lbGoalPos2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.manul_lbGoalPos2.Name = "manul_lbGoalPos2";
-            this.manul_lbGoalPos2.Size = new System.Drawing.Size(89, 19);
+            this.manul_lbGoalPos2.Size = new System.Drawing.Size(85, 19);
             this.manul_lbGoalPos2.TabIndex = 0;
             this.manul_lbGoalPos2.Text = "料盘号：";
             // 

@@ -112,6 +112,8 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 if (!ckbAxis7Alone.Checked)                 //机器人和轨道联动
                 {
                     if (manul_cbProductSort.SelectedIndex > -1 && manul_cbGoalPos.SelectedIndex > -1 && manul_cbCommand.SelectedIndex > -1)
@@ -434,6 +436,8 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 String layerNo = manul_cbGoalPos2.SelectedItem.ToString();
                 String commandNo = manul_cbCommand2.SelectedItem.ToString();
                 InsertPickTtay(layerNo, commandNo);
@@ -484,6 +488,8 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 Frame.getInstance().doScan();
             }
             else
@@ -496,6 +502,8 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 if (manul_cbCabineit.SelectedIndex > -1)
                 {
                     String prodType = manul_cbCabineitType.SelectedItem.ToString();
@@ -517,6 +525,8 @@ namespace XT_CETC23.SonForm
         {            
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 if (manul_cbCabineit.SelectedIndex > -1)
                 {
                     String prodType = manul_cbCabineitType.SelectedItem.ToString();
@@ -608,6 +618,8 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
                 {
                     Thread takeTh = new Thread(FrameToCabinet);
@@ -692,7 +704,9 @@ namespace XT_CETC23.SonForm
             //TaskCycle.actionType = "FrameToCabinet";
             //int numRemain = 0;
             int layerID = trayNo;
-            int ret = mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", cabinetNo);
+            Batch batch = new Batch();
+            batch.LoadUnfinished();
+            int ret = mtr.InsertBasicID("0", 0, 0, prodType, "FeedBin", false, "0", batch.ID, cabinetNo);
             if (ret < 0)
             {
                 MessageBox.Show("测试柜" + cabinetNo + "已有测试任务");
@@ -811,6 +825,8 @@ namespace XT_CETC23.SonForm
             bool testStarted = false;
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 if (stepCycle == 50 && testStarted==false)
                 {
                     if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
@@ -863,6 +879,8 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
                 if (stepCycle == 60)
                 {
                     if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
@@ -914,7 +932,9 @@ namespace XT_CETC23.SonForm
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
-                bool testState=false;
+                if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                    return;
+                bool testState = false;
                 DataTable dtMTR = new DataTable();
                 dtMTR = db.DBQuery("select * from dbo.MTR where BasicID=" + MTR.globalBasicID);
                 if (dtMTR !=null && dtMTR.Rows.Count !=0)

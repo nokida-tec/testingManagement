@@ -47,9 +47,10 @@
             this.auto_lbName.AutoSize = true;
             this.auto_lbName.Font = new System.Drawing.Font("楷体", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.auto_lbName.ForeColor = System.Drawing.Color.MediumBlue;
-            this.auto_lbName.Location = new System.Drawing.Point(619, 47);
+            this.auto_lbName.Location = new System.Drawing.Point(413, 31);
+            this.auto_lbName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.auto_lbName.Name = "auto_lbName";
-            this.auto_lbName.Size = new System.Drawing.Size(200, 44);
+            this.auto_lbName.Size = new System.Drawing.Size(137, 30);
             this.auto_lbName.TabIndex = 1;
             this.auto_lbName.Text = "查询界面";
             // 
@@ -57,9 +58,10 @@
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.data_gbQuery);
-            this.panel1.Location = new System.Drawing.Point(12, 110);
+            this.panel1.Location = new System.Drawing.Point(8, 73);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1458, 588);
+            this.panel1.Size = new System.Drawing.Size(973, 393);
             this.panel1.TabIndex = 2;
             // 
             // data_gbQuery
@@ -70,9 +72,11 @@
             this.data_gbQuery.Controls.Add(this.data_cbQueryCondition);
             this.data_gbQuery.Controls.Add(this.data_btnQuery);
             this.data_gbQuery.Controls.Add(this.data_dgvQuery);
-            this.data_gbQuery.Location = new System.Drawing.Point(11, 14);
+            this.data_gbQuery.Location = new System.Drawing.Point(7, 9);
+            this.data_gbQuery.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_gbQuery.Name = "data_gbQuery";
-            this.data_gbQuery.Size = new System.Drawing.Size(1428, 556);
+            this.data_gbQuery.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.data_gbQuery.Size = new System.Drawing.Size(952, 371);
             this.data_gbQuery.TabIndex = 0;
             this.data_gbQuery.TabStop = false;
             this.data_gbQuery.Text = "数据查询";
@@ -80,18 +84,20 @@
             // data_tbQueryContent
             // 
             this.data_tbQueryContent.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.data_tbQueryContent.Location = new System.Drawing.Point(502, 476);
+            this.data_tbQueryContent.Location = new System.Drawing.Point(335, 317);
+            this.data_tbQueryContent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_tbQueryContent.Name = "data_tbQueryContent";
-            this.data_tbQueryContent.Size = new System.Drawing.Size(155, 42);
+            this.data_tbQueryContent.Size = new System.Drawing.Size(105, 30);
             this.data_tbQueryContent.TabIndex = 5;
             // 
             // data_btnTable
             // 
             this.data_btnTable.BackColor = System.Drawing.Color.LightBlue;
-            this.data_btnTable.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.data_btnTable.Location = new System.Drawing.Point(987, 466);
+            this.data_btnTable.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.data_btnTable.Location = new System.Drawing.Point(658, 311);
+            this.data_btnTable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_btnTable.Name = "data_btnTable";
-            this.data_btnTable.Size = new System.Drawing.Size(190, 64);
+            this.data_btnTable.Size = new System.Drawing.Size(127, 43);
             this.data_btnTable.TabIndex = 4;
             this.data_btnTable.Text = "生成报表";
             this.data_btnTable.UseVisualStyleBackColor = false;
@@ -100,10 +106,11 @@
             // data_lbQuery
             // 
             this.data_lbQuery.AutoSize = true;
-            this.data_lbQuery.Font = new System.Drawing.Font("楷体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.data_lbQuery.Location = new System.Drawing.Point(122, 481);
+            this.data_lbQuery.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.data_lbQuery.Location = new System.Drawing.Point(81, 321);
+            this.data_lbQuery.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.data_lbQuery.Name = "data_lbQuery";
-            this.data_lbQuery.Size = new System.Drawing.Size(175, 33);
+            this.data_lbQuery.Size = new System.Drawing.Size(115, 21);
             this.data_lbQuery.TabIndex = 3;
             this.data_lbQuery.Text = "查询条件：";
             // 
@@ -119,22 +126,28 @@
             this.data_cbQueryCondition.FormattingEnabled = true;
             this.data_cbQueryCondition.Items.AddRange(new object[] {
             "dbo.BasicID",
+            "dbo.TaskAxlis2",
+            "dbo.TaskAxlis7",
+            "dbo.TaskCabinet",
+            "dbo.TaskRobot",
             "dbo.MTR",
             "dbo.Frame",
             "dbo.SortData",
             "dbo.ActualData"});
-            this.data_cbQueryCondition.Location = new System.Drawing.Point(315, 476);
+            this.data_cbQueryCondition.Location = new System.Drawing.Point(210, 317);
+            this.data_cbQueryCondition.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_cbQueryCondition.Name = "data_cbQueryCondition";
-            this.data_cbQueryCondition.Size = new System.Drawing.Size(155, 38);
+            this.data_cbQueryCondition.Size = new System.Drawing.Size(105, 28);
             this.data_cbQueryCondition.TabIndex = 2;
             // 
             // data_btnQuery
             // 
             this.data_btnQuery.BackColor = System.Drawing.Color.LightBlue;
-            this.data_btnQuery.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.data_btnQuery.Location = new System.Drawing.Point(727, 466);
+            this.data_btnQuery.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.data_btnQuery.Location = new System.Drawing.Point(485, 311);
+            this.data_btnQuery.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_btnQuery.Name = "data_btnQuery";
-            this.data_btnQuery.Size = new System.Drawing.Size(190, 64);
+            this.data_btnQuery.Size = new System.Drawing.Size(127, 43);
             this.data_btnQuery.TabIndex = 1;
             this.data_btnQuery.Text = "查  询";
             this.data_btnQuery.UseVisualStyleBackColor = false;
@@ -144,21 +157,23 @@
             // 
             this.data_dgvQuery.BackgroundColor = System.Drawing.Color.Azure;
             this.data_dgvQuery.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.data_dgvQuery.Location = new System.Drawing.Point(20, 27);
+            this.data_dgvQuery.Location = new System.Drawing.Point(13, 18);
+            this.data_dgvQuery.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_dgvQuery.Name = "data_dgvQuery";
             this.data_dgvQuery.RowTemplate.Height = 30;
-            this.data_dgvQuery.Size = new System.Drawing.Size(1392, 419);
+            this.data_dgvQuery.Size = new System.Drawing.Size(928, 279);
             this.data_dgvQuery.TabIndex = 0;
             // 
             // DataForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.LightBlue;
-            this.ClientSize = new System.Drawing.Size(1482, 727);
+            this.ClientSize = new System.Drawing.Size(861, 485);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.auto_lbName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "DataForm";
             this.Text = "DataForm";
             this.panel1.ResumeLayout(false);

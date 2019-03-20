@@ -33,13 +33,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.panelCommand = new System.Windows.Forms.Panel();
+            this.btnSearchLast = new System.Windows.Forms.Button();
             this.comboFrameBatch = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dB23DataSet = new XT_CETC23.DB23DataSet();
-            this.actualDataTableAdapter = new XT_CETC23.DB23DataSetTableAdapters.ActualDataTableAdapter();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,7 +47,9 @@
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnSearchLast = new System.Windows.Forms.Button();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.dB23DataSet = new XT_CETC23.DB23DataSet();
+            this.actualDataTableAdapter = new XT_CETC23.DB23DataSetTableAdapters.ActualDataTableAdapter();
             this.panelCommand.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
@@ -101,8 +101,20 @@
             this.panelCommand.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelCommand.Location = new System.Drawing.Point(0, 0);
             this.panelCommand.Name = "panelCommand";
-            this.panelCommand.Size = new System.Drawing.Size(932, 54);
+            this.panelCommand.Size = new System.Drawing.Size(920, 54);
             this.panelCommand.TabIndex = 3;
+            // 
+            // btnSearchLast
+            // 
+            this.btnSearchLast.AutoSize = true;
+            this.btnSearchLast.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSearchLast.Location = new System.Drawing.Point(702, 11);
+            this.btnSearchLast.Name = "btnSearchLast";
+            this.btnSearchLast.Size = new System.Drawing.Size(99, 30);
+            this.btnSearchLast.TabIndex = 9;
+            this.btnSearchLast.Text = "最近批次";
+            this.btnSearchLast.UseVisualStyleBackColor = true;
+            this.btnSearchLast.Click += new System.EventHandler(this.btnSearchLast_Click);
             // 
             // comboFrameBatch
             // 
@@ -143,7 +155,7 @@
             this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.AutoGenerateColumns = false;
             this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedHeaders;
+            this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
@@ -160,9 +172,92 @@
             this.dataGridView.Location = new System.Drawing.Point(0, 54);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
+            this.dataGridView.RowHeadersWidth = 26;
             this.dataGridView.RowTemplate.Height = 23;
-            this.dataGridView.Size = new System.Drawing.Size(932, 377);
+            this.dataGridView.Size = new System.Drawing.Size(920, 365);
             this.dataGridView.TabIndex = 4;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "ProductID";
+            this.dataGridViewTextBoxColumn1.FillWeight = 548.2233F;
+            this.dataGridViewTextBoxColumn1.HeaderText = "产品编码";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 110;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "ProductType";
+            this.dataGridViewTextBoxColumn2.FillWeight = 55.78166F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "产品类型";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 35;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.DataPropertyName = "CheckResult";
+            this.dataGridViewTextBoxColumn7.FillWeight = 8.658144F;
+            this.dataGridViewTextBoxColumn7.HeaderText = "测试结果";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "BatchID";
+            this.dataGridViewTextBoxColumn6.FillWeight = 8.658144F;
+            this.dataGridViewTextBoxColumn6.HeaderText = "测试批次";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 80;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "FrameLocation";
+            this.dataGridViewTextBoxColumn3.FillWeight = 26.46378F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "仓位";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 40;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "SalverLocation";
+            this.dataGridViewTextBoxColumn4.FillWeight = 43.26334F;
+            this.dataGridViewTextBoxColumn4.HeaderText = "盘位";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 35;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.DataPropertyName = "CheckCabinetA";
+            this.dataGridViewTextBoxColumn5.FillWeight = 8.658144F;
+            this.dataGridViewTextBoxColumn5.HeaderText = "测试柜";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 70;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.DataPropertyName = "BeginTime";
+            this.dataGridViewTextBoxColumn8.FillWeight = 116.5818F;
+            this.dataGridViewTextBoxColumn8.HeaderText = "开始时间";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 80;
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.DataPropertyName = "EndTime";
+            this.dataGridViewTextBoxColumn9.FillWeight = 83.71165F;
+            this.dataGridViewTextBoxColumn9.HeaderText = "结束时间";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 80;
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
             // 
             // bindingSource1
             // 
@@ -178,90 +273,15 @@
             // 
             this.actualDataTableAdapter.ClearBeforeFill = true;
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "ProductID";
-            this.dataGridViewTextBoxColumn1.HeaderText = "产品编码";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "ProductType";
-            this.dataGridViewTextBoxColumn2.HeaderText = "产品类型";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "CheckResult";
-            this.dataGridViewTextBoxColumn7.HeaderText = "测试结果";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "BatchID";
-            this.dataGridViewTextBoxColumn6.HeaderText = "测试批次";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "FrameLocation";
-            this.dataGridViewTextBoxColumn3.HeaderText = "仓位";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "SalverLocation";
-            this.dataGridViewTextBoxColumn4.HeaderText = "盘位";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "CheckCabinetA";
-            this.dataGridViewTextBoxColumn5.HeaderText = "测试柜";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.DataPropertyName = "BeginTime";
-            this.dataGridViewTextBoxColumn8.HeaderText = "开始时间";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.DataPropertyName = "EndTime";
-            this.dataGridViewTextBoxColumn9.HeaderText = "结束时间";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            // 
-            // btnSearchLast
-            // 
-            this.btnSearchLast.AutoSize = true;
-            this.btnSearchLast.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSearchLast.Location = new System.Drawing.Point(702, 11);
-            this.btnSearchLast.Name = "btnSearchLast";
-            this.btnSearchLast.Size = new System.Drawing.Size(99, 30);
-            this.btnSearchLast.TabIndex = 9;
-            this.btnSearchLast.Text = "最近批次";
-            this.btnSearchLast.UseVisualStyleBackColor = true;
-            this.btnSearchLast.Click += new System.EventHandler(this.btnSearchLast_Click);
-            // 
             // TestingResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(932, 431);
+            this.ClientSize = new System.Drawing.Size(920, 419);
             this.ControlBox = false;
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.panelCommand);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TestingResultForm";
@@ -302,6 +322,7 @@
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.BindingSource bindingSource1;
         private DB23DataSetTableAdapters.ActualDataTableAdapter actualDataTableAdapter;
+        private System.Windows.Forms.Button btnSearchLast;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
@@ -311,6 +332,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-        private System.Windows.Forms.Button btnSearchLast;
     }
 }

@@ -16,6 +16,7 @@ using XT_CETC23.EnumC;
 using XT_CETC23.Model;
 using XT_CETC23.Instances;
 using System.Threading;
+using XT_CETC23;
 
 
 namespace XT_CETC23.SonForm
@@ -129,7 +130,7 @@ namespace XT_CETC23.SonForm
         }
         private void ParaForm_Load(object sender, EventArgs e)
         {
-            
+            chkBoxU8.Checked = Config.Config.getInstance().enableU8;
         }
         void InitData()
         {
@@ -418,6 +419,21 @@ namespace XT_CETC23.SonForm
         private void btnData6_Click(object sender, EventArgs e)
         {
             selectPath(5, false);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("清除任务前请确保测试柜中的产品已取出，料架的托盘已放回料架，机器人并无抓取任何组件！！！",
+                 "是否要清除系统任务？", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Frame.getInstance().Clear();
+                TestingSystem.GetInstance().Clear();
+            }
+        }
+
+        private void chkBoxU8_CheckedChanged(object sender, EventArgs e)
+        {
+            Config.Config.getInstance().enableU8 = chkBoxU8.Checked;
         }
     }
 }
