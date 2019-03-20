@@ -274,84 +274,93 @@ namespace XT_CETC23
 
         void onModeChanged (Mode newMode)
         {
-            if (newMode == mMode)
+            lock (this)
             {
-                return;
-            }
-            Logger.WriteLine("Mode 改变：" + mMode + " ===> " + newMode);
+                if (newMode == mMode)
+                {
+                    return;
+                }
+                Logger.WriteLine("Mode 改变：" + mMode + " ===> " + newMode);
 
-            if (newMode == Mode.Manual)
-            {
-                TestingSystem.GetInstance().Abort();
+                if (newMode == Mode.Manual && mMode == Mode.Auto)
+                {
+                    TestingSystem.GetInstance().Abort();
+                }
+                mMode = newMode;
             }
-            mMode = newMode;
         }
 
         void onInitializeChanged (Initialize initialize)
         {
-            if (mInitialize == initialize)
+            lock (this)
             {
-                return;
-            }
-            Logger.WriteLine("Status 改变：" + mInitialize + " ===> " + initialize);
-
-            if (initialize == Initialize.Initialize)
-            {
-                Logger.WriteLine("系统初始化中");
-                clearTask();
-                SetProdType2Plc();
-                getInitResult();
-            }
-            else if (initialize == Initialize.Initialized)
-            {
-                Thread.Sleep(1000);
-                do
+                if (mInitialize == initialize)
                 {
-                    Thread.Sleep(100);
-                } while (!Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 1 }));
-                Thread.Sleep(1000);
-                Logger.WriteLine("初始化成功");
+                    return;
+                }
+                Logger.WriteLine("Status 改变：" + mInitialize + " ===> " + initialize);
+
+                if (initialize == Initialize.Initialize)
+                {
+                    Logger.WriteLine("系统初始化中");
+                    clearTask();
+                    SetProdType2Plc();
+                    getInitResult();
+                }
+                else if (initialize == Initialize.Initialized)
+                {
+                    Thread.Sleep(1000);
+                    do
+                    {
+                        Thread.Sleep(100);
+                    } while (!Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 1 }));
+                    Thread.Sleep(1000);
+                    Logger.WriteLine("初始化成功");
+                }
+                mInitialize = initialize;
             }
-            mInitialize = initialize;
         }
 
         void onStatusChanged (Status newStatus)
         {
-            if (mStatus == newStatus)
+            lock (this)
             {
-                return;
-            }
-            try
-            {
-                Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
-
-                if (mStatus == Status.Emergency)
+                if (mStatus == newStatus)
                 {
-                    Logger.WriteLine("主调度进程紧急急停退出");
-                    TestingSystem.GetInstance().Abort();
                     return;
                 }
-
-                if (mStatus == Status.Pausing)
+                try
                 {
-                    Logger.WriteLine("系统暂停");
-                    return;
-                }
+                    Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
 
-                if (mStatus == Status.Start && mMode == Mode.Auto && mInitialize == Initialize.Initialized)
-                {
-                    Logger.WriteLine("主调度进程启动");
-                    TestingSystem.GetInstance().Start();
-                }
+                    if (mStatus == Status.Emergency)
+                    {
+                        Logger.WriteLine("主调度进程紧急急停退出");
+                        TestingSystem.GetInstance().Abort();
+                        return;
+                    }
 
-                if (mStatus == Status.Running)
-                {
-                    TestingSystem.GetInstance().Resume();
+                    if (mStatus == Status.Pausing)
+                    {
+                        Logger.WriteLine("系统暂停");
+                        return;
+                    }
+
+                    if (mStatus == Status.Start && mMode == Mode.Auto && mInitialize == Initialize.Initialized)
+                    {
+                        Logger.WriteLine("主调度进程启动");
+                        TestingSystem.GetInstance().Start();
+                    }
+
+                    if (mStatus == Status.Running)
+                    {
+                        TestingSystem.GetInstance().Resume();
+                    }
                 }
-            }
-            finally
-            {
-                mStatus = newStatus;
+                finally
+                {
+                    mStatus = newStatus;
+                }
             }
         }
 
