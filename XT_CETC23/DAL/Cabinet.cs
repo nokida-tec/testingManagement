@@ -111,6 +111,7 @@ namespace XT_CETC23.DAL
             catch (Exception e)
             {
                 Logger.WriteLine(e);
+                return TestingCabinet.STATUS.Fault_Config;
             }
             return TestingCabinet.STATUS.NG;
         }
