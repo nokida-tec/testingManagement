@@ -466,15 +466,15 @@ namespace XT_CETC23
         private showStatus mShowStatus;
         private showMode mShowMode;
 
-        public void registryDelegate(showInitialize showInitialize)
+        public void RegistryDelegate(showInitialize showInitialize)
         {
             mShowInitialize = showInitialize;
         }
-        public void registryDelegate(showStatus showStatus)
+        public void RegistryDelegate(showStatus showStatus)
         {
             mShowStatus = showStatus;
         }
-        public void registryDelegate(showMode showMode)
+        public void RegistryDelegate(showMode showMode)
         {
             mShowMode = showMode;
         }

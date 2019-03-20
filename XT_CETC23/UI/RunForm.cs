@@ -55,12 +55,34 @@ namespace XT_CETC23.SonForm
             this.DataForm = DataForm;
             this.ManulForm = ManulForm;
             this.MainForm = MainForm;
-            TestingSystem.GetInstance();
+
+            // 注册显示函数
+            TestingSystem.GetInstance().RegistryDelegate(ShowMode);
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
             grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
         }
+
+        private void ShowMode(TestingSystem.Mode mode)
+        {
+            switch (mode)
+            {
+                case TestingSystem.Mode.Auto:
+                    run_btnAuto.BackColor = Color.Green;
+                    run_btnManul.BackColor = Color.PowderBlue;
+                    break;
+                case TestingSystem.Mode.Manual:
+                    run_btnAuto.BackColor = Color.PowderBlue;
+                    run_btnManul.BackColor = Color.Green;
+                    break;
+                default:
+                    run_btnAuto.BackColor = Color.Green;
+                    run_btnManul.BackColor = Color.Green;
+                    break;
+            }
+        }
+
         void InitForm()
         {
             run_btnInit.Click += Run_btn_Click;
