@@ -170,8 +170,10 @@ namespace XT_CETC23.DAL
             catch (Exception e)
             {
                 Logger.WriteLine(e);
+				Status = TestingCabinet.STATUS.Fault_Control;
+            	return false;
             }
-            TestingCabinets.getInstance(this.ID).Status = TestingCabinet.STATUS.Ready;
+            Status = TestingCabinet.STATUS.NG;
             return false;
         }
 
