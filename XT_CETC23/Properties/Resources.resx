@@ -121,6 +121,9 @@
   <data name="robot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\Image\robot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="WechatIMG154" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WechatIMG154.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="打印" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\Image\打印.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -139,11 +142,14 @@
   <data name="返回" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\Image\返回.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ABB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Image\Image\ABB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="user" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\Image\user.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ABB" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Image\Image\ABB.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Cycle4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Image\Image\Cycle4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="帮助" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\Image\帮助.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,6 +172,9 @@
   <data name="btn_restore" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\btn_restore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="WechatIMG153" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WechatIMG153.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="logoY" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\logoY.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -181,7 +190,7 @@
   <data name="数据库" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Image\Image\数据库.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Cycle4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Image\Image\Cycle4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="WechatIMG155" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WechatIMG155.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

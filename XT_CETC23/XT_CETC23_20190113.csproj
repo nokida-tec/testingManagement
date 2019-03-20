@@ -411,6 +411,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image\Image\Cycle.png" />
+    <None Include="Resources\WechatIMG155.png" />
+    <None Include="Resources\WechatIMG154.jpeg" />
+    <None Include="Resources\WechatIMG153.png" />
     <None Include="Image\Image\Cycle4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

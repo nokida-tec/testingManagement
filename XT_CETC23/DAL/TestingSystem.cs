@@ -283,6 +283,11 @@ namespace XT_CETC23
                 }
                 Logger.WriteLine("Mode 改变：" + mMode + " ===> " + newMode);
 
+                if (mShowMode != null)
+                {
+                    mShowMode(newMode);
+                }
+
                 if (newMode == Mode.Manual && mMode == Mode.Auto)
                 {
                     TestingSystem.GetInstance().Abort();
@@ -300,6 +305,11 @@ namespace XT_CETC23
                     return;
                 }
                 Logger.WriteLine("Status 改变：" + mInitialize + " ===> " + initialize);
+
+                if (mShowInitialize != null)
+                {
+                    mShowInitialize(initialize);
+                }
 
                 if (initialize == Initialize.Initialize)
                 {
@@ -333,6 +343,10 @@ namespace XT_CETC23
                 try
                 {
                     Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
+                    if (mShowStatus != null)
+                    {
+                        mShowStatus(newStatus);
+                    }
 
                     if (mStatus == Status.Emergency)
                     {
@@ -429,6 +443,27 @@ namespace XT_CETC23
             }
             prodType[0] = Convert.ToByte(cabinetStatus);
             Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 20, 1, prodType);
+        }
+
+        // 先支持一个delegate
+        public delegate void showInitialize(Initialize initialize);
+        public delegate void showStatus(Status status);
+        public delegate void showMode(Mode mode);
+        private showInitialize mShowInitialize;
+        private showStatus mShowStatus;
+        private showMode mShowMode;
+
+        public void registryDelegate(showInitialize showInitialize)
+        {
+            mShowInitialize = showInitialize;
+        }
+        public void registryDelegate(showStatus showStatus)
+        {
+            mShowStatus = showStatus;
+        }
+        public void registryDelegate(showMode showMode)
+        {
+            mShowMode = showMode;
         }
 
         public void clearTask()

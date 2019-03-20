@@ -178,7 +178,8 @@ namespace XT_CETC23
                     break;
                 case "pB_database":
                     pB_database.BorderStyle = BorderStyle.Fixed3D;
-                    pbDataBase();
+                    //pbDataBase();
+                    pbReport();
                     break;
                 case "pB_manul":
                     pB_manul.BorderStyle = BorderStyle.Fixed3D;
@@ -243,7 +244,8 @@ namespace XT_CETC23
             {
                 if (!sForm.IsDisposed)
                 {
-                    TestingSystem.readyForStep = false;
+                    TestingSystem.stepEnable = true;
+                    //Run.readyForStep = false;
 
                     mForm.clearTask();
                     panel_Load.Controls.Clear();
@@ -255,6 +257,7 @@ namespace XT_CETC23
             }
             else
             {
+                pB_step.BorderStyle = BorderStyle.None;
                 MessageBox.Show("单步操作只能在自动模式下进行！", "Information");
             }
         }   
@@ -300,8 +303,26 @@ namespace XT_CETC23
                 //if (TestingSystem.stepEnable == true)
                 //{
                 //    mForm.clearTask();
-                //    TestingSystem.stepEnable = false;
-                //    TestingSystem.readyForStep = false;
+                //    Run.stepEnable = false;
+                //    Run.readyForStep = false;
+                //}
+                panel_Load.Controls.Clear();
+                dForm.TopLevel = false;
+                dForm.Dock = DockStyle.Fill;
+                panel_Load.Controls.Add(dForm);
+                dForm.Show();
+            }
+        }
+
+        void pbReport()
+        {
+            if (!dForm.IsDisposed)
+            {
+                //if (Run.stepEnable == true)
+                //{
+                //    mForm.clearTask();
+                //    Run.stepEnable = false;
+                //    Run.readyForStep = false;
                 //}
                 panel_Load.Controls.Clear();
                 resultForm.TopLevel = false;
@@ -312,7 +333,7 @@ namespace XT_CETC23
         }
         void pbManul()
         {
-            if (TestingSystem.GetInstance().mode == TestingSystem.Mode.Auto)
+            if (TestingSystem.GetInstance().mode == TestingSystem.Mode.Manual)
             {
                 //if (Common.Account.power == "system")
                 if (true)
@@ -340,6 +361,7 @@ namespace XT_CETC23
             }
             else
             {
+                pB_manul.BorderStyle= BorderStyle.None;
                 MessageBox.Show("手动操作只能在手动模式下进行！", "Information");
             }
         }
@@ -365,6 +387,7 @@ namespace XT_CETC23
             }
             else
             {
+                pB_para.BorderStyle = BorderStyle.None;
                 MessageBox.Show("手动操作只能在手动模式下进行！", "Information");
             }
         }
@@ -375,6 +398,7 @@ namespace XT_CETC23
             {
                 if (TestingSystem.stepEnable == true)
                 {
+                    pB_run.BorderStyle = BorderStyle.None;
                     if (MessageBox.Show("请确认单步动作已经执行完成!", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel) 
                     {
                         return;
@@ -392,6 +416,7 @@ namespace XT_CETC23
         }
         void pbUser()
         {
+            loadForm(uForm);
             if (!uForm.IsDisposed)
             {
                 //if (TestingSystem.stepEnable == true)
@@ -400,11 +425,11 @@ namespace XT_CETC23
                 //    TestingSystem.stepEnable = false;
                 //    TestingSystem.readyForStep = false;
                 //}
-                panel_Load.Controls.Clear();
-                uForm.TopLevel = false;
-                uForm.Dock = DockStyle.Fill;
-                panel_Load.Controls.Add(uForm);
-                uForm.Show();
+                //panel_Load.Controls.Clear();
+                //uForm.TopLevel = false;
+                //uForm.Dock = DockStyle.Fill;
+                //panel_Load.Controls.Add(uForm);
+                //uForm.Show();
             }
         }
         void loadForm(Form form)
@@ -416,7 +441,7 @@ namespace XT_CETC23
                 form.TopLevel = false;
                 form.Dock = DockStyle.Fill;
                 panel_Load.Controls.Add(form);
-                TestingSystem.stepEnable = false;
+//                TestingSystem.stepEnable = false;
                 form.Show();
             }
         }
@@ -650,6 +675,7 @@ namespace XT_CETC23
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
+            /*
             float[] scale = (float[])Tag;
             int i = 2;
 
@@ -659,10 +685,10 @@ namespace XT_CETC23
                 {
                     if (ctrl is Panel)
                     {
-                    //    ctrl.Left = (int)(Size.Width * scale[i++]);
-                    //    ctrl.Top = (int)(Size.Height * scale[i++]);
-                    //    ctrl.Width = (int)(Size.Width / (float)scale[0] * ((Size)ctrl.Tag).Width);//!!!
-                    //    ctrl.Height = (int)(Size.Height / (float)scale[1] * ((Size)ctrl.Tag).Height);//!!!
+                        ctrl.Left = (int)(Size.Width * scale[i++]);
+                        ctrl.Top = (int)(Size.Height * scale[i++]);
+                        ctrl.Width = (int)(Size.Width / (float)scale[0] * ((Size)ctrl.Tag).Width);//!!!
+                        ctrl.Height = (int)(Size.Height / (float)scale[1] * ((Size)ctrl.Tag).Height);//!!!
                     }
                     else
                     {
@@ -698,6 +724,7 @@ namespace XT_CETC23
             ClearSingle.Height = 40;
             ClearAll.Width = 100;
             ClearAll.Height = 40;
+             * */
         }
 
         public string getMessageToMainForm()
@@ -750,25 +777,32 @@ namespace XT_CETC23
             //    pB_para.Enabled = true;
             //    pB_step.Enabled = false;
             //}
-            if (status == "AutoRunning")
+            if (mode == "Manul")
             {
-                labSystemStatus.Text = "自动运行";
+                labSystemStatus.Text = "手动控制";
             }
-            else if (status == "Pausing")
+            if (mode == "Auto")
             {
-                labSystemStatus.Text = "暂停中";
-            }
-            else if (status == "Initalized")
-            {
-                labSystemStatus.Text = "初始化完成";
-            }
-            else if (status == "Alarming")
-            {
-                labSystemStatus.Text = "告警中";
-            }
-            else
-            {
-                labSystemStatus.Text = "停止中";
+                if (status == "AutoRunning")
+                {
+                    labSystemStatus.Text = "自动运行";
+                }
+                else if (status == "Pausing" && status != "Alarming")
+                {
+                    labSystemStatus.Text = "暂停中";
+                }
+                else if (status == "Initalized")
+                {
+                    labSystemStatus.Text = "初始化完成";
+                }
+                else if (status == "Pausing" && status == "Alarming")
+                {
+                    labSystemStatus.Text = "告警中";
+                }
+                else
+                {
+                    labSystemStatus.Text = "停止/未初始化";
+                }
             }
         }
 

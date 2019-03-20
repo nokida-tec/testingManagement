@@ -243,6 +243,36 @@ namespace XT_CETC23.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap WechatIMG153 {
+            get {
+                object obj = ResourceManager.GetObject("WechatIMG153", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap WechatIMG154 {
+            get {
+                object obj = ResourceManager.GetObject("WechatIMG154", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap WechatIMG155 {
+            get {
+                object obj = ResourceManager.GetObject("WechatIMG155", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 帮助 {
             get {
                 object obj = ResourceManager.GetObject("帮助", resourceCulture);

@@ -44,7 +44,6 @@
             this.panel_Status = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labSystemStatus = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ClearAll = new System.Windows.Forms.Button();
             this.ClearSingle = new System.Windows.Forms.Button();
@@ -69,6 +68,7 @@
             this.BtnMin = new System.Windows.Forms.PictureBox();
             this.BtnMax = new System.Windows.Forms.PictureBox();
             this.BtnClose = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel_Status.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -91,11 +91,11 @@
             // 
             this.label_user.AutoSize = true;
             this.label_user.BackColor = System.Drawing.Color.Transparent;
-            this.label_user.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_user.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_user.ForeColor = System.Drawing.Color.Blue;
             this.label_user.Location = new System.Drawing.Point(977, 146);
             this.label_user.Name = "label_user";
-            this.label_user.Size = new System.Drawing.Size(102, 21);
+            this.label_user.Size = new System.Drawing.Size(98, 21);
             this.label_user.TabIndex = 56;
             this.label_user.Text = "用户管理";
             // 
@@ -103,67 +103,67 @@
             // 
             this.label_ccd.AutoSize = true;
             this.label_ccd.BackColor = System.Drawing.Color.Transparent;
-            this.label_ccd.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_ccd.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_ccd.ForeColor = System.Drawing.Color.Blue;
             this.label_ccd.Location = new System.Drawing.Point(485, 146);
             this.label_ccd.Name = "label_ccd";
-            this.label_ccd.Size = new System.Drawing.Size(102, 21);
+            this.label_ccd.Size = new System.Drawing.Size(98, 21);
             this.label_ccd.TabIndex = 55;
-            this.label_ccd.Text = "视觉界面";
+            this.label_ccd.Text = "视觉显示";
             // 
             // label_para
             // 
             this.label_para.AutoSize = true;
             this.label_para.BackColor = System.Drawing.Color.Transparent;
-            this.label_para.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_para.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_para.ForeColor = System.Drawing.Color.Blue;
             this.label_para.Location = new System.Drawing.Point(735, 146);
             this.label_para.Name = "label_para";
-            this.label_para.Size = new System.Drawing.Size(102, 21);
+            this.label_para.Size = new System.Drawing.Size(98, 21);
             this.label_para.TabIndex = 54;
-            this.label_para.Text = "参数界面";
+            this.label_para.Text = "参数设置";
             // 
             // label_db
             // 
             this.label_db.AutoSize = true;
             this.label_db.BackColor = System.Drawing.Color.Transparent;
-            this.label_db.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_db.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_db.ForeColor = System.Drawing.Color.Blue;
             this.label_db.Location = new System.Drawing.Point(858, 146);
             this.label_db.Name = "label_db";
-            this.label_db.Size = new System.Drawing.Size(102, 21);
+            this.label_db.Size = new System.Drawing.Size(98, 21);
             this.label_db.TabIndex = 53;
-            this.label_db.Text = "查询界面";
+            this.label_db.Text = "数据查询";
             // 
             // label_manul
             // 
             this.label_manul.AutoSize = true;
             this.label_manul.BackColor = System.Drawing.Color.Transparent;
-            this.label_manul.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_manul.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_manul.ForeColor = System.Drawing.Color.Blue;
             this.label_manul.Location = new System.Drawing.Point(610, 146);
             this.label_manul.Name = "label_manul";
-            this.label_manul.Size = new System.Drawing.Size(102, 21);
+            this.label_manul.Size = new System.Drawing.Size(98, 21);
             this.label_manul.TabIndex = 52;
-            this.label_manul.Text = "手动界面";
+            this.label_manul.Text = "手动操作";
             // 
             // label_run
             // 
             this.label_run.AutoSize = true;
             this.label_run.BackColor = System.Drawing.Color.Transparent;
-            this.label_run.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_run.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_run.ForeColor = System.Drawing.Color.Blue;
             this.label_run.Location = new System.Drawing.Point(234, 146);
             this.label_run.Name = "label_run";
-            this.label_run.Size = new System.Drawing.Size(102, 21);
+            this.label_run.Size = new System.Drawing.Size(98, 21);
             this.label_run.TabIndex = 50;
-            this.label_run.Text = "运行界面";
+            this.label_run.Text = "自动运行";
             // 
             // Power
             // 
             this.Power.AutoSize = true;
             this.Power.BackColor = System.Drawing.Color.Transparent;
-            this.Power.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Power.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Power.Location = new System.Drawing.Point(1077, 9);
             this.Power.Name = "Power";
             this.Power.Size = new System.Drawing.Size(32, 16);
@@ -174,7 +174,7 @@
             // 
             this.Level.AutoSize = true;
             this.Level.BackColor = System.Drawing.Color.Transparent;
-            this.Level.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Level.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Level.Location = new System.Drawing.Point(999, 8);
             this.Level.Name = "Level";
             this.Level.Size = new System.Drawing.Size(88, 16);
@@ -185,7 +185,7 @@
             // 
             this.User.AutoSize = true;
             this.User.BackColor = System.Drawing.Color.Transparent;
-            this.User.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.User.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.User.Location = new System.Drawing.Point(936, 8);
             this.User.Name = "User";
             this.User.Size = new System.Drawing.Size(32, 16);
@@ -196,7 +196,7 @@
             // 
             this.UserName.AutoSize = true;
             this.UserName.BackColor = System.Drawing.Color.Transparent;
-            this.UserName.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.UserName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.UserName.Location = new System.Drawing.Point(857, 8);
             this.UserName.Name = "UserName";
             this.UserName.Size = new System.Drawing.Size(88, 16);
@@ -211,63 +211,52 @@
             this.panel_Status.Controls.Add(this.groupBox2);
             this.panel_Status.Location = new System.Drawing.Point(2, 185);
             this.panel_Status.Name = "panel_Status";
-            this.panel_Status.Size = new System.Drawing.Size(218, 486);
+            this.panel_Status.Size = new System.Drawing.Size(218, 509);
             this.panel_Status.TabIndex = 57;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.labSystemStatus);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Location = new System.Drawing.Point(6, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(205, 81);
+            this.groupBox1.Size = new System.Drawing.Size(205, 57);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Status";
+            this.groupBox1.Text = "系统状态";
             // 
             // labSystemStatus
             // 
             this.labSystemStatus.AutoSize = true;
-            this.labSystemStatus.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.labSystemStatus.ForeColor = System.Drawing.Color.Blue;
-            this.labSystemStatus.Location = new System.Drawing.Point(117, 35);
+            this.labSystemStatus.BackColor = System.Drawing.Color.Transparent;
+            this.labSystemStatus.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labSystemStatus.ForeColor = System.Drawing.Color.Red;
+            this.labSystemStatus.Location = new System.Drawing.Point(34, 25);
             this.labSystemStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labSystemStatus.Name = "labSystemStatus";
-            this.labSystemStatus.Size = new System.Drawing.Size(82, 21);
+            this.labSystemStatus.Size = new System.Drawing.Size(69, 19);
             this.labSystemStatus.TabIndex = 3;
             this.labSystemStatus.Text = "label2";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(6, 35);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 21);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "系统状态：";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.ClearAll);
             this.groupBox2.Controls.Add(this.ClearSingle);
             this.groupBox2.Controls.Add(this.listBox_Alarm);
-            this.groupBox2.Location = new System.Drawing.Point(6, 91);
+            this.groupBox2.Location = new System.Drawing.Point(6, 65);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(205, 387);
+            this.groupBox2.Size = new System.Drawing.Size(205, 430);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Alarm";
+            this.groupBox2.Text = "操作告警";
             // 
             // ClearAll
             // 
             this.ClearAll.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.ClearAll.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ClearAll.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ClearAll.ForeColor = System.Drawing.Color.Blue;
-            this.ClearAll.Location = new System.Drawing.Point(103, 326);
+            this.ClearAll.Location = new System.Drawing.Point(109, 383);
             this.ClearAll.Name = "ClearAll";
-            this.ClearAll.Size = new System.Drawing.Size(97, 48);
+            this.ClearAll.Size = new System.Drawing.Size(90, 40);
             this.ClearAll.TabIndex = 4;
             this.ClearAll.Text = "清除所有";
             this.ClearAll.UseVisualStyleBackColor = false;
@@ -276,11 +265,11 @@
             // ClearSingle
             // 
             this.ClearSingle.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.ClearSingle.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ClearSingle.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ClearSingle.ForeColor = System.Drawing.Color.Blue;
-            this.ClearSingle.Location = new System.Drawing.Point(5, 326);
+            this.ClearSingle.Location = new System.Drawing.Point(6, 383);
             this.ClearSingle.Name = "ClearSingle";
-            this.ClearSingle.Size = new System.Drawing.Size(97, 48);
+            this.ClearSingle.Size = new System.Drawing.Size(97, 40);
             this.ClearSingle.TabIndex = 3;
             this.ClearSingle.Text = "清除选中";
             this.ClearSingle.UseVisualStyleBackColor = false;
@@ -292,9 +281,9 @@
             this.listBox_Alarm.FormattingEnabled = true;
             this.listBox_Alarm.HorizontalScrollbar = true;
             this.listBox_Alarm.ItemHeight = 12;
-            this.listBox_Alarm.Location = new System.Drawing.Point(5, 17);
+            this.listBox_Alarm.Location = new System.Drawing.Point(6, 15);
             this.listBox_Alarm.Name = "listBox_Alarm";
-            this.listBox_Alarm.Size = new System.Drawing.Size(194, 304);
+            this.listBox_Alarm.Size = new System.Drawing.Size(194, 364);
             this.listBox_Alarm.TabIndex = 2;
             this.listBox_Alarm.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox_Alarm_MouseDoubleClick);
             // 
@@ -305,10 +294,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tss_lb_company,
             this.tss_lb_net});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 586);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 701);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1208, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1292, 22);
             this.statusStrip1.TabIndex = 58;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -331,24 +320,26 @@
             this.panel_Load.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_Load.AutoSize = true;
             this.panel_Load.BackColor = System.Drawing.SystemColors.Window;
+            this.panel_Load.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_Load.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel_Load.Location = new System.Drawing.Point(224, 185);
             this.panel_Load.Name = "panel_Load";
-            this.panel_Load.Size = new System.Drawing.Size(1153, 486);
+            this.panel_Load.Size = new System.Drawing.Size(1056, 512);
             this.panel_Load.TabIndex = 59;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label2.ForeColor = System.Drawing.Color.Blue;
             this.label2.Location = new System.Drawing.Point(359, 146);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 21);
+            this.label2.Size = new System.Drawing.Size(98, 21);
             this.label2.TabIndex = 61;
-            this.label2.Text = "单步界面";
+            this.label2.Text = "单步操作";
             // 
             // btnStart
             // 
@@ -366,11 +357,11 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("楷体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label3.ForeColor = System.Drawing.Color.Blue;
             this.label3.Location = new System.Drawing.Point(1094, 146);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(102, 21);
+            this.label3.Size = new System.Drawing.Size(98, 21);
             this.label3.TabIndex = 64;
             this.label3.Text = "产品配置";
             // 
@@ -404,7 +395,8 @@
             this.pB_step.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pB_step.Location = new System.Drawing.Point(361, 57);
             this.pB_step.Name = "pB_step";
-            this.pB_step.Size = new System.Drawing.Size(95, 85);
+            this.pB_step.Padding = new System.Windows.Forms.Padding(0, 0, 0, 20);
+            this.pB_step.Size = new System.Drawing.Size(95, 84);
             this.pB_step.TabIndex = 60;
             this.pB_step.TabStop = false;
             // 
@@ -422,11 +414,11 @@
             // pB_logo
             // 
             this.pB_logo.BackColor = System.Drawing.Color.Transparent;
-            this.pB_logo.BackgroundImage = global::XT_CETC23.Properties.Resources.logoY;
-            this.pB_logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pB_logo.Location = new System.Drawing.Point(2, 1);
+            this.pB_logo.BackgroundImage = global::XT_CETC23.Properties.Resources.WechatIMG153;
+            this.pB_logo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pB_logo.Location = new System.Drawing.Point(3, 4);
             this.pB_logo.Name = "pB_logo";
-            this.pB_logo.Size = new System.Drawing.Size(208, 177);
+            this.pB_logo.Size = new System.Drawing.Size(227, 157);
             this.pB_logo.TabIndex = 38;
             this.pB_logo.TabStop = false;
             // 
@@ -490,10 +482,10 @@
             this.BtnMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnMin.BackColor = System.Drawing.Color.Transparent;
             this.BtnMin.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_min;
-            this.BtnMin.Location = new System.Drawing.Point(1396, 1);
+            this.BtnMin.Location = new System.Drawing.Point(1141, 7);
             this.BtnMin.Margin = new System.Windows.Forms.Padding(2);
             this.BtnMin.Name = "BtnMin";
-            this.BtnMin.Size = new System.Drawing.Size(17, 15);
+            this.BtnMin.Size = new System.Drawing.Size(26, 26);
             this.BtnMin.TabIndex = 35;
             this.BtnMin.TabStop = false;
             // 
@@ -502,10 +494,10 @@
             this.BtnMax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnMax.BackColor = System.Drawing.Color.Transparent;
             this.BtnMax.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_max;
-            this.BtnMax.Location = new System.Drawing.Point(1411, 1);
+            this.BtnMax.Location = new System.Drawing.Point(1172, 7);
             this.BtnMax.Margin = new System.Windows.Forms.Padding(2);
             this.BtnMax.Name = "BtnMax";
-            this.BtnMax.Size = new System.Drawing.Size(17, 15);
+            this.BtnMax.Size = new System.Drawing.Size(26, 26);
             this.BtnMax.TabIndex = 36;
             this.BtnMax.TabStop = false;
             // 
@@ -514,18 +506,32 @@
             this.BtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnClose.BackColor = System.Drawing.Color.Transparent;
             this.BtnClose.BackgroundImage = global::XT_CETC23.Properties.Resources.btn_close;
-            this.BtnClose.Location = new System.Drawing.Point(1621, 1);
+            this.BtnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.BtnClose.Location = new System.Drawing.Point(1203, 7);
             this.BtnClose.Name = "BtnClose";
-            this.BtnClose.Size = new System.Drawing.Size(26, 23);
+            this.BtnClose.Size = new System.Drawing.Size(26, 26);
             this.BtnClose.TabIndex = 37;
             this.BtnClose.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("宋体", 8.5F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.label4.Location = new System.Drawing.Point(4, 146);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(226, 12);
+            this.label4.TabIndex = 66;
+            this.label4.Text = "中国航天科工集团第二研究院二十三所";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.SkyBlue;
-            this.ClientSize = new System.Drawing.Size(1208, 608);
+            this.ClientSize = new System.Drawing.Size(1292, 723);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pB_Param);
@@ -594,7 +600,6 @@
         private System.Windows.Forms.PictureBox BtnClose;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox pB_user;
-        private System.Windows.Forms.PictureBox pB_logo;
         private System.Windows.Forms.PictureBox pB_ccd;
         private System.Windows.Forms.PictureBox pB_para;
         private System.Windows.Forms.PictureBox pB_database;
@@ -615,19 +620,20 @@
         private System.Windows.Forms.Button ClearAll;
         private System.Windows.Forms.Button ClearSingle;
         private System.Windows.Forms.ListBox listBox_Alarm;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tss_lb_company;
         private System.Windows.Forms.ToolStripStatusLabel tss_lb_net;
         private System.Windows.Forms.Panel panel_Load;
-        private System.Windows.Forms.Label labSystemStatus;
         private System.Windows.Forms.PictureBox pB_step;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pB_Param;
         private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.PictureBox pB_logo;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label labSystemStatus;
     }
 }
 
