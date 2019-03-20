@@ -104,7 +104,7 @@ namespace XT_CETC23
             return mInstance;
         }
 
-         private TestingSystem()
+        private TestingSystem()
         {
             grabTypeQuery();
 
@@ -120,11 +120,11 @@ namespace XT_CETC23
         {
         }
 
-        public void StartSystem ()
+        public void Start ()
         {
-            Logger.WriteLine("主调度线程启动!!!");
             lock (lockInstance)
             {
+                Logger.WriteLine("主调度线程启动!!!");
                 if (mSystemRunning == true)
                 {   // 
                     if (mSystemExisting == true)
@@ -143,20 +143,22 @@ namespace XT_CETC23
                 mTaskSchedule = new Thread(TaskSchedule);
                 mTaskSchedule.Name = "主调度流程";
                 mTaskSchedule.Start();
-                // TransMessage("主调度进程启动");
             }
         }
 
-        public void ExitSystem ()
+        public void Abort ()
         {
-            Logger.WriteLine("主调度线程退出!!!");
-            mSystemExisting = true;
-            mTaskSchedule.Abort();
+            lock (lockInstance)
+            {
+                Logger.WriteLine("主调度线程退出!!!");
+                mSystemExisting = true;
+                mTaskSchedule.Abort();
 
-            TestingCabinets.Abort();
-            TestingTasks.Abort();
-            
-            mSystemRunning = false;
+                TestingCabinets.Abort();
+                TestingTasks.Abort();
+
+                mSystemRunning = false;
+            }
         }
 
         private void TaskSchedule ()
@@ -274,7 +276,7 @@ namespace XT_CETC23
             if (newMode == Mode.Manual)
             {
                 Logger.WriteLine("主调度进程因手动切换退出");
-                TestingSystem.GetInstance().ExitSystem();
+                TestingSystem.GetInstance().Abort();
             }
             mMode = newMode;
         }
@@ -320,7 +322,7 @@ namespace XT_CETC23
                 if (mStatus == Status.Emergency)
                 {
                     Logger.WriteLine("主调度进程紧急急停退出");
-                    TestingSystem.GetInstance().ExitSystem();
+                    TestingSystem.GetInstance().Abort();
                     return;
                 }
 
@@ -333,7 +335,7 @@ namespace XT_CETC23
                 if (mStatus == Status.Start && mMode == Mode.Auto && mInitialize == Initialize.Initialized)
                 {
                     Logger.WriteLine("主调度进程启动");
-                    TestingSystem.GetInstance().StartSystem();
+                    TestingSystem.GetInstance().Start();
                 }
 
                 if (mStatus == Status.Running)

@@ -69,27 +69,27 @@ namespace XT_CETC23.SonForm
                     return;
                 }
             }
-            DataBase.logPath = dt.Rows[6]["CmdPathName"].ToString().Trim();
-            txtLog.Text = DataBase.logPath;
-            if (!Directory.Exists(DataBase.logPath))
+            Config.Config.getInstance().logPath = dt.Rows[6]["CmdPathName"].ToString().Trim();
+            txtLog.Text = Config.Config.getInstance().logPath;
+            if (!Directory.Exists(Config.Config.getInstance().logPath))
             {
-                Directory.CreateDirectory(DataBase.logPath);
-                string filePath = DataBase.logPath + @"\log.txt";
+                Directory.CreateDirectory(Config.Config.getInstance().logPath);
+                string filePath = Config.Config.getInstance().logPath + @"\log.txt";
                 File.Create(filePath);
             }
             else
             {
-                string filePath = DataBase.logPath + @"\log.txt";
+                string filePath = Config.Config.getInstance().logPath + @"\log.txt";
                 if (!File.Exists(filePath))
                 {
                     File.Create(filePath);
                 }
             }
-            DataBase.targetPath = dt.Rows[7]["CmdPathName"].ToString().Trim();
-            txtTarget.Text = DataBase.targetPath;
-            if (!Directory.Exists(DataBase.targetPath))
+            Config.Config.getInstance().targetPath = dt.Rows[7]["CmdPathName"].ToString().Trim();
+            txtTarget.Text = Config.Config.getInstance().targetPath;
+            if (!Directory.Exists(Config.Config.getInstance().targetPath))
             {
-                Directory.CreateDirectory(DataBase.targetPath);
+                Directory.CreateDirectory(Config.Config.getInstance().targetPath);
             }
 
             CabinetData.pathCabinetStatus = new string[6];
@@ -319,18 +319,18 @@ namespace XT_CETC23.SonForm
 
             db.DBUpdate("update dbo.Path set CmdPathName='" + txtLog.Text.Trim() + "'where PathID=" + 7);
             db.DBUpdate("update dbo.Path set DataPathName='" + txtLog.Text.Trim() + "'where PathID=" + 7);
-            DataBase.logPath = txtLog.Text.Trim();
-            if (!Directory.Exists(DataBase.logPath))
+            Config.Config.getInstance().logPath = txtLog.Text.Trim();
+            if (!Directory.Exists(Config.Config.getInstance().logPath))
             {
-                Directory.CreateDirectory(DataBase.logPath);
+                Directory.CreateDirectory(Config.Config.getInstance().logPath);
             }
 
             db.DBUpdate("update dbo.Path set CmdPathName='" + txtTarget.Text.Trim() + "'where PathID=" + 8);
             db.DBUpdate("update dbo.Path set DataPathName='" + txtTarget.Text.Trim() + "'where PathID=" + 8);
-            DataBase.targetPath = txtTarget.Text.Trim();
-            if (!Directory.Exists(DataBase.targetPath))
+            Config.Config.getInstance().targetPath = txtTarget.Text.Trim();
+            if (!Directory.Exists(Config.Config.getInstance().targetPath))
             {
-                Directory.CreateDirectory(DataBase.targetPath);
+                Directory.CreateDirectory(Config.Config.getInstance().targetPath);
             }
 
             DataTable dt = db.DBQuery("select * from dbo.Path");

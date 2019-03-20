@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using XT_CETC23.Common;
 using XT_CETC23.DataCom;
+using System.IO;
 
 namespace XT_CETC23.Config
 {
@@ -93,5 +94,112 @@ namespace XT_CETC23.Config
             return count > 0;
         }
 
+        private string mLogPath;
+        public string logPath
+        {
+            get
+            {
+                return mLogPath;
+            }
+            set
+            {
+                mLogPath = value;
+
+                while (true)
+                {
+                    try
+                    {
+                        if (!Directory.Exists(mLogPath))
+                        {
+                            Directory.CreateDirectory(mLogPath);
+                        }
+                        break; // 成功创建目录，退出
+                    }
+                    catch (Exception)
+                    {
+                        char disk = mLogPath.Substring(0,1).ToCharArray()[0];
+                        if (disk == 'c' || disk == 'C')
+                        {
+                            Logger.WriteLine("不能生成log目录!!!请检查系统及配置");
+                            break;
+                        }
+                        disk = (char)(disk - 1);
+                        mLogPath = disk + mLogPath.Substring(1);
+                    }
+                } 
+            }
+        }
+
+        private string mTargetPath;
+        public string targetPath
+        {
+            get
+            {
+                return mTargetPath;
+            }
+            set
+            {
+                mTargetPath = value;
+
+                while (true)
+                {
+                    try
+                    {
+                        if (!Directory.Exists(mTargetPath))
+                        {
+                            Directory.CreateDirectory(mTargetPath);
+                        }
+                        break; // 成功创建目录，退出
+                    }
+                    catch (Exception)
+                    {
+                        char disk = mTargetPath.Substring(0, 1).ToCharArray()[0];
+                        if (disk == 'c' || disk == 'C')
+                        {
+                            Logger.WriteLine("不能生成target目录!!!请检查系统及配置");
+                            break;
+                        }
+                        disk = (char)(disk - 1);
+                        mTargetPath = disk + mTargetPath.Substring(1);
+                    }
+                } 
+            }
+        }
+
+        private string mCmdPath;
+        public string cmdPath
+        {
+            get
+            {
+                return mCmdPath;
+            }
+            set
+            {
+                mCmdPath = value;
+
+                while (true)
+                {
+                    try
+                    {
+                        if (!Directory.Exists(mCmdPath))
+                        {
+                            Directory.CreateDirectory(mCmdPath);
+                        }
+                        break; // 成功创建目录，退出
+                    }
+                    catch (Exception)
+                    {
+                        char disk = mCmdPath.Substring(0, 1).ToCharArray()[0];
+                        if (disk == 'c' || disk == 'C')
+                        {
+                            Logger.WriteLine("不能生成target目录!!!请检查系统及配置");
+                            break;
+                        }
+                        disk = (char)(disk - 1);
+                        mCmdPath = disk + mCmdPath.Substring(1);
+                    }
+                }
+            }
+        }
     }
 }

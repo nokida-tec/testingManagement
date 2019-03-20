@@ -40,7 +40,7 @@ namespace XT_CETC23
         {
             try
             {
-                mStreamWriter = File.AppendText(DataBase.logPath + @"\\syslog-" + DateTime.Now.ToString("yyyy-MM-dd HHmmss") + ".txt");
+                mStreamWriter = File.AppendText(Config.Config.getInstance().logPath + @"\\syslog-" + DateTime.Now.ToString("yyyy-MM-dd HHmmss") + ".txt");
             }
             catch (Exception e)
             {

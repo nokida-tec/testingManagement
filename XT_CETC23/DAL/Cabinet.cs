@@ -391,7 +391,7 @@ namespace XT_CETC23.DAL
                     {
                         string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName + ".xlsx";
                         FileOperation fileOp = new FileOperation();
-                        fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+                        fileOp.FileCopy(targetFileName, sourceFile, Config.Config.getInstance().targetPath);
                         //删除源文件          
                         File.Delete(sourceFile);
                     }
@@ -402,7 +402,7 @@ namespace XT_CETC23.DAL
 
                     //  record the scan barcode to logs file
                     DateTime currentTime = DateTime.Now;
-                    StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
+                    StreamWriter sw = File.AppendText(Config.Config.getInstance().logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
                     sw.WriteLine(currentTime.ToString() + " \t" + productID);
                     sw.Flush();
                     sw.Close();
@@ -532,7 +532,7 @@ namespace XT_CETC23.DAL
                     {
                         string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName + ".xlsx";
                         FileOperation fileOp = new FileOperation();
-                        fileOp.FileCopy(targetFileName, sourceFile, DataBase.targetPath);
+                        fileOp.FileCopy(targetFileName, sourceFile, Config.Config.getInstance().targetPath);
                         //删除源文件          
                         File.Delete(sourceFile);
                     }
@@ -543,7 +543,7 @@ namespace XT_CETC23.DAL
 
                     //  record the scan barcode to logs file
                     DateTime currentTime = DateTime.Now;
-                    StreamWriter sw = File.AppendText(DataBase.logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
+                    StreamWriter sw = File.AppendText(Config.Config.getInstance().logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
                     sw.WriteLine(currentTime.ToString() + " \t" + productID);
                     sw.Flush();
                     sw.Close();

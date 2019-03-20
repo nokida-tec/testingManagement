@@ -18,9 +18,6 @@ namespace XT_CETC23.DataCom
         DBMessage dbMessage;
         DataTable dt ;
         SqlDataAdapter dread;
-        public static string logPath;
-        public static string cmdPath;
-        public static string targetPath;
         object lockConCLose = new object();
         object lockConOpen = new object();
         object lockQuery = new object();
