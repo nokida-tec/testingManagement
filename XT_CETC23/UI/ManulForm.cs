@@ -1058,61 +1058,6 @@ namespace XT_CETC23.SonForm
         {
             try
             {
-                DataTable dt = new DataTable();
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                Axlis2Lable:
-                if (dt.Rows.Count > 0)
-                {
-                    db.DBDelete("delete from dbo.TaskAxlis2");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                if (dt.Rows.Count > 0)
-                    goto Axlis2Lable;
-                //
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                Axlis7Lable:
-                if (dt.Rows.Count > 0)
-                {
-                    db.DBDelete("delete from dbo.TaskAxlis7");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskAxlis7");
-                if (dt.Rows.Count > 0)
-                    goto Axlis7Lable;
-                //
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskRobot");
-                RobotLable:
-                if (dt.Rows.Count > 0)
-                {
-                    db.DBDelete("delete from dbo.TaskRobot");
-                }
-                dt.Rows.Clear();
-                dt.Columns.Clear();
-                dt = db.DBQuery("select * from dbo.TaskRobot");
-                if (dt.Rows.Count > 0)
-                    goto RobotLable;
-                //
-                CabinetLable:
-                    for(int i=0;i<DeviceCount.TestingCabinetCount;++i)
-                    {
-                        TestingCabinets.getInstance(i).Order = TestingCabinet.ORDER.Undefined;
-                    }
-                    for (int i = 0; i < dt.Rows.Count; ++i)
-                    {
-                        if (TestingCabinets.getInstance(i).Order != TestingCabinet.ORDER.Undefined)
-                        {
-                            goto CabinetLable;
-                        }
-                    }
                 PlcData.clearTask = true;
                 //TransMessage("任务清除完成");
             }
