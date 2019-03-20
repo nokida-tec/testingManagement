@@ -150,9 +150,12 @@ namespace XT_CETC23
         {
             lock (lockInstance)
             {
-                Logger.WriteLine("主调度线程退出!!!");
                 mSystemExisting = true;
-                mTaskSchedule.Abort();
+                if (mTaskSchedule != null)
+                {
+                    Logger.WriteLine("主调度线程退出!!!");
+                    mTaskSchedule.Abort();
+                }
 
                 TestingCabinets.Abort();
                 TestingTasks.Abort();
@@ -261,8 +264,12 @@ namespace XT_CETC23
                     
                     onStatusChanged(status);
                 }
+                else
+                {
+                    Plc.GetInstanse().ConnectPlc("192.168.10.10", 0, 0);
+                }
             }
-            Thread.Sleep(50);   
+            Thread.Sleep(100);   
         }
 
         void onModeChanged (Mode newMode)
@@ -275,7 +282,6 @@ namespace XT_CETC23
 
             if (newMode == Mode.Manual)
             {
-                Logger.WriteLine("主调度进程因手动切换退出");
                 TestingSystem.GetInstance().Abort();
             }
             mMode = newMode;
