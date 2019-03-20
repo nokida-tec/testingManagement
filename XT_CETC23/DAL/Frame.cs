@@ -500,7 +500,7 @@ namespace XT_CETC23
                     }
                     else if (dt2 != null && dt2.Rows.Count > 1)
                     {
-                        Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis7，正常情况下该表格中最多只有一条任务记录！");
+                        Logger.WriteLine("任务队列异常，请查看数据库表格TaskAxlis2，正常情况下该表格中最多只有一条任务记录！");
                     }
                     
                     Thread.Sleep(100);
