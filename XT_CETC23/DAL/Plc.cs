@@ -143,7 +143,7 @@ namespace XT_CETC23
         }
 
         private Thread mThreadMonitor;
-        public void start()
+        public void Start()
        {
            mThreadMonitor = new Thread(ReadPlc);
            mThreadMonitor.Name = "读取PLC数据";

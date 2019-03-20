@@ -267,6 +267,7 @@ namespace XT_CETC23
                 else
                 {
                     Plc.GetInstanse().ConnectPlc("192.168.10.10", 0, 0);
+                    Plc.GetInstanse().Start();
                 }
             }
             Thread.Sleep(100);   
