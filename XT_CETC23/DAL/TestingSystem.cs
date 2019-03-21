@@ -295,9 +295,9 @@ namespace XT_CETC23
                 }
                 Logger.WriteLine("系统模式改变：" + mMode + " ===> " + newMode);
 
-                if (mShowMode != null)
+                foreach (delegateModeChanged func in mDelegatesModeChanged)
                 {
-                    mShowMode(newMode);
+                    func(newMode);
                 }
 
                 if (newMode == Mode.Manual && mMode == Mode.Auto)
@@ -318,9 +318,9 @@ namespace XT_CETC23
                 }
                 Logger.WriteLine("系统状态改变：" + mInitialize + " ===> " + initialize);
 
-                if (mShowInitialize != null)
+                foreach (delegateInitializeChanged func in mDelegatesInitializeChanged)
                 {
-                    mShowInitialize(initialize);
+                    func(initialize);
                 }
 
                 if (initialize == Initialize.Initialize)
@@ -355,9 +355,9 @@ namespace XT_CETC23
                 try
                 {
                     Logger.WriteLine("系统状态改变：" + mStatus + " ===> " + newStatus);
-                    if (mShowStatus != null)
+                    foreach (delegateStatusChanged func in mDelegatesStatusChanged)
                     {
-                        mShowStatus(mMode, newStatus);
+                        func(mMode, newStatus);
                     }
 
                     if (mStatus == Status.Emergency)
@@ -458,40 +458,58 @@ namespace XT_CETC23
         }
 
         // 先支持一个delegate
-        public delegate void showInitialize(Initialize initialize);
-        public delegate void showStatus(TestingSystem.Mode mode, Status status);
-        public delegate void showMode(Mode mode);
-        private showInitialize mShowInitialize;
-        private showStatus mShowStatus;
-        private showMode mShowMode;
+        public delegate void delegateInitializeChanged(Initialize initialize);
+        public delegate void delegateStatusChanged(TestingSystem.Mode mode, Status status);
+        public delegate void delegateModeChanged(Mode mode);
+        private List<delegateInitializeChanged> mDelegatesInitializeChanged = new List<delegateInitializeChanged>();
+        private List<delegateStatusChanged> mDelegatesStatusChanged = new List<delegateStatusChanged>();
+        private List<delegateModeChanged> mDelegatesModeChanged = new List<delegateModeChanged>();
 
-        public void RegistryDelegate(showInitialize showInitialize)
+        public void RegistryDelegate(delegateInitializeChanged delegateInitializeChanged)
         {
-            mShowInitialize = showInitialize;
+            if (!mDelegatesInitializeChanged.Contains(delegateInitializeChanged))
+            {
+                mDelegatesInitializeChanged.Add(delegateInitializeChanged);
+            }
         }
-        public void UnregistryDelegate(showInitialize showInitialize)
+        public void UnregistryDelegate(delegateInitializeChanged delegateInitializeChanged)
         {
-            mShowInitialize = null;
-        }
-
-        public void RegistryDelegate(showStatus showStatus)
-        {
-            mShowStatus = showStatus;
-        }
-
-        public void UnregistryDelegate(showStatus showStatus)
-        {
-            mShowStatus = null;
+            if (mDelegatesInitializeChanged.Contains(delegateInitializeChanged))
+            {
+                mDelegatesInitializeChanged.Remove(delegateInitializeChanged);
+            } 
         }
 
-        public void RegistryDelegate(showMode showMode)
+        public void RegistryDelegate(delegateStatusChanged delegateStatusChanged)
         {
-            mShowMode = showMode;
+            if (!mDelegatesStatusChanged.Contains(delegateStatusChanged))
+            {
+                mDelegatesStatusChanged.Add(delegateStatusChanged);
+            }
         }
 
-        public void UnregistryDelegate(showMode showMode)
+        public void UnregistryDelegate(delegateStatusChanged delegateStatusChanged)
         {
-            mShowMode = null;
+            if (mDelegatesStatusChanged.Contains(delegateStatusChanged))
+            {
+                mDelegatesStatusChanged.Remove(delegateStatusChanged);
+            }
+        }
+
+        public void RegistryDelegate(delegateModeChanged delegateModeChanged)
+        {
+            if (!mDelegatesModeChanged.Contains(delegateModeChanged))
+            {
+                mDelegatesModeChanged.Add(delegateModeChanged);
+            }
+        }
+
+        public void UnregistryDelegate(delegateModeChanged delegateModeChanged)
+        {
+            if (mDelegatesModeChanged.Contains(delegateModeChanged))
+            {
+                mDelegatesModeChanged.Remove(delegateModeChanged);
+            }
         }
 
         public void clearTask()
