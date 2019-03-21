@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XT_CETC23.Model;
-using XT_CETC23.DAL;
 
-namespace XT_CETC23.Instances
+namespace XT_CETC23
 {
     class TestingCabinets
     {

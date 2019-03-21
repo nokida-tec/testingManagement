@@ -7,7 +7,7 @@ using XT_CETC23.Common;
 using XT_CETC23.DataCom;
 using System.Data;
 
-namespace XT_CETC23.Model
+namespace XT_CETC23
 {
     class TestingCabinet
     {   // 测试柜
