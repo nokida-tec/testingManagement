@@ -18,8 +18,6 @@ namespace XT_CETC23.SonForm
 {
     public partial class StepForm : Form
     {
-        public delegate void tansMessage(string str);
-        public event tansMessage TransMessage;
         Queue<string> mQueue = new System.Collections.Generic.Queue<string>();
         delegate void mCycle(Queue<string> mQueue);
         IAsyncResult result;

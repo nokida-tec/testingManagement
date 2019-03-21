@@ -55,32 +55,7 @@ namespace XT_CETC23
             paramForm = new ParamForm();
                        
             uForm.GetAcount += UForm_GetAcount;
-            mForm.TransMessage += MForm_TransMessage;
             mForm.clearTask();
-
-            dForm.GetMessage += DForm_GetMessage;
-        }
-        private void DForm_GetMessage(string message)
-        {
-            //listBox_Alarm.Items.Add(message + " " + DateTime.Now.ToString("G"));
-            log(message);
-        }
-
-        private void MForm_TransMessage(string str)
-        {
-            //listBox_Alarm.Items.Add(str + " " + DateTime.Now.ToString("G"));
-            log(str);
-        }
-        private void RForm_TransStatusToMain(string name,string message)
-        {
-            //if(name== "plcMode")
-            //{
-            //    tss_lb_plcMode.Text = message;
-            //}
-            //if (name == "robotMode")
-            //{
-            //    tss_lb_robotMode.Text = message;
-            //}
         }
 
         private void UForm_GetAcount(string[] str)
@@ -90,7 +65,7 @@ namespace XT_CETC23
             Common.Account.user= str[0].ToString();
             Common.Account.power= str[1].ToString();
             //listBox_Alarm.Items.Add(str[0] + " " + DateTime.Now.ToString("G")+" "+"登录成功");
-            log(str[0] + " " + "登录成功");
+            //log(str[0] + " " + "登录成功");
             pB_manul.Enabled = true;
             pB_run.Enabled = true;
  //           pB_auto.Enabled = true;
@@ -98,26 +73,17 @@ namespace XT_CETC23
             pB_database.Enabled = true;
             pB_para.Enabled = true;
         }
-        private void RForm_TransMessageToMain(string message)
+        private void ShowLog(string message)
         {
             if(listBox_Alarm.InvokeRequired)
             {
                 //listBox_Alarm.Invoke(new Action<string>((s) => { listBox_Alarm.Items.Add(s); }), message + " " + DateTime.Now.ToString("G"));
-                listBox_Alarm.Invoke(new Action<string>((s) => { log(s); }), message);
+                listBox_Alarm.Invoke(new Action<string>((s) => { ShowLog(s); }), message);
             }
             else
             {
-                //listBox_Alarm.Items.Add(message + " " + DateTime.Now.ToString("G"));
-                log(message);
+                listBox_Alarm.Items.Add(message + " " + DateTime.Now.ToString("G"));
             }
-            //if(message.Equals("Plc"))
-            //{
-            //    tss_lb_plcStatus.Text = message;
-            //}
-            //if (message.Equals("Robot"))
-            //{
-            //    tss_lb_robotStatus.Text = message;
-            //}
         }
         void InitFormEvent()
         {
@@ -797,20 +763,8 @@ namespace XT_CETC23
         private void MainForm_Load(object sender, EventArgs e)
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
-            Logger.getInstance().RegistryDelegate(RForm_TransMessageToMain);
+            Logger.getInstance().RegistryDelegate(ShowLog);
             pbRun();
-        }
-
-        public void log(string message)
-        {
-            try
-            {
-                listBox_Alarm.Items.Add(message);
-            }
-            catch (Exception e)
-            {
-                //Logger.WriteLine(e);
-            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)

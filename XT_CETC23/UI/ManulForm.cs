@@ -23,7 +23,6 @@ namespace XT_CETC23.SonForm
         Queue<string> mQueue = new System.Collections.Generic.Queue<string>();
         delegate void mCycle(Queue<string> mQueue);
         public delegate void tansMessage(string str);
-        public event tansMessage TransMessage;
         
         DataTable dt = new DataTable();
         IAsyncResult result;
@@ -1064,7 +1063,7 @@ namespace XT_CETC23.SonForm
             {
                 Logger.WriteLine(e);
                 PlcData.clearTask = false;
-                TransMessage("任务清除失败");
+                Logger.WriteLine("任务清除失败");
             }
         }
 
