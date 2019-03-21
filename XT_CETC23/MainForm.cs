@@ -316,7 +316,7 @@ namespace XT_CETC23
         }
         void pbPara()
         {
-            if (TestingSystem.GetInstance().mode == TestingSystem.Mode.Manual)
+            if (TestingSystem.GetInstance().mode != TestingSystem.Mode.Auto)
             {
                 //if (Common.Account.power != "system") { MessageBox.Show("当前用户无此权限"); return; }
                 if (!pForm.IsDisposed)
@@ -337,7 +337,7 @@ namespace XT_CETC23
             else
             {
                 pB_para.BorderStyle = BorderStyle.None;
-                MessageBox.Show("手动操作只能在手动模式下进行！", "Information");
+                MessageBox.Show("参数配置不能在自动模式下进行！", "Information");
             }
         }
 
