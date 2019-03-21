@@ -44,14 +44,11 @@ namespace XT_CETC23
             InitForm();
             InitFormEvent();
 
-            Logger.getInstance().RegistryDelegate(RForm_TransMessageToMain);
-
             aForm = new AutoForm();
             cForm = new CameraForm();
             resultForm = new TestingResultForm();
             dForm = new DataForm();
             mForm = new ManulForm();
-            rForm = new RunForm();
             pForm = new ParaForm();
             uForm = new UserForm();
             sForm = new StepForm(mForm, cForm);
@@ -62,15 +59,6 @@ namespace XT_CETC23
             mForm.clearTask();
 
             dForm.GetMessage += DForm_GetMessage;
-            //pbRun();
-            //plc = new Plc(this);
-            //pB_manul.Enabled = false;
-            //pB_run.Enabled = false;
-            //pB_auto.Enabled = false;
-            //pB_ccd.Enabled = false;
-            //pB_database.Enabled = false;
-            //pB_para.Enabled = false;
-            
         }
         private void DForm_GetMessage(string message)
         {
@@ -389,6 +377,11 @@ namespace XT_CETC23
 
         void pbRun()
         {
+            if (rForm == null)
+            {
+                rForm = new RunForm();
+            }
+
             if (!rForm.IsDisposed)
             {
                 if (TestingSystem.stepEnable == true)
@@ -804,6 +797,7 @@ namespace XT_CETC23
         private void MainForm_Load(object sender, EventArgs e)
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            Logger.getInstance().RegistryDelegate(RForm_TransMessageToMain);
             pbRun();
         }
 

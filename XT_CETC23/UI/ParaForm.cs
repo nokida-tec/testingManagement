@@ -171,7 +171,7 @@ namespace XT_CETC23.SonForm
                         //db.DBUpdata("insert into CabinetData(number,sort,status) values('"+i+"','" + cb[i].SelectedItem.ToString() + "','" + chb[i].Checked + "')");
                         TestingCabinets.getInstance(i).Type = sel;
                         TestingCabinets.getInstance(i).Enable = chb[i].Checked ? TestingCabinet.ENABLE.Enable : TestingCabinet.ENABLE.Disable;
-
+                        TestingCabinets.getInstance(i).doConfigChanged();
                         {
                             str[i] = cb[i].SelectedItem.ToString();
                             bl[i] = (bool)chb[i].Checked;
@@ -210,6 +210,7 @@ namespace XT_CETC23.SonForm
                 prodType[0] = Convert.ToByte(cabinetStatus);
                 plc.DBWrite(PlcData.PlcWriteAddress, 20, 1, prodType);
             }
+            
         }
 
         private void para_btnAdd_Click(object sender, EventArgs e)

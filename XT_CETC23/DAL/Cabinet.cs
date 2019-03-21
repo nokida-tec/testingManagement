@@ -893,8 +893,8 @@ namespace XT_CETC23
             mDelegateConfigChanged = null;
         }
 
-        TestingCabinet mOldCabinet;
-        private void doConfigChanged()
+        //TestingCabinet mOldCabinet;
+        public void doConfigChanged()
         {
             lock (this)
             {
