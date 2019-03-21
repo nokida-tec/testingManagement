@@ -121,7 +121,6 @@
     <Compile Include="Common\WaitCondition.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\Database.cs" />
-    <Compile Include="DAL\ActualData.cs" />
     <Compile Include="DAL\Cabinet.cs" />
     <Compile Include="DAL\Camera.cs" />
     <Compile Include="DAL\DataBase.cs" />
