@@ -70,67 +70,6 @@ namespace XT_CETC23.SonForm
             //this.UserForm = iUserForm;
         }
 
-        private void onModeChanged(TestingSystem.Mode mode)
-        {
-            switch (mode)
-            {
-                case TestingSystem.Mode.Auto:
-                    run_btnAuto.BackColor = Color.Green;
-                    run_btnManul.BackColor = Color.PowderBlue;
-                    break;
-                case TestingSystem.Mode.Manual:
-                    run_btnAuto.BackColor = Color.PowderBlue;
-                    run_btnManul.BackColor = Color.Green;
-                    break;
-                default:
-                    run_btnAuto.BackColor = Color.Green;
-                    run_btnManul.BackColor = Color.Green;
-                    break;
-            }
-        }
-
-        private void onPlcModeChanged(bool status)
-        {  // 显示PLC状态
-            switch (status)
-            {
-                case true:
-                    run_lbPlcStatusv.Text = "运行中";
-                    run_lbPlcStatusv.BackColor = Color.Green;
-                    break;
-                default:
-                    run_lbPlcStatusv.Text = "故障";
-                    run_lbPlcStatusv.BackColor = Color.PowderBlue;
-                    break;
-            }
-        }
-
-        private void onInitializeChanged(TestingSystem.Initialize initialize)
-        {
-            switch (initialize)
-            {
-                case TestingSystem.Initialize.Initialize:
-                    break;
-                case TestingSystem.Initialize.Initialized:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void onStatusChanged(TestingSystem.Mode mode, TestingSystem.Status status)
-        {
-            if (mode == TestingSystem.Mode.Auto && status == TestingSystem.Status.Running)
-            {
-                run_btnInit.BackColor = Color.Green;
-                run_btnOff.BackColor = Color.PowderBlue;
-            }
-            else
-            {
-                run_btnInit.BackColor = Color.PowderBlue;
-                run_btnOff.BackColor = Color.Green;
-            }
-        }
-
         void InitForm()
         {
             run_btnInit.Click += Run_btn_Click;
@@ -374,6 +313,66 @@ namespace XT_CETC23.SonForm
             return true;
         }
 
+        private void onModeChanged(TestingSystem.Mode mode)
+        {
+            switch (mode)
+            {
+                case TestingSystem.Mode.Auto:
+                    run_btnAuto.BackColor = Color.Green;
+                    run_btnManul.BackColor = Color.PowderBlue;
+                    break;
+                case TestingSystem.Mode.Manual:
+                    run_btnAuto.BackColor = Color.PowderBlue;
+                    run_btnManul.BackColor = Color.Green;
+                    break;
+                default:
+                    run_btnAuto.BackColor = Color.Green;
+                    run_btnManul.BackColor = Color.Green;
+                    break;
+            }
+        }
+
+        private void onPlcModeChanged(bool status)
+        {  // 显示PLC状态
+            switch (status)
+            {
+                case true:
+                    run_lbPlcStatusv.Text = "运行中";
+                    run_lbPlcStatusv.BackColor = Color.Green;
+                    break;
+                default:
+                    run_lbPlcStatusv.Text = "故障";
+                    run_lbPlcStatusv.BackColor = Color.PowderBlue;
+                    break;
+            }
+        }
+
+        private void onInitializeChanged(TestingSystem.Initialize initialize)
+        {
+            switch (initialize)
+            {
+                case TestingSystem.Initialize.Initialize:
+                    break;
+                case TestingSystem.Initialize.Initialized:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void onStatusChanged(TestingSystem.Mode mode, TestingSystem.Status status)
+        {
+            if (mode == TestingSystem.Mode.Auto && status == TestingSystem.Status.Running)
+            {
+                run_btnInit.BackColor = Color.Green;
+                run_btnOff.BackColor = Color.PowderBlue;
+            }
+            else
+            {
+                run_btnInit.BackColor = Color.PowderBlue;
+                run_btnOff.BackColor = Color.Green;
+            }
+        }
         
     }
 }
