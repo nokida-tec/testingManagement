@@ -23,8 +23,14 @@ namespace XT_CETC23.SonForm
         public RunForm()
         {
             InitializeComponent();
+
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
             grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
+        }
+
+        private void Form_Load(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
 
             // 注册显示函数
             TestingSystem.GetInstance().RegistryDelegate(onModeChanged);
@@ -33,7 +39,7 @@ namespace XT_CETC23.SonForm
             Plc.GetInstanse().RegistryDelegate(onPlcModeChanged);
             Robot.GetInstanse().RegistryDelegate(onRobotStatusChanged);
             Frame.getInstance().RegistryDelegate(onFrameStatusChanged);
-            for (int i = 0; i < TestingCabinets.getCount (); i ++)
+            for (int i = 0; i < TestingCabinets.getCount(); i++)
             {
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetStatusChanged);
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetResultChanged);
@@ -41,12 +47,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void Form_Load(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
-        }
-
-        private void btnFrameUpdate_Click(object sender, EventArgs e)
+        private void onClick_FrameUpdate(object sender, EventArgs e)
         {
             if (!Frame.getInstance().frameUpdate)               
             {

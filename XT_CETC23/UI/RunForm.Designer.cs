@@ -563,7 +563,7 @@
             this.btnFrameUpdate.TabIndex = 69;
             this.btnFrameUpdate.Text = "料架更换完成确认";
             this.btnFrameUpdate.UseVisualStyleBackColor = false;
-            this.btnFrameUpdate.Click += new System.EventHandler(this.btnFrameUpdate_Click);
+            this.btnFrameUpdate.Click += new System.EventHandler(this.onClick_FrameUpdate);
             // 
             // run_lbGramStatusv
             // 
