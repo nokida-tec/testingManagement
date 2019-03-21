@@ -82,7 +82,7 @@ namespace XT_CETC23
             }
             else
             {
-                listBox_Alarm.Items.Add(message + " " + DateTime.Now.ToString("G"));
+                listBox_Alarm.Items.Add(message);
             }
         }
         void InitFormEvent()
@@ -764,6 +764,12 @@ namespace XT_CETC23
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             Logger.getInstance().RegistryDelegate(ShowLog);
+
+            // 注册显示函数
+            TestingSystem.GetInstance().RegistryDelegate(onModeChanged);
+            TestingSystem.GetInstance().RegistryDelegate(onInitializeChanged);
+            TestingSystem.GetInstance().RegistryDelegate(onStatusChanged);
+
             pbRun();
         }
 
@@ -777,6 +783,21 @@ namespace XT_CETC23
         {
            // TestingCabinets.getInstance(0).cmdStop();
             Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
+        }
+
+        private void onModeChanged(TestingSystem.Mode mode)
+        {
+            labSystemStatus.Text = EnumHelper.GetDescription(mode);
+        }
+
+        private void onInitializeChanged(TestingSystem.Initialize initialize)
+        {
+            labSystemStatus.Text = EnumHelper.GetDescription(initialize);
+        }
+
+        private void onStatusChanged(TestingSystem.Mode mode, TestingSystem.Status status)
+        {
+            labSystemStatus.Text = EnumHelper.GetDescription(status);
         }
     }
 }
