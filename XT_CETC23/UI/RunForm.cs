@@ -44,6 +44,7 @@ namespace XT_CETC23.SonForm
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetStatusChanged);
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetResultChanged);
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetConfigChanged);
+                onCabinetConfigChanged(i);
             }
         }
 

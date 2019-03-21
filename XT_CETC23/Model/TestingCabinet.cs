@@ -35,9 +35,9 @@ namespace XT_CETC23
 
         public enum ENABLE
         {
-            [EnumDescription("Enable")]
+            [EnumDescription("启用")]
             Enable = 1,
-            [EnumDescription("Disable")]
+            [EnumDescription("禁用")]
             Disable = 0,
         }
 
