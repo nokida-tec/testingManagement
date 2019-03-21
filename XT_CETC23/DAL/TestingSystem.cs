@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using XT_CETC23.Instances;
 using XT_CETC23.Common;
 using XT_CETC23.DataCom;
 using System.Windows.Forms;
@@ -184,7 +183,7 @@ namespace XT_CETC23
 
                 for (int i = 0; i < TestingCabinets.getCount(); i ++ )
                 {
-                    if (TestingCabinets.getInstance(i).Enable == Model.TestingCabinet.ENABLE.Enable
+                    if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable
                         && TestingTasks.getInstance(i).isRunning != true)
                     {
                         String[] caps = TestingCabinets.getInstance(i).getCap();
@@ -294,7 +293,7 @@ namespace XT_CETC23
                 {
                     return;
                 }
-                Logger.WriteLine("Mode 改变：" + mMode + " ===> " + newMode);
+                Logger.WriteLine("系统模式改变：" + mMode + " ===> " + newMode);
 
                 if (mShowMode != null)
                 {
@@ -317,7 +316,7 @@ namespace XT_CETC23
                 {
                     return;
                 }
-                Logger.WriteLine("Status 改变：" + mInitialize + " ===> " + initialize);
+                Logger.WriteLine("系统状态改变：" + mInitialize + " ===> " + initialize);
 
                 if (mShowInitialize != null)
                 {
@@ -355,7 +354,7 @@ namespace XT_CETC23
                 }
                 try
                 {
-                    Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
+                    Logger.WriteLine("系统状态改变：" + mStatus + " ===> " + newStatus);
                     if (mShowStatus != null)
                     {
                         mShowStatus(mMode, newStatus);

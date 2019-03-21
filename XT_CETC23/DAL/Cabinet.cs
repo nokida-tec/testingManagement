@@ -11,13 +11,12 @@ using XT_CETC23.DataManager;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
 using XT_CETC23.DataCom;
-using XT_CETC23.Instances;
 using Excel;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
 
-namespace XT_CETC23.DAL
+namespace XT_CETC23
 {
     class Cabinet: TestingCabinet
     {
@@ -804,13 +803,13 @@ namespace XT_CETC23.DAL
             doStatusChanged(newStatus);
         }
 
-        public delegate bool onStatusChanged (BedStatus status);
+        public delegate bool onStatusChanged(int cabinetID, BedStatus status);
         private onStatusChanged mDelegateStatusChanged;
-        public void ReistryDelegate(onStatusChanged delegateStatusChanged)
+        public void RegistryDelegate(onStatusChanged delegateStatusChanged)
         {
             mDelegateStatusChanged = delegateStatusChanged;
         }
-        public void UnreistryDelegate(onStatusChanged delegateStatusChanged)
+        public void UnregistryDelegate(onStatusChanged delegateStatusChanged)
         {
             mDelegateStatusChanged = null;
         }
@@ -825,11 +824,11 @@ namespace XT_CETC23.DAL
                     {
                         return;
                     }
-                    Logger.WriteLine("测试台状态改变：" + mStatus + " ===> " + newStatus);
+                    Logger.WriteLine("测试台[" + ID + "]：状态改变：" + mStatus + " ===> " + newStatus);
 
                     if (mDelegateStatusChanged != null)
                     {
-                        mDelegateStatusChanged(newStatus);
+                        mDelegateStatusChanged(ID, newStatus);
                     }
                 }
                 catch (Exception e)
@@ -839,6 +838,46 @@ namespace XT_CETC23.DAL
                 finally
                 {
                     mStatus = newStatus;
+                }
+            }
+        }
+
+        private TestingCabinet.STATUS mResult;
+        public delegate bool onResultChanged(int cabinetID, TestingCabinet.STATUS result);
+        private onResultChanged mDelegateResultChanged;
+        public void RegistryDelegate(onResultChanged delegateResultChanged)
+        {
+            mDelegateResultChanged = delegateResultChanged;
+        }
+        public void UnregistryDelegate(onResultChanged delegateResultChanged)
+        {
+            mDelegateResultChanged = null;
+        }
+
+        private void doResultChanged(TestingCabinet.STATUS newStatus)
+        {
+            lock (this)
+            {
+                try
+                {
+                    if (mResult == newStatus)
+                    {
+                        return;
+                    }
+                    Logger.WriteLine("测试台[" + ID + "]：测试结果改变：" + mResult + " ===> " + newStatus);
+
+                    if (mDelegateStatusChanged != null)
+                    {
+                        mDelegateResultChanged(ID, newStatus);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+                finally
+                {
+                    mResult = newStatus;
                 }
             }
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XT_CETC23.DAL;
 using XT_CETC23.DataManager;
 using XT_CETC23.Model;
 using System.Threading;
@@ -99,14 +98,14 @@ namespace XT_CETC23
         Thread axlis2Task;
         private Frame()
         {
-            axlis2Task = new Thread(Axlis2Task);
-            axlis2Task.Name = "2轴任务";
+ //           axlis2Task = new Thread(Axlis2Task);
+ //           axlis2Task.Name = "2轴任务";
             //if (PlcData._plcMode == 25)
             //{
-            if (!axlis2Task.IsAlive)
-            {
-                axlis2Task.Start();
-            }
+//            if (!axlis2Task.IsAlive)
+//            {
+//                axlis2Task.Start();
+//            }
         }
 
         public bool excuteCommand(Lock.Command command)
@@ -522,5 +521,13 @@ namespace XT_CETC23
 
 
         public bool frameUpdate { get; set; }
+
+        public delegate void delegateFrameStatusChanged();
+        private delegateFrameStatusChanged mDelegateFrameStatusChanged;
+
+        public void RegistryDelegate(delegateFrameStatusChanged delegateFrameStatusChanged)
+        {
+            mDelegateFrameStatusChanged = delegateFrameStatusChanged;
+        }
     }
 }

@@ -12,7 +12,6 @@ using XT_CETC23.DataManager;
 using System.Threading;
 using XT_CETC23.Common;
 using XT_CETC23;
-using XT_CETC23.Instances;
 
 namespace XT_CETC23.DataCom
 {
@@ -605,7 +604,7 @@ namespace XT_CETC23.DataCom
                {
                    return;
                }
-               Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
+               Logger.WriteLine("机器人状态改变：" + mStatus + " ===> " + newStatus);
 
                if (mShowStatus != null)
                {

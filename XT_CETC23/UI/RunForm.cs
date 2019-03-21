@@ -11,6 +11,7 @@ using XT_CETC23.INTransfer;
 using XT_CETC23.DataCom;
 using XT_CETC23.DataManager;
 using XT_CETC23.Common;
+using XT_CETC23;
 using System.Threading;
 
 namespace XT_CETC23.SonForm
@@ -27,7 +28,6 @@ namespace XT_CETC23.SonForm
         ICameraForm CameraForm;
         IDatabaseForm DataForm;
         IManulForm ManulForm;
-        IParaForm ParaForm;
         IUserForm UserForm;
         IMainForm MainForm;
         public Plc plc;
@@ -57,11 +57,17 @@ namespace XT_CETC23.SonForm
             this.MainForm = MainForm;
 
             // 注册显示函数
-            TestingSystem.GetInstance().RegistryDelegate(ShowMode);
-            TestingSystem.GetInstance().RegistryDelegate(ShowInitialize);
-            TestingSystem.GetInstance().RegistryDelegate(ShowStatus);
-            Plc.GetInstanse().RegistryDelegate(ShowPlcMode);
+            TestingSystem.GetInstance().RegistryDelegate(onModeChanged);
+            TestingSystem.GetInstance().RegistryDelegate(onInitializeChanged);
+            TestingSystem.GetInstance().RegistryDelegate(onStatusChanged);
+            Plc.GetInstanse().RegistryDelegate(onPlcModeChanged);
             Robot.GetInstanse().RegistryDelegate(onRobotStatusChanged);
+            Frame.getInstance().RegistryDelegate(onFrameStatusChanged);
+            for (int i = 0; i < TestingCabinets.getCount (); i ++)
+            {
+                TestingCabinets.getInstance(i).RegistryDelegate(onCabinetStatusChanged);
+                TestingCabinets.getInstance(i).RegistryDelegate(onCabinetResultChanged);
+            }
 
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
@@ -69,7 +75,7 @@ namespace XT_CETC23.SonForm
             grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
         }
 
-        private void ShowMode(TestingSystem.Mode mode)
+        private void onModeChanged(TestingSystem.Mode mode)
         {
             switch (mode)
             {
@@ -88,7 +94,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void ShowPlcMode(bool status)
+        private void onPlcModeChanged(bool status)
         {  // 显示PLC状态
             switch (status)
             {
@@ -103,7 +109,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void ShowInitialize(TestingSystem.Initialize initialize)
+        private void onInitializeChanged(TestingSystem.Initialize initialize)
         {
             switch (initialize)
             {
@@ -116,7 +122,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void ShowStatus(TestingSystem.Mode mode, TestingSystem.Status status)
+        private void onStatusChanged(TestingSystem.Mode mode, TestingSystem.Status status)
         {
             if (mode == TestingSystem.Mode.Auto && status == TestingSystem.Status.Running)
             {
@@ -261,19 +267,6 @@ namespace XT_CETC23.SonForm
                         lb_Cabinet51_rv.Invoke(new Action<string>((s) => { lb_Cabinet51_rv.Text = message; }), message);
                     if (CabinetNum == 6)
                         lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
-
-                    dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
-                    String feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
-                    if (feedBinScanDone == "No")
-                    {
-                        run_lbGramStatusv.Text = "料架取空";
-                        btnFrameUpdate.BackColor = Color.Yellow;
-                    }
-                    if (feedBinScanDone == "Yes")
-                    {
-                        run_lbGramStatusv.Text = "使用中";
-                        btnFrameUpdate.BackColor = Color.PowderBlue;
-                    }
                 }
         }
 
@@ -371,31 +364,76 @@ namespace XT_CETC23.SonForm
                     lb_Robot_sv.BackColor = Color.Green;
                     break;
             }
-            //if (mode == (int)EnumC.Robot.Fault)
-            //{
-            //    lb_Robot_sv.Invoke(new Action<string>((s) => { lb_Robot_sv.Text = s; }), EnumHelper.GetDescription(EnumC.Robot.Fault));
-            //    TransStatusToMain("robotMode", lb_Robot_sv.Text);
-            //}
-            //if (mode == (int)EnumC.Robot.Freeing)
-            //{
-            //    lb_Robot_sv.Invoke(new Action<string>((s) => { lb_Robot_sv.Text = s; }), EnumHelper.GetDescription(EnumC.Robot.Freeing));
-            //    TransStatusToMain("robotMode", lb_Robot_sv.Text);
-            //}
-            //if (mode == (int)EnumC.Robot.Pauseing)
-            //{
-            //    lb_Robot_sv.Invoke(new Action<string>((s) => { lb_Robot_sv.Text = s; }), EnumHelper.GetDescription(EnumC.Robot.Pauseing));
-            //    TransStatusToMain("robotMode", lb_Robot_sv.Text);
-            //}
-            //if (mode == (int)EnumC.Robot.PowerOnOver)
-            //{
-            //    lb_Robot_sv.Invoke(new Action<string>((s) => { lb_Robot_sv.Text = s; }), EnumHelper.GetDescription(EnumC.Robot.PowerOnOver));
-            //    TransStatusToMain("robotMode", lb_Robot_sv.Text);
-            //}
-            //if (mode == (int)EnumC.Robot.Running)
-            //{
-            //    lb_Robot_sv.Invoke(new Action<string>((s) => { lb_Robot_sv.Text = s; }), EnumHelper.GetDescription(EnumC.Robot.Running));
-            //    TransStatusToMain("robotMode", lb_Robot_sv.Text);
-            //}
-        }                    
+        }     
+        
+        private void onFrameStatusChanged()
+        {
+            dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
+            String feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
+            if (feedBinScanDone == "No")
+            {
+                run_lbGramStatusv.Text = "料架取空";
+                btnFrameUpdate.BackColor = Color.Yellow;
+            }
+            if (feedBinScanDone == "Yes")
+            {
+                run_lbGramStatusv.Text = "使用中";
+                btnFrameUpdate.BackColor = Color.PowderBlue;
+            }
+        }
+        private bool onCabinetStatusChanged(int cabinetID, Cabinet.BedStatus status)
+        {
+            if (this.IsHandleCreated)
+            {
+                String message = EnumHelper.GetDescription(status);
+                if (cabinetID == 0)
+                    lb_Cabinet11_sv.Invoke(new Action<string>((s) => { lb_Cabinet11_sv.Text = message; }), message);
+                if (cabinetID == 1)
+                    lb_Cabinet21_sv.Invoke(new Action<string>((s) => { lb_Cabinet21_sv.Text = message; }), message);
+                if (cabinetID == 2)
+                    lb_Cabinet31_sv.Invoke(new Action<string>((s) => { lb_Cabinet31_sv.Text = message; }), message);
+                if (cabinetID == 3)
+                    lb_Cabinet41_sv.Invoke(new Action<string>((s) => { lb_Cabinet41_sv.Text = message; }), message);
+                if (cabinetID == 4)
+                    lb_Cabinet51_sv.Invoke(new Action<string>((s) => { lb_Cabinet51_sv.Text = message; }), message);
+                if (cabinetID == 5)
+                    lb_Cabinet61_sv.Invoke(new Action<string>((s) => { lb_Cabinet61_sv.Text = message; }), message);
+            } 
+            return true;
+        }
+
+        private bool onCabinetResultChanged(int cabinetID, TestingCabinet.STATUS status)
+        {
+            if (this.IsHandleCreated)
+            {
+                String message = EnumHelper.GetDescription(status);
+                if (cabinetID == 0)
+                    lb_Cabinet11_rv.Invoke(new Action<string>((s) => { lb_Cabinet11_rv.Text = message; }), message);
+                if (cabinetID == 1)
+                    lb_Cabinet21_rv.Invoke(new Action<string>((s) => { lb_Cabinet21_rv.Text = message; }), message);
+                if (cabinetID == 2)
+                    lb_Cabinet31_rv.Invoke(new Action<string>((s) => { lb_Cabinet31_rv.Text = message; }), message);
+                if (cabinetID == 3)
+                    lb_Cabinet41_rv.Invoke(new Action<string>((s) => { lb_Cabinet41_rv.Text = message; }), message);
+                if (cabinetID == 4)
+                    lb_Cabinet51_rv.Invoke(new Action<string>((s) => { lb_Cabinet51_rv.Text = message; }), message);
+                if (cabinetID == 5)
+                    lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
+
+                DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=88");
+                String feedBinScanDone = dt.Rows[0]["Sort"].ToString().Trim();
+                if (feedBinScanDone == "No")
+                {
+                    run_lbGramStatusv.Text = "料架取空";
+                    btnFrameUpdate.BackColor = Color.Yellow;
+                }
+                if (feedBinScanDone == "Yes")
+                {
+                    run_lbGramStatusv.Text = "使用中";
+                    btnFrameUpdate.BackColor = Color.PowderBlue;
+                }
+            }
+            return true;
+        }
     }
 }
