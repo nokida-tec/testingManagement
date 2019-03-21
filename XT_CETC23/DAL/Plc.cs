@@ -139,15 +139,57 @@ namespace XT_CETC23
 
         private Thread mThreadMonitor;
         public void Start()
+        {
+            lock (this)
+            {
+                try
+                {
+                    if (mThreadMonitor == null)
+                    {
+                        mThreadMonitor = new Thread(ReadPlc);
+                        mThreadMonitor.Name = "读取PLC数据";
+                    }
+                    if (!mThreadMonitor.IsAlive)
+                    {
+                        mThreadMonitor.Start();
+                    }
+                }
+                catch(Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+            }
+
+        }
+
+       public delegate void onDataChanged();
+       private List<onDataChanged> mDelegateDataChanged = new List<onDataChanged>();
+       public void RegistryDelegate(onDataChanged func)
        {
-           mThreadMonitor = new Thread(ReadPlc);
-           mThreadMonitor.Name = "读取PLC数据";
-           mThreadMonitor.Start();
+           lock (this)
+           {
+               if (!mDelegateDataChanged.Contains(func))
+               {
+                   mDelegateDataChanged.Add(func);
+               }
+           }
+       }
+
+       public void UnregistryDelegate(onDataChanged func)
+       {
+           lock (this)
+           {
+               if (mDelegateDataChanged.Contains(func))
+               {
+                   mDelegateDataChanged.Remove(func);
+               }
+           }
        }
 
        private void ReadPlc()
        {
            int flag = 0;
+           Logger.WriteLine(mThreadMonitor.Name + ": 启动");
            while (true)
            {
                try
@@ -181,6 +223,14 @@ namespace XT_CETC23
                        PlcData._cabinetStatus[4] = PlcData.PlcStatusValue[17];
                        PlcData._cabinetStatus[5] = PlcData.PlcStatusValue[18];
                        PlcData._alarmNumber = PlcData.PlcStatusValue[20];
+
+                       lock (this)
+                       {
+                            foreach (onDataChanged func in mDelegateDataChanged)
+                            {
+                                func();
+                            }
+                       }
                        /*
                        #region  测试柜状态读取
                        for (int i = 0; i < 6; i++)
@@ -246,9 +296,8 @@ namespace XT_CETC23
                        GetRobotMode(PlcData._robotStatus);
                        GetPlcMode(modeByPlc, statusByPlc);
                        ManulEnable(modeByPlc, statusByPlc);
-
+                                               */
                        Thread.Sleep(100);
-                        */
                    }
                    else
                    {
@@ -267,6 +316,7 @@ namespace XT_CETC23
                }
                Thread.Sleep(100);
            }
+           Logger.WriteLine(mThreadMonitor.Name + ": 退出");
        }
 
        public void Suspend()

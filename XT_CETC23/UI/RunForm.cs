@@ -58,6 +58,7 @@ namespace XT_CETC23.SonForm
 
             // 注册显示函数
             TestingSystem.GetInstance().RegistryDelegate(ShowMode);
+            TestingSystem.GetInstance().RegistryDelegate(ShowMode);
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
@@ -80,6 +81,33 @@ namespace XT_CETC23.SonForm
                     run_btnAuto.BackColor = Color.Green;
                     run_btnManul.BackColor = Color.Green;
                     break;
+            }
+        }
+
+        private void ShowInitialize(TestingSystem.Initialize initialize)
+        {
+            switch (initialize)
+            {
+                case TestingSystem.Initialize.Initialize:
+                    break;
+                case TestingSystem.Initialize.Initialized:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ShowStatus(TestingSystem.Mode mode, TestingSystem.Status status)
+        {
+            if (mode == TestingSystem.Mode.Auto && status == TestingSystem.Status.Running)
+            {
+                run_btnInit.BackColor = Color.Green;
+                run_btnOff.BackColor = Color.PowderBlue;
+            }
+            else
+            {
+                run_btnInit.BackColor = Color.PowderBlue;
+                run_btnOff.BackColor = Color.Green;
             }
         }
 
@@ -338,17 +366,22 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        public void getRobotMode(byte mode)
+        public void ShowRobotMode(Robot.Status status)
         {
-            if ((mode & 1) != 0)
+            lb_Robot_sv.Text = EnumHelper.GetDescription(status);
+            switch (status)
             {
-                lb_Robot_sv.Text = "故障";
-                lb_Robot_sv.BackColor = Color.Red;
-            }
-            else
-            {
-                lb_Robot_sv.Text = "运行中";
-                lb_Robot_sv.BackColor = Color.Green;
+                case Robot.Status.Unkown:
+                case Robot.Status.Alarming:
+                    lb_Robot_sv.BackColor = Color.Red;
+                    break;
+                case Robot.Status.Closed:
+                case Robot.Status.Busy:
+                case Robot.Status.Initialized:
+                case Robot.Status.Initializing:
+                default:
+                    lb_Robot_sv.BackColor = Color.Green;
+                    break;
             }
             //if (mode == (int)EnumC.Robot.Fault)
             //{

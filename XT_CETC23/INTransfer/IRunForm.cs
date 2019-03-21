@@ -9,7 +9,6 @@ namespace XT_CETC23.INTransfer
    public interface IRunForm
     {
         void getPlcMode(string mode,string status);
-        void getRobotMode(byte mode);
         void getInitStatus(bool sta);
         void getProductID(string id);
         void getCabinetResult(int CabinetNum,string message);

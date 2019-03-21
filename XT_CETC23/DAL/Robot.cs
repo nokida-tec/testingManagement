@@ -11,7 +11,7 @@ using XT_CETC23;
 using XT_CETC23.DataManager;
 using System.Threading;
 using XT_CETC23.Common;
-using XT_CETC23.DataCom;
+using XT_CETC23;
 using XT_CETC23.Instances;
 
 namespace XT_CETC23.DataCom
@@ -131,11 +131,17 @@ namespace XT_CETC23.DataCom
 
         public enum Status
         {
+            [EnumDescription("未知")]
             Unkown = 0,
+            [EnumDescription("初始化中")]
             Initializing = 1,
+            [EnumDescription("空闲")]
             Initialized = 2,
+            [EnumDescription("运行中")]
             Busy = 3,
+            [EnumDescription("关闭")]
             Closed = 4,
+            [EnumDescription("报警")]
             Alarming = 5,
         }
 
@@ -152,6 +158,8 @@ namespace XT_CETC23.DataCom
         {
             mStatus = Status.Unkown;
             mRail = new Rail(this);
+
+            Plc.GetInstanse().RegistryDelegate(onPlcDataChanged);
         }
 
         ~Robot()
@@ -271,7 +279,10 @@ namespace XT_CETC23.DataCom
                         int length = socketClient.Receive(arrMsgRec);
                         String strMsgRec = Encoding.UTF8.GetString(arrMsgRec, 0, length);
                         RobotData.Response = strMsgRec;
-                        Logger.WriteLine("RobotData.Response:" + strMsgRec);
+                        if (strMsgRec != null && strMsgRec.Length > 0)
+                        {
+                            Logger.WriteLine("RobotData.Response:" + strMsgRec);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -577,5 +588,45 @@ namespace XT_CETC23.DataCom
             bool usable = (getStatus() == Status.Initialized);
             return usable;
         }
+
+        public delegate void showStatus(Status status);
+        private showStatus mShowStatus;
+
+        public void RegistryDelegate(showStatus showStatus)
+        {
+            mShowStatus = showStatus;
+        }
+       
+       private void onStatusChanged(Status newStatus)
+       {
+           lock (this)
+           {
+               if (mStatus == newStatus)
+               {
+                   return;
+               }
+               Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
+
+               if (mShowStatus != null)
+               {
+                   mShowStatus(newStatus);
+               }
+
+
+               mStatus = newStatus;
+           }
+       }
+
+       private void onPlcDataChanged ()
+       {
+           if ((PlcData._robotStatus & 1) != 0)
+           {
+               onStatusChanged (Status.Alarming);
+           }
+           else
+           {
+               onStatusChanged (Status.Initialized);
+           }
+       }
     }
 }

@@ -271,7 +271,7 @@ namespace XT_CETC23
 
                     if (mPlcMode != PlcData._plcMode)
                     {
-                        Logger.WriteLine("PLC Mode 改变：" + mPlcMode + " ===> " + PlcData._plcMode);
+                        Logger.WriteLine("PLC模式改变：" + mPlcMode + " ===> " + PlcData._plcMode);
                         mPlcMode = PlcData._plcMode;
                     } 
                     
@@ -358,7 +358,7 @@ namespace XT_CETC23
                     Logger.WriteLine("Status 改变：" + mStatus + " ===> " + newStatus);
                     if (mShowStatus != null)
                     {
-                        mShowStatus(newStatus);
+                        mShowStatus(mMode, newStatus);
                     }
 
                     if (mStatus == Status.Emergency)
@@ -460,7 +460,7 @@ namespace XT_CETC23
 
         // 先支持一个delegate
         public delegate void showInitialize(Initialize initialize);
-        public delegate void showStatus(Status status);
+        public delegate void showStatus(TestingSystem.Mode mode, Status status);
         public delegate void showMode(Mode mode);
         private showInitialize mShowInitialize;
         private showStatus mShowStatus;
