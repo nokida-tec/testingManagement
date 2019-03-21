@@ -61,6 +61,7 @@ namespace XT_CETC23.SonForm
             TestingSystem.GetInstance().RegistryDelegate(ShowInitialize);
             TestingSystem.GetInstance().RegistryDelegate(ShowStatus);
             Plc.GetInstanse().RegistryDelegate(ShowPlcMode);
+            Robot.GetInstanse().RegistryDelegate(onRobotStatusChanged);
 
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
@@ -180,37 +181,6 @@ namespace XT_CETC23.SonForm
                 //plcModeValue[0] = (byte)EnumC.PlcModeW.OffMode;
                 //run.writePlcMode(plcModeValue);
             }
-        }
-
-        public void getPlcMode(string mode,string status)
-        {
-            if (mode == "Auto")
-            {
-                run_btnAuto.BackColor = Color.Green;
-                run_btnManul.BackColor = Color.PowderBlue;                
-            }
-            if(mode=="Manul")
-            {
-                run_btnAuto.BackColor = Color.PowderBlue;
-                run_btnManul.BackColor = Color.Green;
-            }
-            if (mode == "Auto"&&status == "AutoRunning")
-            {
-                run_btnInit.BackColor = Color.Green;
-                run_btnOff.BackColor = Color.PowderBlue;
-            }
-            else
-            {
-                run_btnInit.BackColor = Color.PowderBlue;
-                run_btnOff.BackColor = Color.Green;
-            }
-            if (mode == "Auto" && status == "Pausing")
-            {
-                run_btnInit.BackColor = Color.PowderBlue;
-                run_btnOff.BackColor = Color.Green;
-            }
-            run_lbPlcStatusv.Text = "运行中";
-            run_lbPlcStatusv.BackColor = Color.Green;
         }
 
         //public void getPlcMode(int mode)
@@ -384,7 +354,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        public void ShowRobotMode(Robot.Status status)
+        private void onRobotStatusChanged(Robot.Status status)
         {
             lb_Robot_sv.Text = EnumHelper.GetDescription(status);
             switch (status)

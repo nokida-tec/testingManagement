@@ -26,6 +26,7 @@ namespace XT_CETC23.DAL
         public Cabinet(int ID)
             : base(ID)
         {
+            Plc.GetInstanse().RegistryDelegate(onPlcDataChanged);
         }
 
         public String[] getCap()
@@ -463,6 +464,7 @@ namespace XT_CETC23.DAL
 
         public void doTest ()
         {
+            CabinetTest();
             {
                 try
                 {
@@ -757,6 +759,87 @@ namespace XT_CETC23.DAL
                     }
                 }
                 Thread.Sleep(100);
+            }
+        }
+
+        public enum BedStatus
+        {
+            [EnumDescription("离线")]
+            Unkown = 0,
+            [EnumDescription("准备中")]
+            Ready = 1,
+            [EnumDescription("可放料")]
+            CanPut = 2,
+            [EnumDescription("可测试")]
+            CanTest = 3,
+            [EnumDescription("测试中")]
+            Testing = 4,
+            [EnumDescription("可取料")]
+            CanGet = 5,
+        }
+        private BedStatus mStatus = BedStatus.Unkown;
+        private void onPlcDataChanged ()
+        {
+            BedStatus newStatus = BedStatus.Unkown;
+            if ((PlcData._cabinetStatus[ID] & 1) != 0)
+            {
+                newStatus = BedStatus.CanPut;
+            }
+            else if ((PlcData._cabinetStatus[ID] & 2) != 0)
+            {
+                newStatus = BedStatus.CanTest;
+            }
+            else if ((PlcData._cabinetStatus[ID] & 4) != 0)
+            {
+                newStatus = BedStatus.Testing;
+            }
+            else if ((PlcData._cabinetStatus[ID] & 8) != 0)
+            {
+                newStatus = BedStatus.CanGet;
+            }
+            else
+            {
+                newStatus = BedStatus.Ready;
+            }
+            doStatusChanged(newStatus);
+        }
+
+        public delegate bool onStatusChanged (BedStatus status);
+        private onStatusChanged mDelegateStatusChanged;
+        public void ReistryDelegate(onStatusChanged delegateStatusChanged)
+        {
+            mDelegateStatusChanged = delegateStatusChanged;
+        }
+        public void UnreistryDelegate(onStatusChanged delegateStatusChanged)
+        {
+            mDelegateStatusChanged = null;
+        }
+
+        private void doStatusChanged(BedStatus newStatus)
+        {
+            lock (this)
+            {
+                try
+                {
+                    if (mStatus == newStatus)
+                    {
+                        return;
+                    }
+                    Logger.WriteLine("测试台状态改变：" + mStatus + " ===> " + newStatus);
+
+                    if (mDelegateStatusChanged != null)
+                    {
+                        mDelegateStatusChanged(newStatus);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+                finally
+                {
+                    mStatus = newStatus;
+                }
             }
         }
     }
