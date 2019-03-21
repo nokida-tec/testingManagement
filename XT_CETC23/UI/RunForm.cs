@@ -58,8 +58,10 @@ namespace XT_CETC23.SonForm
 
             // 注册显示函数
             TestingSystem.GetInstance().RegistryDelegate(ShowMode);
-            TestingSystem.GetInstance().RegistryDelegate(ShowMode);
+            TestingSystem.GetInstance().RegistryDelegate(ShowInitialize);
+            TestingSystem.GetInstance().RegistryDelegate(ShowStatus);
             Plc.GetInstanse().RegistryDelegate(ShowPlcMode);
+
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
