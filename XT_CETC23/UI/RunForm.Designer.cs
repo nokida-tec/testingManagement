@@ -1215,7 +1215,7 @@
             this.ShowInTaskbar = false;
             this.Text = "RunForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.RunForm_Load);
+            this.Load += new System.EventHandler(this.Form_Load);
             this.run_gbCabinet1.ResumeLayout(false);
             this.run_gbCabinet1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pB_Cabinet12)).EndInit();

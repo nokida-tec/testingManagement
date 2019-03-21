@@ -41,27 +41,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        public void transMessage(string message)
-        {
-            try
-            {
-                // TransMessageToMain(message);
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine(e);
-            }
-        }
-
-        private void run_btnRobotPause_Click(object sender, EventArgs e)
-        {
-            //if (run_btnRobotPause.Text == "Robot暂停")
-            //{ run.writeRobot(new byte[] { 13 }); run_btnRobotPause.Text = "Robot启动"; }
-            //if(run_btnRobotPause.Text == "Robot启动")
-            //{ run.writeRobot(new byte[] { 14 }); run_btnRobotPause.Text = "Robot暂停"; }          
-        }
-
-        private void RunForm_Load(object sender, EventArgs e)
+        private void Form_Load(object sender, EventArgs e)
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
