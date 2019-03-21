@@ -17,8 +17,6 @@ using XT_CETC23.UserForms;
 using XT_CETC23.DataManager;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
-using XT_CETC23.Instances;
-using XT_CETC23.DAL;
 using System.IO;
 using System.Threading;
 using System.Collections;

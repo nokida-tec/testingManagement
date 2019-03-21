@@ -8,7 +8,6 @@ using XT_CETC23.DataManager;
 using XT_CETC23.Common;
 using XT_CETC23.Model;
 using XT_CETC23.DataCom;
-using XT_CETC23.Instances;
 
 namespace XT_CETC23
 {

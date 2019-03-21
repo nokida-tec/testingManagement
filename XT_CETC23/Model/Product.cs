@@ -5,10 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using XT_CETC23.DataCom;
 using XT_CETC23.Model;
-using XT_CETC23.DAL;
 using XT_CETC23.Common;
 using XT_CETC23.DataCom;
-using XT_CETC23.Instances;
 
 namespace XT_CETC23.Model
 {
