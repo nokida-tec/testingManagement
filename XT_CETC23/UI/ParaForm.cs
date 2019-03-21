@@ -151,7 +151,6 @@ namespace XT_CETC23.SonForm
 
         private void para_btnWrite_Click(object sender, EventArgs e)
         {
-            string strTmp="";
             byte[] prodType= new byte[1];
             int cabinetStatus=0;
             if (db.DBConnect())
@@ -166,10 +165,9 @@ namespace XT_CETC23.SonForm
                             sel = 0;
                         }
 
-                        strTmp = TestingBedCapOfProduct.sTestingBedCapOfProduct[sel].ProductType;
                         prodType[0] = TestingBedCapOfProduct.sTestingBedCapOfProduct[sel].PlcMode;
-                        //db.DBUpdata("insert into CabinetData(number,sort,status) values('"+i+"','" + cb[i].SelectedItem.ToString() + "','" + chb[i].Checked + "')");
                         TestingCabinets.getInstance(i).Type = sel;
+                        TestingCabinets.getInstance(i).ProductType = TestingBedCapOfProduct.sTestingBedCapOfProduct[sel].ProductType;
                         TestingCabinets.getInstance(i).Enable = chb[i].Checked ? TestingCabinet.ENABLE.Enable : TestingCabinet.ENABLE.Disable;
                         TestingCabinets.getInstance(i).doConfigChanged();
                         {
