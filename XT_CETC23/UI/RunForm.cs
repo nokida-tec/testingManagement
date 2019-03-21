@@ -18,37 +18,11 @@ namespace XT_CETC23.SonForm
 {
     public partial class RunForm : Form
     {
-        IAutoForm AutoForm;
-        ICameraForm CameraForm;
-        IDatabaseForm DataForm;
-        IManulForm ManulForm;
-        IMainForm MainForm;
-        public Plc plc;
-        public Robot robot;
-        static RunForm rForm;
-        Label[] grab,mode;
-        byte[] plcModeValue=new byte[1];
-        DataBase db = DataBase.GetInstanse();
-        DataTable dtFeedBin = new DataTable();
+        private Label[] grab,mode;
 
-        public static RunForm GetInstanse(IAutoForm AutoForm, ICameraForm CameraForm, IDatabaseForm DataForm, IManulForm ManulForm, IMainForm MainForm)
-        {
-            if(rForm==null)
-            {
-                rForm= new RunForm(AutoForm, CameraForm, DataForm, ManulForm, MainForm);
-            }         
-            return rForm;
-        }
-        RunForm(IAutoForm AutoForm, ICameraForm CameraForm, IDatabaseForm DataForm, IManulForm ManulForm,IMainForm MainForm)
+        public RunForm()
         {
             InitializeComponent();
-            InitForm();
-            this.AutoForm = AutoForm;
-            this.CameraForm = CameraForm;
-            this.DataForm = DataForm;
-            this.ManulForm = ManulForm;
-            this.MainForm = MainForm;
-
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
             grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
 
@@ -65,129 +39,6 @@ namespace XT_CETC23.SonForm
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetResultChanged);
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetConfigChanged);
             }
-
-            // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
-            //this.UserForm = iUserForm;
-        }
-
-        void InitForm()
-        {
-            run_btnInit.Click += Run_btn_Click;
-            run_btnAuto.Click += Run_btn_Click;
-            run_btnManul.Click += Run_btn_Click;
-            run_btnOff.Click += Run_btn_Click;
-        }
-
-        private void Run_btn_Click(object sender, EventArgs e)
-        {
-            string name = (sender as Button).Name;
-            switch (name)
-            {
-                case "run_btnInit":
-                   //InitStatus= run.getInitResult();
-                    break;
-                case "run_btnAuto":
-                    run_BtnAuto();
-                    break;
-                case "run_btnManul":
-                    run_BtnManul();
-                    break;
-                case "run_btnOff":
-                    run_BtnOff();
-                    break;
-                   
-            }
-        }
-        void run_BtnAuto()
-        {
-            //if(Run.InitStatus)
-            {
-                //plcModeValue[0] =(byte)EnumC.PlcModeW.AutoMode;
-                //run.writePlcMode(plcModeValue);
-            }
-        }
-        void run_BtnManul()
-        {
-            //if (Run.InitStatus)
-            {
-                //plcModeValue[0] = (byte)EnumC.PlcModeW.ManulMode;
-                //run.writePlcMode(plcModeValue);
-            }
-        }
-        void run_BtnOff()
-        {
-            //if (Run.InitStatus)
-            {
-                //plcModeValue[0] = (byte)EnumC.PlcModeW.OffMode;
-                //run.writePlcMode(plcModeValue);
-            }
-        }
-
-        //public void getPlcMode(int mode)
-        //{
-        //if (mode == (int)EnumC.Plc.Auto)
-        //{
-        //    run_lbPlcModev.Invoke(new Action<string>((s)=> { run_lbPlcModev.Text = s; }),EnumHelper.GetDescription(EnumC.Plc.Auto)) ;
-        //    this.Invoke(new Action(() => {
-        //        run_btnAuto.BackColor = Color.Green;
-        //        run_btnManul.BackColor = Color.PowderBlue;
-        //        run_btnOff.BackColor = Color.PowderBlue;
-        //    }));
-
-        //    TransStatusToMain("plcMode",run_lbPlcModev.Text);
-        //}
-        //if (mode == (int)EnumC.Plc.AutoRuning)
-        //{
-        //    run_lbPlcModev.Invoke(new Action<string>((s) => { run_lbPlcModev.Text = s; }), EnumHelper.GetDescription(EnumC.Plc.AutoRuning));
-        //    this.Invoke(new Action(() => {
-        //        run_btnAuto.BackColor = Color.Green;
-        //        run_btnManul.BackColor = Color.PowderBlue;
-        //        run_btnOff.BackColor = Color.PowderBlue;
-        //    }));              
-        //    TransStatusToMain("plcMode", run_lbPlcModev.Text);
-        //}
-        //if (mode == (int)EnumC.Plc.ManulNoReady)
-        //{
-        //    run_lbPlcModev.Invoke(new Action<string>((s) => { run_lbPlcModev.Text = s; }), EnumHelper.GetDescription(EnumC.Plc.ManulNoReady));
-        //    this.Invoke(new Action(() => {
-        //        run_btnAuto.BackColor = Color.PowderBlue;
-        //        run_btnManul.BackColor = Color.Green;
-        //        run_btnOff.BackColor = Color.PowderBlue;
-        //    }));
-
-        //    TransStatusToMain("plcMode", run_lbPlcModev.Text);
-        //}
-        //if (mode == (int)EnumC.Plc.ManulReady)
-        //{
-        //    run_lbPlcModev.Invoke(new Action<string>((s) => { run_lbPlcModev.Text = s; }), EnumHelper.GetDescription(EnumC.Plc.ManulReady));
-        //    this.Invoke(new Action(() => {
-        //        run_btnAuto.BackColor = Color.PowderBlue;
-        //        run_btnManul.BackColor = Color.Green;
-        //        run_btnOff.BackColor = Color.PowderBlue;
-        //    }));              
-        //    TransStatusToMain("plcMode", run_lbPlcModev.Text);
-        //}
-        //if (mode == (int)EnumC.Plc.OffMode)
-        //{
-        //    run_lbPlcModev.Invoke(new Action<string>((s)=> { run_lbPlcModev.Text = s; }), EnumHelper.GetDescription(EnumC.Plc.OffMode));
-        //    this.Invoke(new Action(() => { run_btnAuto.BackColor = Color.PowderBlue; run_btnManul.BackColor = Color.PowderBlue; run_btnOff.BackColor = Color.Green; }));                             
-        //    TransStatusToMain("plcMode", run_lbPlcModev.Text);
-        //}
-        //}
-
-        public void getInitStatus(bool sta)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void getProductID(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void getGrabNO(int grabNum)
-        {
-            throw new NotImplementedException();
         }
 
         public void transMessage(string message)
@@ -248,8 +99,8 @@ namespace XT_CETC23.SonForm
         
         private void onFrameStatusChanged()
         {
-            dtFeedBin = db.DBQuery("select * from dbo.FeedBin where LayerID=88");
-            String feedBinScanDone = dtFeedBin.Rows[0]["Sort"].ToString().Trim();
+            DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=88");
+            String feedBinScanDone = dt.Rows[0]["Sort"].ToString().Trim();
             if (feedBinScanDone == "No")
             {
                 run_lbGramStatusv.Text = "料架取空";

@@ -51,15 +51,12 @@ namespace XT_CETC23
             resultForm = new TestingResultForm();
             dForm = new DataForm();
             mForm = new ManulForm();
-            rForm = RunForm.GetInstanse(aForm, cForm, dForm, mForm,this);
+            rForm = new RunForm();
             pForm = new ParaForm();
             uForm = new UserForm();
             sForm = new StepForm(mForm, cForm);
             paramForm = new ParamForm();
-           
-            rForm.TransMessageToMain += RForm_TransMessageToMain;
-            rForm.TransStatusToMain += RForm_TransStatusToMain;
-            
+                       
             uForm.GetAcount += UForm_GetAcount;
             mForm.TransMessage += MForm_TransMessage;
             mForm.clearTask();
