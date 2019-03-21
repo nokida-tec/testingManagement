@@ -52,7 +52,7 @@ namespace XT_CETC23
             dForm = new DataForm();
             mForm = new ManulForm();
             rForm = RunForm.GetInstanse(aForm, cForm, dForm, mForm,this);
-            pForm = new ParaForm(rForm);
+            pForm = new ParaForm();
             uForm = new UserForm();
             sForm = new StepForm(mForm, cForm);
             paramForm = new ParamForm();

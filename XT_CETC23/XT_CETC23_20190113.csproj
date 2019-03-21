@@ -154,7 +154,6 @@
     <Compile Include="INTransfer\IManulForm.cs" />
     <Compile Include="INTransfer\IMessage.cs" />
     <Compile Include="INTransfer\IParaForm.cs" />
-    <Compile Include="INTransfer\IRunForm.cs" />
     <Compile Include="INTransfer\IUserForm.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

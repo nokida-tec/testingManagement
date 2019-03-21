@@ -27,7 +27,6 @@ namespace XT_CETC23.SonForm
         DataBase db;
         ComboBox[] cb;
         CheckBox[] chb;
-        IRunForm rform;
         Plc plc;
         UserForms.SortAdd sortAdd1;
         string[] str=new string[6];
@@ -42,7 +41,7 @@ namespace XT_CETC23.SonForm
 
         }
 
-        public ParaForm(IRunForm iRunForm)
+        public ParaForm()
         {
             InitializeComponent();
             db = DataBase.GetInstanse();
@@ -54,7 +53,6 @@ namespace XT_CETC23.SonForm
             btnCmd = new Button[] { btnCmd1, btnCmd2, btnCmd3, btnCmd4, btnCmd5, btnCmd6 };
             btnData = new Button[] { btnData1, btnData2, btnData3, btnData4, btnData5, btnData6 };
 
-            this.rform = iRunForm;
             InitData();
             sortAdd1 = new UserForms.SortAdd(this);
             plc = Plc.GetInstanse();
@@ -149,8 +147,6 @@ namespace XT_CETC23.SonForm
                 chb[i].Checked = TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable;
                 bl[i] = chb[i].Checked;
             }
-            rform.getGrab(str);
-            rform.getStatus(bl);
         }
 
         private void para_btnWrite_Click(object sender, EventArgs e)
@@ -213,8 +209,6 @@ namespace XT_CETC23.SonForm
                 }
                 prodType[0] = Convert.ToByte(cabinetStatus);
                 plc.DBWrite(PlcData.PlcWriteAddress, 20, 1, prodType);
-                rform.getGrab(str);
-                rform.getStatus(bl);
             }
         }
 

@@ -881,5 +881,40 @@ namespace XT_CETC23
                 }
             }
         }
+
+        public delegate bool onConfigChanged(int cabinetID);
+        private onConfigChanged mDelegateConfigChanged;
+        public void RegistryDelegate(onConfigChanged delegateConfigChanged)
+        {
+            mDelegateConfigChanged = delegateConfigChanged;
+        }
+        public void UnregistryDelegate(onConfigChanged delegateConfigChanged)
+        {
+            mDelegateConfigChanged = null;
+        }
+
+        TestingCabinet mOldCabinet;
+        private void doConfigChanged()
+        {
+            lock (this)
+            {
+                try
+                {
+                    Logger.WriteLine("测试台[" + ID + "]：配置改变：");
+
+                    if (mDelegateConfigChanged != null)
+                    {
+                        mDelegateConfigChanged(ID);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+                finally
+                {
+                }
+            }
+        }
     }
 }

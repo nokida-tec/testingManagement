@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace XT_CETC23.SonForm
 {
-    public partial class RunForm : Form,IRunForm
+    public partial class RunForm : Form
     {
         public delegate void transMessageToMain(string message);
         public event transMessageToMain TransMessageToMain;
@@ -56,6 +56,9 @@ namespace XT_CETC23.SonForm
             this.ManulForm = ManulForm;
             this.MainForm = MainForm;
 
+            mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
+            grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
+
             // 注册显示函数
             TestingSystem.GetInstance().RegistryDelegate(onModeChanged);
             TestingSystem.GetInstance().RegistryDelegate(onInitializeChanged);
@@ -71,8 +74,6 @@ namespace XT_CETC23.SonForm
 
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
-            mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
-            grab = new Label[] { lb_Cabinet1_gv, lb_Cabinet2_gv, lb_Cabinet3_gv, lb_Cabinet4_gv, lb_Cabinet5_gv, lb_Cabinet6_gv };
         }
 
         private void onModeChanged(TestingSystem.Mode mode)
@@ -249,44 +250,6 @@ namespace XT_CETC23.SonForm
         public void getProductID(string id)
         {
             throw new NotImplementedException();
-        }
-
-        public void getCabinetResult(int CabinetNum, string message)
-        {
-                if (this.IsHandleCreated && TestingSystem.stepEnable == false)
-                {
-                    if (CabinetNum == 1)
-                        lb_Cabinet11_rv.Invoke(new Action<string>((s) => { lb_Cabinet11_rv.Text = message; }), message);
-                    if (CabinetNum == 2)
-                        lb_Cabinet21_rv.Invoke(new Action<string>((s) => { lb_Cabinet21_rv.Text = message; }), message);
-                    if (CabinetNum == 3)
-                        lb_Cabinet31_rv.Invoke(new Action<string>((s) => { lb_Cabinet31_rv.Text = message; }), message);
-                    if (CabinetNum == 4)
-                        lb_Cabinet41_rv.Invoke(new Action<string>((s) => { lb_Cabinet41_rv.Text = message; }), message);
-                    if (CabinetNum == 5)
-                        lb_Cabinet51_rv.Invoke(new Action<string>((s) => { lb_Cabinet51_rv.Text = message; }), message);
-                    if (CabinetNum == 6)
-                        lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
-                }
-        }
-
-        public void getCabinetStatus(int CabinetNum, string message)
-        {
-            if (this.IsHandleCreated && TestingSystem.stepEnable == false)
-            {
-                if (CabinetNum == 1)
-                    lb_Cabinet11_sv.Invoke(new Action<string>((s) => { lb_Cabinet11_sv.Text = message; }), message);
-                if (CabinetNum == 2)
-                    lb_Cabinet21_sv.Invoke(new Action<string>((s) => { lb_Cabinet21_sv.Text = message; }), message);
-                if (CabinetNum == 3)
-                    lb_Cabinet31_sv.Invoke(new Action<string>((s) => { lb_Cabinet31_sv.Text = message; }), message);
-                if (CabinetNum == 4)
-                    lb_Cabinet41_sv.Invoke(new Action<string>((s) => { lb_Cabinet41_sv.Text = message; }), message);
-                if (CabinetNum == 5)
-                    lb_Cabinet51_sv.Invoke(new Action<string>((s) => { lb_Cabinet51_sv.Text = message; }), message);
-                if (CabinetNum == 6)
-                    lb_Cabinet61_sv.Invoke(new Action<string>((s) => { lb_Cabinet61_sv.Text = message; }), message);
-            }
         }
 
         public void getGrabNO(int grabNum)
