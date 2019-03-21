@@ -454,7 +454,7 @@ namespace XT_CETC23.SonForm
         private void Manul_btn_MouseUp(object sender, MouseEventArgs e)                 //伺服运动控制
         {
             //PLC已经被初始化
-            if (plc.plcConnected)
+            if (plc.isConnected)
             {
                 //if (PlcData._plcMode == 22 || PlcData._plcMode == 23)
                 //{
@@ -500,7 +500,7 @@ namespace XT_CETC23.SonForm
         private void Manul_btn_MouseDown(object sender, MouseEventArgs e)           //伺服运动控制
         { 
             //PLC已经被初始化
-            if (plc.plcConnected)
+            if (plc.isConnected)
             {              
                 //if (PlcData._plcMode == 22 || PlcData._plcMode == 23)
                 //{
@@ -552,7 +552,7 @@ namespace XT_CETC23.SonForm
         private void Manul_btn_Click(object sender, EventArgs e)
         {
             //PLC模式手动
-            if (plc.plcConnected)
+            if (plc.isConnected)
             {
             //    if (PlcData._plcMode==22|| PlcData._plcMode == 23)
             //{

@@ -230,7 +230,7 @@ namespace XT_CETC23
 
             while (true)
             {
-                if (Plc.GetInstanse().plcConnected)
+                if (Plc.GetInstanse().isConnected)
                 {
                     Mode mode = ((PlcData._plcMode & PlcData._readPlcMode) != 0) ? Mode.Auto : Mode.Manual;
                     onModeChanged(mode);
@@ -470,13 +470,29 @@ namespace XT_CETC23
         {
             mShowInitialize = showInitialize;
         }
+        public void UnregistryDelegate(showInitialize showInitialize)
+        {
+            mShowInitialize = null;
+        }
+
         public void RegistryDelegate(showStatus showStatus)
         {
             mShowStatus = showStatus;
         }
+
+        public void UnregistryDelegate(showStatus showStatus)
+        {
+            mShowStatus = null;
+        }
+
         public void RegistryDelegate(showMode showMode)
         {
             mShowMode = showMode;
+        }
+
+        public void UnregistryDelegate(showMode showMode)
+        {
+            mShowMode = null;
         }
 
         public void clearTask()

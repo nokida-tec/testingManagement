@@ -320,7 +320,7 @@ namespace XT_CETC23.SonForm
         void manulCycle(Queue<string> mQueue)
         {
             //Thread.Sleep(5000);
-            if (plc.plcConnected)
+            if (plc.isConnected)
             {
                 string pos = mQueue.Dequeue();
                 if (pos.Equals("A1"))
@@ -456,7 +456,7 @@ namespace XT_CETC23.SonForm
                 dt = db.DBQuery("select * from dbo.TaskAxlis2");
                 //设备只能有一条实时任务
                 if (!(dt.Rows.Count > 0))
-                    if (plc.plcConnected)
+                    if (plc.isConnected)
                     {
                         //if (Common.Account.power == "system" || Common.Account.power == "operator")
                         //{

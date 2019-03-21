@@ -19,7 +19,6 @@ namespace XT_CETC23
         INTransfer.IMessage iMessage;
         //delegate void plcMessage(string message);
         //plcMessage PlcMessage;
-        public bool plcConnected = false;
         object lockConnect = new object();
         object lockDbRead = new object();
         object lockDbWrite = new object();
@@ -55,12 +54,12 @@ namespace XT_CETC23
                     //int result = s7client.ConnectTo("192.168.0.10", 0, 0);
                     if (result == 0)
                     {
-                        plcConnected = true;
+                        isConnected = true;
                         return true;
                     }
                     else
                     {
-                        plcConnected = false;
+                        isConnected = false;
                         return false;
                     }
                 }
@@ -88,6 +87,7 @@ namespace XT_CETC23
                 }
             }
         }
+
         public byte[] DbRead(int DbNumber, int Start, int Size)
         {
             if (Config.Config.ENABLED_PLC == false)
@@ -96,7 +96,7 @@ namespace XT_CETC23
             }
             lock (lockDbRead)
             {
-                if (plcConnected)
+                if (isConnected)
                 {
                     int Result = s7clientRead.DBRead(DbNumber, Start, Size, myBytes);
                     ShowResult(Result);
@@ -345,6 +345,48 @@ namespace XT_CETC23
            catch (Exception e)
            {
                Logger.WriteLine(e);
+           }
+       }
+
+
+       private bool mPlcConnected = false;
+       public delegate void onPlcConnected(bool status);
+       private onPlcConnected mDelegatePlcConnected = null;
+       public void  RegistryDelegate(onPlcConnected delegatePlcConnected)
+       {
+           mDelegatePlcConnected = delegatePlcConnected;
+       }
+       public void UnregistryDelegate(onPlcConnected delegatePlcConnected)
+       {
+           mDelegatePlcConnected = null;
+       }
+
+       public bool isConnected
+       {
+           set
+           {
+               try
+               {
+                   if (mPlcConnected != value)
+                   {
+                       if (mDelegatePlcConnected != null)
+                       {
+                           mDelegatePlcConnected(value);
+                       }
+                   }
+               }
+               catch (Exception e)
+               {
+                   Logger.WriteLine(e);
+               }
+               finally
+               {
+                   mPlcConnected = value;
+               }
+           }
+           get 
+           {
+               return mPlcConnected;
            }
        }
     }

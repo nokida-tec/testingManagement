@@ -59,6 +59,7 @@ namespace XT_CETC23.SonForm
             // 注册显示函数
             TestingSystem.GetInstance().RegistryDelegate(ShowMode);
             TestingSystem.GetInstance().RegistryDelegate(ShowMode);
+            Plc.GetInstanse().RegistryDelegate(ShowPlcMode);
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
             //this.UserForm = iUserForm;
             mode = new Label[] { lb_Cabinet1_env, lb_Cabinet2_env, lb_Cabinet3_env, lb_Cabinet4_env, lb_Cabinet5_env, lb_Cabinet6_env };
@@ -80,6 +81,21 @@ namespace XT_CETC23.SonForm
                 default:
                     run_btnAuto.BackColor = Color.Green;
                     run_btnManul.BackColor = Color.Green;
+                    break;
+            }
+        }
+
+        private void ShowPlcMode(bool status)
+        {  // 显示PLC状态
+            switch (status)
+            {
+                case true:
+                    run_lbPlcStatusv.Text = "运行中";
+                    run_lbPlcStatusv.BackColor = Color.Green;
+                    break;
+                default:
+                    run_lbPlcStatusv.Text = "故障";
+                    run_lbPlcStatusv.BackColor = Color.PowderBlue;
                     break;
             }
         }
