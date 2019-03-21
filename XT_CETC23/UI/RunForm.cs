@@ -18,17 +18,10 @@ namespace XT_CETC23.SonForm
 {
     public partial class RunForm : Form
     {
-        public delegate void transMessageToMain(string message);
-        public event transMessageToMain TransMessageToMain;
-        public delegate void transStatusToMain(string name,string message);
-        public event transStatusToMain TransStatusToMain;
-        //public Run run;
-        //bool InitStatus = false;
         IAutoForm AutoForm;
         ICameraForm CameraForm;
         IDatabaseForm DataForm;
         IManulForm ManulForm;
-        IUserForm UserForm;
         IMainForm MainForm;
         public Plc plc;
         public Robot robot;
@@ -70,6 +63,7 @@ namespace XT_CETC23.SonForm
             {
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetStatusChanged);
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetResultChanged);
+                TestingCabinets.getInstance(i).RegistryDelegate(onCabinetConfigChanged);
             }
 
             // run = Run.GetInstanse(this, this.AutoForm,this.MainForm,this.ManulForm,this.CameraForm);
@@ -269,22 +263,6 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        public void getGrab(string[] str)
-        {
-            for(int i=0;i<str.Length;i++)
-            {
-                grab[i].Text = str[i];
-            }
-        }
-
-        public void getStatus(bool[] bl)
-        {
-            for (int i = 0; i < bl.Length; i++)
-            {
-                mode[i].Text = bl[i].ToString();
-            }
-        }
-
         private void run_btnRobotPause_Click(object sender, EventArgs e)
         {
             //if (run_btnRobotPause.Text == "Robot暂停")
@@ -382,21 +360,20 @@ namespace XT_CETC23.SonForm
                     lb_Cabinet51_rv.Invoke(new Action<string>((s) => { lb_Cabinet51_rv.Text = message; }), message);
                 if (cabinetID == 5)
                     lb_Cabinet61_rv.Invoke(new Action<string>((s) => { lb_Cabinet61_rv.Text = message; }), message);
-
-                DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=88");
-                String feedBinScanDone = dt.Rows[0]["Sort"].ToString().Trim();
-                if (feedBinScanDone == "No")
-                {
-                    run_lbGramStatusv.Text = "料架取空";
-                    btnFrameUpdate.BackColor = Color.Yellow;
-                }
-                if (feedBinScanDone == "Yes")
-                {
-                    run_lbGramStatusv.Text = "使用中";
-                    btnFrameUpdate.BackColor = Color.PowderBlue;
-                }
             }
             return true;
         }
+
+        private bool onCabinetConfigChanged(int cabinetID)
+        {
+            if (this.IsHandleCreated)
+            {
+                mode[cabinetID].Text = EnumHelper.GetDescription(TestingCabinets.getInstance(cabinetID).Enable);
+                grab[cabinetID].Text = TestingCabinets.getInstance(cabinetID).getCap()[0];
+            }
+            return true;
+        }
+
+        
     }
 }
