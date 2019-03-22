@@ -125,11 +125,8 @@
             this.data_cbQueryCondition.Font = new System.Drawing.Font("楷体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.data_cbQueryCondition.FormattingEnabled = true;
             this.data_cbQueryCondition.Items.AddRange(new object[] {
-            "dbo.BasicID",
             "dbo.TaskAxlis2",
-            "dbo.TaskAxlis7",
             "dbo.TaskCabinet",
-            "dbo.TaskRobot",
             "dbo.MTR",
             "dbo.Frame",
             "dbo.SortData",
