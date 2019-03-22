@@ -175,7 +175,7 @@ namespace XT_CETC23.SonForm
                     break;
                 default:
                     run_lbPlcStatusv.Text = "故障";
-                    run_lbPlcStatusv.BackColor = Color.PowderBlue;
+                    run_lbPlcStatusv.BackColor = Color.Red;
                     break;
             }
         }
