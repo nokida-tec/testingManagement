@@ -163,8 +163,13 @@ namespace XT_CETC23
                                 break;
                             }
                         }
-                        String tmpText = "update dbo.FeedBin set Sort='" + prodType[i] + "',NumRemain=" + numForType + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + (i + 1);
-                        DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set Sort='" + prodType[i] + "',NumRemain=" + numForType + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + (i + 1));
+                        String sql = "update dbo.FeedBin " 
+                            + "set Sort='" + prodType[i] 
+                            + "',NumRemain=" + numForType 
+                            + " ,ResultOK=" + 0 
+                            + " ,ResultNG=" + 0 
+                            + "  where LayerID=" + (i + 1);
+                        DataBase.GetInstanse().DBUpdate(sql);
                     }
                     return ReturnCode.OK;
                 }
@@ -286,22 +291,6 @@ namespace XT_CETC23
             }
         }
 
-        private int remainProducts(int trayNo)
-        {   // 托盘中还有多少产品(组件)未测试()
-            try
-            {
-                DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID='" + trayNo + "'");
-                int remain = (int)dt.Rows[0]["NumRemain"];
-                return remain;
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine(e);
-                return 0;
-            }
-            return 0;
-        }
-
         private Location findProduct(String productType)
         {
             try
@@ -336,7 +325,7 @@ namespace XT_CETC23
         {
             try
             {
-                int remain = remainProducts(location.tray);
+                int remain = hasUntestedProduct(location.tray);
                 if (remain > 0)
                 {
                     DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set NumRemain = NumRemain - 1 where LayerID = " + location.tray);
@@ -509,14 +498,56 @@ namespace XT_CETC23
             }
         }
 
-        public bool hasTestedAll()
-        {
-            throw new NotImplementedException();
+        public int hasUntestedProduct()
+        {  // 是否所有的产品没有测试
+            try
+            {
+                String sql = "select SUM(NumRemain) from dbo.FeedBin";
+                DataTable dt = DataBase.GetInstanse().DBQuery(sql);
+                if (dt.Rows.Count == 1)
+                {
+                    return (Convert.ToInt32(dt.Rows[0][0]));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+            }
+            return 0;
         }
 
         public int hasUntestedProduct(string product)
-        {
-            throw new NotImplementedException();
+        {  // 是否有未测试的某类产品
+            try
+            {
+                String sql = "select SUM(NumRemain) from dbo.FeedBin where Sort = '" + product + "'";
+                DataTable dt = DataBase.GetInstanse().DBQuery(sql);
+                if (dt.Rows.Count == 1)
+                {
+                    return (Convert.ToInt32(dt.Rows[0][0]));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+            }
+            return 0;
+        }
+
+        private int hasUntestedProduct(int trayNo)
+        {   // 托盘中还有多少产品(组件)未测试
+            try
+            {
+                DataTable dt = DataBase.GetInstanse().DBQuery("select NumRemain from dbo.FeedBin where LayerID='" + trayNo + "'");
+                int remain = (int)dt.Rows[0][0];
+                return remain;
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return 0;
+            }
+            return 0;
         }
 
 

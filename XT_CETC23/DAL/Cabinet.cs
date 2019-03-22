@@ -111,6 +111,7 @@ namespace XT_CETC23
             catch (Exception e)
             {
                 Logger.WriteLine(e);
+                TestingSystem.GetInstance().doAlarm("网络异常! 请检查网络配置!");
                 return TestingCabinet.STATUS.Fault_Config;
             }
             return TestingCabinet.STATUS.NG;
@@ -397,7 +398,7 @@ namespace XT_CETC23
                                 catch (Exception e)
                                 {
                                     Logger.WriteLine(e);
-                                    MessageBox.Show("U8数据库未连接！请确保网络连接");
+                                    TestingSystem.GetInstance().doAlarm("U8数据库未连接！请确保网络连接!");
                                 }
 
                     try
@@ -430,11 +431,11 @@ namespace XT_CETC23
                     DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                     ResetData();
          		}
-                catch(IOException e1)
+                catch (IOException e1)
                 {
-                     Logger.WriteLine(e1);
-                            Status = STATUS.Fault_Config;
-                            MessageBox.Show("网络异常! 请确保测试柜网络是否可以访问。网络正常后请复位启动！");
+                    Logger.WriteLine(e1);
+                    Status = STATUS.Fault_Config;
+                    TestingSystem.GetInstance().doAlarm("网络异常! 请确保测试柜网络是否可以访问。网络正常后请复位启动！");
                 }
 				catch (AbortException ae)
                 {

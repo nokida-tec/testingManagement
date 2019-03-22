@@ -196,7 +196,7 @@ namespace XT_CETC23
             // 进入自动化任务
             while (true)
             {
-                if (Frame.getInstance().hasTestedAll())
+                if (Frame.getInstance().hasUntestedProduct() == 0)
                 {  // 全部测试完成
                     Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
                     //plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
@@ -673,6 +673,13 @@ namespace XT_CETC23
             }
 
             onStatusChanged(status); 
+        }
+
+        public void doAlarm(string message)
+        {
+            Byte[] data = new Byte[1] { 2 };
+            Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 1, PlcData._writeLength1, data);
+            MessageBox.Show(message, "系统报警");
         }
     }
 }
