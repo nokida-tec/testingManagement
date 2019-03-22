@@ -233,9 +233,9 @@
             this.labSystemStatus.Location = new System.Drawing.Point(34, 25);
             this.labSystemStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labSystemStatus.Name = "labSystemStatus";
-            this.labSystemStatus.Size = new System.Drawing.Size(66, 19);
+            this.labSystemStatus.Size = new System.Drawing.Size(47, 19);
             this.labSystemStatus.TabIndex = 3;
-            this.labSystemStatus.Text = "启动中";
+            this.labSystemStatus.Text = "离线";
             // 
             // groupBox2
             // 
