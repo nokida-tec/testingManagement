@@ -36,7 +36,18 @@ namespace XT_CETC23
 
         public class Location 
         {
-            public String mProdType;
+            private String mProdType;
+            public String productType
+            {
+                get
+                {
+                    return mProdType;
+                }
+                set
+                {
+                    mProdType = value;
+                }
+            }
             private int mTray;
             public int tray
             {
@@ -46,6 +57,7 @@ namespace XT_CETC23
                 }
                 set 
                 {
+                    mTray = value;
                 }
             }
 
@@ -58,6 +70,7 @@ namespace XT_CETC23
                 }
                 set
                 {
+                    mSlot = value;
                 }
             }
 
@@ -71,8 +84,8 @@ namespace XT_CETC23
 
             public Location(int tray, int slot)
             {
-                tray = tray;
-                mSlot = slot;
+                this.tray = tray;
+                this.slot = slot;
             }
         }
 
@@ -225,6 +238,10 @@ namespace XT_CETC23
             {
                 try
                 {
+                    if (FrameLocation < 11)
+                    {
+                        throw new AlarmException("参数错误");
+                    }
                     //int tmpInt=(int)dt2.Rows[0]["FrameLocation"];
                     //Convert.ToByte(tmpInt);
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { (byte)FrameLocation });
@@ -309,6 +326,7 @@ namespace XT_CETC23
                         DataTable dtSort = DataBase.GetInstanse().DBQuery("select * from dbo.SortData where sortname='" + productType + "'");
                         int pieceNo = (int)dtSort.Rows[0]["number"] - remain + 1;       //从0开始编号
                         Location location = new Location(trayNo, pieceNo);
+                        location.productType = productType;
                         return location;
                     }
                 }
@@ -345,7 +363,7 @@ namespace XT_CETC23
             try
             {
                 int prodNumber = 0;
-                switch (location.mProdType)
+                switch (location.productType)
                 {
                     case "A":
                         prodNumber = 1;
@@ -384,7 +402,7 @@ namespace XT_CETC23
                     return ReturnCode.NoProduct;
                 }
 
-                if (location.mProdType == "D")
+                if (location.productType == "D")
                 {
                     location.CordinatorX = MainForm.cForm.X;
                     location.CordinatorY = MainForm.cForm.Y;
