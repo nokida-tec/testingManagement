@@ -82,7 +82,7 @@ namespace XT_CETC23
         private Thread mTaskSchedule = null;
         private Thread mTaskMonitor = null;
 
-        private Mode mMode = Mode.Manual;
+        private Mode mMode = Mode.Unknown;
         public Mode mode
         {
             get
@@ -344,20 +344,26 @@ namespace XT_CETC23
 
                 if (initialize == Initialize.Initialize)
                 {
+                    /*
                     Logger.WriteLine("系统初始化中");
                     clearTask();
                     SetProdType2Plc();
                     getInitResult();
+                     * */
                 }
                 else if (initialize == Initialize.Initialized)
                 {
+                    Logger.WriteLine("系统初始化中");
+                    clearTask();
+                    SetProdType2Plc();
+                    getInitResult();
                     Thread.Sleep(1000);
                     do
                     {
                         Thread.Sleep(100);
                     } while (!Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 1 }));
                     Thread.Sleep(1000);
-                    Logger.WriteLine("初始化成功");
+                    Logger.WriteLine("系统初始化成功");
                 }
                 mInitialize = initialize;
             }
@@ -402,11 +408,14 @@ namespace XT_CETC23
 
                     if (mStatus == Status.Running)
                     {
-                        if (!isSystemRunning)
+                        if (!isSystemRunning && Config.Config.ENABLED_CONTROL == false)
                         {
                             Start();
                         }
-                        TestingSystem.GetInstance().Resume();
+                        if (isSystemRunning)
+                        {
+                            TestingSystem.GetInstance().Resume();
+                        }
                     }
                 }
                 finally
