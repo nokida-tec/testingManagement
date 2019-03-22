@@ -196,31 +196,44 @@ namespace XT_CETC23
             // 进入自动化任务
             while (true)
             {
+                Thread.Sleep(100);
                 if (Frame.getInstance().hasUntestedProduct() == 0)
                 {  // 全部测试完成
-                    Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
-                    //plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 2 });
-                    MessageBox.Show("料架已取空，请更换料架");
-
-                    //plc.DBWrite(PlcData.PlcWriteAddress, 1, 1, new Byte[] { 0 });
-                    Frame.getInstance().excuteCommand(Frame.Lock.Command.Close); 
-                    Frame.getInstance().doScan();
-                }
-
-                for (int i = 0; i < TestingCabinets.getCount(); i ++ )
-                {
-                    if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable
-                        && TestingTasks.getInstance(i).isRunning != true)
+                    switch (Frame.getInstance().frameUpdate)
                     {
-                        String[] caps = TestingCabinets.getInstance(i).getCap();
-                        // 一个测试台先支持一种产品
-                        if (Frame.getInstance().hasUntestedProduct(caps[0]) > 0)
-                        {   // 是否有未测试产品
-                            TestingTasks.getInstance(i).start(caps[0]);
+                        case Frame.FrameUpdateStatus.NeedUpdate:
+                        default:
+                            Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.Updating;
+                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
+                            MessageBox.Show("料架已取空，请更换料架");
+                            break;
+                        case Frame.FrameUpdateStatus.Updating:
+                            break;
+                        case Frame.FrameUpdateStatus.Updated:
+                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
+                            Frame.getInstance().doScan();
+                            Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
+                            break;
+                    }
+                }
+                else
+                {
+                    Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
+                    // 有未测试的产品
+                    for (int i = 0; i < TestingCabinets.getCount(); i++)
+                    {
+                        if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable
+                            && TestingTasks.getInstance(i).isRunning != true)
+                        {
+                            String[] caps = TestingCabinets.getInstance(i).getCap();
+                            // 一个测试台先支持一种产品
+                            if (Frame.getInstance().hasUntestedProduct(caps[0]) > 0)
+                            {   // 是否有未测试产品
+                                TestingTasks.getInstance(i).start(caps[0]);
+                            }
                         }
                     }
                 }
-                Thread.Sleep(100);
             }
         }
 

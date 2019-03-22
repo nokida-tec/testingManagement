@@ -573,8 +573,39 @@ namespace XT_CETC23
             return 0;
         }
 
+        public enum FrameUpdateStatus
+        {
+            [EnumDescription("离线")]
+            Unknown = 0,
+            [EnumDescription("料架取空")]
+            NeedUpdate = 1,
+            [EnumDescription("换料架中")]
+            Updating = 2,
+            [EnumDescription("使用中")]
+            Updated = 3,
+            [EnumDescription("使用中")]
+            ScanDone = 4,
+        }
 
-        public bool frameUpdate { get; set; }
+        private FrameUpdateStatus mFrameUpdate = FrameUpdateStatus.Unknown;
+        public FrameUpdateStatus frameUpdate {
+            get
+            {
+                return mFrameUpdate;
+            }
+            set
+            {
+                if (mFrameUpdate != value)
+                {
+                    Logger.WriteLine("料架状态改变: " + mFrameUpdate + " => " + value);
+                    mFrameUpdate = value;
+                    if (mDelegateFrameStatusChanged != null)
+                    {
+                        mDelegateFrameStatusChanged();
+                    }
+                }
+            }
+        }
 
         public delegate void delegateFrameStatusChanged();
         private delegateFrameStatusChanged mDelegateFrameStatusChanged;

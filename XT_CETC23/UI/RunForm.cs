@@ -39,6 +39,7 @@ namespace XT_CETC23.SonForm
             Plc.GetInstanse().RegistryDelegate(onPlcModeChanged);
             Robot.GetInstanse().RegistryDelegate(onRobotStatusChanged);
             Frame.getInstance().RegistryDelegate(onFrameStatusChanged);
+            onFrameStatusChanged();
             for (int i = 0; i < TestingCabinets.getCount(); i++)
             {
                 TestingCabinets.getInstance(i).RegistryDelegate(onCabinetStatusChanged);
@@ -50,12 +51,12 @@ namespace XT_CETC23.SonForm
 
         private void onClick_FrameUpdate(object sender, EventArgs e)
         {
-            if (!Frame.getInstance().frameUpdate)               
+            if (Frame.getInstance().frameUpdate == Frame.FrameUpdateStatus.Updating)             
             {
                 if (MessageBox.Show("请确认料架更换已经完成", "确认消息", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
-                    Frame.getInstance().frameUpdate = true;
-                    //transMessage("确认料架更换已经完成");
+                    Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.Updated;
+                    Logger.WriteLine("确认料架更换已经完成");
                 }
             }
         }
@@ -81,17 +82,16 @@ namespace XT_CETC23.SonForm
         
         private void onFrameStatusChanged()
         {
-            DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.FeedBin where LayerID=88");
-            String feedBinScanDone = dt.Rows[0]["Sort"].ToString().Trim();
-            if (feedBinScanDone == "No")
+            run_lbGramStatusv.Text = EnumHelper.GetDescription(Frame.getInstance().frameUpdate);
+            if (Frame.getInstance().frameUpdate == Frame.FrameUpdateStatus.Updating)
             {
-                run_lbGramStatusv.Text = "料架取空";
                 btnFrameUpdate.BackColor = Color.Yellow;
+                btnFrameUpdate.Enabled = true;
             }
-            if (feedBinScanDone == "Yes")
+            else
             {
-                run_lbGramStatusv.Text = "使用中";
                 btnFrameUpdate.BackColor = Color.PowderBlue;
+                btnFrameUpdate.Enabled = false;
             }
         }
         private bool onCabinetStatusChanged(int cabinetID, Cabinet.BedStatus status)
