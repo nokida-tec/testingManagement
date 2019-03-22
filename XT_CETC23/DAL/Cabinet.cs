@@ -733,31 +733,68 @@ namespace XT_CETC23
             mDelegateOfShow = null;
         }
 
-        Thread readCabinetTh;
-        public void monitor() 
+        Thread readCabinetTh = null;
+        private Object lockMonitor = new Object();
+        public void StartMonitor() 
         {
-            readCabinetTh = new Thread(ReadCabinet);
-            readCabinetTh.Name = "读取测试柜状态";
-            readCabinetTh.Start();
+            if (Enable == ENABLE.Enable)
+            {
+                readCabinetTh = new Thread(ReadCabinet);
+                readCabinetTh.Name = "读取测试柜[" + ID + "]状态";
+                readCabinetTh.Start();
+            }
         }
 
-        void ReadCabinet()
+        public void StopMonitor()
         {
-            while (true)
+            try
             {
-                if (CabinetData.pathCabinetStatus != null)
+                if (readCabinetTh != null && readCabinetTh.IsAlive)
                 {
-                    for (int i = 0; i < CabinetData.pathCabinetStatus.Length; ++i)
+                    readCabinetTh.Abort();
+                    Thread.Sleep(10);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+            }
+            finally
+            {
+                if (readCabinetTh != null)
+                {
+                    readCabinetTh = null;
+                }
+            }
+        }
+
+        private void ReadCabinet()
+        {
+            lock (lockMonitor)
+            {
+                while (true)
+                {
+                    try
                     {
-                        TestingCabinet.STATUS cabinetStatus = TestingCabinets.getInstance(i).ReadData();
-                        if (mDelegateOfShow != null)
+                        if (CabinetData.pathCabinetStatus != null)
                         {
-                            mDelegateOfShow(i + 1, EnumHelper.GetDescription(cabinetStatus));
+                            TestingCabinet.STATUS cabinetStatus = TestingCabinets.getInstance(ID).ReadData();
+                            if (mDelegateOfShow != null)
+                            {
+                                mDelegateOfShow(ID, EnumHelper.GetDescription(cabinetStatus));
+                            }
+                            TestingCabinets.getInstance(ID).Status = cabinetStatus;
                         }
-                        TestingCabinets.getInstance(i).Status = cabinetStatus;
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.WriteLine(e);
+                    }
+                    finally
+                    {
+                        Thread.Sleep(100);
                     }
                 }
-                Thread.Sleep(100);
             }
         }
 

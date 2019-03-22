@@ -89,5 +89,13 @@ namespace XT_CETC23
             }
             return count;
         }
+
+        public static void Start()
+        {
+            for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
+            {
+                getInstance(i).StartMonitor();
+            }
+        }
     }
 }

@@ -529,5 +529,10 @@ namespace XT_CETC23
         {
             mDelegateFrameStatusChanged = delegateFrameStatusChanged;
         }
+
+        public void UnregistryDelegate(delegateFrameStatusChanged delegateFrameStatusChanged)
+        {
+            mDelegateFrameStatusChanged = null;
+        }
     }
 }

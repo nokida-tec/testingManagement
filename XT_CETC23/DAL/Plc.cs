@@ -273,8 +273,8 @@ namespace XT_CETC23
        {
            try
            {
-               mThreadMonitor.Suspend();
-               Logger.WriteLine("读取PLC状态进程 suspend");
+               //mThreadMonitor.Suspend();
+               //Logger.WriteLine("读取PLC状态进程 suspend");
            }
            catch (Exception e)
            {

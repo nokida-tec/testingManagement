@@ -71,7 +71,14 @@ namespace XT_CETC23
         private static TestingSystem mInstance = null;
         private static Object lockInstance = new Object();
         private bool mSystemExisting = false;
-        private bool mSystemRunning = true;
+        private bool mSystemRunning = false;
+        public bool isSystemRunning
+        {
+            get
+            {
+                return mSystemRunning;
+            }
+        }
         private Thread mTaskSchedule = null;
         private Thread mTaskMonitor = null;
 
@@ -112,6 +119,7 @@ namespace XT_CETC23
             Plc.GetInstanse().RegistryDelegate(onPlcDataChanged);
             Plc.GetInstanse().Start();
             Robot.GetInstanse();
+
             /*
             mTaskMonitor = new Thread(SystemMonitor);
             mTaskMonitor.Name = "模式监控";
@@ -146,6 +154,8 @@ namespace XT_CETC23
                 mSystemExisting = false;
                 mSystemRunning = true;
 
+                TestingCabinets.Start();
+
                 mTaskSchedule = new Thread(TaskSchedule);
                 mTaskSchedule.Name = "主调度流程";
                 mTaskSchedule.Start();
@@ -156,17 +166,26 @@ namespace XT_CETC23
         {
             lock (lockInstance)
             {
-                mSystemExisting = true;
-                if (mTaskSchedule != null)
+                try
                 {
-                    Logger.WriteLine("主调度线程退出!!!");
-                    mTaskSchedule.Abort();
+                    mSystemExisting = true;
+                    if (mTaskSchedule != null)
+                    {
+                        Logger.WriteLine("主调度线程退出!!!");
+                        mTaskSchedule.Abort();
+                    }
+
+                    TestingCabinets.Abort();
+                    TestingTasks.Abort();
                 }
-
-                TestingCabinets.Abort();
-                TestingTasks.Abort();
-
-                mSystemRunning = false;
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
+                finally
+                {
+                    mSystemRunning = false;
+                }
             }
         }
 
@@ -230,10 +249,7 @@ namespace XT_CETC23
 
         private void SystemMonitor()
         {
-            Robot.GetInstanse();
-
             Logger.WriteLine("监控进程启动");
-            Plc.GetInstanse().Start();
 
             while (true)
             {
@@ -362,17 +378,19 @@ namespace XT_CETC23
                     {
                         func(mMode, newStatus);
                     }
+                    mStatus = newStatus;
 
                     if (mStatus == Status.Emergency)
                     {
                         Logger.WriteLine("主调度进程紧急急停退出");
-                        TestingSystem.GetInstance().Abort();
+                        Abort();
                         return;
                     }
 
                     if (mStatus == Status.Pausing)
                     {
                         Logger.WriteLine("系统暂停");
+                        Pause();
                         return;
                     }
 
@@ -384,6 +402,10 @@ namespace XT_CETC23
 
                     if (mStatus == Status.Running)
                     {
+                        if (!isSystemRunning)
+                        {
+                            Start();
+                        }
                         TestingSystem.GetInstance().Resume();
                     }
                 }
