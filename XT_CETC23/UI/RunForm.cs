@@ -55,6 +55,7 @@ namespace XT_CETC23.SonForm
             {
                 if (MessageBox.Show("请确认料架更换已经完成", "确认消息", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
+                    Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
                     Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.Updated;
                     Logger.WriteLine("确认料架更换已经完成");
                 }

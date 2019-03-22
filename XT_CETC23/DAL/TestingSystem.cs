@@ -210,9 +210,11 @@ namespace XT_CETC23
                         case Frame.FrameUpdateStatus.Updating:
                             break;
                         case Frame.FrameUpdateStatus.Updated:
-                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Close);
-                            Frame.getInstance().doScan();
-                            Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
+                            if (mStatus == Status.Running)
+                            {
+                                Frame.getInstance().doScan();
+                                Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
+                            }
                             break;
                     }
                 }
