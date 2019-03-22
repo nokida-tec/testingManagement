@@ -75,7 +75,7 @@ namespace XT_CETC23
         private Thread mTaskSchedule = null;
         private Thread mTaskMonitor = null;
 
-        private Mode mMode = Mode.Unknown;
+        private Mode mMode = Mode.Manual;
         public Mode mode
         {
             get
@@ -105,14 +105,21 @@ namespace XT_CETC23
 
         private TestingSystem()
         {
+            Logger.WriteLine("上位机： 启动");
+
             grabTypeQuery();
 
+            Plc.GetInstanse().RegistryDelegate(onPlcDataChanged);
+            Plc.GetInstanse().Start();
+            Robot.GetInstanse();
+            /*
             mTaskMonitor = new Thread(SystemMonitor);
             mTaskMonitor.Name = "模式监控";
             if (!mTaskMonitor.IsAlive)
             {
                 mTaskMonitor.Start();
             }
+             * */
         }
 
          ~TestingSystem()
@@ -230,6 +237,7 @@ namespace XT_CETC23
 
             while (true)
             {
+                Thread.Sleep(100);
                 if (Plc.GetInstanse().isConnected)
                 {
                     Mode mode = ((PlcData._plcMode & PlcData._readPlcMode) != 0) ? Mode.Auto : Mode.Manual;
@@ -278,7 +286,6 @@ namespace XT_CETC23
                     onStatusChanged(status);
                 }
             }
-            Thread.Sleep(100);   
         }
 
         void onModeChanged (Mode newMode)
@@ -597,5 +604,53 @@ namespace XT_CETC23
         public static bool readyForStep { get; set; }
 
         public static bool stepEnable { get; set; }
+
+        private void onPlcDataChanged ()
+        {
+            Mode mode = ((PlcData._plcMode & PlcData._readPlcMode) != 0) ? Mode.Auto : Mode.Manual;
+            onModeChanged(mode);
+
+            Initialize statusInitialize = Initialize.Unknown;
+            if ((PlcData._plcMode & PlcData._readPlcInit) != 0)
+            {
+                statusInitialize = Initialize.Initialize;
+            }
+            if ((PlcData._plcMode & PlcData._readPlcInited) != 0)
+            {
+                statusInitialize = Initialize.Initialized;
+            }
+            onInitializeChanged(statusInitialize);
+
+
+            Status status = Status.Unknown;
+            if ((PlcData._plcMode & PlcData._readPlcStart) != 0)
+            {
+                status = Status.Start;
+            }
+            if ((PlcData._plcMode & PlcData._readPlcAutoRunning) != 0)
+            {
+                status = Status.Running;
+            }
+            if ((PlcData._plcMode & PlcData._readPlcPausing) != 0)
+            {
+                status = Status.Pausing;
+            }
+            if ((PlcData._plcMode & PlcData._readPlcAlarming) != 0)
+            {
+                status = Status.Alarming;
+            }
+            if ((PlcData._plcMode & PlcData._readPlcEmergency) != 0)
+            {
+                status = Status.Emergency;
+            }
+
+            if (mPlcMode != PlcData._plcMode)
+            {
+                Logger.WriteLine("PLC模式改变：" + mPlcMode + " ===> " + PlcData._plcMode);
+                mPlcMode = PlcData._plcMode;
+            }
+
+            onStatusChanged(status); 
+        }
     }
 }
