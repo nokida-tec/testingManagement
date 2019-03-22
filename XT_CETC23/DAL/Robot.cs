@@ -168,7 +168,7 @@ namespace XT_CETC23.DataCom
 
         public bool Open()
         {
-            Logger.WriteLine("机器人连接:" + socketClient);
+            Logger.WriteLine("机器人连接启动: ");
             Close();
             if (tryConnectSocket(10 * 60 * 1000)) // 10分钟
             {
@@ -180,8 +180,7 @@ namespace XT_CETC23.DataCom
                 dThread = new Thread(readFunc);
                 dThread.Name = "机器人监控线程";
                 dThread.Start();
-                Logger.WriteLine("Robot Read Thread start:" + socketClient);
-                Logger.WriteLine("Robot Read Thread start:" + dThread);
+                Logger.WriteLine(dThread.Name + ": " + dThread.ToString() + " 启动");
                 return true;
             }
 
@@ -203,9 +202,9 @@ namespace XT_CETC23.DataCom
 
         bool CloseSocket()
         {
-            Logger.WriteLine("socket CloseSocket:" + socketClient);
             if (socketClient != null)
             {
+                Logger.WriteLine("关闭机器人Socket: " + socketClient.ToString());
                 try
                 {
                     socketClient.Shutdown(SocketShutdown.Both);
@@ -243,14 +242,14 @@ namespace XT_CETC23.DataCom
                         socketClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         socketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, 10000);
                         //socketClient.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 5000);
-                        Logger.WriteLine("New socket:" + socketClient);
+                        Logger.WriteLine("新建机器人Socket: " + socketClient.ToString());
 
                     }
 
                     if (socketClient.Connected == false)
                     {
                         socketClient.Connect(iEndPoint);
-                        Logger.WriteLine("socket connect:" + socketClient);
+                        Logger.WriteLine("机器人Socker连接: " + socketClient.ToString());
                     }
 
                     isConnected = socketClient.Connected;
@@ -280,7 +279,7 @@ namespace XT_CETC23.DataCom
                         RobotData.Response = strMsgRec;
                         if (strMsgRec != null && strMsgRec.Length > 0)
                         {
-                            Logger.WriteLine("RobotData.Response:" + strMsgRec);
+                            Logger.WriteLine("机器人通讯返回: " + strMsgRec);
                         }
                     }
                     catch (Exception e)
@@ -336,6 +335,7 @@ namespace XT_CETC23.DataCom
                     Buffer.BlockCopy(arrMsg, 0, arrMsgSend, 0, arrMsg.Length);
                     if (Config.Config.ENABLED_CONTROL == true)
                     {
+                        Logger.getInstance().writeLine(false, "Robote Write:[" + arrMsg.Length + "]: " + System.Text.Encoding.UTF8.GetString(arrMsg));
                         socketClient.Send(arrMsg);
                     }
                 }

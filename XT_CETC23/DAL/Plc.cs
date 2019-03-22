@@ -135,6 +135,7 @@ namespace XT_CETC23
                 int Result = 0;
                 if (Config.Config.ENABLED_CONTROL == true)
                 {
+                    Logger.getInstance().writeLine(false, "PLC Write:[" + DBNumber + "," + Start + "," + Size + "]: " + BitConverter.ToString(Data));
                     Result = s7client.DBWrite(DBNumber, Start, Size, Data);
                 }
                 if(Result==0)
