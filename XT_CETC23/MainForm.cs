@@ -787,7 +787,7 @@ namespace XT_CETC23
 
         private void onModeChanged(TestingSystem.Mode mode)
         {
-            labSystemStatus.Text = EnumHelper.GetDescription(mode);
+            //labSystemStatus.Text = EnumHelper.GetDescription(mode);
         }
 
         private void onInitializeChanged(TestingSystem.Initialize initialize)
