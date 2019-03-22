@@ -16,7 +16,7 @@ namespace XT_CETC23.Config
         static public bool ENABLED_PLC = true;
         static public bool ENABLED_DEBUG = false;
         static public bool ENABLED_LOG_SQL = false;
-        static public bool ENABLED_CONTROL = false;  // 是否控制设施,否则只侦听设备状态
+        static public bool ENABLED_CONTROL = true;  // 是否控制设施,否则只侦听设备状态
 
         private bool mEnableU8;
         public bool enableU8

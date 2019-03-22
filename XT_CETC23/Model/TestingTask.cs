@@ -124,6 +124,8 @@ namespace XT_CETC23
             }
         }
 
+        private static Object sLockFrameToCabinet = new Object();
+        private static Object sLockCabinetToFrame = new Object();
         private void runOne()
         {   // 运行一次
             lock (lockObject)
@@ -134,32 +136,37 @@ namespace XT_CETC23
 
                     Frame.Location location = new Frame.Location();
 
-                    // 料仓取料
-                    ReturnCode ret = Frame.getInstance().doGetProduct(mProductType, ref location);
-                    if (ret != ReturnCode.OK)
+                    lock (sLockFrameToCabinet)
                     {
-                        return;
+                        // 料仓取料
+                        ReturnCode ret = Frame.getInstance().doGetProduct(mProductType, ref location);
+                        if (ret != ReturnCode.OK)
+                        {
+                            return;
+                        }
+
+                        // 机器人从料仓取料
+                        Robot.GetInstanse().doGetProductFromFrame(mProductType, location.slot, location.CordinatorX, location.CordinatorY, location.CordinatorU);
+
+                        // 机器人放料到测试台
+                        Robot.GetInstanse().doPutProductToCabinet(mProductType, mCabinetID);
                     }
-
-                    // 机器人从料仓取料
-                    Robot.GetInstanse().doGetProductFromFrame(mProductType, location.slot, location.CordinatorX, location.CordinatorY, location.CordinatorU);
-                    
-                    // 机器人放料到测试台
-                    Robot.GetInstanse().doPutProductToCabinet(mProductType, mCabinetID);
-
                     // 测试开始
                     TestingCabinets.getInstance(mCabinetID).doTest();
 
-                    // 机器人从测试台取料
-                    Robot.GetInstanse().doGetProductFromCabinet(mProductType, mCabinetID);
+                    lock (sLockCabinetToFrame)
+                    {
+                        // 机器人从测试台取料
+                        Robot.GetInstanse().doGetProductFromCabinet(mProductType, mCabinetID);
 
-                    // 插入料架取料任务，取出托盘（要区分取出和放入）
-                    Frame.getInstance().doGet(location.tray);
-                    
-                    // 插入机器人回料任务
-                    Robot.GetInstanse().doPutProductToFrame(mProductType, location.slot);
-                    
-                    Frame.getInstance().doPut(location.tray);
+                        // 插入料架取料任务，取出托盘（要区分取出和放入）
+                        Frame.getInstance().doGet(location.tray);
+
+                        // 插入机器人回料任务
+                        Robot.GetInstanse().doPutProductToFrame(mProductType, location.slot);
+
+                        Frame.getInstance().doPut(location.tray);
+                    }
 
                     // 根据结果更新FeedBin表格                                                      
                     int colNo = location.tray % 10;
