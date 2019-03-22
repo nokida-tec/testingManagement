@@ -168,7 +168,7 @@ namespace XT_CETC23.DataCom
 
         public bool Open()
         {
-            Logger.WriteLine("Robot Open:" + socketClient);
+            Logger.WriteLine("机器人连接:" + socketClient);
             Close();
             if (tryConnectSocket(10 * 60 * 1000)) // 10分钟
             {
@@ -334,7 +334,10 @@ namespace XT_CETC23.DataCom
                     // 添加标识位，0代表发送的是文字
                     arrMsgSend[0] = 0;
                     Buffer.BlockCopy(arrMsg, 0, arrMsgSend, 0, arrMsg.Length);
-                    socketClient.Send(arrMsg);
+                    if (Config.Config.ENABLED_CONTROL == true)
+                    {
+                        socketClient.Send(arrMsg);
+                    }
                 }
                 catch (Exception e)
                 {

@@ -120,8 +120,11 @@ namespace XT_CETC23
             // Declaration separated from the code for readability
             lock (lockDbWrite)
             {
-                int Result;
-                Result = s7client.DBWrite(DBNumber, Start, Size, Data);
+                int Result = 0;
+                if (Config.Config.ENABLED_CONTROL == true)
+                {
+                    Result = s7client.DBWrite(DBNumber, Start, Size, Data);
+                }
                 if(Result==0)
                 {
                     ShowResult(Result);
