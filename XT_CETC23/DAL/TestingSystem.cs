@@ -225,7 +225,8 @@ namespace XT_CETC23
         {
             Robot.GetInstanse();
 
-            Logger.WriteLine("监控进程启动");            
+            Logger.WriteLine("监控进程启动");
+            Plc.GetInstanse().Start();
 
             while (true)
             {
@@ -275,11 +276,6 @@ namespace XT_CETC23
                     } 
                     
                     onStatusChanged(status);
-                }
-                else
-                {
-                    Plc.GetInstanse().ConnectPlc("192.168.10.10", 0, 0);
-                    Plc.GetInstanse().Start();
                 }
             }
             Thread.Sleep(100);   

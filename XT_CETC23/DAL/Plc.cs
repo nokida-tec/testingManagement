@@ -75,16 +75,28 @@ namespace XT_CETC23
             //int rack=Convert.ToInt16(Rack.ToString())
             lock (lockConnect)
             {
-                int result = s7client.Disconnect();
-                result = s7clientRead.Disconnect();
-                if (result == 0)
+                try
                 {
-                    return true;
+                    int result = s7client.Disconnect();
+                    result = s7clientRead.Disconnect();
+                    if (result == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    return false;
+                    Logger.WriteLine(e);
                 }
+                finally
+                {
+                    isConnected = false;
+                }
+                return false;
             }
         }
 
@@ -150,7 +162,7 @@ namespace XT_CETC23
                     if (mThreadMonitor == null)
                     {
                         mThreadMonitor = new Thread(ReadPlc);
-                        mThreadMonitor.Name = "读取PLC数据";
+                        mThreadMonitor.Name = "读取PLC数据线程";
                     }
                     if (!mThreadMonitor.IsAlive)
                     {
@@ -191,16 +203,20 @@ namespace XT_CETC23
 
        private void ReadPlc()
        {
-           int flag = 0;
            Logger.WriteLine(mThreadMonitor.Name + ": 启动");
            while (true)
            {
                try
                {
+                   if (isConnected == false)
+                   {
+                       ConnectPlc("192.168.10.10", 0, 0);
+                       continue;
+                   }
+
                    PlcData.PlcStatusValue = plc.DbRead(100, 0, 21);
                    if (PlcData.PlcStatusValue != null)
                    {
-                       flag = 0;
                        PlcData._robotStatus = PlcData.PlcStatusValue[0];
 
                        PlcData._plcMode = PlcData.PlcStatusValue[1];
@@ -229,95 +245,26 @@ namespace XT_CETC23
 
                        lock (this)
                        {
-                            foreach (onDataChanged func in mDelegateDataChanged)
-                            {
-                                func();
-                            }
-                       }
-                       /*
-                       #region  测试柜状态读取
-                       for (int i = 0; i < 6; i++)
-                       {
-
-                           if (stepEnable == false)
+                           foreach (onDataChanged func in mDelegateDataChanged)
                            {
-                               if ((PlcData._cabinetStatus[i] & 1) != 0)
-                                   GetCabinetStatus(i + 1, "可放料");
-                               else if ((PlcData._cabinetStatus[i] & 2) != 0)
-                                   GetCabinetStatus(i + 1, "可测试");
-                               else if ((PlcData._cabinetStatus[i] & 4) != 0)
-                                   GetCabinetStatus(i + 1, "测试中");
-                               else if ((PlcData._cabinetStatus[i] & 8) != 0)
-                                   GetCabinetStatus(i + 1, "可取料");
-                               else
-                                   GetCabinetStatus(i + 1, "准备中");
+                               func();
                            }
                        }
-                       #endregion
-
-                       #region  PLC控制状态读取和解析
-                       if ((PlcData._plcMode & PlcData._readPlcMode) != 0)
-                       {
-                           modeByPlc = "Auto";
-                       }
-                       else
-                       {
-                           modeByPlc = "Manul";
-                       }
-
-                       if ((PlcData._plcMode & PlcData._readPlcInited) != 0)
-                       {
-                           commandByPlc = "Initialize";
-                       }
-                       if ((PlcData._plcMode & PlcData._readPlcStart) != 0)
-                       {
-                           commandByPlc = "Start";
-                       }
-                       if ((PlcData._plcMode & PlcData._readPlcEmergency) != 0)
-                       {
-                           commandByPlc = "Emergency";
-                       }
-
-                       if ((PlcData._plcMode & PlcData._readPlcAutoRunning) != 0)
-                       {
-                           statusByPlc = "AutoRunning";
-                       }
-                       if ((PlcData._plcMode & PlcData._readPlcPausing) != 0)
-                       {
-                           statusByPlc = "Pausing";
-                       }
-                       if ((PlcData._plcMode & PlcData._readPlcAlarming) != 0)
-                       {
-                           statusByPlc = "Alarming";
-                       }
-                       if ((PlcData._plcMode & PlcData._readPlcInited) != 0)
-                       {
-                           statusByPlc = "Initalized";
-                       }
-                       #endregion
-
-                       GetRobotMode(PlcData._robotStatus);
-                       GetPlcMode(modeByPlc, statusByPlc);
-                       ManulEnable(modeByPlc, statusByPlc);
-                                               */
-                       Thread.Sleep(100);
                    }
                    else
                    {
-                       if (flag == 0)
-                       {
-                           Logger.WriteLine("PLC数据读取失败");
-                       }
-                       flag = 1;
-                       Thread.Sleep(100);
+                       Logger.WriteLine("PLC数据读取失败");
+                       isConnected = false;
                    }
                }
                catch (Exception e)
                {
                    Logger.WriteLine(e);
-                   //MessageBox.Show(e.Message);
                }
-               Thread.Sleep(100);
+               finally
+               {
+                   Thread.Sleep(100);
+               }
            }
            Logger.WriteLine(mThreadMonitor.Name + ": 退出");
        }
