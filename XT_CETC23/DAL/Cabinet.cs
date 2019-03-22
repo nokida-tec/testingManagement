@@ -740,7 +740,7 @@ namespace XT_CETC23
             if (Enable == ENABLE.Enable)
             {
                 readCabinetTh = new Thread(ReadCabinet);
-                readCabinetTh.Name = "读取测试柜[" + ID + "]状态";
+                readCabinetTh.Name = "测试柜[" + ID + "]监控线程";
                 readCabinetTh.Start();
             }
         }

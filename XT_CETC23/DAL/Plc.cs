@@ -162,7 +162,7 @@ namespace XT_CETC23
                     if (mThreadMonitor == null)
                     {
                         mThreadMonitor = new Thread(ReadPlc);
-                        mThreadMonitor.Name = "读取PLC数据线程";
+                        mThreadMonitor.Name = "P L C 监控线程";
                     }
                     if (!mThreadMonitor.IsAlive)
                     {

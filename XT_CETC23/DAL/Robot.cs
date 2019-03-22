@@ -178,7 +178,7 @@ namespace XT_CETC23.DataCom
                     dThread = null;
                 }
                 dThread = new Thread(readFunc);
-                dThread.Name = "机器人读线程";
+                dThread.Name = "机器人监控线程";
                 dThread.Start();
                 Logger.WriteLine("Robot Read Thread start:" + socketClient);
                 Logger.WriteLine("Robot Read Thread start:" + dThread);
