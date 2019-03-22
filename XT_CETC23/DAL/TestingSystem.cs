@@ -157,7 +157,7 @@ namespace XT_CETC23
                 TestingCabinets.Start();
 
                 mTaskSchedule = new Thread(TaskSchedule);
-                mTaskSchedule.Name = "s 线程";
+                mTaskSchedule.Name = "主调度线程";
                 mTaskSchedule.Start();
             }
         }
