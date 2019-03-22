@@ -125,7 +125,7 @@ namespace XT_CETC23
         }
 
         private static Object sLockFrameToCabinet = new Object();
-        private static Object sLockCabinetToFrame = new Object();
+        private static Object sLockCabinetToFrame = sLockFrameToCabinet;
         private void runOne()
         {   // 运行一次
             lock (lockObject)
