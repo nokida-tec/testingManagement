@@ -217,6 +217,11 @@ namespace XT_CETC23
         {
             try
             {
+                String sql = "UPDATE [dbo].[FeedBin]"
+                    + " SET  [NumRemain] = 0"
+                    + "      ,[ResultOK] = 0"
+                    + "      ,[ResultNG] = 0";
+                DataBase.GetInstanse().DBUpdate(sql);
                 DataBase.GetInstanse().DBUpdate("update dbo.FeedBin set Sort='" + "No" + "',NumRemain=" + 0 + ",ResultOK=" + 0 + ",ResultNG=" + 0 + " where LayerID=" + 88);
                 DataBase.GetInstanse().DBDelete("delete from dbo.FrameData");
             }
