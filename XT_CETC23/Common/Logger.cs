@@ -107,7 +107,7 @@ namespace XT_CETC23
         {
             try
             {
-                String line = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss  ") + message;
+                String line = DateTime.Now.ToString("MM-dd HH:mm:ss ") + message;
                 Console.WriteLine(" ***** " + line);
                 mStreamWriter.Flush();
                 if (showInScreen && mDelegateOfShow != null)
