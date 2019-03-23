@@ -14,6 +14,28 @@ namespace XT_CETC23
 {
     class Frame
     {
+        public enum Status
+        {
+            [EnumDescription("未知")]
+            Unkonwn = 0,
+            [EnumDescription("扫描完成")]
+            ScanSort = 31,
+            [EnumDescription("取料完成")]
+            GetPiece,
+            [EnumDescription("产品扫码完成")]
+            ScanPiece,
+            [EnumDescription("放料完成")]
+            PutPiece,
+            [EnumDescription("扫码中")]
+            Scaning,
+            [EnumDescription("取料中")]
+            Geting,
+            [EnumDescription("放料中")]
+            Puting,
+            [EnumDescription("在原点")]
+            Home,
+        }
+
         public class Lock
         {
             public enum State
@@ -111,6 +133,8 @@ namespace XT_CETC23
         Thread axlis2Task;
         private Frame()
         {
+            Plc.GetInstanse().RegistryDelegate(onPlcDataChanged);
+
  //           axlis2Task = new Thread(Axlis2Task);
  //           axlis2Task.Name = "2轴任务";
             //if (PlcData._plcMode == 25)
@@ -145,12 +169,12 @@ namespace XT_CETC23
                 try
                 {
                     // 启动扫描
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.ScanSort });
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)Status.ScanSort });
                     //byte [] myByte=plc.DbRead(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1);
-                    //while (myByte[0] != (byte)EnumC.FrameW.ScanSort)
+                    //while (myByte[0] != (byte)Status.ScanSort)
                     //{                                
                     //    Thread.Sleep(100);
-                    //    plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.ScanSort });
+                    //    plc.DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)Status.ScanSort });
                     //}
                     WaitCondition.waitCondition(isScanDone);
 
@@ -234,7 +258,7 @@ namespace XT_CETC23
 
         public void doAsyncGet(int FrameLocation)
         {
-            DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.GetPiece + "," + FrameLocation + ")");
+            DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)Status.GetPiece + "," + FrameLocation + ")");
         }
 
         public ReturnCode doGet(int FrameLocation)
@@ -250,7 +274,7 @@ namespace XT_CETC23
                     //int tmpInt=(int)dt2.Rows[0]["FrameLocation"];
                     //Convert.ToByte(tmpInt);
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { (byte)FrameLocation });
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.GetPiece });
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)Status.GetPiece });
 
                     WaitCondition.waitCondition(this.canGetProduct);
 
@@ -265,14 +289,14 @@ namespace XT_CETC23
                 }
                 finally
                 {
-                    DataBase.GetInstanse().DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.GetPiece + "");
+                    DataBase.GetInstanse().DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)Status.GetPiece + "");
                 }
             }
         }
 
         public void doAsyncPut(int FrameLocation)
         {
-            DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.PutPiece + "," + FrameLocation + ")");
+            DataBase.GetInstanse().DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)Status.PutPiece + "," + FrameLocation + ")");
         }
 
         public ReturnCode doPut(int FrameLocation)
@@ -284,7 +308,7 @@ namespace XT_CETC23
                     DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { (byte)FrameLocation });
-                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)EnumC.FrameW.PutPiece });
+                    Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)Status.PutPiece });
 
                     WaitCondition.waitCondition(canPutProduct);
          
@@ -308,7 +332,7 @@ namespace XT_CETC23
                 }
                 finally
                 {
-                    DataBase.GetInstanse().DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)EnumC.Frame.PutPiece + "");
+                    DataBase.GetInstanse().DBDelete("delete from dbo.TaskAxlis2 where orderName=" + (short)Status.PutPiece + "");
                 }
             }
         }
@@ -465,17 +489,17 @@ namespace XT_CETC23
 
         public bool canPutProduct()
         {
-            return PlcData._axlis2Status == (byte)EnumC.Frame.PutPiece;
+            return mStatus == Status.PutPiece;
         }
 
         public bool canGetProduct()
         {
-            return PlcData._axlis2Status == (byte)EnumC.Frame.GetPiece;
+            return mStatus == Status.GetPiece;
         }
 
         public bool isScanDone()
         {
-            return PlcData._axlis2Status == (byte)EnumC.Frame.ScanSort;
+            return mStatus == Status.ScanSort;
         }
 
         private void Axlis2Task()
@@ -488,7 +512,7 @@ namespace XT_CETC23
                     DataTable dt2 = DataBase.GetInstanse().DBQuery("select * from dbo.TaskAxlis2");
                     if (dt2 !=null && dt2.Rows.Count == 1)
                     {
-                        if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.ScanSort)
+                        if ((int)dt2.Rows[0]["orderName"] == (int)Status.ScanSort)
                         {
                             Frame.getInstance().doScan();
                         }
@@ -496,7 +520,7 @@ namespace XT_CETC23
 
                     if (dt2 != null && dt2.Rows.Count == 1)
                     {
-                        if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.GetPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
+                        if ((int)dt2.Rows[0]["orderName"] == (int)Status.GetPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
                         {
                             Frame.getInstance().doGet((int)dt2.Rows[0]["FrameLocation"]);
                         }
@@ -504,7 +528,7 @@ namespace XT_CETC23
 
                     if (dt2 != null && dt2.Rows.Count == 1)
                     { 
-                        if ((int)dt2.Rows[0]["orderName"] == (int)EnumC.FrameW.PutPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
+                        if ((int)dt2.Rows[0]["orderName"] == (int)Status.PutPiece && (int)dt2.Rows[0]["FrameLocation"] > 0)
                         {
                             Frame.getInstance().doPut((int)dt2.Rows[0]["FrameLocation"]);       
                         }
@@ -618,6 +642,28 @@ namespace XT_CETC23
         public void UnregistryDelegate(delegateFrameStatusChanged delegateFrameStatusChanged)
         {
             mDelegateFrameStatusChanged = null;
+        }
+
+        private Status mStatus = Status.Unkonwn;
+        private void onPlcDataChanged()
+        {
+            try
+            {
+                Status newStatus = (Status)PlcData._axlis2Status;
+                if (mStatus != newStatus && newStatus != Status.Unkonwn)
+                {
+                    Logger.WriteLine("料架PLC状态改变: " + mStatus + " => " + newStatus);
+                    mStatus = newStatus;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+            }
+            finally
+            {
+
+            }
         }
     }
 }

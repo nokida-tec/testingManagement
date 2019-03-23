@@ -20,25 +20,7 @@ namespace XT_CETC23.EnumC
         [EnumDescription("机器人运行中")]
         Running,
     }
-    enum Frame
-    {
-        [EnumDescription("扫描完成")]
-        ScanSort=31,
-        [EnumDescription("取料完成")]
-        GetPiece,
-        [EnumDescription("产品扫码完成")]
-        ScanPiece,
-        [EnumDescription("放料完成")]
-        PutPiece,
-        [EnumDescription("扫码中")]
-        Scaning,
-        [EnumDescription("取料中")]
-        Geting,
-        [EnumDescription("放料中")]
-        Puting,
-        [EnumDescription("在原点")]
-        Home,
-    }
+
     enum Plc
     {
         [EnumDescription("OFF模式")]

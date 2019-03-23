@@ -404,12 +404,12 @@ namespace XT_CETC23.DataCom
                     WaitCondition.waitCondition(isCodeScanFinished);
 
                     ReturnCode ret = ReturnCode.OK;
-                    if (PlcData._axlis2Status == 38)
+                    if (PlcData._axlis2Status == (byte)Frame.Status.Home)
                     {
                         ret = ReturnCode.ScanFailed;
                         //  scanStatus = false;
                     }
-                    if (PlcData._axlis2Status == 33)
+                    if (PlcData._axlis2Status == (byte)Frame.Status.ScanPiece)
                     {
                         //  scanStatus = true;
                     }
@@ -438,7 +438,7 @@ namespace XT_CETC23.DataCom
 
         bool isCodeScanFinished()
         {    // 扫码结束
-            return (PlcData._axlis2Status == 33) || (PlcData._axlis2Status == 38);
+            return (PlcData._axlis2Status == (byte)Frame.Status.ScanPiece) || (PlcData._axlis2Status == (byte)Frame.Status.Home);
         }
 
         public ReturnCode doPutProductToFrame(String productType, int position, String x = null, String y = null, String z = null)
