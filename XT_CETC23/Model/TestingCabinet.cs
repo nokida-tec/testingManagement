@@ -176,40 +176,52 @@ namespace XT_CETC23
 
         public bool Save()
         {
-            string sql = string.Format("UPDATE [dbo].[TaskCabinet] "
-                   + "SET [EquipmentName] = '{1}' "
-                   + ",[Type] = {2} "
-                   + ",[Enable] = {3:d} "
-                   + ",[Status] = {4:d} "
-                   + ",[OrderType] = {5:d} "
-                   + ",[ProductType] = '{6}' "
-                   + ",[BasicID] ={7:d} "
-                   + " WHERE CabinetID = {0:d}",
-                    this.ID,
-                    this.Name,
-                    this.Type,
-                    this.Enable,
-                    this.Status,
-                    this.Order,
-                    this.ProductType,
-                    this.TaskID);
-            int count = DataBase.GetInstanse().DBUpdate(sql);
-            if (count < 1) 
+            for (int i = 0; i < 10; i ++)
             {
-                sql = string.Format("INSERT INTO [dbo].[TaskCabinet] ([CabinetID],[EquipmentName],[Type],[Enable],[Status],[OrderType],[ProductType],[BasicID])" +
-                    " VALUES ({0:d}, '{1}', '{2}', {3:d}, {4:d}, {5:d}, '{6}', {7:d})",
-                        this.ID,
-                        this.Name,
-                        this.Type,
-                        this.Enable,
-                        this.Status,
-                        this.Order,
-                        this.ProductType,
-                        this.TaskID
-                    );
-                count = DataBase.GetInstanse().DBInsert(sql);
+                try
+                {
+                    string sql = string.Format("UPDATE [dbo].[TaskCabinet] "
+                           + "SET [EquipmentName] = '{1}' "
+                           + ",[Type] = {2} "
+                           + ",[Enable] = {3:d} "
+                           + ",[Status] = {4:d} "
+                           + ",[OrderType] = {5:d} "
+                           + ",[ProductType] = '{6}' "
+                           + ",[BasicID] ={7:d} "
+                           + " WHERE CabinetID = {0:d}",
+                            this.ID,
+                            this.Name,
+                            this.Type,
+                            this.Enable,
+                            this.Status,
+                            this.Order,
+                            this.ProductType,
+                            this.TaskID);
+                    int count = DataBase.GetInstanse().DBUpdate(sql);
+                    if (count < 1)
+                    {
+                        sql = string.Format("INSERT INTO [dbo].[TaskCabinet] ([CabinetID],[EquipmentName],[Type],[Enable],[Status],[OrderType],[ProductType],[BasicID])" +
+                            " VALUES ({0:d}, '{1}', '{2}', {3:d}, {4:d}, {5:d}, '{6}', {7:d})",
+                                this.ID,
+                                this.Name,
+                                this.Type,
+                                this.Enable,
+                                this.Status,
+                                this.Order,
+                                this.ProductType,
+                                this.TaskID
+                            );
+                        count = DataBase.GetInstanse().DBInsert(sql);
+                    }
+                    return count > 0;
+                }
+                catch (Exception e)
+                {
+                    Logger.WriteLine(e);
+                }
             }
-            return count > 0;
+            TestingSystem.GetInstance().doAlarm("数据库连接错误,请保证产品归位，再重启操作系统和集成测试系统！");
+            return false;
         }
 
         public bool cmdStart(string productType, int taskId)
