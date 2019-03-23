@@ -109,6 +109,16 @@ namespace XT_CETC23
                 this.tray = tray;
                 this.slot = slot;
             }
+
+            public void Copy (Location loc)
+            {
+                this.tray = loc.tray;
+                this.slot = loc.slot;
+                this.productType = loc.productType;
+                this.CordinatorX = loc.CordinatorX;
+                this.CordinatorY = loc.CordinatorY;
+                this.CordinatorU = loc.CordinatorU;
+            }
         }
 
         static private Frame mInstance;
@@ -466,6 +476,7 @@ namespace XT_CETC23
                         do
                         {
                             ReturnCode ret = shoot(ref loc);
+                            location.Copy(loc);
                             if (ret == ReturnCode.OK)
                             {
                                 return ReturnCode.OK;
