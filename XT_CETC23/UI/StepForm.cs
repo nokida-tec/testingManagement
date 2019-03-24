@@ -19,10 +19,10 @@ namespace XT_CETC23.SonForm
     public partial class StepForm : Form
     {
         Queue<string> mQueue = new System.Collections.Generic.Queue<string>();
-        delegate void mCycle(Queue<string> mQueue);
+        delegate void StepAction(Queue<string> mQueue);
         IAsyncResult result;
 
-        mCycle MCycle;
+        StepAction mStepAction;
         DataTable dt = new DataTable();
         DataBase db;
         Plc plc;
@@ -39,7 +39,7 @@ namespace XT_CETC23.SonForm
             this.manulForm = mFrom;
             this.cFrom = cForm;
             InitializeComponent();
-            MCycle = manulCycle;
+            mStepAction = manulCycle;
             db= DataBase.GetInstanse();
             plc = Plc.GetInstanse();
             for (int i = 0; i < pos.Length; i++)
@@ -369,20 +369,13 @@ namespace XT_CETC23.SonForm
             {
                 if (Plc.GetInstanse().isConnected)
                 {
-                    //if (Common.Account.power == "system" || Common.Account.power == "operator")
-                    //{
                     if (!String.IsNullOrEmpty(layer) && !String.IsNullOrEmpty(command))
                     {
                         mQueue.Enqueue(layer);
                         mQueue.Enqueue(command);
-                        result = MCycle.BeginInvoke(mQueue, null, null);
+                        result = mStepAction.BeginInvoke(mQueue, null, null);
                     }
                     else { MessageBox.Show("非法操作,信息不全"); }
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("当前用户无此权限");
-                    //}
                 }
                 else
                 { 
