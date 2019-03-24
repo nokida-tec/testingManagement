@@ -189,7 +189,8 @@ namespace XT_CETC23
             }
         }
 
-        private void TaskSchedule ()
+        public static Object lockStep = new Object();
+        private void TaskSchedule()
         {
             // 检查是否有未完成任务，且在组件在测试台中
 
@@ -202,42 +203,45 @@ namespace XT_CETC23
                     readyForStep = true;
                     continue;
                 }
-                readyForStep = false;
-                if (Frame.getInstance().hasUntestedProduct() == 0)
-                {  // 全部测试完成
-                    switch (Frame.getInstance().frameUpdate)
-                    {
-                        case Frame.FrameUpdateStatus.NeedUpdate:
-                        default:
-                            Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.Updating;
-                            Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
-                            MessageBox.Show("料架已取空，请更换料架");
-                            break;
-                        case Frame.FrameUpdateStatus.Updating:
-                            break;
-                        case Frame.FrameUpdateStatus.Updated:
-                            if (mStatus == Status.Running)
-                            {
-                                Frame.getInstance().doScan();
-                                Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
-                            }
-                            break;
-                    }
-                }
-                else
+                lock (lockStep)
                 {
-                    Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
-                    // 有未测试的产品
-                    for (int i = 0; i < TestingCabinets.getCount(); i++)
-                    {
-                        if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable
-                            && TestingTasks.getInstance(i).isRunning != true)
+                    readyForStep = false;
+                    if (Frame.getInstance().hasUntestedProduct() == 0)
+                    {  // 全部测试完成
+                        switch (Frame.getInstance().frameUpdate)
                         {
-                            String[] caps = TestingCabinets.getInstance(i).getCap();
-                            // 一个测试台先支持一种产品
-                            if (Frame.getInstance().hasUntestedProduct(caps[0]) > 0)
-                            {   // 是否有未测试产品
-                                TestingTasks.getInstance(i).start(caps[0]);
+                            case Frame.FrameUpdateStatus.NeedUpdate:
+                            default:
+                                Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.Updating;
+                                Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
+                                MessageBox.Show("料架已取空，请更换料架");
+                                break;
+                            case Frame.FrameUpdateStatus.Updating:
+                                break;
+                            case Frame.FrameUpdateStatus.Updated:
+                                if (mStatus == Status.Running)
+                                {
+                                    Frame.getInstance().doScan();
+                                    Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
+                        // 有未测试的产品
+                        for (int i = 0; i < TestingCabinets.getCount(); i++)
+                        {
+                            if (TestingCabinets.getInstance(i).Enable == TestingCabinet.ENABLE.Enable
+                                && TestingTasks.getInstance(i).isRunning != true)
+                            {
+                                String[] caps = TestingCabinets.getInstance(i).getCap();
+                                // 一个测试台先支持一种产品
+                                if (Frame.getInstance().hasUntestedProduct(caps[0]) > 0)
+                                {   // 是否有未测试产品
+                                    TestingTasks.getInstance(i).start(caps[0]);
+                                }
                             }
                         }
                     }

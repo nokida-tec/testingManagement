@@ -315,31 +315,34 @@ namespace XT_CETC23.SonForm
 
         void manulCycle(Queue<string> mQueue)
         {
-            //Thread.Sleep(5000);
-            if (plc.isConnected)
+            lock (TestingSystem.lockStep)
             {
-                string pos = mQueue.Dequeue();
-                byte[] buffer = new byte[1];
-                buffer[0] = Frame.getInstance().convertFrameLocationToByte(pos);
-                string order = mQueue.Dequeue();
-                if (order.Equals("取料"))
+                //Thread.Sleep(5000);
+                if (plc.isConnected)
                 {
-                    //if (MaterielData.FrameHavePiece)
-                    //{ MessageBox.Show("货架区有料");return; }
-                    Frame.getInstance().doGet((int)buffer[0]);
-                }
-                else if (order.Equals("放料"))
-                {
-                    //if (!MaterielData.FrameHavePiece)
-                    //{ MessageBox.Show("货架区无料"); return; }
-                    Frame.getInstance().doPut((int)buffer[0]);
+                    string pos = mQueue.Dequeue();
+                    byte[] buffer = new byte[1];
+                    buffer[0] = Frame.getInstance().convertFrameLocationToByte(pos);
+                    string order = mQueue.Dequeue();
+                    if (order.Equals("取料"))
+                    {
+                        //if (MaterielData.FrameHavePiece)
+                        //{ MessageBox.Show("货架区有料");return; }
+                        Frame.getInstance().doGet((int)buffer[0]);
+                    }
+                    else if (order.Equals("放料"))
+                    {
+                        //if (!MaterielData.FrameHavePiece)
+                        //{ MessageBox.Show("货架区无料"); return; }
+                        Frame.getInstance().doPut((int)buffer[0]);
+                    }
+                    else
+                        mQueue.Clear();
                 }
                 else
-                    mQueue.Clear();
-            }
-            else
-            {
-                return;
+                {
+                    return;
+                }
             }
         }
 
@@ -362,35 +365,29 @@ namespace XT_CETC23.SonForm
 
         private void InsertPickTtay(String layer, String command)
         {
-            using (dt = new DataTable())
+            lock (TestingSystem.lockStep)
             {
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                //设备只能有一条实时任务
-                if (!(dt.Rows.Count > 0))
-                    if (plc.isConnected)
+                if (Plc.GetInstanse().isConnected)
+                {
+                    //if (Common.Account.power == "system" || Common.Account.power == "operator")
+                    //{
+                    if (!String.IsNullOrEmpty(layer) && !String.IsNullOrEmpty(command))
                     {
-                        //if (Common.Account.power == "system" || Common.Account.power == "operator")
-                        //{
-                        if (!String.IsNullOrEmpty(layer) && !String.IsNullOrEmpty(command))
-                        {
-                            //插入任务，进行排队操作
-                            //if (!((int)PlcData._axlis2Status == (int)EnumC.Frame.Home))
-                            //{ MessageBox.Show("取料机构不在初始位"); return; }
-                            mQueue.Enqueue(layer);
-                            mQueue.Enqueue(command);
-                            result = MCycle.BeginInvoke(mQueue, null, null);
-                        }
-                        else { MessageBox.Show("非法操作,信息不全"); }
-                        //}
-                        //else
-                        //{
-                        //    MessageBox.Show("当前用户无此权限");
-                        //}
+                        mQueue.Enqueue(layer);
+                        mQueue.Enqueue(command);
+                        result = MCycle.BeginInvoke(mQueue, null, null);
                     }
-                    else
-                    { MessageBox.Show("PLC未连接"); }
-                else { MessageBox.Show("当前任务未完成"); }
-                dt.Dispose();
+                    else { MessageBox.Show("非法操作,信息不全"); }
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("当前用户无此权限");
+                    //}
+                }
+                else
+                { 
+                    MessageBox.Show("PLC未连接");
+                }
             }
         }
 
