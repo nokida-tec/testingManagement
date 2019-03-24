@@ -228,7 +228,7 @@ namespace XT_CETC23
             }
         }
 
-        public String convertFrameLocation (String frameLocation)
+        public String convertFrameLocationToA1 (String frameLocation)
         {
             try
             {
@@ -244,6 +244,45 @@ namespace XT_CETC23
             {
                 Logger.WriteLine(e);
                 return frameLocation;
+            }
+        }
+
+        public String convertFrameLocationTo11(String frameLocation)
+        {
+            try
+            {
+                char[] newFrameLocation = frameLocation.ToArray();
+                char firstChar = newFrameLocation[0];
+                if (firstChar >= 'A' && firstChar <= 'H')
+                {
+                    newFrameLocation[0] = (char)('1' + newFrameLocation[0] - 'A');
+                }
+                return new String(newFrameLocation);
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return frameLocation;
+            }
+        }
+
+        public Byte convertFrameLocationToByte(String frameLocation)
+        {
+            try
+            {
+                char[] newFrameLocation = frameLocation.ToArray();
+                char firstChar = newFrameLocation[0];
+                if (firstChar >= 'A' && firstChar <= 'H')
+                {
+                    newFrameLocation[0] = (char)('1' + newFrameLocation[0] - 'A');
+                }
+                Byte ret = Convert.ToByte(new String(newFrameLocation));
+                return ret;
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine(e);
+                return 0;
             }
         }
 
@@ -500,12 +539,12 @@ namespace XT_CETC23
 
         public bool canPutProduct()
         {
-            return mStatus == Status.PutPiece;
+            return mStatus == Status.PutPiece || mStatus == Status.ScanPiece;
         }
 
         public bool canGetProduct()
         {
-            return mStatus == Status.GetPiece;
+            return mStatus == Status.GetPiece || mStatus == Status.ScanPiece;
         }
 
         public bool isScanDone()

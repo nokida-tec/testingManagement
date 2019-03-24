@@ -284,7 +284,7 @@ namespace XT_CETC23
                 String BeginTime = dt.Rows[0]["BeginTime"].ToString();
                 String EndTime = dt.Rows[0]["EndTime"].ToString();
                 String BatchID = dt.Rows[0]["BatchID"].ToString();
-                trayNo = Frame.getInstance().convertFrameLocation(trayNo);
+                trayNo = Frame.getInstance().convertFrameLocationToA1(trayNo);
                 try 
                 {
                     cabinetName = (Convert.ToInt32(cabinetName) + 1) + "#测试柜";
