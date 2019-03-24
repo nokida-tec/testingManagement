@@ -197,6 +197,12 @@ namespace XT_CETC23
             while (true)
             {
                 Thread.Sleep(100);
+                if (stepEnable)
+                {   // 单步模式
+                    readyForStep = true;
+                    continue;
+                }
+                readyForStep = false;
                 if (Frame.getInstance().hasUntestedProduct() == 0)
                 {  // 全部测试完成
                     switch (Frame.getInstance().frameUpdate)

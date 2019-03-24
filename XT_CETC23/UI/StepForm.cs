@@ -31,7 +31,6 @@ namespace XT_CETC23.SonForm
 
         byte[] writeByte = new byte[1];
         byte[] writeByte1 = new byte[1];
-        byte[] writeByte2 = new byte[1];
         byte[] writeByte3 = new byte[1];
         string[] pos = new string[7];
 
@@ -205,7 +204,7 @@ namespace XT_CETC23.SonForm
                 //机器人轨道移动机器人到动作位置
                 //TaskCycle.actionType = "FrameToCabinet";
 
-                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
+                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedItem.ToString());
 
                 //根据位置和命令类型选择不同的操作
                 if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
@@ -304,7 +303,7 @@ namespace XT_CETC23.SonForm
             {
                 //TaskCycle.actionType = "FrameToCabinet";
                 //插入机器人轨道移动任务
-                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedText);
+                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedItem.ToString());
             }
             MessageBox.Show("操作完成！", "Information");
             //}
@@ -320,105 +319,20 @@ namespace XT_CETC23.SonForm
             if (plc.isConnected)
             {
                 string pos = mQueue.Dequeue();
-                if (pos.Equals("A1"))
-                    writeByte2[0] = 11;
-                if (pos.Equals("A2"))
-                    writeByte2[0] = 12;
-                if (pos.Equals("A3"))
-                    writeByte2[0] = 13;
-                if (pos.Equals("A4"))
-                    writeByte2[0] = 14;
-                if (pos.Equals("A5"))
-                    writeByte2[0] = 15;
-
-                if (pos.Equals("B1"))
-                    writeByte2[0] = 21;
-                if (pos.Equals("B2"))
-                    writeByte2[0] = 22;
-                if (pos.Equals("B3"))
-                    writeByte2[0] = 23;
-                if (pos.Equals("B4"))
-                    writeByte2[0] = 24;
-                if (pos.Equals("B5"))
-                    writeByte2[0] = 25;
-
-                if (pos.Equals("C1"))
-                    writeByte2[0] = 31;
-                if (pos.Equals("C2"))
-                    writeByte2[0] = 32;
-                if (pos.Equals("C3"))
-                    writeByte2[0] = 33;
-                if (pos.Equals("C4"))
-                    writeByte2[0] = 34;
-                if (pos.Equals("C5"))
-                    writeByte2[0] = 35;
-
-                if (pos.Equals("D1"))
-                    writeByte2[0] = 41;
-                if (pos.Equals("D2"))
-                    writeByte2[0] = 42;
-                if (pos.Equals("D3"))
-                    writeByte2[0] = 43;
-                if (pos.Equals("D4"))
-                    writeByte2[0] = 44;
-                if (pos.Equals("D5"))
-                    writeByte2[0] = 45;
-
-                if (pos.Equals("E1"))
-                    writeByte2[0] = 51;
-                if (pos.Equals("E2"))
-                    writeByte2[0] = 52;
-                if (pos.Equals("E3"))
-                    writeByte2[0] = 53;
-                if (pos.Equals("E4"))
-                    writeByte2[0] = 54;
-                if (pos.Equals("E5"))
-                    writeByte2[0] = 55;
-
-                if (pos.Equals("F1"))
-                    writeByte2[0] = 61;
-                if (pos.Equals("F2"))
-                    writeByte2[0] = 62;
-                if (pos.Equals("F3"))
-                    writeByte2[0] = 63;
-                if (pos.Equals("F4"))
-                    writeByte2[0] = 64;
-                if (pos.Equals("F5"))
-                    writeByte2[0] = 65;
-
-                if (pos.Equals("G1"))
-                    writeByte2[0] = 71;
-                if (pos.Equals("G2"))
-                    writeByte2[0] = 72;
-                if (pos.Equals("G3"))
-                    writeByte2[0] = 73;
-                if (pos.Equals("G4"))
-                    writeByte2[0] = 74;
-                if (pos.Equals("G5"))
-                    writeByte2[0] = 75;
-
-                if (pos.Equals("H1"))
-                    writeByte2[0] = 81;
-                if (pos.Equals("H2"))
-                    writeByte2[0] = 82;
-                if (pos.Equals("H3"))
-                    writeByte2[0] = 83;
-                if (pos.Equals("H4"))
-                    writeByte2[0] = 84;
-                if (pos.Equals("H5"))
-                    writeByte2[0] = 85;
+                byte[] buffer = new byte[1];
+                buffer[0] = Frame.getInstance().convertFrameLocationToByte(pos);
                 string order = mQueue.Dequeue();
                 if (order.Equals("取料"))
                 {
                     //if (MaterielData.FrameHavePiece)
                     //{ MessageBox.Show("货架区有料");return; }
-                    Frame.getInstance().doGet((int)writeByte2[0]);
+                    Frame.getInstance().doGet((int)buffer[0]);
                 }
                 else if (order.Equals("放料"))
                 {
                     //if (!MaterielData.FrameHavePiece)
                     //{ MessageBox.Show("货架区无料"); return; }
-                    Frame.getInstance().doPut((int)writeByte2[0]);
+                    Frame.getInstance().doPut((int)buffer[0]);
                 }
                 else
                     mQueue.Clear();
@@ -487,7 +401,9 @@ namespace XT_CETC23.SonForm
             {
                 if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
-                Frame.getInstance().doScan();
+                InsertScan();
+
+                //Frame.getInstance().doScan();
             }
             else
             {
@@ -539,6 +455,30 @@ namespace XT_CETC23.SonForm
             {
                 MessageBox.Show("自动流程还未完成，请耐心等待！", "Information");
             }            
+        }
+
+        private void InsertScan()
+        {
+            using (dt = new DataTable())
+            {
+                dt = db.DBQuery("select * from dbo.TaskAxlis2");
+                //设备只能有一条实时任务
+                if (!(dt.Rows.Count > 0))
+                    if (Plc.GetInstanse().isConnected)
+                    {
+                        //if (Common.Account.power == "system" || Common.Account.power == "operator")
+                        //{
+                        string tmpText = "insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)";
+                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
+                    }
+                    else
+                    { MessageBox.Show("PLC未连接"); }
+                else 
+                { 
+                    MessageBox.Show("当前任务未完成");
+                }
+                dt.Dispose();
+            }
         }
 
         private void InsertTest(string order,string prod, int cabinet)
