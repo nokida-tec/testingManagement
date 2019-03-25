@@ -188,8 +188,7 @@ namespace XT_CETC23
                     //}
                     WaitCondition.waitCondition(isScanDone);
 
-                    Byte[] mySort = new Byte[504];
-                    mySort = Plc.GetInstanse().DbRead(104, 0, 504);
+                    Byte[] mySort = Plc.GetInstanse().DbRead(104, 0, 504);
                     Thread.Sleep(2000); // Todo?
                     Plc.GetInstanse().DBWrite(100, 3, 1, new Byte[] { 0 });
 
