@@ -189,7 +189,7 @@ namespace XT_CETC23
 
         void pbStep()
         {
-            if (TestingSystem.Mode.Auto == TestingSystem.GetInstance().mode)
+            if (Config.Config.ENABLED_DEBUG == true || TestingSystem.Mode.Auto == TestingSystem.GetInstance().mode)
             {
                 if (!sForm.IsDisposed)
                 {

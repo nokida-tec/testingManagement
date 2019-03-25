@@ -452,6 +452,10 @@ namespace XT_CETC23
 
         public bool isReadyForStep()
         {
+            if (Config.Config.ENABLED_DEBUG == true)
+            {
+                return stepEnable == true;
+            }
             return stepEnable == true && readyForStep == true;
         }
 

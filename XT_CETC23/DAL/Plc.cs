@@ -108,7 +108,7 @@ namespace XT_CETC23
             }
             lock (lockDbRead)
             {
-                if (isConnected)
+                if (Config.Config.ENABLED_DEBUG == true || isConnected)
                 {
                     int Result = s7clientRead.DBRead(DbNumber, Start, Size, myBytes);
                     ShowResult(Result);
