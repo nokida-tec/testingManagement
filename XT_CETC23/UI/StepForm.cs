@@ -39,7 +39,7 @@ namespace XT_CETC23.SonForm
             this.manulForm = mFrom;
             this.cFrom = cForm;
             InitializeComponent();
-            mStepAction = manulCycle;
+            mStepAction = doStep;
             db= DataBase.GetInstanse();
             plc = Plc.GetInstanse();
             for (int i = 0; i < pos.Length; i++)
@@ -104,70 +104,34 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void manul_btnStart1_Click(object sender, EventArgs e)
+        private void onClick_RobotAction(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
-                if (!ckbAxis7Alone.Checked)                 //机器人和轨道联动
+
+                String pos = manul_cbGoalPos.SelectedItem.ToString();
+
+                if (ckbAxis7Alone.Checked) // 轨道独立运动
                 {
-                    if (manul_cbProductSort.SelectedIndex > -1 && manul_cbGoalPos.SelectedIndex > -1 && manul_cbCommand.SelectedIndex > -1)
-                    {
-                        if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
-                        {
-                            if (manul_cbProductNum.Enabled)
-                            {
-                                if (manul_cbProductNum.SelectedIndex > -1)
-                                {
-                                    Thread robotTh = new Thread(RobotOp);
-                                    if (!robotTh.IsAlive)
-                                    {
-                                        robotTh.Start();
-                                    }
-                                }
-                                else
-                                {
-                                    MessageBox.Show("输入信息不全！", "Information");
-                                }
-                            }
-                            else
-                            {                               
-                                Thread robotTh = new Thread(RobotOp);
-                                if (!robotTh.IsAlive)
-                                {
-                                    robotTh.Start();
-                                }                                
-                            }
-                        }
-                        else
-                        {
-                            Thread robotTh = new Thread(RobotOp);
-                            if (!robotTh.IsAlive)
-                            {
-                                robotTh.Start();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("输入信息不全！", "Information");
-                    }
+                    InsertStep("Rail", "Move", pos);
+                    return;
                 }
-                else                        //轨道独立运动
+                else 
                 {
-                    if(manul_cbGoalPos.SelectedIndex > -1)
-                    {
-                        Thread robotTh = new Thread(RobotOp);
-                        if (!robotTh.IsAlive)
-                        {
-                            robotTh.Start();
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("输入信息不全！", "Information");
-                    }
+                    string order = "";
+                    if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() == "料架位")
+                        order = "GetProTray";
+                    if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() == "料架位")
+                        order = "PutProTray";
+                    if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
+                        order = "GetProTest";
+                    if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
+                        order = "PutProTest";
+                    string prodType = manul_cbProductSort.SelectedItem.ToString(); 
+                    String slot = Convert.ToString(manul_cbProductNum.SelectedIndex);
+                    InsertStep("Robot", order, pos, prodType, slot);
                 }
             }
             else
@@ -177,167 +141,188 @@ namespace XT_CETC23.SonForm
         }
 
         private void RobotOp()
-        {            
-            Robot robot=Robot.GetInstanse();
-            DataTable dt = new DataTable();
-            //if (Common.Account.power == "system" || Common.Account.power == "operator")
-            //{
-
-            if (!ckbAxis7Alone.Checked)
-            {
-                #region 机器人和轨道联动
-                
-                int Axlis7Pos = PlcData.getAxlis7Pos(manul_cbGoalPos.SelectedItem.ToString());
-                string order = "";
-                if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() == "料架位")
-                    order = "GetProTray";
-                if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() == "料架位")
-                    order = "PutProTray";
-                if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
-                    order = "GetProTest";
-                if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
-                    order = "PutProTest";
-                string prodType = manul_cbProductSort.SelectedItem.ToString();
-                String rspMsg = order + "Done";
-
-                //判断机器人是否在原点
-                //机器人轨道移动机器人到动作位置
-                //TaskCycle.actionType = "FrameToCabinet";
-
-                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedItem.ToString());
-
-                //根据位置和命令类型选择不同的操作
-                if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
-                {                        
-                    #region 料架位
-                    int pieceNo = 1;
-                    
-                    if (manul_cbProductNum.Enabled)
-                    {
-                        pieceNo = manul_cbProductNum.SelectedIndex + 1;
-                    }                                            
-                        
-                                            
-                    if (order == "GetProTray")  //机器人取料
-                    {
-                        //拍照
-                        int prodNumber = 0;
-                        switch (prodType)
-                        {
-                            case "A":
-                                prodNumber = 1;
-                                break;
-                            case "B":
-                                prodNumber = 2;
-                                break;
-                            case "C":
-                                prodNumber = 3;
-                                break;
-                            case "D":
-                                prodNumber = 4;
-                                break;
-                            case "E":
-                                prodNumber = 5;
-                                break;
-                            case "F":
-                                prodNumber = 6;
-                                break;
-                        }
-
-                        int shootTimes = 0;
-                    ShootAgain:
-                        string CordinatorX = "0";
-                        string CordinatorY = "0";
-                        string CordinatorU = "0";
-                        cFrom.CCDTrigger(prodNumber, pieceNo);
-                        shootTimes = shootTimes + 1;
-
-                        if (cFrom.CCDDone == -1)
-                        {
-                            Thread.Sleep(200);
-                            if (shootTimes < 4)
-                            {
-                                goto ShootAgain;
-                            }
-                            MessageBox.Show("视觉识别失败", "Information");
-                            return;
-                        }
-
-                        if (prodType == "D")
-                        {
-                            CordinatorX = cFrom.X;
-                            CordinatorY = cFrom.Y;
-                        }
-
-                        Robot.GetInstanse().doGetProductFromFrame(prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
-                    }
-                    else if(order == "PutProTray")           //机器人放料
-                    {
-                        Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo);
-                    }                                           
-                    #endregion                    
-                }                          
-                else
-                {
-                    #region 测试台
-                    int cabinetNo = manul_cbGoalPos.SelectedIndex;
-                    Robot.GetInstanse().doPutProductToCabinet(prodType, cabinetNo);  // Todo: 是否从0开始,需要确认
-                    #endregion
-                }
-
-                //等待机器人取料完成消息                    
-                while (String.IsNullOrEmpty(RobotData.Response))
-                {
-                    Thread.Sleep(100);
-                }
-                while (!RobotData.Response.Trim().Equals(rspMsg))
-                {
-                    Thread.Sleep(100);
-                }
-                RobotData.Command = "";
-                RobotData.Response = "";                
-            }
-            #endregion
-
-            else        //轨道独立运动
-            {
-                //TaskCycle.actionType = "FrameToCabinet";
-                //插入机器人轨道移动任务
-                Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedItem.ToString());
-            }
-            MessageBox.Show("操作完成！", "Information");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("当前用户无此权限");
-            //}                                                                 
-        }
-
-        void manulCycle(Queue<string> mQueue)
         {
             lock (TestingSystem.lockStep)
             {
-                //Thread.Sleep(5000);
-                if (plc.isConnected)
+                Robot robot = Robot.GetInstanse();
+                DataTable dt = new DataTable();
+
+                if (!ckbAxis7Alone.Checked)
                 {
-                    string pos = mQueue.Dequeue();
-                    byte[] buffer = new byte[1];
-                    buffer[0] = Frame.getInstance().convertFrameLocationToByte(pos);
-                    string order = mQueue.Dequeue();
-                    if (order.Equals("取料"))
+                    #region 机器人和轨道联动
+
+                    int Axlis7Pos = PlcData.getAxlis7Pos(manul_cbGoalPos.SelectedItem.ToString());
+                    string order = "";
+                    if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() == "料架位")
+                        order = "GetProTray";
+                    if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() == "料架位")
+                        order = "PutProTray";
+                    if (manul_cbCommand.SelectedItem.ToString() == "取料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
+                        order = "GetProTest";
+                    if (manul_cbCommand.SelectedItem.ToString() == "放料" && manul_cbGoalPos.SelectedItem.ToString() != "料架位")
+                        order = "PutProTest";
+                    string prodType = manul_cbProductSort.SelectedItem.ToString();
+                    String rspMsg = order + "Done";
+
+                    //判断机器人是否在原点
+                    //机器人轨道移动机器人到动作位置
+                    //TaskCycle.actionType = "FrameToCabinet";
+
+                    Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedItem.ToString());
+
+                    //根据位置和命令类型选择不同的操作
+                    if (manul_cbGoalPos.SelectedItem.ToString() == "料架位")
                     {
-                        //if (MaterielData.FrameHavePiece)
-                        //{ MessageBox.Show("货架区有料");return; }
-                        Frame.getInstance().doGet((int)buffer[0]);
-                    }
-                    else if (order.Equals("放料"))
-                    {
-                        //if (!MaterielData.FrameHavePiece)
-                        //{ MessageBox.Show("货架区无料"); return; }
-                        Frame.getInstance().doPut((int)buffer[0]);
+                        #region 料架位
+                        int pieceNo = 1;
+
+                        if (manul_cbProductNum.Enabled)
+                        {
+                            pieceNo = manul_cbProductNum.SelectedIndex + 1;
+                        }
+
+
+                        if (order == "GetProTray")  //机器人取料
+                        {
+                            //拍照
+                            int prodNumber = 0;
+                            switch (prodType)
+                            {
+                                case "A":
+                                    prodNumber = 1;
+                                    break;
+                                case "B":
+                                    prodNumber = 2;
+                                    break;
+                                case "C":
+                                    prodNumber = 3;
+                                    break;
+                                case "D":
+                                    prodNumber = 4;
+                                    break;
+                                case "E":
+                                    prodNumber = 5;
+                                    break;
+                                case "F":
+                                    prodNumber = 6;
+                                    break;
+                            }
+
+                            int shootTimes = 0;
+                        ShootAgain:
+                            string CordinatorX = "0";
+                            string CordinatorY = "0";
+                            string CordinatorU = "0";
+                            cFrom.CCDTrigger(prodNumber, pieceNo);
+                            shootTimes = shootTimes + 1;
+
+                            if (cFrom.CCDDone == -1)
+                            {
+                                Thread.Sleep(200);
+                                if (shootTimes < 4)
+                                {
+                                    goto ShootAgain;
+                                }
+                                MessageBox.Show("视觉识别失败", "Information");
+                                return;
+                            }
+
+                            if (prodType == "D")
+                            {
+                                CordinatorX = cFrom.X;
+                                CordinatorY = cFrom.Y;
+                            }
+
+                            Robot.GetInstanse().doGetProductFromFrame(prodType, pieceNo, CordinatorX, CordinatorY, CordinatorU);
+                        }
+                        else if (order == "PutProTray")           //机器人放料
+                        {
+                            Robot.GetInstanse().doPutProductToFrame(prodType, pieceNo);
+                        }
+                        #endregion
                     }
                     else
-                        mQueue.Clear();
+                    {
+                        #region 测试台
+                        int cabinetNo = manul_cbGoalPos.SelectedIndex;
+                        Robot.GetInstanse().doPutProductToCabinet(prodType, cabinetNo);  // Todo: 是否从0开始,需要确认
+                        #endregion
+                    }
+
+                    //等待机器人取料完成消息                    
+                    while (String.IsNullOrEmpty(RobotData.Response))
+                    {
+                        Thread.Sleep(100);
+                    }
+                    while (!RobotData.Response.Trim().Equals(rspMsg))
+                    {
+                        Thread.Sleep(100);
+                    }
+                    RobotData.Command = "";
+                    RobotData.Response = "";
+                }
+                    #endregion
+
+                else        //轨道独立运动
+                {
+                    //TaskCycle.actionType = "FrameToCabinet";
+                    //插入机器人轨道移动任务
+                    Robot.GetInstanse().doStepRailMove(manul_cbGoalPos.SelectedItem.ToString());
+                }
+                MessageBox.Show("操作完成！", "Information");
+                //}
+                //else
+                //{
+                //    MessageBox.Show("当前用户无此权限");
+                //} 
+            }                                                
+        }
+
+        void doStep(Queue<string> mQueue)
+        {
+            lock (TestingSystem.lockStep)
+            {
+                // Thread.Sleep(2000);
+                if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
+                {
+                    string module = mQueue.Dequeue();
+                    string order = mQueue.Dequeue();
+                    byte[] buffer = new byte[1];
+                    switch (module)
+                    {
+                        case "Frame":
+                            switch (order)
+                            {
+                                case "Scan":
+                                    Frame.getInstance().doScan();
+                                    break;
+                                case "取料":
+                                    {
+                                        string pos = mQueue.Dequeue();
+                                        buffer[0] = Frame.getInstance().convertFrameLocationToByte(pos);
+                                        Frame.getInstance().doGet((int)buffer[0]);
+                                    }
+                                    break;
+                                case "放料":
+                                    {
+                                        string pos = mQueue.Dequeue();
+                                        buffer[0] = Frame.getInstance().convertFrameLocationToByte(pos);
+                                        Frame.getInstance().doPut((int)buffer[0]);
+                                    }
+                                    break;
+                            }
+                            break;
+                        case "Robot":
+                            break;
+                        case "Rail":
+                            break;
+                        case "Cabinet":
+                            break;
+                        case "Loop":
+                            break;
+                    }
+
+                    mQueue.Clear();
                 }
                 else
                 {
@@ -346,15 +331,16 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void manul_btnStart2_Click(object sender, EventArgs e)
+        private void onClick_FrameAction(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
+
                 String layerNo = manul_cbGoalPos2.SelectedItem.ToString();
                 String commandNo = manul_cbCommand2.SelectedItem.ToString();
-                InsertPickTtay(layerNo, commandNo);
+                InsertStep("Frame", commandNo, layerNo);
             }
             else
             {
@@ -365,17 +351,21 @@ namespace XT_CETC23.SonForm
 
         private void InsertPickTtay(String layer, String command)
         {
-            lock (TestingSystem.lockStep)
+            // lock (TestingSystem.lockStep)
             {
-                if (Plc.GetInstanse().isConnected)
+                if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
                 {
                     if (!String.IsNullOrEmpty(layer) && !String.IsNullOrEmpty(command))
                     {
                         mQueue.Enqueue(layer);
                         mQueue.Enqueue(command);
+                        mQueue.Enqueue("料架");
                         result = mStepAction.BeginInvoke(mQueue, null, null);
                     }
-                    else { MessageBox.Show("非法操作,信息不全"); }
+                    else
+                    {
+                        MessageBox.Show("非法操作,信息不全"); 
+                    }
                 }
                 else
                 { 
@@ -384,16 +374,54 @@ namespace XT_CETC23.SonForm
             }
         }
 
+        private void InsertStep(String moudle, String command, String param1 = null, String param2 = null, String param3 = null, String param4 = null)
+        {
+            // lock (TestingSystem.lockStep)
+            {
+                if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
+                {
+                    if (String.IsNullOrEmpty(moudle))
+                        return;
+                    mQueue.Enqueue(moudle);
+
+                    if (String.IsNullOrEmpty(command))
+                        return;
+                    mQueue.Enqueue(command);
+
+                    if (!String.IsNullOrEmpty(param1))
+                    {
+                        mQueue.Enqueue(param1);
+                    }
+                    if (!String.IsNullOrEmpty(param2))
+                    {
+                        mQueue.Enqueue(param2);
+                    }
+                    if (!String.IsNullOrEmpty(param3))
+                    {
+                        mQueue.Enqueue(param3);
+                    }
+                    if (!String.IsNullOrEmpty(param4))
+                    {
+                        mQueue.Enqueue(param4);
+                    } 
+                    result = mStepAction.BeginInvoke(mQueue, null, null);
+                }
+                else
+                {
+                    MessageBox.Show("PLC未连接");
+                }
+            }
+        }
+
         //插入扫码任务
-        private void manul_btnStartScan_Click(object sender, EventArgs e)
+        private void onClick_Scan(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
-                InsertScan();
-
-                //Frame.getInstance().doScan();
+                
+                InsertStep("Frame", "Scan");
             }
             else
             {
@@ -401,7 +429,7 @@ namespace XT_CETC23.SonForm
             }
         }
 
-        private void manul_btnStopT_Click(object sender, EventArgs e)
+        private void onClick_SingleTestStop(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
@@ -411,7 +439,8 @@ namespace XT_CETC23.SonForm
                 {
                     String prodType = manul_cbCabineitType.SelectedItem.ToString();
                     int cabinetNo = manul_cbCabineit.SelectedIndex;
-                    InsertTest("Stop", prodType, cabinetNo);
+                    InsertStep("Cabinet", "Stop", Convert.ToString(cabinetNo), prodType);
+                    //InsertTest("Stop", prodType, cabinetNo);
                 }
                 else
                 {
@@ -424,7 +453,7 @@ namespace XT_CETC23.SonForm
             }           
         }
 
-        private void manul_btnStartT_Click(object sender, EventArgs e)
+        private void onClick_SingleTestStart(object sender, EventArgs e)
         {            
             if (TestingSystem.GetInstance().isReadyForStep())
             {
@@ -434,7 +463,8 @@ namespace XT_CETC23.SonForm
                 {
                     String prodType = manul_cbCabineitType.SelectedItem.ToString();
                     int cabinetNo = manul_cbCabineit.SelectedIndex;
-                    InsertTest("Start", prodType, cabinetNo);
+                    InsertStep("Cabinet", "Start", Convert.ToString(cabinetNo), prodType);
+                    //InsertTest("Start", prodType, cabinetNo);
                 }
                 else
                 {
@@ -445,30 +475,6 @@ namespace XT_CETC23.SonForm
             {
                 MessageBox.Show("自动流程还未完成，请耐心等待！", "Information");
             }            
-        }
-
-        private void InsertScan()
-        {
-            using (dt = new DataTable())
-            {
-                dt = db.DBQuery("select * from dbo.TaskAxlis2");
-                //设备只能有一条实时任务
-                if (!(dt.Rows.Count > 0))
-                    if (Plc.GetInstanse().isConnected)
-                    {
-                        //if (Common.Account.power == "system" || Common.Account.power == "operator")
-                        //{
-                        string tmpText = "insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)";
-                        db.DBInsert("insert into dbo.TaskAxlis2(orderName,FrameLocation)values(" + (int)EnumC.FrameW.ScanSort + ",0)");
-                    }
-                    else
-                    { MessageBox.Show("PLC未连接"); }
-                else 
-                { 
-                    MessageBox.Show("当前任务未完成");
-                }
-                dt.Dispose();
-            }
         }
 
         private void InsertTest(string order,string prod, int cabinet)
@@ -541,12 +547,13 @@ namespace XT_CETC23.SonForm
         }
 
         int stepCycle = 0;
-        private void step_btnTake_Click(object sender, EventArgs e)
+        private void onClick_Take(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
                 if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
+
                 if (step_cbProductSort.SelectedIndex > -1 && step_cbCabinetNo.SelectedIndex > -1 && step_cbTrayNo.SelectedIndex > -1)
                 {
                     Thread takeTh = new Thread(FrameToCabinet);
@@ -747,7 +754,7 @@ namespace XT_CETC23.SonForm
             MessageBox.Show("操作完成！", "Information");
         }
 
-        private void step_btnTestStart_Click(object sender, EventArgs e)
+        private void onClick_TestStart(object sender, EventArgs e)
         {
             bool testStarted = false;
             if (TestingSystem.GetInstance().isReadyForStep())
@@ -802,7 +809,7 @@ namespace XT_CETC23.SonForm
             }          
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void onClick_TestStop(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {
@@ -855,7 +862,7 @@ namespace XT_CETC23.SonForm
             }            
         }
 
-        private void step_btnFetch_Click(object sender, EventArgs e)
+        private void onClick_PutBack(object sender, EventArgs e)
         {
             if (TestingSystem.GetInstance().isReadyForStep())
             {

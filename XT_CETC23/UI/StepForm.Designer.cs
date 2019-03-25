@@ -175,7 +175,7 @@
             this.step_btnFetch.TabIndex = 6;
             this.step_btnFetch.Text = "取回到料架";
             this.step_btnFetch.UseVisualStyleBackColor = false;
-            this.step_btnFetch.Click += new System.EventHandler(this.step_btnFetch_Click);
+            this.step_btnFetch.Click += new System.EventHandler(this.onClick_PutBack);
             // 
             // button1
             // 
@@ -188,7 +188,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "停止测试";
             this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.onClick_TestStop);
             // 
             // step_btnTestStart
             // 
@@ -201,7 +201,7 @@
             this.step_btnTestStart.TabIndex = 6;
             this.step_btnTestStart.Text = "开始测试";
             this.step_btnTestStart.UseVisualStyleBackColor = false;
-            this.step_btnTestStart.Click += new System.EventHandler(this.step_btnTestStart_Click);
+            this.step_btnTestStart.Click += new System.EventHandler(this.onClick_TestStart);
             // 
             // step_btnTake
             // 
@@ -214,7 +214,7 @@
             this.step_btnTake.TabIndex = 6;
             this.step_btnTake.Text = "取料到测试柜";
             this.step_btnTake.UseVisualStyleBackColor = false;
-            this.step_btnTake.Click += new System.EventHandler(this.step_btnTake_Click);
+            this.step_btnTake.Click += new System.EventHandler(this.onClick_Take);
             // 
             // label4
             // 
@@ -352,7 +352,7 @@
             this.manul_btnStopT.TabIndex = 35;
             this.manul_btnStopT.Text = "停止测试";
             this.manul_btnStopT.UseVisualStyleBackColor = false;
-            this.manul_btnStopT.Click += new System.EventHandler(this.manul_btnStopT_Click);
+            this.manul_btnStopT.Click += new System.EventHandler(this.onClick_SingleTestStop);
             // 
             // label5
             // 
@@ -376,7 +376,7 @@
             this.manul_btnStartT.TabIndex = 7;
             this.manul_btnStartT.Text = "开始测试";
             this.manul_btnStartT.UseVisualStyleBackColor = false;
-            this.manul_btnStartT.Click += new System.EventHandler(this.manul_btnStartT_Click);
+            this.manul_btnStartT.Click += new System.EventHandler(this.onClick_SingleTestStart);
             // 
             // manul_cbCabineit
             // 
@@ -463,7 +463,7 @@
             this.manul_btnStart1.TabIndex = 6;
             this.manul_btnStart1.Text = "机器人取料/放料";
             this.manul_btnStart1.UseVisualStyleBackColor = false;
-            this.manul_btnStart1.Click += new System.EventHandler(this.manul_btnStart1_Click);
+            this.manul_btnStart1.Click += new System.EventHandler(this.onClick_RobotAction);
             // 
             // manul_cbProductSort
             // 
@@ -585,7 +585,7 @@
             this.manul_btnStartScan.TabIndex = 7;
             this.manul_btnStartScan.Text = "启动货架扫码";
             this.manul_btnStartScan.UseVisualStyleBackColor = false;
-            this.manul_btnStartScan.Click += new System.EventHandler(this.manul_btnStartScan_Click);
+            this.manul_btnStartScan.Click += new System.EventHandler(this.onClick_Scan);
             // 
             // manul_btnStart2
             // 
@@ -598,7 +598,7 @@
             this.manul_btnStart2.TabIndex = 6;
             this.manul_btnStart2.Text = "货架取料/放料";
             this.manul_btnStart2.UseVisualStyleBackColor = false;
-            this.manul_btnStart2.Click += new System.EventHandler(this.manul_btnStart2_Click);
+            this.manul_btnStart2.Click += new System.EventHandler(this.onClick_FrameAction);
             // 
             // manul_cbCommand2
             // 
