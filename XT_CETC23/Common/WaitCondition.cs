@@ -13,7 +13,7 @@ namespace XT_CETC23
 
         public static ReturnCode waitCondition(Condition condition)
         {
-            while (!condition())
+            while (Config.Config.ENABLED_DEBUG == false && !condition())
             {
                 if (TestingSystem.GetInstance().isSystemExisting() == true)
                 {
