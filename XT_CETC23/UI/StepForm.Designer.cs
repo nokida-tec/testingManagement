@@ -28,89 +28,89 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel = new System.Windows.Forms.Panel();
+            this.gbLoop = new System.Windows.Forms.GroupBox();
             this.cbTrayNo_Loop = new System.Windows.Forms.ComboBox();
             this.btnPutback_Loop = new System.Windows.Forms.Button();
             this.btnTestStop_Loop = new System.Windows.Forms.Button();
             this.btnTestStart_Loop = new System.Windows.Forms.Button();
             this.btnTake_Loop = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lbSlotNoOfLoop = new System.Windows.Forms.Label();
+            this.lbCabinetOfLoop = new System.Windows.Forms.Label();
+            this.lbTrayNoOfLoop = new System.Windows.Forms.Label();
             this.cbProductType_Loop = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lbProductTypeOfLoop = new System.Windows.Forms.Label();
             this.cbSlotNo_Loop = new System.Windows.Forms.ComboBox();
             this.cbCabinetNo_Loop = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbCabinet = new System.Windows.Forms.GroupBox();
             this.cbProductType_Cabinet = new System.Windows.Forms.ComboBox();
             this.btnTestStop_Cabinet = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lbCabinetOfCabinet = new System.Windows.Forms.Label();
             this.btnTestStart_Cabinet = new System.Windows.Forms.Button();
             this.cbCabinetNo_Cabinet = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.manul_gbRobt = new System.Windows.Forms.GroupBox();
+            this.lbProductTypeOfCabinet = new System.Windows.Forms.Label();
+            this.gbRobot = new System.Windows.Forms.GroupBox();
             this.ckbAxis7Alone = new System.Windows.Forms.CheckBox();
             this.cbSlotNo_Robot = new System.Windows.Forms.ComboBox();
             this.btnStart_Robot = new System.Windows.Forms.Button();
             this.cbProductType_Robot = new System.Windows.Forms.ComboBox();
             this.cbPos_Robot = new System.Windows.Forms.ComboBox();
-            this.manul_lbGoalPos1 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lbPosOfRobot = new System.Windows.Forms.Label();
+            this.lbSlotNoOfRobot = new System.Windows.Forms.Label();
             this.cbOrder_Robot = new System.Windows.Forms.ComboBox();
-            this.manul_lbProductSort = new System.Windows.Forms.Label();
-            this.manul_lbCommand1 = new System.Windows.Forms.Label();
-            this.manul_gbFrame = new System.Windows.Forms.GroupBox();
+            this.lbProductTypeOfRobot = new System.Windows.Forms.Label();
+            this.lbOrderOfRobot = new System.Windows.Forms.Label();
+            this.gbFrame = new System.Windows.Forms.GroupBox();
             this.btnStartScan = new System.Windows.Forms.Button();
             this.btnStart_Frame = new System.Windows.Forms.Button();
             this.cbOrder_Frame = new System.Windows.Forms.ComboBox();
             this.cbGoalPos_Frame = new System.Windows.Forms.ComboBox();
-            this.manul_lbCommand2 = new System.Windows.Forms.Label();
-            this.manul_lbGoalPos2 = new System.Windows.Forms.Label();
-            this.auto_lbName = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.manul_gbRobt.SuspendLayout();
-            this.manul_gbFrame.SuspendLayout();
+            this.lbOrderOfFrame = new System.Windows.Forms.Label();
+            this.lbTrayNoOfFrame = new System.Windows.Forms.Label();
+            this.lbTitle = new System.Windows.Forms.Label();
+            this.panel.SuspendLayout();
+            this.gbLoop.SuspendLayout();
+            this.gbCabinet.SuspendLayout();
+            this.gbRobot.SuspendLayout();
+            this.gbFrame.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // panel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.groupBox2);
-            this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Controls.Add(this.manul_gbRobt);
-            this.panel1.Controls.Add(this.manul_gbFrame);
-            this.panel1.Location = new System.Drawing.Point(8, 67);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(973, 411);
-            this.panel1.TabIndex = 0;
+            this.panel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel.Controls.Add(this.gbLoop);
+            this.panel.Controls.Add(this.gbCabinet);
+            this.panel.Controls.Add(this.gbRobot);
+            this.panel.Controls.Add(this.gbFrame);
+            this.panel.Location = new System.Drawing.Point(8, 67);
+            this.panel.Margin = new System.Windows.Forms.Padding(2);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(973, 411);
+            this.panel.TabIndex = 0;
             // 
-            // groupBox2
+            // gbLoop
             // 
-            this.groupBox2.Controls.Add(this.cbTrayNo_Loop);
-            this.groupBox2.Controls.Add(this.btnPutback_Loop);
-            this.groupBox2.Controls.Add(this.btnTestStop_Loop);
-            this.groupBox2.Controls.Add(this.btnTestStart_Loop);
-            this.groupBox2.Controls.Add(this.btnTake_Loop);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.cbProductType_Loop);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.cbSlotNo_Loop);
-            this.groupBox2.Controls.Add(this.cbCabinetNo_Loop);
-            this.groupBox2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox2.Location = new System.Drawing.Point(501, 18);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(457, 229);
-            this.groupBox2.TabIndex = 39;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "单循环控制";
+            this.gbLoop.Controls.Add(this.cbTrayNo_Loop);
+            this.gbLoop.Controls.Add(this.btnPutback_Loop);
+            this.gbLoop.Controls.Add(this.btnTestStop_Loop);
+            this.gbLoop.Controls.Add(this.btnTestStart_Loop);
+            this.gbLoop.Controls.Add(this.btnTake_Loop);
+            this.gbLoop.Controls.Add(this.lbSlotNoOfLoop);
+            this.gbLoop.Controls.Add(this.lbCabinetOfLoop);
+            this.gbLoop.Controls.Add(this.lbTrayNoOfLoop);
+            this.gbLoop.Controls.Add(this.cbProductType_Loop);
+            this.gbLoop.Controls.Add(this.lbProductTypeOfLoop);
+            this.gbLoop.Controls.Add(this.cbSlotNo_Loop);
+            this.gbLoop.Controls.Add(this.cbCabinetNo_Loop);
+            this.gbLoop.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.gbLoop.Location = new System.Drawing.Point(501, 18);
+            this.gbLoop.Margin = new System.Windows.Forms.Padding(2);
+            this.gbLoop.Name = "gbLoop";
+            this.gbLoop.Padding = new System.Windows.Forms.Padding(2);
+            this.gbLoop.Size = new System.Drawing.Size(457, 229);
+            this.gbLoop.TabIndex = 39;
+            this.gbLoop.TabStop = false;
+            this.gbLoop.Text = "单循环控制";
             // 
             // cbTrayNo_Loop
             // 
@@ -216,39 +216,39 @@
             this.btnTake_Loop.UseVisualStyleBackColor = false;
             this.btnTake_Loop.Click += new System.EventHandler(this.onClick_Take);
             // 
-            // label4
+            // lbSlotNoOfLoop
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(22, 127);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(85, 19);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "位置号：";
+            this.lbSlotNoOfLoop.AutoSize = true;
+            this.lbSlotNoOfLoop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbSlotNoOfLoop.Location = new System.Drawing.Point(22, 127);
+            this.lbSlotNoOfLoop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbSlotNoOfLoop.Name = "lbSlotNoOfLoop";
+            this.lbSlotNoOfLoop.Size = new System.Drawing.Size(85, 19);
+            this.lbSlotNoOfLoop.TabIndex = 0;
+            this.lbSlotNoOfLoop.Text = "位置号：";
             // 
-            // label1
+            // lbCabinetOfLoop
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(22, 171);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 19);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "测试柜：";
+            this.lbCabinetOfLoop.AutoSize = true;
+            this.lbCabinetOfLoop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbCabinetOfLoop.Location = new System.Drawing.Point(22, 171);
+            this.lbCabinetOfLoop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbCabinetOfLoop.Name = "lbCabinetOfLoop";
+            this.lbCabinetOfLoop.Size = new System.Drawing.Size(85, 19);
+            this.lbCabinetOfLoop.TabIndex = 0;
+            this.lbCabinetOfLoop.Text = "测试柜：";
             // 
-            // label2
+            // lbTrayNoOfLoop
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(22, 82);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 19);
-            this.label2.TabIndex = 1;
-            this.label2.Tag = "";
-            this.label2.Text = "料盘号：";
+            this.lbTrayNoOfLoop.AutoSize = true;
+            this.lbTrayNoOfLoop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbTrayNoOfLoop.Location = new System.Drawing.Point(22, 82);
+            this.lbTrayNoOfLoop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbTrayNoOfLoop.Name = "lbTrayNoOfLoop";
+            this.lbTrayNoOfLoop.Size = new System.Drawing.Size(85, 19);
+            this.lbTrayNoOfLoop.TabIndex = 1;
+            this.lbTrayNoOfLoop.Tag = "";
+            this.lbTrayNoOfLoop.Text = "料盘号：";
             // 
             // cbProductType_Loop
             // 
@@ -263,16 +263,16 @@
             this.cbProductType_Loop.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedProductTypeOfLoop);
             this.cbProductType_Loop.MouseClick += new System.Windows.Forms.MouseEventHandler(this.onClickProductTypeOfLoop);
             // 
-            // label3
+            // lbProductTypeOfLoop
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(22, 37);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(104, 19);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "产品类型：";
+            this.lbProductTypeOfLoop.AutoSize = true;
+            this.lbProductTypeOfLoop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbProductTypeOfLoop.Location = new System.Drawing.Point(22, 37);
+            this.lbProductTypeOfLoop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbProductTypeOfLoop.Name = "lbProductTypeOfLoop";
+            this.lbProductTypeOfLoop.Size = new System.Drawing.Size(104, 19);
+            this.lbProductTypeOfLoop.TabIndex = 2;
+            this.lbProductTypeOfLoop.Text = "产品类型：";
             // 
             // cbSlotNo_Loop
             // 
@@ -311,23 +311,23 @@
             this.cbCabinetNo_Loop.Size = new System.Drawing.Size(109, 24);
             this.cbCabinetNo_Loop.TabIndex = 3;
             // 
-            // groupBox1
+            // gbCabinet
             // 
-            this.groupBox1.Controls.Add(this.cbProductType_Cabinet);
-            this.groupBox1.Controls.Add(this.btnTestStop_Cabinet);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.btnTestStart_Cabinet);
-            this.groupBox1.Controls.Add(this.cbCabinetNo_Cabinet);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox1.Location = new System.Drawing.Point(501, 269);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(457, 114);
-            this.groupBox1.TabIndex = 38;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "测试机台";
+            this.gbCabinet.Controls.Add(this.cbProductType_Cabinet);
+            this.gbCabinet.Controls.Add(this.btnTestStop_Cabinet);
+            this.gbCabinet.Controls.Add(this.lbCabinetOfCabinet);
+            this.gbCabinet.Controls.Add(this.btnTestStart_Cabinet);
+            this.gbCabinet.Controls.Add(this.cbCabinetNo_Cabinet);
+            this.gbCabinet.Controls.Add(this.lbProductTypeOfCabinet);
+            this.gbCabinet.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.gbCabinet.Location = new System.Drawing.Point(501, 269);
+            this.gbCabinet.Margin = new System.Windows.Forms.Padding(2);
+            this.gbCabinet.Name = "gbCabinet";
+            this.gbCabinet.Padding = new System.Windows.Forms.Padding(2);
+            this.gbCabinet.Size = new System.Drawing.Size(457, 114);
+            this.gbCabinet.TabIndex = 38;
+            this.gbCabinet.TabStop = false;
+            this.gbCabinet.Text = "测试机台";
             // 
             // cbProductType_Cabinet
             // 
@@ -354,16 +354,16 @@
             this.btnTestStop_Cabinet.UseVisualStyleBackColor = false;
             this.btnTestStop_Cabinet.Click += new System.EventHandler(this.onClick_SingleTestStop);
             // 
-            // label5
+            // lbCabinetOfCabinet
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(22, 29);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 19);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "测试柜：";
+            this.lbCabinetOfCabinet.AutoSize = true;
+            this.lbCabinetOfCabinet.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbCabinetOfCabinet.Location = new System.Drawing.Point(22, 29);
+            this.lbCabinetOfCabinet.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbCabinetOfCabinet.Name = "lbCabinetOfCabinet";
+            this.lbCabinetOfCabinet.Size = new System.Drawing.Size(85, 19);
+            this.lbCabinetOfCabinet.TabIndex = 0;
+            this.lbCabinetOfCabinet.Text = "测试柜：";
             // 
             // btnTestStart_Cabinet
             // 
@@ -396,38 +396,38 @@
             this.cbCabinetNo_Cabinet.Size = new System.Drawing.Size(109, 24);
             this.cbCabinetNo_Cabinet.TabIndex = 34;
             // 
-            // label6
+            // lbProductTypeOfCabinet
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(22, 71);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(104, 19);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "产品类型：";
+            this.lbProductTypeOfCabinet.AutoSize = true;
+            this.lbProductTypeOfCabinet.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbProductTypeOfCabinet.Location = new System.Drawing.Point(22, 71);
+            this.lbProductTypeOfCabinet.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbProductTypeOfCabinet.Name = "lbProductTypeOfCabinet";
+            this.lbProductTypeOfCabinet.Size = new System.Drawing.Size(104, 19);
+            this.lbProductTypeOfCabinet.TabIndex = 2;
+            this.lbProductTypeOfCabinet.Text = "产品类型：";
             // 
-            // manul_gbRobt
+            // gbRobot
             // 
-            this.manul_gbRobt.Controls.Add(this.ckbAxis7Alone);
-            this.manul_gbRobt.Controls.Add(this.cbSlotNo_Robot);
-            this.manul_gbRobt.Controls.Add(this.btnStart_Robot);
-            this.manul_gbRobt.Controls.Add(this.cbProductType_Robot);
-            this.manul_gbRobt.Controls.Add(this.cbPos_Robot);
-            this.manul_gbRobt.Controls.Add(this.manul_lbGoalPos1);
-            this.manul_gbRobt.Controls.Add(this.label7);
-            this.manul_gbRobt.Controls.Add(this.cbOrder_Robot);
-            this.manul_gbRobt.Controls.Add(this.manul_lbProductSort);
-            this.manul_gbRobt.Controls.Add(this.manul_lbCommand1);
-            this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_gbRobt.Location = new System.Drawing.Point(12, 170);
-            this.manul_gbRobt.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_gbRobt.Name = "manul_gbRobt";
-            this.manul_gbRobt.Padding = new System.Windows.Forms.Padding(2);
-            this.manul_gbRobt.Size = new System.Drawing.Size(460, 213);
-            this.manul_gbRobt.TabIndex = 36;
-            this.manul_gbRobt.TabStop = false;
-            this.manul_gbRobt.Text = "机器人取放料";
+            this.gbRobot.Controls.Add(this.ckbAxis7Alone);
+            this.gbRobot.Controls.Add(this.cbSlotNo_Robot);
+            this.gbRobot.Controls.Add(this.btnStart_Robot);
+            this.gbRobot.Controls.Add(this.cbProductType_Robot);
+            this.gbRobot.Controls.Add(this.cbPos_Robot);
+            this.gbRobot.Controls.Add(this.lbPosOfRobot);
+            this.gbRobot.Controls.Add(this.lbSlotNoOfRobot);
+            this.gbRobot.Controls.Add(this.cbOrder_Robot);
+            this.gbRobot.Controls.Add(this.lbProductTypeOfRobot);
+            this.gbRobot.Controls.Add(this.lbOrderOfRobot);
+            this.gbRobot.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.gbRobot.Location = new System.Drawing.Point(12, 170);
+            this.gbRobot.Margin = new System.Windows.Forms.Padding(2);
+            this.gbRobot.Name = "gbRobot";
+            this.gbRobot.Padding = new System.Windows.Forms.Padding(2);
+            this.gbRobot.Size = new System.Drawing.Size(460, 213);
+            this.gbRobot.TabIndex = 36;
+            this.gbRobot.TabStop = false;
+            this.gbRobot.Text = "机器人取放料";
             // 
             // ckbAxis7Alone
             // 
@@ -475,7 +475,7 @@
             this.cbProductType_Robot.Name = "cbProductType_Robot";
             this.cbProductType_Robot.Size = new System.Drawing.Size(109, 24);
             this.cbProductType_Robot.TabIndex = 5;
-            this.cbProductType_Robot.SelectedIndexChanged += new System.EventHandler(this.manul_cbProductSort_SelectedIndexChanged);
+            this.cbProductType_Robot.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedProductType);
             this.cbProductType_Robot.Click += new System.EventHandler(this.onClickProductTypeOfRobot);
             // 
             // cbPos_Robot
@@ -498,27 +498,27 @@
             this.cbPos_Robot.TabIndex = 3;
             this.cbPos_Robot.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedPosOfRobot);
             // 
-            // manul_lbGoalPos1
+            // lbPosOfRobot
             // 
-            this.manul_lbGoalPos1.AutoSize = true;
-            this.manul_lbGoalPos1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbGoalPos1.Location = new System.Drawing.Point(35, 122);
-            this.manul_lbGoalPos1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.manul_lbGoalPos1.Name = "manul_lbGoalPos1";
-            this.manul_lbGoalPos1.Size = new System.Drawing.Size(104, 19);
-            this.manul_lbGoalPos1.TabIndex = 0;
-            this.manul_lbGoalPos1.Text = "轨道位置：";
+            this.lbPosOfRobot.AutoSize = true;
+            this.lbPosOfRobot.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbPosOfRobot.Location = new System.Drawing.Point(35, 122);
+            this.lbPosOfRobot.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbPosOfRobot.Name = "lbPosOfRobot";
+            this.lbPosOfRobot.Size = new System.Drawing.Size(104, 19);
+            this.lbPosOfRobot.TabIndex = 0;
+            this.lbPosOfRobot.Text = "轨道位置：";
             // 
-            // label7
+            // lbSlotNoOfRobot
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(35, 161);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(85, 19);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "位置号：";
+            this.lbSlotNoOfRobot.AutoSize = true;
+            this.lbSlotNoOfRobot.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbSlotNoOfRobot.Location = new System.Drawing.Point(35, 161);
+            this.lbSlotNoOfRobot.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbSlotNoOfRobot.Name = "lbSlotNoOfRobot";
+            this.lbSlotNoOfRobot.Size = new System.Drawing.Size(85, 19);
+            this.lbSlotNoOfRobot.TabIndex = 0;
+            this.lbSlotNoOfRobot.Text = "位置号：";
             // 
             // cbOrder_Robot
             // 
@@ -534,45 +534,45 @@
             this.cbOrder_Robot.Size = new System.Drawing.Size(109, 24);
             this.cbOrder_Robot.TabIndex = 4;
             // 
-            // manul_lbProductSort
+            // lbProductTypeOfRobot
             // 
-            this.manul_lbProductSort.AutoSize = true;
-            this.manul_lbProductSort.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbProductSort.Location = new System.Drawing.Point(25, 44);
-            this.manul_lbProductSort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.manul_lbProductSort.Name = "manul_lbProductSort";
-            this.manul_lbProductSort.Size = new System.Drawing.Size(114, 19);
-            this.manul_lbProductSort.TabIndex = 2;
-            this.manul_lbProductSort.Text = " 产品类型：";
+            this.lbProductTypeOfRobot.AutoSize = true;
+            this.lbProductTypeOfRobot.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbProductTypeOfRobot.Location = new System.Drawing.Point(25, 44);
+            this.lbProductTypeOfRobot.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbProductTypeOfRobot.Name = "lbProductTypeOfRobot";
+            this.lbProductTypeOfRobot.Size = new System.Drawing.Size(114, 19);
+            this.lbProductTypeOfRobot.TabIndex = 2;
+            this.lbProductTypeOfRobot.Text = " 产品类型：";
             // 
-            // manul_lbCommand1
+            // lbOrderOfRobot
             // 
-            this.manul_lbCommand1.AutoSize = true;
-            this.manul_lbCommand1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbCommand1.Location = new System.Drawing.Point(35, 83);
-            this.manul_lbCommand1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.manul_lbCommand1.Name = "manul_lbCommand1";
-            this.manul_lbCommand1.Size = new System.Drawing.Size(104, 19);
-            this.manul_lbCommand1.TabIndex = 1;
-            this.manul_lbCommand1.Text = "动作类型：";
+            this.lbOrderOfRobot.AutoSize = true;
+            this.lbOrderOfRobot.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbOrderOfRobot.Location = new System.Drawing.Point(35, 83);
+            this.lbOrderOfRobot.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbOrderOfRobot.Name = "lbOrderOfRobot";
+            this.lbOrderOfRobot.Size = new System.Drawing.Size(104, 19);
+            this.lbOrderOfRobot.TabIndex = 1;
+            this.lbOrderOfRobot.Text = "动作类型：";
             // 
-            // manul_gbFrame
+            // gbFrame
             // 
-            this.manul_gbFrame.Controls.Add(this.btnStartScan);
-            this.manul_gbFrame.Controls.Add(this.btnStart_Frame);
-            this.manul_gbFrame.Controls.Add(this.cbOrder_Frame);
-            this.manul_gbFrame.Controls.Add(this.cbGoalPos_Frame);
-            this.manul_gbFrame.Controls.Add(this.manul_lbCommand2);
-            this.manul_gbFrame.Controls.Add(this.manul_lbGoalPos2);
-            this.manul_gbFrame.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_gbFrame.Location = new System.Drawing.Point(12, 18);
-            this.manul_gbFrame.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_gbFrame.Name = "manul_gbFrame";
-            this.manul_gbFrame.Padding = new System.Windows.Forms.Padding(2);
-            this.manul_gbFrame.Size = new System.Drawing.Size(460, 138);
-            this.manul_gbFrame.TabIndex = 37;
-            this.manul_gbFrame.TabStop = false;
-            this.manul_gbFrame.Text = "货架取放料";
+            this.gbFrame.Controls.Add(this.btnStartScan);
+            this.gbFrame.Controls.Add(this.btnStart_Frame);
+            this.gbFrame.Controls.Add(this.cbOrder_Frame);
+            this.gbFrame.Controls.Add(this.cbGoalPos_Frame);
+            this.gbFrame.Controls.Add(this.lbOrderOfFrame);
+            this.gbFrame.Controls.Add(this.lbTrayNoOfFrame);
+            this.gbFrame.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.gbFrame.Location = new System.Drawing.Point(12, 18);
+            this.gbFrame.Margin = new System.Windows.Forms.Padding(2);
+            this.gbFrame.Name = "gbFrame";
+            this.gbFrame.Padding = new System.Windows.Forms.Padding(2);
+            this.gbFrame.Size = new System.Drawing.Size(460, 138);
+            this.gbFrame.TabIndex = 37;
+            this.gbFrame.TabStop = false;
+            this.gbFrame.Text = "货架取放料";
             // 
             // btnStartScan
             // 
@@ -666,39 +666,39 @@
             this.cbGoalPos_Frame.Size = new System.Drawing.Size(109, 24);
             this.cbGoalPos_Frame.TabIndex = 3;
             // 
-            // manul_lbCommand2
+            // lbOrderOfFrame
             // 
-            this.manul_lbCommand2.AutoSize = true;
-            this.manul_lbCommand2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbCommand2.Location = new System.Drawing.Point(35, 107);
-            this.manul_lbCommand2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.manul_lbCommand2.Name = "manul_lbCommand2";
-            this.manul_lbCommand2.Size = new System.Drawing.Size(104, 19);
-            this.manul_lbCommand2.TabIndex = 1;
-            this.manul_lbCommand2.Text = "动作类型：";
+            this.lbOrderOfFrame.AutoSize = true;
+            this.lbOrderOfFrame.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbOrderOfFrame.Location = new System.Drawing.Point(35, 107);
+            this.lbOrderOfFrame.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbOrderOfFrame.Name = "lbOrderOfFrame";
+            this.lbOrderOfFrame.Size = new System.Drawing.Size(104, 19);
+            this.lbOrderOfFrame.TabIndex = 1;
+            this.lbOrderOfFrame.Text = "动作类型：";
             // 
-            // manul_lbGoalPos2
+            // lbTrayNoOfFrame
             // 
-            this.manul_lbGoalPos2.AutoSize = true;
-            this.manul_lbGoalPos2.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_lbGoalPos2.Location = new System.Drawing.Point(35, 71);
-            this.manul_lbGoalPos2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.manul_lbGoalPos2.Name = "manul_lbGoalPos2";
-            this.manul_lbGoalPos2.Size = new System.Drawing.Size(85, 19);
-            this.manul_lbGoalPos2.TabIndex = 0;
-            this.manul_lbGoalPos2.Text = "料盘号：";
+            this.lbTrayNoOfFrame.AutoSize = true;
+            this.lbTrayNoOfFrame.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbTrayNoOfFrame.Location = new System.Drawing.Point(35, 71);
+            this.lbTrayNoOfFrame.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbTrayNoOfFrame.Name = "lbTrayNoOfFrame";
+            this.lbTrayNoOfFrame.Size = new System.Drawing.Size(85, 19);
+            this.lbTrayNoOfFrame.TabIndex = 0;
+            this.lbTrayNoOfFrame.Text = "料盘号：";
             // 
-            // auto_lbName
+            // lbTitle
             // 
-            this.auto_lbName.AutoSize = true;
-            this.auto_lbName.Font = new System.Drawing.Font("楷体", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.auto_lbName.ForeColor = System.Drawing.Color.MediumBlue;
-            this.auto_lbName.Location = new System.Drawing.Point(420, 23);
-            this.auto_lbName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.auto_lbName.Name = "auto_lbName";
-            this.auto_lbName.Size = new System.Drawing.Size(137, 30);
-            this.auto_lbName.TabIndex = 3;
-            this.auto_lbName.Text = "单步控制";
+            this.lbTitle.AutoSize = true;
+            this.lbTitle.Font = new System.Drawing.Font("楷体", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbTitle.ForeColor = System.Drawing.Color.MediumBlue;
+            this.lbTitle.Location = new System.Drawing.Point(420, 23);
+            this.lbTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbTitle.Name = "lbTitle";
+            this.lbTitle.Size = new System.Drawing.Size(137, 30);
+            this.lbTitle.TabIndex = 3;
+            this.lbTitle.Text = "单步控制";
             // 
             // StepForm
             // 
@@ -706,22 +706,22 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.LightBlue;
             this.ClientSize = new System.Drawing.Size(988, 485);
-            this.Controls.Add(this.auto_lbName);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lbTitle);
+            this.Controls.Add(this.panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "StepForm";
             this.Tag = "";
             this.Text = "StepForm";
-            this.panel1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.manul_gbRobt.ResumeLayout(false);
-            this.manul_gbRobt.PerformLayout();
-            this.manul_gbFrame.ResumeLayout(false);
-            this.manul_gbFrame.PerformLayout();
+            this.panel.ResumeLayout(false);
+            this.gbLoop.ResumeLayout(false);
+            this.gbLoop.PerformLayout();
+            this.gbCabinet.ResumeLayout(false);
+            this.gbCabinet.PerformLayout();
+            this.gbRobot.ResumeLayout(false);
+            this.gbRobot.PerformLayout();
+            this.gbFrame.ResumeLayout(false);
+            this.gbFrame.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -729,45 +729,45 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label auto_lbName;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.Label lbTitle;
+        private System.Windows.Forms.GroupBox gbCabinet;
         private System.Windows.Forms.ComboBox cbProductType_Cabinet;
         private System.Windows.Forms.Button btnTestStop_Cabinet;
         private System.Windows.Forms.Button btnTestStart_Cabinet;
         private System.Windows.Forms.ComboBox cbCabinetNo_Cabinet;
-        private System.Windows.Forms.GroupBox manul_gbFrame;
+        private System.Windows.Forms.GroupBox gbFrame;
         private System.Windows.Forms.Button btnStartScan;
         private System.Windows.Forms.Button btnStart_Frame;
         private System.Windows.Forms.ComboBox cbOrder_Frame;
         private System.Windows.Forms.ComboBox cbGoalPos_Frame;
-        private System.Windows.Forms.Label manul_lbCommand2;
-        private System.Windows.Forms.Label manul_lbGoalPos2;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label lbOrderOfFrame;
+        private System.Windows.Forms.Label lbTrayNoOfFrame;
+        private System.Windows.Forms.GroupBox gbLoop;
         private System.Windows.Forms.ComboBox cbTrayNo_Loop;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lbCabinetOfLoop;
+        private System.Windows.Forms.Label lbTrayNoOfLoop;
         private System.Windows.Forms.ComboBox cbProductType_Loop;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbProductTypeOfLoop;
         private System.Windows.Forms.ComboBox cbCabinetNo_Loop;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbSlotNoOfLoop;
         private System.Windows.Forms.ComboBox cbSlotNo_Loop;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lbCabinetOfCabinet;
+        private System.Windows.Forms.Label lbProductTypeOfCabinet;
         private System.Windows.Forms.Button btnPutback_Loop;
         private System.Windows.Forms.Button btnTestStart_Loop;
         private System.Windows.Forms.Button btnTake_Loop;
         private System.Windows.Forms.Button btnTestStop_Loop;
-        private System.Windows.Forms.GroupBox manul_gbRobt;
+        private System.Windows.Forms.GroupBox gbRobot;
         private System.Windows.Forms.CheckBox ckbAxis7Alone;
         private System.Windows.Forms.ComboBox cbSlotNo_Robot;
         private System.Windows.Forms.Button btnStart_Robot;
         private System.Windows.Forms.ComboBox cbProductType_Robot;
         private System.Windows.Forms.ComboBox cbPos_Robot;
-        private System.Windows.Forms.Label manul_lbGoalPos1;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbPosOfRobot;
+        private System.Windows.Forms.Label lbSlotNoOfRobot;
         private System.Windows.Forms.ComboBox cbOrder_Robot;
-        private System.Windows.Forms.Label manul_lbProductSort;
-        private System.Windows.Forms.Label manul_lbCommand1;
+        private System.Windows.Forms.Label lbProductTypeOfRobot;
+        private System.Windows.Forms.Label lbOrderOfRobot;
     }
 }
