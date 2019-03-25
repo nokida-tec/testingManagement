@@ -30,41 +30,41 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.step_cbTrayNo = new System.Windows.Forms.ComboBox();
-            this.step_btnFetch = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.step_btnTestStart = new System.Windows.Forms.Button();
-            this.step_btnTake = new System.Windows.Forms.Button();
+            this.cbTrayNo_Loop = new System.Windows.Forms.ComboBox();
+            this.btnPutback_Loop = new System.Windows.Forms.Button();
+            this.btnTestStop_Loop = new System.Windows.Forms.Button();
+            this.btnTestStart_Loop = new System.Windows.Forms.Button();
+            this.btnTake_Loop = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.step_cbProductSort = new System.Windows.Forms.ComboBox();
+            this.cbProductType_Loop = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.step_cbProductNo = new System.Windows.Forms.ComboBox();
-            this.step_cbCabinetNo = new System.Windows.Forms.ComboBox();
+            this.cbSlotNo_Loop = new System.Windows.Forms.ComboBox();
+            this.cbCabinetNo_Loop = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.manul_cbCabineitType = new System.Windows.Forms.ComboBox();
-            this.manul_btnStopT = new System.Windows.Forms.Button();
+            this.cbProductType_Cabinet = new System.Windows.Forms.ComboBox();
+            this.btnTestStop_Cabinet = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.manul_btnStartT = new System.Windows.Forms.Button();
-            this.manul_cbCabineit = new System.Windows.Forms.ComboBox();
+            this.btnTestStart_Cabinet = new System.Windows.Forms.Button();
+            this.cbCabinetNo_Cabinet = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.manul_gbRobt = new System.Windows.Forms.GroupBox();
             this.ckbAxis7Alone = new System.Windows.Forms.CheckBox();
-            this.manul_cbProductNum = new System.Windows.Forms.ComboBox();
-            this.manul_btnStart1 = new System.Windows.Forms.Button();
-            this.manul_cbProductSort = new System.Windows.Forms.ComboBox();
-            this.manul_cbGoalPos = new System.Windows.Forms.ComboBox();
+            this.cbSlotNo_Robot = new System.Windows.Forms.ComboBox();
+            this.btnStart_Robot = new System.Windows.Forms.Button();
+            this.cbProductType_Robot = new System.Windows.Forms.ComboBox();
+            this.cbPos_Robot = new System.Windows.Forms.ComboBox();
             this.manul_lbGoalPos1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.manul_cbCommand = new System.Windows.Forms.ComboBox();
+            this.cbOrder_Robot = new System.Windows.Forms.ComboBox();
             this.manul_lbProductSort = new System.Windows.Forms.Label();
             this.manul_lbCommand1 = new System.Windows.Forms.Label();
             this.manul_gbFrame = new System.Windows.Forms.GroupBox();
-            this.manul_btnStartScan = new System.Windows.Forms.Button();
-            this.manul_btnStart2 = new System.Windows.Forms.Button();
-            this.manul_cbCommand2 = new System.Windows.Forms.ComboBox();
-            this.manul_cbGoalPos2 = new System.Windows.Forms.ComboBox();
+            this.btnStartScan = new System.Windows.Forms.Button();
+            this.btnStart_Frame = new System.Windows.Forms.Button();
+            this.cbOrder_Frame = new System.Windows.Forms.ComboBox();
+            this.cbGoalPos_Frame = new System.Windows.Forms.ComboBox();
             this.manul_lbCommand2 = new System.Windows.Forms.Label();
             this.manul_lbGoalPos2 = new System.Windows.Forms.Label();
             this.auto_lbName = new System.Windows.Forms.Label();
@@ -90,18 +90,18 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.step_cbTrayNo);
-            this.groupBox2.Controls.Add(this.step_btnFetch);
-            this.groupBox2.Controls.Add(this.button1);
-            this.groupBox2.Controls.Add(this.step_btnTestStart);
-            this.groupBox2.Controls.Add(this.step_btnTake);
+            this.groupBox2.Controls.Add(this.cbTrayNo_Loop);
+            this.groupBox2.Controls.Add(this.btnPutback_Loop);
+            this.groupBox2.Controls.Add(this.btnTestStop_Loop);
+            this.groupBox2.Controls.Add(this.btnTestStart_Loop);
+            this.groupBox2.Controls.Add(this.btnTake_Loop);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.step_cbProductSort);
+            this.groupBox2.Controls.Add(this.cbProductType_Loop);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.step_cbProductNo);
-            this.groupBox2.Controls.Add(this.step_cbCabinetNo);
+            this.groupBox2.Controls.Add(this.cbSlotNo_Loop);
+            this.groupBox2.Controls.Add(this.cbCabinetNo_Loop);
             this.groupBox2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox2.Location = new System.Drawing.Point(501, 18);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
@@ -112,12 +112,12 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "单循环控制";
             // 
-            // step_cbTrayNo
+            // cbTrayNo_Loop
             // 
-            this.step_cbTrayNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.step_cbTrayNo.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_cbTrayNo.FormattingEnabled = true;
-            this.step_cbTrayNo.Items.AddRange(new object[] {
+            this.cbTrayNo_Loop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTrayNo_Loop.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbTrayNo_Loop.FormattingEnabled = true;
+            this.cbTrayNo_Loop.Items.AddRange(new object[] {
             "A1",
             "A2",
             "A3",
@@ -158,63 +158,63 @@
             "H3",
             "H4",
             "H5"});
-            this.step_cbTrayNo.Location = new System.Drawing.Point(142, 81);
-            this.step_cbTrayNo.Margin = new System.Windows.Forms.Padding(2);
-            this.step_cbTrayNo.Name = "step_cbTrayNo";
-            this.step_cbTrayNo.Size = new System.Drawing.Size(109, 24);
-            this.step_cbTrayNo.TabIndex = 4;
+            this.cbTrayNo_Loop.Location = new System.Drawing.Point(142, 81);
+            this.cbTrayNo_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.cbTrayNo_Loop.Name = "cbTrayNo_Loop";
+            this.cbTrayNo_Loop.Size = new System.Drawing.Size(109, 24);
+            this.cbTrayNo_Loop.TabIndex = 4;
             // 
-            // step_btnFetch
+            // btnPutback_Loop
             // 
-            this.step_btnFetch.BackColor = System.Drawing.Color.PowderBlue;
-            this.step_btnFetch.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_btnFetch.Location = new System.Drawing.Point(287, 168);
-            this.step_btnFetch.Margin = new System.Windows.Forms.Padding(2);
-            this.step_btnFetch.Name = "step_btnFetch";
-            this.step_btnFetch.Size = new System.Drawing.Size(146, 31);
-            this.step_btnFetch.TabIndex = 6;
-            this.step_btnFetch.Text = "取回到料架";
-            this.step_btnFetch.UseVisualStyleBackColor = false;
-            this.step_btnFetch.Click += new System.EventHandler(this.onClick_PutBack);
+            this.btnPutback_Loop.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnPutback_Loop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnPutback_Loop.Location = new System.Drawing.Point(287, 168);
+            this.btnPutback_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPutback_Loop.Name = "btnPutback_Loop";
+            this.btnPutback_Loop.Size = new System.Drawing.Size(146, 31);
+            this.btnPutback_Loop.TabIndex = 6;
+            this.btnPutback_Loop.Text = "取回到料架";
+            this.btnPutback_Loop.UseVisualStyleBackColor = false;
+            this.btnPutback_Loop.Click += new System.EventHandler(this.onClick_PutBack);
             // 
-            // button1
+            // btnTestStop_Loop
             // 
-            this.button1.BackColor = System.Drawing.Color.PowderBlue;
-            this.button1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(287, 122);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 31);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "停止测试";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.onClick_TestStop);
+            this.btnTestStop_Loop.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnTestStop_Loop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTestStop_Loop.Location = new System.Drawing.Point(287, 122);
+            this.btnTestStop_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTestStop_Loop.Name = "btnTestStop_Loop";
+            this.btnTestStop_Loop.Size = new System.Drawing.Size(146, 31);
+            this.btnTestStop_Loop.TabIndex = 6;
+            this.btnTestStop_Loop.Text = "停止测试";
+            this.btnTestStop_Loop.UseVisualStyleBackColor = false;
+            this.btnTestStop_Loop.Click += new System.EventHandler(this.onClick_TestStop);
             // 
-            // step_btnTestStart
+            // btnTestStart_Loop
             // 
-            this.step_btnTestStart.BackColor = System.Drawing.Color.PowderBlue;
-            this.step_btnTestStart.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_btnTestStart.Location = new System.Drawing.Point(287, 76);
-            this.step_btnTestStart.Margin = new System.Windows.Forms.Padding(2);
-            this.step_btnTestStart.Name = "step_btnTestStart";
-            this.step_btnTestStart.Size = new System.Drawing.Size(146, 31);
-            this.step_btnTestStart.TabIndex = 6;
-            this.step_btnTestStart.Text = "开始测试";
-            this.step_btnTestStart.UseVisualStyleBackColor = false;
-            this.step_btnTestStart.Click += new System.EventHandler(this.onClick_TestStart);
+            this.btnTestStart_Loop.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnTestStart_Loop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTestStart_Loop.Location = new System.Drawing.Point(287, 76);
+            this.btnTestStart_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTestStart_Loop.Name = "btnTestStart_Loop";
+            this.btnTestStart_Loop.Size = new System.Drawing.Size(146, 31);
+            this.btnTestStart_Loop.TabIndex = 6;
+            this.btnTestStart_Loop.Text = "开始测试";
+            this.btnTestStart_Loop.UseVisualStyleBackColor = false;
+            this.btnTestStart_Loop.Click += new System.EventHandler(this.onClick_TestStart);
             // 
-            // step_btnTake
+            // btnTake_Loop
             // 
-            this.step_btnTake.BackColor = System.Drawing.Color.PowderBlue;
-            this.step_btnTake.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_btnTake.Location = new System.Drawing.Point(287, 30);
-            this.step_btnTake.Margin = new System.Windows.Forms.Padding(2);
-            this.step_btnTake.Name = "step_btnTake";
-            this.step_btnTake.Size = new System.Drawing.Size(146, 31);
-            this.step_btnTake.TabIndex = 6;
-            this.step_btnTake.Text = "取料到测试柜";
-            this.step_btnTake.UseVisualStyleBackColor = false;
-            this.step_btnTake.Click += new System.EventHandler(this.onClick_Take);
+            this.btnTake_Loop.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnTake_Loop.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTake_Loop.Location = new System.Drawing.Point(287, 30);
+            this.btnTake_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTake_Loop.Name = "btnTake_Loop";
+            this.btnTake_Loop.Size = new System.Drawing.Size(146, 31);
+            this.btnTake_Loop.TabIndex = 6;
+            this.btnTake_Loop.Text = "取料到测试柜";
+            this.btnTake_Loop.UseVisualStyleBackColor = false;
+            this.btnTake_Loop.Click += new System.EventHandler(this.onClick_Take);
             // 
             // label4
             // 
@@ -250,18 +250,18 @@
             this.label2.Tag = "";
             this.label2.Text = "料盘号：";
             // 
-            // step_cbProductSort
+            // cbProductType_Loop
             // 
-            this.step_cbProductSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.step_cbProductSort.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_cbProductSort.FormattingEnabled = true;
-            this.step_cbProductSort.Location = new System.Drawing.Point(142, 35);
-            this.step_cbProductSort.Margin = new System.Windows.Forms.Padding(2);
-            this.step_cbProductSort.Name = "step_cbProductSort";
-            this.step_cbProductSort.Size = new System.Drawing.Size(109, 24);
-            this.step_cbProductSort.TabIndex = 5;
-            this.step_cbProductSort.SelectedIndexChanged += new System.EventHandler(this.step_cbProductSort_SelectedIndexChanged);
-            this.step_cbProductSort.MouseClick += new System.Windows.Forms.MouseEventHandler(this.step_cbProductSort_MouseClick);
+            this.cbProductType_Loop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProductType_Loop.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbProductType_Loop.FormattingEnabled = true;
+            this.cbProductType_Loop.Location = new System.Drawing.Point(142, 35);
+            this.cbProductType_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.cbProductType_Loop.Name = "cbProductType_Loop";
+            this.cbProductType_Loop.Size = new System.Drawing.Size(109, 24);
+            this.cbProductType_Loop.TabIndex = 5;
+            this.cbProductType_Loop.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedProductTypeOfLoop);
+            this.cbProductType_Loop.MouseClick += new System.Windows.Forms.MouseEventHandler(this.onClickProductTypeOfLoop);
             // 
             // label3
             // 
@@ -274,12 +274,12 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "产品类型：";
             // 
-            // step_cbProductNo
+            // cbSlotNo_Loop
             // 
-            this.step_cbProductNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.step_cbProductNo.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_cbProductNo.FormattingEnabled = true;
-            this.step_cbProductNo.Items.AddRange(new object[] {
+            this.cbSlotNo_Loop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSlotNo_Loop.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbSlotNo_Loop.FormattingEnabled = true;
+            this.cbSlotNo_Loop.Items.AddRange(new object[] {
             "料架位",
             "1#测试位",
             "2#测试位",
@@ -287,37 +287,37 @@
             "4#测试位",
             "5#测试位",
             "6#测试位"});
-            this.step_cbProductNo.Location = new System.Drawing.Point(142, 127);
-            this.step_cbProductNo.Margin = new System.Windows.Forms.Padding(2);
-            this.step_cbProductNo.Name = "step_cbProductNo";
-            this.step_cbProductNo.Size = new System.Drawing.Size(109, 24);
-            this.step_cbProductNo.TabIndex = 3;
+            this.cbSlotNo_Loop.Location = new System.Drawing.Point(142, 127);
+            this.cbSlotNo_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.cbSlotNo_Loop.Name = "cbSlotNo_Loop";
+            this.cbSlotNo_Loop.Size = new System.Drawing.Size(109, 24);
+            this.cbSlotNo_Loop.TabIndex = 3;
             // 
-            // step_cbCabinetNo
+            // cbCabinetNo_Loop
             // 
-            this.step_cbCabinetNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.step_cbCabinetNo.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.step_cbCabinetNo.FormattingEnabled = true;
-            this.step_cbCabinetNo.Items.AddRange(new object[] {
+            this.cbCabinetNo_Loop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCabinetNo_Loop.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbCabinetNo_Loop.FormattingEnabled = true;
+            this.cbCabinetNo_Loop.Items.AddRange(new object[] {
             "1#测试位",
             "2#测试位",
             "3#测试位",
             "4#测试位",
             "5#测试位",
             "6#测试位"});
-            this.step_cbCabinetNo.Location = new System.Drawing.Point(142, 173);
-            this.step_cbCabinetNo.Margin = new System.Windows.Forms.Padding(2);
-            this.step_cbCabinetNo.Name = "step_cbCabinetNo";
-            this.step_cbCabinetNo.Size = new System.Drawing.Size(109, 24);
-            this.step_cbCabinetNo.TabIndex = 3;
+            this.cbCabinetNo_Loop.Location = new System.Drawing.Point(142, 173);
+            this.cbCabinetNo_Loop.Margin = new System.Windows.Forms.Padding(2);
+            this.cbCabinetNo_Loop.Name = "cbCabinetNo_Loop";
+            this.cbCabinetNo_Loop.Size = new System.Drawing.Size(109, 24);
+            this.cbCabinetNo_Loop.TabIndex = 3;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.manul_cbCabineitType);
-            this.groupBox1.Controls.Add(this.manul_btnStopT);
+            this.groupBox1.Controls.Add(this.cbProductType_Cabinet);
+            this.groupBox1.Controls.Add(this.btnTestStop_Cabinet);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.manul_btnStartT);
-            this.groupBox1.Controls.Add(this.manul_cbCabineit);
+            this.groupBox1.Controls.Add(this.btnTestStart_Cabinet);
+            this.groupBox1.Controls.Add(this.cbCabinetNo_Cabinet);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(501, 269);
@@ -329,30 +329,30 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "测试机台";
             // 
-            // manul_cbCabineitType
+            // cbProductType_Cabinet
             // 
-            this.manul_cbCabineitType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbCabineitType.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbCabineitType.FormattingEnabled = true;
-            this.manul_cbCabineitType.Location = new System.Drawing.Point(142, 69);
-            this.manul_cbCabineitType.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbCabineitType.Name = "manul_cbCabineitType";
-            this.manul_cbCabineitType.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbCabineitType.TabIndex = 8;
-            this.manul_cbCabineitType.MouseClick += new System.Windows.Forms.MouseEventHandler(this.manul_cbCabineitType_MouseClick);
+            this.cbProductType_Cabinet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProductType_Cabinet.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbProductType_Cabinet.FormattingEnabled = true;
+            this.cbProductType_Cabinet.Location = new System.Drawing.Point(142, 69);
+            this.cbProductType_Cabinet.Margin = new System.Windows.Forms.Padding(2);
+            this.cbProductType_Cabinet.Name = "cbProductType_Cabinet";
+            this.cbProductType_Cabinet.Size = new System.Drawing.Size(109, 24);
+            this.cbProductType_Cabinet.TabIndex = 8;
+            this.cbProductType_Cabinet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.onClickProductTypeOfCabinet);
             // 
-            // manul_btnStopT
+            // btnTestStop_Cabinet
             // 
-            this.manul_btnStopT.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStopT.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStopT.Location = new System.Drawing.Point(287, 63);
-            this.manul_btnStopT.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_btnStopT.Name = "manul_btnStopT";
-            this.manul_btnStopT.Size = new System.Drawing.Size(146, 31);
-            this.manul_btnStopT.TabIndex = 35;
-            this.manul_btnStopT.Text = "停止测试";
-            this.manul_btnStopT.UseVisualStyleBackColor = false;
-            this.manul_btnStopT.Click += new System.EventHandler(this.onClick_SingleTestStop);
+            this.btnTestStop_Cabinet.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnTestStop_Cabinet.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTestStop_Cabinet.Location = new System.Drawing.Point(287, 63);
+            this.btnTestStop_Cabinet.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTestStop_Cabinet.Name = "btnTestStop_Cabinet";
+            this.btnTestStop_Cabinet.Size = new System.Drawing.Size(146, 31);
+            this.btnTestStop_Cabinet.TabIndex = 35;
+            this.btnTestStop_Cabinet.Text = "停止测试";
+            this.btnTestStop_Cabinet.UseVisualStyleBackColor = false;
+            this.btnTestStop_Cabinet.Click += new System.EventHandler(this.onClick_SingleTestStop);
             // 
             // label5
             // 
@@ -365,36 +365,36 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "测试柜：";
             // 
-            // manul_btnStartT
+            // btnTestStart_Cabinet
             // 
-            this.manul_btnStartT.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStartT.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStartT.Location = new System.Drawing.Point(287, 23);
-            this.manul_btnStartT.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_btnStartT.Name = "manul_btnStartT";
-            this.manul_btnStartT.Size = new System.Drawing.Size(146, 31);
-            this.manul_btnStartT.TabIndex = 7;
-            this.manul_btnStartT.Text = "开始测试";
-            this.manul_btnStartT.UseVisualStyleBackColor = false;
-            this.manul_btnStartT.Click += new System.EventHandler(this.onClick_SingleTestStart);
+            this.btnTestStart_Cabinet.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnTestStart_Cabinet.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnTestStart_Cabinet.Location = new System.Drawing.Point(287, 23);
+            this.btnTestStart_Cabinet.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTestStart_Cabinet.Name = "btnTestStart_Cabinet";
+            this.btnTestStart_Cabinet.Size = new System.Drawing.Size(146, 31);
+            this.btnTestStart_Cabinet.TabIndex = 7;
+            this.btnTestStart_Cabinet.Text = "开始测试";
+            this.btnTestStart_Cabinet.UseVisualStyleBackColor = false;
+            this.btnTestStart_Cabinet.Click += new System.EventHandler(this.onClick_SingleTestStart);
             // 
-            // manul_cbCabineit
+            // cbCabinetNo_Cabinet
             // 
-            this.manul_cbCabineit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbCabineit.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbCabineit.FormattingEnabled = true;
-            this.manul_cbCabineit.Items.AddRange(new object[] {
+            this.cbCabinetNo_Cabinet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCabinetNo_Cabinet.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbCabinetNo_Cabinet.FormattingEnabled = true;
+            this.cbCabinetNo_Cabinet.Items.AddRange(new object[] {
             "1#机台",
             "2#机台",
             "3#机台",
             "4#机台",
             "5#机台",
             "6#机台"});
-            this.manul_cbCabineit.Location = new System.Drawing.Point(142, 27);
-            this.manul_cbCabineit.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbCabineit.Name = "manul_cbCabineit";
-            this.manul_cbCabineit.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbCabineit.TabIndex = 34;
+            this.cbCabinetNo_Cabinet.Location = new System.Drawing.Point(142, 27);
+            this.cbCabinetNo_Cabinet.Margin = new System.Windows.Forms.Padding(2);
+            this.cbCabinetNo_Cabinet.Name = "cbCabinetNo_Cabinet";
+            this.cbCabinetNo_Cabinet.Size = new System.Drawing.Size(109, 24);
+            this.cbCabinetNo_Cabinet.TabIndex = 34;
             // 
             // label6
             // 
@@ -410,13 +410,13 @@
             // manul_gbRobt
             // 
             this.manul_gbRobt.Controls.Add(this.ckbAxis7Alone);
-            this.manul_gbRobt.Controls.Add(this.manul_cbProductNum);
-            this.manul_gbRobt.Controls.Add(this.manul_btnStart1);
-            this.manul_gbRobt.Controls.Add(this.manul_cbProductSort);
-            this.manul_gbRobt.Controls.Add(this.manul_cbGoalPos);
+            this.manul_gbRobt.Controls.Add(this.cbSlotNo_Robot);
+            this.manul_gbRobt.Controls.Add(this.btnStart_Robot);
+            this.manul_gbRobt.Controls.Add(this.cbProductType_Robot);
+            this.manul_gbRobt.Controls.Add(this.cbPos_Robot);
             this.manul_gbRobt.Controls.Add(this.manul_lbGoalPos1);
             this.manul_gbRobt.Controls.Add(this.label7);
-            this.manul_gbRobt.Controls.Add(this.manul_cbCommand);
+            this.manul_gbRobt.Controls.Add(this.cbOrder_Robot);
             this.manul_gbRobt.Controls.Add(this.manul_lbProductSort);
             this.manul_gbRobt.Controls.Add(this.manul_lbCommand1);
             this.manul_gbRobt.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -441,49 +441,49 @@
             this.ckbAxis7Alone.Text = "机器人轨道独立运动";
             this.ckbAxis7Alone.UseVisualStyleBackColor = true;
             // 
-            // manul_cbProductNum
+            // cbSlotNo_Robot
             // 
-            this.manul_cbProductNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbProductNum.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbProductNum.FormattingEnabled = true;
-            this.manul_cbProductNum.Location = new System.Drawing.Point(159, 159);
-            this.manul_cbProductNum.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbProductNum.Name = "manul_cbProductNum";
-            this.manul_cbProductNum.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbProductNum.TabIndex = 7;
+            this.cbSlotNo_Robot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSlotNo_Robot.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbSlotNo_Robot.FormattingEnabled = true;
+            this.cbSlotNo_Robot.Location = new System.Drawing.Point(159, 159);
+            this.cbSlotNo_Robot.Margin = new System.Windows.Forms.Padding(2);
+            this.cbSlotNo_Robot.Name = "cbSlotNo_Robot";
+            this.cbSlotNo_Robot.Size = new System.Drawing.Size(109, 24);
+            this.cbSlotNo_Robot.TabIndex = 7;
             // 
-            // manul_btnStart1
+            // btnStart_Robot
             // 
-            this.manul_btnStart1.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStart1.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStart1.Location = new System.Drawing.Point(317, 53);
-            this.manul_btnStart1.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_btnStart1.Name = "manul_btnStart1";
-            this.manul_btnStart1.Size = new System.Drawing.Size(97, 94);
-            this.manul_btnStart1.TabIndex = 6;
-            this.manul_btnStart1.Text = "机器人取料/放料";
-            this.manul_btnStart1.UseVisualStyleBackColor = false;
-            this.manul_btnStart1.Click += new System.EventHandler(this.onClick_RobotAction);
+            this.btnStart_Robot.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnStart_Robot.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStart_Robot.Location = new System.Drawing.Point(317, 53);
+            this.btnStart_Robot.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStart_Robot.Name = "btnStart_Robot";
+            this.btnStart_Robot.Size = new System.Drawing.Size(97, 94);
+            this.btnStart_Robot.TabIndex = 6;
+            this.btnStart_Robot.Text = "机器人取料/放料";
+            this.btnStart_Robot.UseVisualStyleBackColor = false;
+            this.btnStart_Robot.Click += new System.EventHandler(this.onClick_RobotAction);
             // 
-            // manul_cbProductSort
+            // cbProductType_Robot
             // 
-            this.manul_cbProductSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbProductSort.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbProductSort.FormattingEnabled = true;
-            this.manul_cbProductSort.Location = new System.Drawing.Point(159, 42);
-            this.manul_cbProductSort.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbProductSort.Name = "manul_cbProductSort";
-            this.manul_cbProductSort.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbProductSort.TabIndex = 5;
-            this.manul_cbProductSort.SelectedIndexChanged += new System.EventHandler(this.manul_cbProductSort_SelectedIndexChanged);
-            this.manul_cbProductSort.Click += new System.EventHandler(this.manul_cbProductSort_Click);
+            this.cbProductType_Robot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbProductType_Robot.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbProductType_Robot.FormattingEnabled = true;
+            this.cbProductType_Robot.Location = new System.Drawing.Point(159, 42);
+            this.cbProductType_Robot.Margin = new System.Windows.Forms.Padding(2);
+            this.cbProductType_Robot.Name = "cbProductType_Robot";
+            this.cbProductType_Robot.Size = new System.Drawing.Size(109, 24);
+            this.cbProductType_Robot.TabIndex = 5;
+            this.cbProductType_Robot.SelectedIndexChanged += new System.EventHandler(this.manul_cbProductSort_SelectedIndexChanged);
+            this.cbProductType_Robot.Click += new System.EventHandler(this.onClickProductTypeOfRobot);
             // 
-            // manul_cbGoalPos
+            // cbPos_Robot
             // 
-            this.manul_cbGoalPos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbGoalPos.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbGoalPos.FormattingEnabled = true;
-            this.manul_cbGoalPos.Items.AddRange(new object[] {
+            this.cbPos_Robot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPos_Robot.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbPos_Robot.FormattingEnabled = true;
+            this.cbPos_Robot.Items.AddRange(new object[] {
             "料架位",
             "1#测试位",
             "2#测试位",
@@ -491,12 +491,12 @@
             "4#测试位",
             "5#测试位",
             "6#测试位"});
-            this.manul_cbGoalPos.Location = new System.Drawing.Point(159, 120);
-            this.manul_cbGoalPos.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbGoalPos.Name = "manul_cbGoalPos";
-            this.manul_cbGoalPos.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbGoalPos.TabIndex = 3;
-            this.manul_cbGoalPos.SelectedIndexChanged += new System.EventHandler(this.manul_cbGoalPos_SelectedIndexChanged);
+            this.cbPos_Robot.Location = new System.Drawing.Point(159, 120);
+            this.cbPos_Robot.Margin = new System.Windows.Forms.Padding(2);
+            this.cbPos_Robot.Name = "cbPos_Robot";
+            this.cbPos_Robot.Size = new System.Drawing.Size(109, 24);
+            this.cbPos_Robot.TabIndex = 3;
+            this.cbPos_Robot.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedPosOfRobot);
             // 
             // manul_lbGoalPos1
             // 
@@ -520,19 +520,19 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "位置号：";
             // 
-            // manul_cbCommand
+            // cbOrder_Robot
             // 
-            this.manul_cbCommand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbCommand.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbCommand.FormattingEnabled = true;
-            this.manul_cbCommand.Items.AddRange(new object[] {
+            this.cbOrder_Robot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOrder_Robot.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbOrder_Robot.FormattingEnabled = true;
+            this.cbOrder_Robot.Items.AddRange(new object[] {
             "取料",
             "放料"});
-            this.manul_cbCommand.Location = new System.Drawing.Point(159, 81);
-            this.manul_cbCommand.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbCommand.Name = "manul_cbCommand";
-            this.manul_cbCommand.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbCommand.TabIndex = 4;
+            this.cbOrder_Robot.Location = new System.Drawing.Point(159, 81);
+            this.cbOrder_Robot.Margin = new System.Windows.Forms.Padding(2);
+            this.cbOrder_Robot.Name = "cbOrder_Robot";
+            this.cbOrder_Robot.Size = new System.Drawing.Size(109, 24);
+            this.cbOrder_Robot.TabIndex = 4;
             // 
             // manul_lbProductSort
             // 
@@ -558,10 +558,10 @@
             // 
             // manul_gbFrame
             // 
-            this.manul_gbFrame.Controls.Add(this.manul_btnStartScan);
-            this.manul_gbFrame.Controls.Add(this.manul_btnStart2);
-            this.manul_gbFrame.Controls.Add(this.manul_cbCommand2);
-            this.manul_gbFrame.Controls.Add(this.manul_cbGoalPos2);
+            this.manul_gbFrame.Controls.Add(this.btnStartScan);
+            this.manul_gbFrame.Controls.Add(this.btnStart_Frame);
+            this.manul_gbFrame.Controls.Add(this.cbOrder_Frame);
+            this.manul_gbFrame.Controls.Add(this.cbGoalPos_Frame);
             this.manul_gbFrame.Controls.Add(this.manul_lbCommand2);
             this.manul_gbFrame.Controls.Add(this.manul_lbGoalPos2);
             this.manul_gbFrame.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -574,52 +574,52 @@
             this.manul_gbFrame.TabStop = false;
             this.manul_gbFrame.Text = "货架取放料";
             // 
-            // manul_btnStartScan
+            // btnStartScan
             // 
-            this.manul_btnStartScan.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStartScan.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStartScan.Location = new System.Drawing.Point(68, 20);
-            this.manul_btnStartScan.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_btnStartScan.Name = "manul_btnStartScan";
-            this.manul_btnStartScan.Size = new System.Drawing.Size(313, 41);
-            this.manul_btnStartScan.TabIndex = 7;
-            this.manul_btnStartScan.Text = "启动货架扫码";
-            this.manul_btnStartScan.UseVisualStyleBackColor = false;
-            this.manul_btnStartScan.Click += new System.EventHandler(this.onClick_Scan);
+            this.btnStartScan.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnStartScan.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStartScan.Location = new System.Drawing.Point(68, 20);
+            this.btnStartScan.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStartScan.Name = "btnStartScan";
+            this.btnStartScan.Size = new System.Drawing.Size(313, 41);
+            this.btnStartScan.TabIndex = 7;
+            this.btnStartScan.Text = "启动货架扫码";
+            this.btnStartScan.UseVisualStyleBackColor = false;
+            this.btnStartScan.Click += new System.EventHandler(this.onClick_Scan);
             // 
-            // manul_btnStart2
+            // btnStart_Frame
             // 
-            this.manul_btnStart2.BackColor = System.Drawing.Color.PowderBlue;
-            this.manul_btnStart2.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_btnStart2.Location = new System.Drawing.Point(317, 69);
-            this.manul_btnStart2.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_btnStart2.Name = "manul_btnStart2";
-            this.manul_btnStart2.Size = new System.Drawing.Size(97, 59);
-            this.manul_btnStart2.TabIndex = 6;
-            this.manul_btnStart2.Text = "货架取料/放料";
-            this.manul_btnStart2.UseVisualStyleBackColor = false;
-            this.manul_btnStart2.Click += new System.EventHandler(this.onClick_FrameAction);
+            this.btnStart_Frame.BackColor = System.Drawing.Color.PowderBlue;
+            this.btnStart_Frame.Font = new System.Drawing.Font("宋体", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnStart_Frame.Location = new System.Drawing.Point(317, 69);
+            this.btnStart_Frame.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStart_Frame.Name = "btnStart_Frame";
+            this.btnStart_Frame.Size = new System.Drawing.Size(97, 59);
+            this.btnStart_Frame.TabIndex = 6;
+            this.btnStart_Frame.Text = "货架取料/放料";
+            this.btnStart_Frame.UseVisualStyleBackColor = false;
+            this.btnStart_Frame.Click += new System.EventHandler(this.onClick_FrameAction);
             // 
-            // manul_cbCommand2
+            // cbOrder_Frame
             // 
-            this.manul_cbCommand2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbCommand2.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbCommand2.FormattingEnabled = true;
-            this.manul_cbCommand2.Items.AddRange(new object[] {
+            this.cbOrder_Frame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOrder_Frame.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbOrder_Frame.FormattingEnabled = true;
+            this.cbOrder_Frame.Items.AddRange(new object[] {
             "取料",
             "放料"});
-            this.manul_cbCommand2.Location = new System.Drawing.Point(159, 105);
-            this.manul_cbCommand2.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbCommand2.Name = "manul_cbCommand2";
-            this.manul_cbCommand2.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbCommand2.TabIndex = 4;
+            this.cbOrder_Frame.Location = new System.Drawing.Point(159, 105);
+            this.cbOrder_Frame.Margin = new System.Windows.Forms.Padding(2);
+            this.cbOrder_Frame.Name = "cbOrder_Frame";
+            this.cbOrder_Frame.Size = new System.Drawing.Size(109, 24);
+            this.cbOrder_Frame.TabIndex = 4;
             // 
-            // manul_cbGoalPos2
+            // cbGoalPos_Frame
             // 
-            this.manul_cbGoalPos2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manul_cbGoalPos2.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.manul_cbGoalPos2.FormattingEnabled = true;
-            this.manul_cbGoalPos2.Items.AddRange(new object[] {
+            this.cbGoalPos_Frame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGoalPos_Frame.Font = new System.Drawing.Font("楷体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbGoalPos_Frame.FormattingEnabled = true;
+            this.cbGoalPos_Frame.Items.AddRange(new object[] {
             "A1",
             "A2",
             "A3",
@@ -660,11 +660,11 @@
             "H3",
             "H4",
             "H5"});
-            this.manul_cbGoalPos2.Location = new System.Drawing.Point(159, 69);
-            this.manul_cbGoalPos2.Margin = new System.Windows.Forms.Padding(2);
-            this.manul_cbGoalPos2.Name = "manul_cbGoalPos2";
-            this.manul_cbGoalPos2.Size = new System.Drawing.Size(109, 24);
-            this.manul_cbGoalPos2.TabIndex = 3;
+            this.cbGoalPos_Frame.Location = new System.Drawing.Point(159, 69);
+            this.cbGoalPos_Frame.Margin = new System.Windows.Forms.Padding(2);
+            this.cbGoalPos_Frame.Name = "cbGoalPos_Frame";
+            this.cbGoalPos_Frame.Size = new System.Drawing.Size(109, 24);
+            this.cbGoalPos_Frame.TabIndex = 3;
             // 
             // manul_lbCommand2
             // 
@@ -732,41 +732,41 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label auto_lbName;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox manul_cbCabineitType;
-        private System.Windows.Forms.Button manul_btnStopT;
-        private System.Windows.Forms.Button manul_btnStartT;
-        private System.Windows.Forms.ComboBox manul_cbCabineit;
+        private System.Windows.Forms.ComboBox cbProductType_Cabinet;
+        private System.Windows.Forms.Button btnTestStop_Cabinet;
+        private System.Windows.Forms.Button btnTestStart_Cabinet;
+        private System.Windows.Forms.ComboBox cbCabinetNo_Cabinet;
         private System.Windows.Forms.GroupBox manul_gbFrame;
-        private System.Windows.Forms.Button manul_btnStartScan;
-        private System.Windows.Forms.Button manul_btnStart2;
-        private System.Windows.Forms.ComboBox manul_cbCommand2;
-        private System.Windows.Forms.ComboBox manul_cbGoalPos2;
+        private System.Windows.Forms.Button btnStartScan;
+        private System.Windows.Forms.Button btnStart_Frame;
+        private System.Windows.Forms.ComboBox cbOrder_Frame;
+        private System.Windows.Forms.ComboBox cbGoalPos_Frame;
         private System.Windows.Forms.Label manul_lbCommand2;
         private System.Windows.Forms.Label manul_lbGoalPos2;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ComboBox step_cbTrayNo;
+        private System.Windows.Forms.ComboBox cbTrayNo_Loop;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox step_cbProductSort;
+        private System.Windows.Forms.ComboBox cbProductType_Loop;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox step_cbCabinetNo;
+        private System.Windows.Forms.ComboBox cbCabinetNo_Loop;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox step_cbProductNo;
+        private System.Windows.Forms.ComboBox cbSlotNo_Loop;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button step_btnFetch;
-        private System.Windows.Forms.Button step_btnTestStart;
-        private System.Windows.Forms.Button step_btnTake;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPutback_Loop;
+        private System.Windows.Forms.Button btnTestStart_Loop;
+        private System.Windows.Forms.Button btnTake_Loop;
+        private System.Windows.Forms.Button btnTestStop_Loop;
         private System.Windows.Forms.GroupBox manul_gbRobt;
         private System.Windows.Forms.CheckBox ckbAxis7Alone;
-        private System.Windows.Forms.ComboBox manul_cbProductNum;
-        private System.Windows.Forms.Button manul_btnStart1;
-        private System.Windows.Forms.ComboBox manul_cbProductSort;
-        private System.Windows.Forms.ComboBox manul_cbGoalPos;
+        private System.Windows.Forms.ComboBox cbSlotNo_Robot;
+        private System.Windows.Forms.Button btnStart_Robot;
+        private System.Windows.Forms.ComboBox cbProductType_Robot;
+        private System.Windows.Forms.ComboBox cbPos_Robot;
         private System.Windows.Forms.Label manul_lbGoalPos1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox manul_cbCommand;
+        private System.Windows.Forms.ComboBox cbOrder_Robot;
         private System.Windows.Forms.Label manul_lbProductSort;
         private System.Windows.Forms.Label manul_lbCommand1;
     }
