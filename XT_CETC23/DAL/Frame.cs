@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using XT_CETC23.DataManager;
 using XT_CETC23.Model;
 using System.Threading;
@@ -353,7 +352,7 @@ namespace XT_CETC23
             {
                 try
                 {
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
 
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { (byte)FrameLocation });
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)Status.PutPiece });
@@ -367,7 +366,7 @@ namespace XT_CETC23
                     //}
                     //if (TaskCycle.actionType == "CabinetToFrame")
                     //{
-                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
+                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + Task.globalBasicID);
                         // TaskCycle.PutStep = TaskCycle.PutStep + 10;
                     //}
 

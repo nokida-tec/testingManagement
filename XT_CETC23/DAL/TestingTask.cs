@@ -187,7 +187,7 @@ namespace XT_CETC23
                     //FrameDataUpdate();
 
                     //测试结果插入测试统计表格；
-                    TestingTask.finish(MTR.globalBasicID, checkResult);
+                    TestingTask.finish(Task.globalBasicID, checkResult);
                     return ;
                 }
                 catch (Exception e)

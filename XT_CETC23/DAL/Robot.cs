@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using XT_CETC23.DataCom;
@@ -11,7 +10,6 @@ using XT_CETC23;
 using XT_CETC23.DataManager;
 using System.Threading;
 using XT_CETC23.Common;
-using XT_CETC23;
 
 namespace XT_CETC23
 {
@@ -503,7 +501,7 @@ namespace XT_CETC23
                 //通知PLC从测试柜取料完成
                 TestingCabinets.getInstance(cabinetNo).finishGet();
 
-                DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
                 
                 Logger.WriteLine("取产品: " + productType + " 从测试台: " + (cabinetNo + 1) + " 完成");
                 return ReturnCode.OK;
@@ -518,7 +516,7 @@ namespace XT_CETC23
                 {
                     Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 开始");
 
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
 
                     // 机器人移动到测试柜位置
                     mRail.doMoveToCabinet(cabinetNo);
@@ -530,7 +528,7 @@ namespace XT_CETC23
                     sendDataToRobotSync("PutProTest", productType + "," + (cabinetNo + 1));
 
                     // 更新任务状态
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
+                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + Task.globalBasicID);
 
                     Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 完成");
                     return ReturnCode.OK;

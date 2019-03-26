@@ -238,8 +238,5 @@ namespace XT_CETC23
             return Save();
         }
 
-        private Task task;
-
-
     }
 }

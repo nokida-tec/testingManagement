@@ -6,7 +6,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using XT_CETC23.INTransfer;
 using XT_CETC23.DataCom;
@@ -28,7 +27,7 @@ namespace XT_CETC23.SonForm
         IAsyncResult result;
         Plc plc;
         Robot robot;
-        MTR mtr;
+        Task mtr;
         Thread limitRead;        
 
         byte[] writeByte = new byte[1];
@@ -40,7 +39,7 @@ namespace XT_CETC23.SonForm
         {
             InitializeComponent();
             db = DataBase.GetInstanse();
-            mtr = MTR.GetIntanse();
+            mtr = Task.GetIntanse();
             
             plc = Plc.GetInstanse();
             robot = Robot.GetInstanse();
