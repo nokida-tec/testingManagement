@@ -458,7 +458,7 @@ namespace XT_CETC23
             {
                 return stepEnable == true;
             }
-            return stepEnable == true && readyForStep == true;
+            return stepEnable == true && readyForStep == true && isBusyForStep == false;
         }
 
         private void Resume()
@@ -726,109 +726,166 @@ namespace XT_CETC23
         delegate void StepAction(Queue<string> mQueue);
 
         StepAction mStepAction;
+        public bool isBusyForStep { get; set; }
 
         void doStep(Queue<string> mQueue)
         {
             lock (lockStep)
             {
-                // Thread.Sleep(2000);
-                if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
+                try
                 {
-                    string module = mQueue.Dequeue();
-                    string order = mQueue.Dequeue();
-                    byte[] buffer = new byte[1];
-                    switch (module)
+                    isBusyForStep = true;
+                    // Thread.Sleep(2000);
+                    if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
                     {
-                        case "Frame":
-                            switch (order)
-                            {
-                                case "Scan":
-                                    Frame.getInstance().doScan();
-                                    break;
-                                case "取料":
-                                    {
-                                        string trayNo = mQueue.Dequeue();
-                                        buffer[0] = Frame.getInstance().convertFrameLocationToByte(trayNo);
-                                        Frame.getInstance().doGet((int)buffer[0]);
-                                    }
-                                    break;
-                                case "放料":
-                                    {
-                                        string trayNo = mQueue.Dequeue();
-                                        buffer[0] = Frame.getInstance().convertFrameLocationToByte(trayNo);
-                                        Frame.getInstance().doPut((int)buffer[0]);
-                                    }
-                                    break;
-                            }
-                            break;
-                        case "Robot":
-                            {
-                                string pos = mQueue.Dequeue();
-                                string productType = mQueue.Dequeue();
-                                int slotNo = Convert.ToInt32(mQueue.Dequeue());
-
+                        string module = mQueue.Dequeue();
+                        string order = mQueue.Dequeue();
+                        byte[] buffer = new byte[1];
+                        switch (module)
+                        {
+                            case "Frame":
                                 switch (order)
                                 {
+                                    case "Scan":
+                                        Frame.getInstance().doScan();
+                                        break;
                                     case "取料":
-                                        if (pos == "料架位")
                                         {
-                                            Robot.GetInstanse().doGetProductFromFrame(productType, slotNo);
-                                        }
-                                        else
-                                        {
-                                            int cabinetNo = Convert.ToInt32(pos.Substring(0, 1)) - 1;
-                                            Robot.GetInstanse().doGetProductFromCabinet(productType, cabinetNo);
+                                            string trayNo = mQueue.Dequeue();
+                                            buffer[0] = Frame.getInstance().convertFrameLocationToByte(trayNo);
+                                            Frame.getInstance().doGet((int)buffer[0]);
                                         }
                                         break;
                                     case "放料":
-                                        if (pos == "料架位")
                                         {
-                                            Robot.GetInstanse().doPutProductToFrame(productType, slotNo);
-                                        }
-                                        else
-                                        {
-                                            int cabinetNo = Convert.ToInt32(pos.Substring(0, 1)) - 1;
-                                            Robot.GetInstanse().doGetProductFromFrame(productType, cabinetNo);
+                                            string trayNo = mQueue.Dequeue();
+                                            buffer[0] = Frame.getInstance().convertFrameLocationToByte(trayNo);
+                                            Frame.getInstance().doPut((int)buffer[0]);
                                         }
                                         break;
                                 }
-                            }
-                            break;
-                        case "Rail":
-                            {
-                                string pos = mQueue.Dequeue();
-                                Robot.GetInstanse().doStepRailMove(pos);
-                            }
-                            break;
-                        case "Loop":
-                            {
-                                string productType = mQueue.Dequeue();
-                                int trayNo = Convert.ToInt32(mQueue.Dequeue());
-                                int slotNo = Convert.ToInt32(mQueue.Dequeue());
-                                int cabinetNo = Convert.ToInt32(mQueue.Dequeue());
+                                break;
+                            case "Robot":
+                                {
+                                    string pos = mQueue.Dequeue();
+                                    string productType = mQueue.Dequeue();
+                                    int slotNo = Convert.ToInt32(mQueue.Dequeue());
 
+                                    switch (order)
+                                    {
+                                        case "取料":
+                                            if (pos == "料架位")
+                                            {
+                                                Robot.GetInstanse().doGetProductFromFrame(productType, slotNo);
+                                            }
+                                            else
+                                            {
+                                                int cabinetNo = Convert.ToInt32(pos.Substring(0, 1)) - 1;
+                                                Robot.GetInstanse().doGetProductFromCabinet(productType, cabinetNo);
+                                            }
+                                            break;
+                                        case "放料":
+                                            if (pos == "料架位")
+                                            {
+                                                Robot.GetInstanse().doPutProductToFrame(productType, slotNo);
+                                            }
+                                            else
+                                            {
+                                                int cabinetNo = Convert.ToInt32(pos.Substring(0, 1)) - 1;
+                                                Robot.GetInstanse().doGetProductFromFrame(productType, cabinetNo);
+                                            }
+                                            break;
+                                    }
+                                }
+                                break;
+                            case "Rail":
+                                {
+                                    string strPos = mQueue.Dequeue();
+                                    Robot.Rail.Position pos;
+                                    for (pos = Robot.Rail.Position.FramePos; pos <= Robot.Rail.Position.Cabinet6; pos ++)
+                                    {
+                                        if (strPos == EnumHelper.GetDescription(pos))
+                                        {
+                                            Robot.GetInstanse().doStepRailMove(pos);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case "Loop":
+                                {
+                                    string productType = mQueue.Dequeue();
+                                    int trayNo = Convert.ToInt32(mQueue.Dequeue());
+                                    int slotNo = Convert.ToInt32(mQueue.Dequeue());
+                                    int cabinetNo = Convert.ToInt32(mQueue.Dequeue());
+
+                                    switch (order)
+                                    {
+                                        case "Take":
+                                            {
+                                                // 料仓取料
+                                                ReturnCode ret = Frame.getInstance().doGet(trayNo);
+                                                if (ret != ReturnCode.OK)
+                                                {
+                                                    return;
+                                                }
+
+                                                // 机器人从料仓取料
+                                                Robot.GetInstanse().doGetProductFromFrame(productType, slotNo);
+
+                                                // 机器人放料到测试台
+                                                Robot.GetInstanse().doPutProductToCabinet(productType, cabinetNo);
+                                            }
+                                            break;
+                                        case "PutBack":
+                                            {
+                                                // 机器人从测试台取料
+                                                Robot.GetInstanse().doGetProductFromCabinet(productType, cabinetNo);
+
+                                                // 插入料架取料任务，取出托盘（要区分取出和放入）
+                                                Frame.getInstance().doGet(trayNo);
+
+                                                // 插入机器人回料任务
+                                                Robot.GetInstanse().doPutProductToFrame(productType, slotNo);
+
+                                                Frame.getInstance().doPut(trayNo);
+                                            }
+                                            break;
+                                        case "StartTest":
+                                            TestingCabinets.getInstance(cabinetNo).doTest();
+                                            break;
+                                        case "StopTest":
+                                            break;
+                                    }
+                                }
+                                break;
+                            case "Cabinet":
                                 switch (order)
                                 {
-                                    case "取料":
-                                        break;
-                                    case "放料":
+                                    case "Start":
+                                        {
+                                            int cabinetNo = Convert.ToInt32(mQueue.Dequeue());
+                                            TestingCabinets.getInstance(cabinetNo).doTest();
+                                        }
                                         break;
                                 }
-                            }
-                            break;
-                        case "Cabinet":
-                            {
-                                int cabinetNo = Convert.ToInt32(mQueue.Dequeue());
-                                TestingCabinets.getInstance(cabinetNo).doTest();
-                            }
-                            break;
+                                break;
+                        }
+
+                        mQueue.Clear();
                     }
-
-                    mQueue.Clear();
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    return;
+
+                }
+                finally
+                {
+                    isBusyForStep = false;
                 }
             }
         }

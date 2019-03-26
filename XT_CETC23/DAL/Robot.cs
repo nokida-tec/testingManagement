@@ -13,30 +13,30 @@ using System.Threading;
 using XT_CETC23.Common;
 using XT_CETC23;
 
-namespace XT_CETC23.DataCom
+namespace XT_CETC23
 {
    public  class Robot
    {
-       protected class Rail
+       public class Rail
        {
            private Object lockRail = new Object();
            private Robot mRobot = null;
 
            public enum Position
            { // 需要和PLC对应
-               [EnumDescription("料架位置")]
+               [EnumDescription("料架位")]
                FramePos = 100,
-               [EnumDescription("测试台1")]
+               [EnumDescription("1#测试位")]
                Cabinet1 = 101,
-               [EnumDescription("测试台2")]
+               [EnumDescription("2#测试位")]
                Cabinet2 = 102,
-               [EnumDescription("测试台3")]
+               [EnumDescription("3#测试位")]
                Cabinet3 = 103,
-               [EnumDescription("测试台4")]
+               [EnumDescription("4#测试位")]
                Cabinet4 = 104,
-               [EnumDescription("测试台5")]
+               [EnumDescription("5#测试位")]
                Cabinet5 = 105,
-               [EnumDescription("测试台6")]
+               [EnumDescription("6#测试位")]
                Cabinet6 = 106,
            }
 
@@ -543,7 +543,7 @@ namespace XT_CETC23.DataCom
             }
         }
 
-        public ReturnCode doStepRailMove(String pos)
+        public ReturnCode doStepRailMove(Rail.Position pos)
         {
             /* *
             料架位
@@ -558,13 +558,13 @@ namespace XT_CETC23.DataCom
             {
                 Logger.WriteLine("单步移动轨道到: " + pos + " 开始");
                 ReturnCode ret = ReturnCode.Exception;
-                if (pos == "料架位") 
+                if (pos == Rail.Position.FramePos) 
                 {
                     ret = mRail.doMoveToFrame();
                 } 
                 else
                 {
-                    int cabinetNo = Convert.ToInt32(pos.Substring(0, 1));
+                    int cabinetNo = pos - Rail.Position.Cabinet1;
                     ret = mRail.doMoveToCabinet(cabinetNo);
                 }
                 Logger.WriteLine("单步移动轨道到: " + pos + " 完成");

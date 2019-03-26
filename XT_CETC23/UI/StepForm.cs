@@ -198,7 +198,6 @@ namespace XT_CETC23.SonForm
                     String prodType = cbProductType_Cabinet.SelectedItem.ToString();
                     int cabinetNo = cbCabinetNo_Cabinet.SelectedIndex;
                     TestingSystem.GetInstance().doStepProxy("Cabinet", "Start", Convert.ToString(cabinetNo), prodType);
-                    //InsertTest("Start", prodType, cabinetNo);
                 }
                 else
                 {
@@ -313,7 +312,7 @@ namespace XT_CETC23.SonForm
                 if (MessageBox.Show("危险操作，请确认选择的参数！", "警告", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
                     return;
 
-                TestingSystem.GetInstance().doStepProxy("Loop", "Take", productType, trayNo, slotNo, cbCabinetNo_Loop.SelectedItem.ToString());
+                TestingSystem.GetInstance().doStepProxy("Loop", "StartTest", productType, trayNo, slotNo, cbCabinetNo_Loop.SelectedItem.ToString());
             }
             else
             {
