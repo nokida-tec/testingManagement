@@ -49,7 +49,7 @@ namespace XT_CETC23
                {
                    try 
                    {
-                       Logger.WriteLine("移动轨道到料架" + " 开始");
+                       Logger.WriteLine("移动轨道到 料架" + " 开始");
 
                        // 确保机器人在安全位置
                        WaitCondition.waitCondition(mRobot.isUsable);  // 不应该发生,双保险
@@ -61,7 +61,7 @@ namespace XT_CETC23
 
                        Plc.GetInstanse().DBWrite(100, 2, 1, new Byte[] { 0 }); // Todo: 什么意思
 
-                       Logger.WriteLine("移动轨道到料架" + " 结束");
+                       Logger.WriteLine("移动轨道到 料架" + " 结束");
                        return ReturnCode.OK;
                    }
                    catch (AbortException ae)
@@ -111,15 +111,15 @@ namespace XT_CETC23
            }
 
            bool isMoveFinished()
-           {  // 移动结束
+           {  // 轨道移动结束
                bool finished = (PlcData._axlis7Status == (byte)55);
                return finished;
            }
        }
 
-       public Object lockRobot = new Object();
+       static public Object lockRobot = new Object();
        
-       private static Robot gRobot = null;
+       private static Robot mInstance = null;
        protected Rail mRail = null;
 
        private Status mStatus;
@@ -144,11 +144,17 @@ namespace XT_CETC23
 
         public static Robot GetInstanse()
         {
-            if (gRobot == null)
+            if (mInstance == null)
             {
-                gRobot = new Robot();
+                lock (lockRobot)
+                {
+                    if (mInstance == null)
+                    {
+                        mInstance = new Robot();
+                    }
+                }
             }
-            return gRobot;
+            return mInstance;
         }
 
         private Robot()
