@@ -23,24 +23,6 @@ namespace XT_CETC23
             }
         }
 
-        public enum status
-        { // 需要和PLC对应
-            [EnumDescription("料架位置")]
-            FramePos = 100,
-            [EnumDescription("测试台1")]
-            Running = 101,
-            [EnumDescription("测试台2")]
-            Cabinet2 = 102,
-            [EnumDescription("测试台3")]
-            Cabinet3 = 103,
-            [EnumDescription("测试台4")]
-            Cabinet4 = 104,
-            [EnumDescription("测试台5")]
-            Cabinet5 = 105,
-            [EnumDescription("测试台6")]
-            Cabinet6 = 106,
-        }
-
         public class Step
         {
             public enum Name

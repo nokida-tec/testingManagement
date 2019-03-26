@@ -19,7 +19,7 @@ namespace XT_CETC23
 {
     class Cabinet: TestingCabinet
     {
-        static public Object lockCabinet = new Object();
+        static private Object lockCabinet = new Object();
 
         public Cabinet(int ID)
             : base(ID)
@@ -177,12 +177,9 @@ namespace XT_CETC23
             return false;
         }
 
-        private Object mLock = new Object();
-
-
         public void doTest()
         {
-            lock(mLock)
+            lock(lockCabinet)
             {
                 try
                 {
@@ -212,7 +209,7 @@ namespace XT_CETC23
                     }
 
                     // 等待测试结束
-                    WaitCondition.waitCondition(this.finishTesting);
+                    WaitCondition.waitCondition(this.isTestingFinished);
                     //处理结果
 
                     //获取测量结果的excel源文件
@@ -401,7 +398,7 @@ namespace XT_CETC23
             return ReturnCode.OK;
         }
 
-        private bool finishTesting()
+        private bool isTestingFinished()
         {
             return (Status == TestingCabinet.STATUS.Finished);
         }
