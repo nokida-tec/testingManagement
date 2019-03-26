@@ -120,6 +120,8 @@ namespace XT_CETC23
             Plc.GetInstanse().Start();
             Robot.GetInstanse();
 
+            mStepAction = doStep;
+
             /*
             mTaskMonitor = new Thread(SystemMonitor);
             mTaskMonitor.Name = "模式监控";
@@ -719,5 +721,156 @@ namespace XT_CETC23
             Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, 1, PlcData._writeLength1, data);
             MessageBox.Show(message, "系统报警");
         }
+
+        Queue<string> mQueue = new System.Collections.Generic.Queue<string>();
+        delegate void StepAction(Queue<string> mQueue);
+
+        StepAction mStepAction;
+
+        void doStep(Queue<string> mQueue)
+        {
+            lock (lockStep)
+            {
+                // Thread.Sleep(2000);
+                if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
+                {
+                    string module = mQueue.Dequeue();
+                    string order = mQueue.Dequeue();
+                    byte[] buffer = new byte[1];
+                    switch (module)
+                    {
+                        case "Frame":
+                            switch (order)
+                            {
+                                case "Scan":
+                                    Frame.getInstance().doScan();
+                                    break;
+                                case "取料":
+                                    {
+                                        string trayNo = mQueue.Dequeue();
+                                        buffer[0] = Frame.getInstance().convertFrameLocationToByte(trayNo);
+                                        Frame.getInstance().doGet((int)buffer[0]);
+                                    }
+                                    break;
+                                case "放料":
+                                    {
+                                        string trayNo = mQueue.Dequeue();
+                                        buffer[0] = Frame.getInstance().convertFrameLocationToByte(trayNo);
+                                        Frame.getInstance().doPut((int)buffer[0]);
+                                    }
+                                    break;
+                            }
+                            break;
+                        case "Robot":
+                            {
+                                string pos = mQueue.Dequeue();
+                                string productType = mQueue.Dequeue();
+                                int slotNo = Convert.ToInt32(mQueue.Dequeue());
+
+                                switch (order)
+                                {
+                                    case "取料":
+                                        if (pos == "料架位")
+                                        {
+                                            Robot.GetInstanse().doGetProductFromFrame(productType, slotNo);
+                                        }
+                                        else
+                                        {
+                                            int cabinetNo = Convert.ToInt32(pos.Substring(0, 1)) - 1;
+                                            Robot.GetInstanse().doGetProductFromCabinet(productType, cabinetNo);
+                                        }
+                                        break;
+                                    case "放料":
+                                        if (pos == "料架位")
+                                        {
+                                            Robot.GetInstanse().doPutProductToFrame(productType, slotNo);
+                                        }
+                                        else
+                                        {
+                                            int cabinetNo = Convert.ToInt32(pos.Substring(0, 1)) - 1;
+                                            Robot.GetInstanse().doGetProductFromFrame(productType, cabinetNo);
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case "Rail":
+                            {
+                                string pos = mQueue.Dequeue();
+                                Robot.GetInstanse().doStepRailMove(pos);
+                            }
+                            break;
+                        case "Loop":
+                            {
+                                string productType = mQueue.Dequeue();
+                                int trayNo = Convert.ToInt32(mQueue.Dequeue());
+                                int slotNo = Convert.ToInt32(mQueue.Dequeue());
+                                int cabinetNo = Convert.ToInt32(mQueue.Dequeue());
+
+                                switch (order)
+                                {
+                                    case "取料":
+                                        break;
+                                    case "放料":
+                                        break;
+                                }
+                            }
+                            break;
+                        case "Cabinet":
+                            {
+                                int cabinetNo = Convert.ToInt32(mQueue.Dequeue());
+                                TestingCabinets.getInstance(cabinetNo).doTest();
+                            }
+                            break;
+                    }
+
+                    mQueue.Clear();
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+        public void doStepProxy(String moudle, String command, String param1 = null, String param2 = null, String param3 = null, String param4 = null)
+        {
+            // lock (TestingSystem.lockStep)
+            {
+                if (Config.Config.ENABLED_DEBUG == true || Plc.GetInstanse().isConnected)
+                {
+                    if (String.IsNullOrEmpty(moudle))
+                        return;
+                    mQueue.Enqueue(moudle);
+
+                    if (String.IsNullOrEmpty(command))
+                        return;
+                    mQueue.Enqueue(command);
+
+                    if (!String.IsNullOrEmpty(param1))
+                    {
+                        mQueue.Enqueue(param1);
+                    }
+                    if (!String.IsNullOrEmpty(param2))
+                    {
+                        mQueue.Enqueue(param2);
+                    }
+                    if (!String.IsNullOrEmpty(param3))
+                    {
+                        mQueue.Enqueue(param3);
+                    }
+                    if (!String.IsNullOrEmpty(param4))
+                    {
+                        mQueue.Enqueue(param4);
+                    }
+                    IAsyncResult result = mStepAction.BeginInvoke(mQueue, null, null);
+                }
+                else
+                {
+                    MessageBox.Show("PLC未连接");
+                }
+            }
+        }
+
     }
 }

@@ -475,7 +475,7 @@
             this.cbProductType_Robot.Name = "cbProductType_Robot";
             this.cbProductType_Robot.Size = new System.Drawing.Size(109, 24);
             this.cbProductType_Robot.TabIndex = 5;
-            this.cbProductType_Robot.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedProductType);
+            this.cbProductType_Robot.SelectedIndexChanged += new System.EventHandler(this.onSelectedChangedProductTypeOfRobot);
             this.cbProductType_Robot.Click += new System.EventHandler(this.onClickProductTypeOfRobot);
             // 
             // cbPos_Robot
