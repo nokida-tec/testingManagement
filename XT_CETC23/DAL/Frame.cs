@@ -326,7 +326,6 @@ namespace XT_CETC23
                     WaitCondition.waitCondition(this.canGetProduct);
 
                     Plc.GetInstanse().DBWrite(100, 3, 1, new Byte[] { 0 });
-                    //DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + MTR.globalBasicID);
                     return ReturnCode.OK;
                 }
                 catch (Exception e)
@@ -352,23 +351,12 @@ namespace XT_CETC23
             {
                 try
                 {
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'FeedBin',StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
-
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Pos, PlcData._writeLength1, new byte[] { (byte)FrameLocation });
                     Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, PlcData._writeAxlis2Order, PlcData._writeLength1, new byte[] { (byte)Status.PutPiece });
 
                     WaitCondition.waitCondition(canPutProduct);
          
                     Plc.GetInstanse().DBWrite(100, 3, 1, new Byte[] { 0 });
-                    //if (TaskCycle.actionType == "FrameToCabinet")
-                    //{
-                        // TaskCycle.PickStep = TaskCycle.PickStep + 10;
-                    //}
-                    //if (TaskCycle.actionType == "CabinetToFrame")
-                    //{
-                        DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + Task.globalBasicID);
-                        // TaskCycle.PutStep = TaskCycle.PutStep + 10;
-                    //}
 
                     return ReturnCode.OK;
                 }
@@ -507,7 +495,7 @@ namespace XT_CETC23
                         {
                             return ReturnCode.NoProduct;
                         }
-                        // DataBase.GetInstanse().DBUpdate("update dbo.MTR set FrameLocation = " + location.tray + "," + "SalverLocation=" + location.mSlot + " where BasicID=" + MTR.globalBasicID);
+
                         doGet(loc.tray);
 
                         do

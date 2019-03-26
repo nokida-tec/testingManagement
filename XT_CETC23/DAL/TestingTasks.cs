@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using XT_CETC23.DataCom;
 
 namespace XT_CETC23
 {
-    class TestingTasks
+    class TestingTasks : Tasks
     {
+        static private TestingTasks mInstance;
         static private TestingTask[] mInstances;
         private static readonly object lockRoot = new object();
 
@@ -38,6 +39,21 @@ namespace XT_CETC23
                 }
             }
             return mInstances[ID];
+        }
+
+        static public TestingTasks getInstance()
+        {
+            if (mInstance == null)
+            {
+                lock (lockRoot)
+                {
+                    if (mInstance == null)
+                    {
+                        mInstance = new TestingTasks();
+                    }
+                }
+            }
+            return mInstance;
         }
 
         // 紧急停止

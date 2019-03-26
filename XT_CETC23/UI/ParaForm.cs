@@ -418,7 +418,6 @@ namespace XT_CETC23.SonForm
             if (MessageBox.Show("清除任务前请确保测试柜中的产品已取出，料架的托盘已放回料架，机器人并无抓取任何组件！！！",
                  "是否要清除系统任务？", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                Frame.getInstance().Clear();
                 TestingSystem.GetInstance().Clear();
             }
         }

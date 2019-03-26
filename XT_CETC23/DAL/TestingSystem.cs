@@ -270,14 +270,8 @@ namespace XT_CETC23
 
         public bool Clear()
         {
-            try
-            {
-                DataBase.GetInstanse().DBDelete("delete from dbo.MTR");
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine(e);
-            }
+            Frame.getInstance().Clear();
+            TestingTasks.getInstance().Clear();
             return true;
         }
 

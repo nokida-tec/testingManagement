@@ -140,6 +140,7 @@
     <Compile Include="Model\DBstr.cs" />
     <Compile Include="Model\DeviceCount.cs" />
     <Compile Include="Model\MaterielData.cs" />
+    <Compile Include="Model\Tasks.cs" />
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\PlcData.cs" />
     <Compile Include="Model\Product.cs" />

@@ -501,7 +501,7 @@ namespace XT_CETC23
                 //通知PLC从测试柜取料完成
                 TestingCabinets.getInstance(cabinetNo).finishGet();
 
-                DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = 'Robot',StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
+                TestingTasks.getInstance(cabinetNo).UpdateStep("", "");
                 
                 Logger.WriteLine("取产品: " + productType + " 从测试台: " + (cabinetNo + 1) + " 完成");
                 return ReturnCode.OK;
@@ -516,7 +516,7 @@ namespace XT_CETC23
                 {
                     Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 开始");
 
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
+                    TestingTasks.getInstance(cabinetNo).UpdateStep("", "");
 
                     // 机器人移动到测试柜位置
                     mRail.doMoveToCabinet(cabinetNo);
@@ -528,7 +528,7 @@ namespace XT_CETC23
                     sendDataToRobotSync("PutProTest", productType + "," + (cabinetNo + 1));
 
                     // 更新任务状态
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign = '" + true + "' where BasicID=" + Task.globalBasicID);
+                    TestingTasks.getInstance(cabinetNo).UpdateStep("", "");
 
                     Logger.WriteLine("放产品: " + productType + " 到测试台: " + (cabinetNo + 1) + " 完成");
                     return ReturnCode.OK;

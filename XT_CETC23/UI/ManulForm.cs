@@ -39,7 +39,6 @@ namespace XT_CETC23.SonForm
         {
             InitializeComponent();
             db = DataBase.GetInstanse();
-            mtr = Task.GetIntanse();
             
             plc = Plc.GetInstanse();
             robot = Robot.GetInstanse();

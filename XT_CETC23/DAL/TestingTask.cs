@@ -11,13 +11,9 @@ using XT_CETC23.DataCom;
 
 namespace XT_CETC23
 {
-    class TestingTask
+    class TestingTask : Task
     {
-        private int mID;        // 任务号
-        private int mCabinetID; // 分配的测试柜
-        private String mProductType; // 测试产品类型
         private Thread mTask;
-        private Object lockObject = new Object();
         private bool mIsRunning = false;
         public bool isRunning
         {
@@ -187,7 +183,7 @@ namespace XT_CETC23
                     //FrameDataUpdate();
 
                     //测试结果插入测试统计表格；
-                    TestingTask.finish(Task.globalBasicID, checkResult);
+                    FinishTesting(checkResult);
                     return ;
                 }
                 catch (Exception e)
@@ -200,138 +196,6 @@ namespace XT_CETC23
                 }
             }
         }
-
-        public int finish()
-        {
-            try
-            { /*
-                DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID = " + this.mCabinetID);
-                String prodCode = failedReason != null ? failedReason : dt.Rows[0]["ProductID"].ToString();
-                if (dt != null || dt.Rows.Count > 0)
-                {
-                    String prodType = dt.Rows[0]["ProductType"].ToString();
-                    String cabinetName = dt.Rows[0]["CabinetID"].ToString();
-                    String trayNo = dt.Rows[0]["FrameLocation"].ToString();
-                    String pieceNo = dt.Rows[0]["SalverLocation"].ToString();
-                    String BeginTime = dt.Rows[0]["BeginTime"].ToString();
-                    String EndTime = dt.Rows[0]["EndTime"].ToString();
-
-                    DataBase.GetInstanse().DBInsert("insert into dbo.ActualData("
-                        + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,CheckResult"
-                        + " )values( '"
-                        + prodCode + "','"
-                        + prodType + "',"
-                        + trayNo + ","
-                        + pieceNo + ",'"
-                        + cabinetName + "','"
-                        + "0" + "','"
-                        + "0" + "','"
-                        + "0" + "','"
-                        + "0" + "','"
-                        + BeginTime + "','"
-                        + EndTime + "','"
-                        + checkResult + "')");
-                    try
-                    {
-                        DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
-                            + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,CheckResult"
-                            + " )values("
-                            + ID + ",'"
-                            + prodCode + "','"
-                            + prodType + "',"
-                            + trayNo + ","
-                            + pieceNo + ",'"
-                            + cabinetName + "','"
-                            + BeginTime + "','"
-                            + EndTime + "','"
-                            + checkResult + "')");
-                    }
-                    catch (Exception e1)
-                    {
-                        Logger.WriteLine(e1);
-                    }
-                    DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
-                } 
-               */
-                return 0;
-            } 
-            catch (Exception e)
-            {
-                Logger.WriteLine(e);
-                return 0;
-            }
-            finally
-            {
-                mIsRunning = false;
-            }
-        }
-
-        static public int finish(int ID, String checkResult, String failedReason = null)
-        {
-            DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID = " + ID);
-            if (dt == null || dt.Rows.Count == 0)
-            {
-                return -1;
-            }
-
-            try
-            {
-                String prodCode = failedReason != null ? failedReason : dt.Rows[0]["ProductID"].ToString();
-                String prodType = dt.Rows[0]["ProductType"].ToString();
-                String cabinetName = dt.Rows[0]["CabinetID"].ToString();
-                String trayNo = dt.Rows[0]["FrameLocation"].ToString();
-                String pieceNo = dt.Rows[0]["SalverLocation"].ToString();
-                String BeginTime = dt.Rows[0]["BeginTime"].ToString();
-                String EndTime = dt.Rows[0]["EndTime"].ToString();
-                String BatchID = dt.Rows[0]["BatchID"].ToString();
-                trayNo = Frame.getInstance().convertFrameLocationToA1(trayNo);
-                try 
-                {
-                    cabinetName = (Convert.ToInt32(cabinetName) + 1) + "#测试柜";
-                } 
-                catch (Exception e)
-                {
-                    Logger.WriteLine(e);
-                }
-
-                DataBase.GetInstanse().DBInsert("insert into dbo.ActualData("
-                    + " ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinetA,CheckCabinetB,CheckDate,CheckTime,CheckBatch,BeginTime,EndTime,BatchID,CheckResult"
-                    + " )values( '"
-                    + prodCode + "','"
-                    + prodType + "','"
-                    + trayNo + "','"
-                    + pieceNo + "','"
-                    + cabinetName + "','"
-                    + "0" + "','"
-                    + "0" + "','"
-                    + "0" + "','"
-                    + "0" + "','"
-                    + BeginTime + "','"
-                    + EndTime + "','"
-                    + BatchID + "','"
-                    + checkResult + "')");
-                DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
-                    + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,BatchID,CheckResult"
-                    + " )values("
-                    + ID + ",'"
-                    + prodCode + "','"
-                    + prodType + "','"
-                    + trayNo + "','"
-                    + pieceNo + "','"
-                    + cabinetName + "','"
-                    + BeginTime + "','"
-                    + EndTime + "','"
-                    + BatchID + "','"
-                    + checkResult + "')");
-                DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + ID);
-            }
-            catch (Exception e)
-            {
-                Logger.WriteLine(e);
-            }
-            return ID;
-        }
-
 
         public bool Abort()
         {

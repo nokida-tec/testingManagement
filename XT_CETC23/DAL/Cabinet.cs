@@ -273,14 +273,9 @@ namespace XT_CETC23
                         return false;
                     }
                 }
-                // 设置MTR表格，指示测试完成
-                DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
 
                 // 标记测试结果NG
-                DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                    + " ProductCheckResult = '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "'"
-                    + " ,EndTime = '" + DateTime.Now + "'"
-                    + " where BasicID= " + this.TaskID);
+                TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(TestingCabinet.STATUS.NG), "");
                 return true;
             }
         }
@@ -305,8 +300,6 @@ namespace XT_CETC23
                 {
                     Logger.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
                     // 1. 等待PLC允许测量
-
-                    //DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = '" + Name + "',StationSign = '" + false + "' where BasicID=" + MTR.globalBasicID);
 
                     //关闭测试柜
                     ReturnCode ret = doCloseForTesting();
@@ -365,17 +358,13 @@ namespace XT_CETC23
                         testResult = excelOp.CheckTestResults(sourceFile);
                     }
 
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                        + " ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' "
-                        + " ,EndTime = '" + DateTime.Now + "' "
-                        + " where BasicID = " + this.TaskID);
+                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG), "");
 
                     //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
-                    string productID = (dt == null || dt.Rows.Count == 0) ? "UNKNOWN" : dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                    string productID = TestingTasks.getInstance(this.ID).productID;
                     //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
 
-                    dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
+                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
                     string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
                     string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
                     string[] strings = productID.Split(new char[2] { '$', '#' });
@@ -426,8 +415,6 @@ namespace XT_CETC23
 			 		}
 
                     doOpenForGet();
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                     ResetData();
          		}
                 catch (IOException e1)
@@ -443,14 +430,10 @@ namespace XT_CETC23
                 catch (Exception e)
                 {
                     Logger.WriteLine(e);
-                            DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                                + " ProductCheckResult= '" + EnumHelper.GetDescription(TestingCabinet.STATUS.NG) + "' "
-                                + " ,EndTime = '" + DateTime.Now + "' "
-                                + " where BasicID = " + this.TaskID);
+
+                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(TestingCabinet.STATUS.NG));
 								
                     doOpenForGet();
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                     Logger.WriteLine(e);
                 }
                 finally
@@ -468,8 +451,6 @@ namespace XT_CETC23
                 try
                 {
                     Logger.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
-
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set CurrentStation = '" + Name + "',StationSign = '" + false + "' where BasicID=" + Task.globalBasicID);
 
                     //关闭测试柜
                     ReturnCode ret = doCloseForTesting();
@@ -524,17 +505,13 @@ namespace XT_CETC23
                         testResult = excelOp.CheckTestResults(sourceFile);
                     }
 
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                        + " ProductCheckResult= '" + EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG) + "' "
-                        + " ,EndTime = '" + DateTime.Now + "' "
-                        + " where BasicID = " + this.TaskID);
+                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG));
 
                     //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID=" + TaskID);
-                    string productID = (dt == null || dt.Rows.Count == 0) ? "UNKNOWN" : dt.Rows[0]["ProductID"].ToString().Trim();       // scan barcode
+                    string productID = TestingTasks.getInstance(ID).productID;       // scan barcode
                     //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
 
-                    dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
+                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
                     string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
                     string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
                     string[] strings = productID.Split(new char[2] { '$', '#' });
@@ -581,8 +558,6 @@ namespace XT_CETC23
                     ResetData();
 
                     doOpenForGet();
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                 }
                 catch (AbortException ae)
                 {
@@ -591,8 +566,6 @@ namespace XT_CETC23
                 catch (Exception e)
                 {
                     doOpenForGet();
-                    //设置MTR表格，指示测试完成
-                    DataBase.GetInstanse().DBUpdate("update dbo.MTR set StationSign= '" + true + "' where BasicID=" + this.TaskID);
                     Logger.WriteLine(e);
                 }
                 finally
