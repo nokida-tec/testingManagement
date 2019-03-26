@@ -372,7 +372,7 @@ namespace XT_CETC23.DataCom
             }
         }
 
-        public ReturnCode doGetProductFromFrame(String productType, int position, String x, String y, String z)
+        public ReturnCode doGetProductFromFrame(String productType, int position, String x = null, String y = null, String z = null)
         {   // 机器人取料
             lock (lockRobot)
             {
