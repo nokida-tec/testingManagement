@@ -185,7 +185,7 @@ namespace XT_CETC23
                     //FrameDataUpdate();
 
                     //测试结果插入测试统计表格；
-                    FinishTesting(checkResult);
+                    //FinishTesting(checkResult);
                     return ;
                 }
                 catch (Exception e)
@@ -194,6 +194,7 @@ namespace XT_CETC23
                 }
                 finally
                 {
+                    FinishTask();
                     mIsRunning = false;
                 }
             }

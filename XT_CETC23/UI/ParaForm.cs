@@ -12,7 +12,6 @@ using XT_CETC23.INTransfer;
 using XT_CETC23.DataCom;
 using XT_CETC23.DataManager;
 using XT_CETC23.Common;
-using XT_CETC23.EnumC;
 using XT_CETC23.Model;
 using System.Threading;
 using XT_CETC23;

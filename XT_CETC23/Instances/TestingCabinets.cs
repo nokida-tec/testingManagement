@@ -65,7 +65,7 @@ namespace XT_CETC23
             int count = 0;
             for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
             {
-                getInstance(i).abort();
+                //getInstance(i).Abort();
             }
             return count;
         }
@@ -75,7 +75,7 @@ namespace XT_CETC23
             int count = 0;
             for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
             {
-                getInstance(i).Pause();
+                //getInstance(i).Pause();
             }
             return count;
         }
@@ -85,7 +85,7 @@ namespace XT_CETC23
             int count = 0;
             for (int i = 0; i < DeviceCount.TestingCabinetCount; i++)
             {
-                getInstance(i).Resume();
+                //getInstance(i).Resume();
             }
             return count;
         }

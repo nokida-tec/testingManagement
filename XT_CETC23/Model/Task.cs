@@ -47,7 +47,7 @@ namespace XT_CETC23
             }
         }
 
-        public int FinishTask(String checkResult, String failedReason = null)
+        public int FinishTask()
         {
             DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.MTR where BasicID = " + mID);
             if (dt == null || dt.Rows.Count == 0)
@@ -57,7 +57,7 @@ namespace XT_CETC23
 
             try
             {
-                String prodCode = failedReason != null ? failedReason : dt.Rows[0]["ProductID"].ToString();
+                String prodCode = dt.Rows[0]["ProductID"].ToString();
                 String prodType = dt.Rows[0]["ProductType"].ToString();
                 String cabinetName = dt.Rows[0]["CabinetID"].ToString();
                 String trayNo = dt.Rows[0]["FrameLocation"].ToString();
@@ -65,6 +65,7 @@ namespace XT_CETC23
                 String BeginTime = dt.Rows[0]["BeginTime"].ToString();
                 String EndTime = dt.Rows[0]["EndTime"].ToString();
                 String BatchID = dt.Rows[0]["BatchID"].ToString();
+                String CheckResult = dt.Rows[0]["CheckResult"].ToString();
                 trayNo = Frame.getInstance().convertFrameLocationToA1(trayNo);
                 try
                 {
@@ -90,7 +91,7 @@ namespace XT_CETC23
                     + BeginTime + "','"
                     + EndTime + "','"
                     + BatchID + "','"
-                    + checkResult + "')");
+                    + CheckResult + "')");
                 DataBase.GetInstanse().DBInsert("insert into dbo.FrameData("
                     + "BasicID,ProductID,ProductType,FrameLocation,SalverLocation,CheckCabinet,BeginTime,EndTime,BatchID,CheckResult"
                     + " )values("
@@ -103,7 +104,7 @@ namespace XT_CETC23
                     + BeginTime + "','"
                     + EndTime + "','"
                     + BatchID + "','"
-                    + checkResult + "')");
+                    + CheckResult + "')");
                 DataBase.GetInstanse().DBDelete("delete from dbo.MTR where BasicID = " + mID);
             }
             catch (Exception e)
@@ -116,7 +117,7 @@ namespace XT_CETC23
         public bool FinishTesting(String checkResult, String failedReason = null)
         {
             DataBase.GetInstanse().DBUpdate("update dbo.MTR set "
-                + " ProductCheckResult = '" + checkResult + "'"
+                + " CheckResult = '" + checkResult + "'"
                 + " ,FailedReason = '" + failedReason + "'"
                 + " ,EndTime = '" + DateTime.Now + "'"
                 + " where BasicID= " + this.mID);
@@ -129,7 +130,7 @@ namespace XT_CETC23
             return true;
         }
 
-        private Frame.Location mLocation;
+        private Frame.Location mLocation = new Frame.Location();
         public Frame.Location location
         {
             get { return mLocation; }

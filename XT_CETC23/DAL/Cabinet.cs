@@ -177,122 +177,10 @@ namespace XT_CETC23
             return false;
         }
 
-        private Thread task;
         private Object mLock = new Object();
-        private bool taskIsRunning = false;
-        private bool taskExisting = false;
-        public bool cmdStart(string productType, int taskId) 
-        {
-            Logger.WriteLine("  ***   cmdStart：" + this.ID + " Running:" + taskIsRunning + " productType：" + productType + " taskId：" + taskId);
-            lock (this)
-            {
-                if (task != null)
-                {
-                    if (task.ThreadState == ThreadState.Stopped || task.ThreadState == ThreadState.Aborted)
-                    {
-                        Thread.Sleep(100);
-                        task = null;
-                    }
-                    else 
-                    {
-                        Logger.WriteLine("重复任务，返回");
-                        return false;
-                    }
-                }
-                base.cmdStart(productType, taskId);
-                return start();
-            }
-        }
 
-        public bool start()
-        {
-            Logger.WriteLine("  ***   start：" + this.ID);
-            lock (this)
-            {
-                if (task != null)
-                {
-                    taskExisting = true;
-                    while (taskIsRunning && task.ThreadState != ThreadState.Stopped)
-                    {   // 等待原有线程运行退出
-                        taskExisting = true;
-                        Logger.WriteLine("  ***   测试柜:" + this.ID + "在运行中 线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
-                        Thread.Sleep(100);
-                    }
-                    Thread.Sleep(100);
-                    task.Abort();
-                    task = null;
-                 }
-                if (task == null)
-                {
-                    taskExisting = false;
-                    task = new Thread(CabinetTest);
-                    task.Name = "测试柜" + this.ID + ": 启动线程";
-                    taskIsRunning = true;
-                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 新启动线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
-                    task.Start();
-                    return true;
-                }
 
-                try 
-                {
-                    throw new Exception("没有启动测试柜：" + this.ID + "线程");
-                } 
-                catch (Exception e)
-                {
-                    Logger.WriteLine(e);
-                }
-                return false;
-            }
-        }
-
-        public bool cmdStop()
-        {
-            Logger.WriteLine("  ***   cmdStop：" + this.ID);
-            base.cmdStop();
-            stop();
-            return true;
-        }
-
-        public bool stop()
-        {
-            Logger.WriteLine("  ***   stop：" + this.ID);
-            lock (this)
-            {
-                if (task != null)
-                {
-                    Logger.WriteLine("  ***   测试柜:" + this.ID + " 停止线程:" + task.ManagedThreadId + " 状态：" + task.ThreadState);
-                    taskExisting = true;
-                    task.Abort();
-                    task = null;
-                }
-                if (Config.Config.ENABLED_PLC)
-                {
-                    ReturnCode ret = doOpenForGet();
-                    if (ret != ReturnCode.OK)
-                    {
-                        return false;
-                    }
-                }
-
-                // 标记测试结果NG
-                TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(TestingCabinet.STATUS.NG), "");
-                return true;
-            }
-        }
-
-        public void startTask()
-        {
-            if (this.Order == ORDER.Start)
-            {
-                start ();
-            }
-            else if (this.Order == ORDER.Stop)
-            {
-                stop ();
-            }
-        }
-
-        private void CabinetTest()
+        public void doTest()
         {
             lock(mLock)
             {
@@ -324,14 +212,7 @@ namespace XT_CETC23
                     }
 
                     // 等待测试结束
-                    while (Status != TestingCabinet.STATUS.Finished)
-                    {
-                        if (taskExisting == true)
-                        {
-                            return;
-                        }
-                        Thread.Sleep(100);
-                    }
+                    WaitCondition.waitCondition(this.finishTesting);
                     //处理结果
 
                     //获取测量结果的excel源文件
@@ -358,7 +239,7 @@ namespace XT_CETC23
                         testResult = excelOp.CheckTestResults(sourceFile);
                     }
 
-                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG), "");
+                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG), "测试柜测试结果");
 
                     //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
                     string productID = TestingTasks.getInstance(this.ID).productID;
@@ -431,176 +312,16 @@ namespace XT_CETC23
                 {
                     Logger.WriteLine(e);
 
-                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(TestingCabinet.STATUS.NG));
+                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(TestingCabinet.STATUS.NG), e.Message);
 								
                     doOpenForGet();
                     Logger.WriteLine(e);
                 }
                 finally
                 {
-                    taskIsRunning = false;
                     Logger.WriteLine("Finish:  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
                }
             }
-        }
-
-        public void doTest ()
-        {
-            CabinetTest();
-            {
-                try
-                {
-                    Logger.WriteLine(DateTime.Now.ToString() + ":  [order]:" + Order + " [cabinetNo]:" + ID + " [basicID]:" + TaskID + " [productType]:" + ProductType);
-
-                    //关闭测试柜
-                    ReturnCode ret = doCloseForTesting();
-
-                    if (Status != TestingCabinet.STATUS.Ready)
-                    {
-                        ResetData();
-                    }
-
-                    if (TestingCabinets.getInstance(this.ID).Status == TestingCabinet.STATUS.Ready)
-                    {
-                        string command = (ProductType == "B") ? "21" : "11";
-
-                        //通知测试设备测试开始
-                        WriteData(DateTime.Now.ToString() + "\t" + command);
-                        //通知PLC测试开始了
-                        Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 2 });
-                    }
-
-                    // 等待测试结束
-                    while (Status != TestingCabinet.STATUS.Finished)
-                    {
-                        if (taskExisting == true)
-                        {
-                            return;
-                        }
-                        Thread.Sleep(100);
-                    }
-                    //处理结果
-
-                    //获取测量结果的excel源文件
-                    String[] filePath = Directory.GetFiles(CabinetData.sourcePath[this.ID]);
-                    string sourceFile = null;
-                    if (filePath != null)
-                    {
-                        for (int i = 0; i < filePath.Length; i++)
-                        {
-                            if (Path.GetExtension(filePath[i]) == ".xls" || Path.GetExtension(filePath[i]) == ".xlsx")
-                            {
-                                sourceFile = filePath[i];
-                                break;
-                            }
-                        }
-                    }
-
-                    //读取excel表格判断测试OK，NG
-
-                    bool testResult = true;
-                    if (sourceFile != null && sourceFile.Length > 0)
-                    {
-                        ExcelOperation excelOp = new ExcelOperation();
-                        testResult = excelOp.CheckTestResults(sourceFile);
-                    }
-
-                    TestingTasks.getInstance(this.ID).FinishTesting(EnumHelper.GetDescription(testResult ? TestingCabinet.STATUS.OK : TestingCabinet.STATUS.NG));
-
-                    //生成目标文件名并把测量结果excel文件拷贝到目标目录，命名为生成的文件名
-                    string productID = TestingTasks.getInstance(ID).productID;       // scan barcode
-                    //string productType = dt.Rows[0]["ProductType"].ToString().Trim();   // A,B,C,D
-
-                    DataTable dt = DataBase.GetInstanse().DBQuery("select * from dbo.ProductDef where Type= '" + ProductType + "'");
-                    string productName = dt.Rows[0]["Name"].ToString().Trim();          // 
-                    string productSerial = dt.Rows[0]["SerialNo"].ToString().Trim();    // 0103zt000149
-                    string[] strings = productID.Split(new char[2] { '$', '#' });
-
-                    string opName = "常温";
-                    try
-                    {
-                        string defineID = strings[2] + strings[0].Substring(4);             // 1533-13090000010
-                        DataBase dbOfU8 = DataBase.GetU8DBInstanse();
-                        dt = dbOfU8.DBQuery("select max(opseq) from v_fc_optransformdetail where invcode = '"
-                            + productSerial + "' and define22 = '" + defineID + "'");
-                        int opMax = Convert.ToInt32(dt.Rows[0]["opseq"]);
-                        dt = DataBase.GetInstanse().DBQuery("select * from dbo.OperateDef where OpSeq= '" + opMax + "'");
-                        opName = dt.Rows[0]["Name"].ToString().Trim();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.WriteLine(e);
-                    }
-
-                    try
-                    {
-                        string targetFileName = strings[0].Substring(4) + "_" + productName + "_" + opName + ".xlsx";
-                        FileOperation fileOp = new FileOperation();
-                        fileOp.FileCopy(targetFileName, sourceFile, Config.Config.getInstance().targetPath);
-                        //删除源文件          
-                        File.Delete(sourceFile);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.WriteLine(e);
-                    }
-
-                    //  record the scan barcode to logs file
-                    DateTime currentTime = DateTime.Now;
-                    StreamWriter sw = File.AppendText(Config.Config.getInstance().logPath + "\\barcode_" + currentTime.ToString("yyyyMMdd") + ".log");
-                    sw.WriteLine(currentTime.ToString() + " \t" + productID);
-                    sw.Flush();
-                    sw.Close();
-
-                    // send scancode to U8
-                    U8Connector.sendToU8(productID);
-
-                    ResetData();
-
-                    doOpenForGet();
-                }
-                catch (AbortException ae)
-                {
-                    Logger.WriteLine(ae);
-                }
-                catch (Exception e)
-                {
-                    doOpenForGet();
-                    Logger.WriteLine(e);
-                }
-                finally
-                {
-                    taskIsRunning = false;
-                }
-            }
-        }
-		
-        public bool abort()
-        {
-            if (task != null)
-            {
-                task.Abort();
-                task = null;
-            }
-            return true;
-        }
-
-        public bool Pause()
-        {
-            if (task != null && task.ThreadState == ThreadState.Running )
-            {
-                task.Suspend();
-            }
-            return true;
-        }
-
-        public bool Resume()
-        {
-            if (task != null && task.ThreadState == ThreadState.Suspended)
-            {
-                task.Resume();
-            }
-            return true;
         }
 
         public ReturnCode doOpenForGet()
@@ -678,6 +399,11 @@ namespace XT_CETC23
         {
             Plc.GetInstanse().DBWrite(PlcData.PlcWriteAddress, (13 + this.ID), 1, new Byte[] { 8 });
             return ReturnCode.OK;
+        }
+
+        private bool finishTesting()
+        {
+            return (Status == TestingCabinet.STATUS.Finished);
         }
 
         public bool canGet()
