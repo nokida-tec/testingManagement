@@ -9,9 +9,6 @@ namespace XT_CETC23
 {
     class Tasks 
     {
-        public static int globalBasicID;
-
-
         public bool Clear()
         {
             try
@@ -24,13 +21,8 @@ namespace XT_CETC23
             }
             return true;
         }
-
-        void updateBasicID(string ProductID, int FrameLocation, int SalverLocation, string ProductType, string ProductCurrentPos, string ProductSign, string ProductChectResult)
-        {
-
-        }
-
     }
+
     class GetID
     {
         static Object mLock = new Object();
