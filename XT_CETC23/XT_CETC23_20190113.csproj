@@ -146,8 +146,6 @@
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\TestingBedCapOfProduct.cs" />
     <Compile Include="Model\RobotData.cs" />
-    <Compile Include="EnumC\EnumRead.cs" />
-    <Compile Include="EnumC\EnumWrite.cs" />
     <Compile Include="INTransfer\IAutoForm.cs" />
     <Compile Include="INTransfer\ICameraForm.cs" />
     <Compile Include="INTransfer\IDatabaseForm.cs" />
