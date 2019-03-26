@@ -163,8 +163,8 @@
     </Compile>
     <Compile Include="Model\TestingBed.cs" />
     <Compile Include="Model\TestingCabinet.cs" />
-    <Compile Include="Model\TestingTask.cs" />
-    <Compile Include="Model\TestingTasks.cs" />
+    <Compile Include="DAL\TestingTask.cs" />
+    <Compile Include="DAL\TestingTasks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AutoForm.cs">
