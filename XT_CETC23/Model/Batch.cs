@@ -24,7 +24,7 @@ namespace XT_CETC23.Model
         private int mNumNG;
         private int mNumExcept;
 
-        private Object mLockDB = new Object();
+        private static Object mLockDB = new Object();
 
 
         public bool Begin () 
@@ -45,35 +45,36 @@ namespace XT_CETC23.Model
             return Save();
         }
 
-        public bool LoadUnfinished ()
+        static public Batch LoadUnfinished ()
         {
             lock (mLockDB)
             {
                 String batchID = Batch.Last();
                 if (batchID == null || batchID.Length == 0)
                 {
-                    return false;
+                    return null;
                 }
                 DataTable dt = DataBase.GetInstanse().DBQuery(
                        " select * from dbo.Batch where ID = '" + batchID + "'");
                 if (dt == null || dt.Rows.Count == 0)
                 {
-                    return false;
+                    return null;
                 }
 
                 DateTime beginTime = Convert.ToDateTime(dt.Rows[0]["BeginTime"]);
                 DateTime endTime = Convert.ToDateTime(dt.Rows[0]["EndTime"]);
                 if (beginTime.Equals(endTime))
                 {
-                    mBeginTime = beginTime;
-                    mEndTime = endTime;
-                    mID = dt.Rows[0]["ID"].ToString();
-                    mNumOK = Convert.ToInt32(dt.Rows[0]["Num_OK"]);
-                    mNumNG = Convert.ToInt32(dt.Rows[0]["Num_NG"]);
-                    mNumExcept = Convert.ToInt32(dt.Rows[0]["Num_Except"]);
-                    return true;
+                    Batch batch = new Batch();
+                    batch.mBeginTime = beginTime;
+                    batch.mEndTime = endTime;
+                    batch.mID = dt.Rows[0]["ID"].ToString();
+                    batch.mNumOK = Convert.ToInt32(dt.Rows[0]["Num_OK"]);
+                    batch.mNumNG = Convert.ToInt32(dt.Rows[0]["Num_NG"]);
+                    batch.mNumExcept = Convert.ToInt32(dt.Rows[0]["Num_Except"]);
+                    return batch;
                 }
-                return false;
+                return null;
             }
         }
 

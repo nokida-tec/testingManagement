@@ -15,7 +15,7 @@ namespace XT_CETC23
 
         protected Object lockObject = new Object();     
 
-        public int CreateTask(string ProductID,int FrameLocation,int SalverLocation,string ProductType,string CurrentStation, bool StationSign,string ProductChectResult,String BatchID)
+        public int CreateTask(string ProductType, String BatchID)
         {
             lock (lockObject)
             {
@@ -25,22 +25,25 @@ namespace XT_CETC23
                     Logger.WriteLineWithStack("测试柜" + mID + "任务已经存在");
                     return -1;
                 }
-                int lBasicID = GetID.getID();
+                mID = GetID.getID();
+                mProductType = ProductType;
 
                 string sql = 
-                    "insert into dbo.MTR(ProductID,FrameLocation,SalverLocation,ProductType,CurrentStation,StationSign,ProductCheckResult,BasicID,BeginTime,CabinetID)values('"
-                    + ProductID + "',"
-                    + FrameLocation + ","
-                    + SalverLocation + ",'"
-                    + ProductType + "','"
-                    + CurrentStation + "','"
-                    + StationSign + "','"
-                    + ProductChectResult + "',"
-                    + lBasicID + ",'"
-                    + DateTime.Now + "',"
-                    + mID + ")";
+                    "insert into dbo.MTR("
+                    + "BasicID,"
+                    + "CabinetID,"
+                    + "ProductType,"
+                    + "BatchID,"
+                    + "BeginTime,"
+                    + ")values("
+                    + " '" + mID + "'"
+                    + ",'" + mCabinetID + "'"
+                    + ",'" + mProductType + "'"
+                    + ",'" + BatchID + "'"
+                    + ",'" + DateTime.Now + "'"
+                    + ")";
                 DataBase.GetInstanse().DBInsert(sql);
-                return lBasicID;
+                return mID;
             }
         }
 

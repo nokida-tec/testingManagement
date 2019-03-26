@@ -190,11 +190,17 @@ namespace XT_CETC23
                 }
             }
         }
+        public Batch batch
+        {
+            get;
+            set;
+        }
 
         public static Object lockStep = new Object();
         private void TaskSchedule()
         {
             // 检查是否有未完成任务，且在组件在测试台中
+            batch = Batch.LoadUnfinished();
 
             // 进入自动化任务
             while (true)
@@ -223,6 +229,7 @@ namespace XT_CETC23
                             default:
                                 Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.Updating;
                                 Frame.getInstance().excuteCommand(Frame.Lock.Command.Open);
+                                batch.End();
                                 MessageBox.Show("料架已取空，请更换料架");
                                 break;
                             case Frame.FrameUpdateStatus.Updating:
@@ -230,6 +237,7 @@ namespace XT_CETC23
                             case Frame.FrameUpdateStatus.Updated:
                                 if (mStatus == Status.Running)
                                 {
+                                    batch.Begin();
                                     Frame.getInstance().doScan();
                                     Frame.getInstance().frameUpdate = Frame.FrameUpdateStatus.ScanDone;
                                 }

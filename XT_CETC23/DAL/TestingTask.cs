@@ -47,6 +47,8 @@ namespace XT_CETC23
             { // 需要和PLC对应
                 [EnumDescription("没有任务")]
                 None = 100,
+                [EnumDescription("料仓")]
+                Frame = 101,
                 [EnumDescription("料仓到测试台")]
                 FrameToCabinet = 102,
                 [EnumDescription("测试台")]
@@ -91,7 +93,7 @@ namespace XT_CETC23
 
                     mIsRunning = true;
 
-                    mProductType = productType;
+                    CreateTask(productType, TestingSystem.GetInstance().batch.ID);
 
                     if (mTask != null)
                     {
