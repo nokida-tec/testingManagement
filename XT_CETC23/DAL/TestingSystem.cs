@@ -204,6 +204,13 @@ namespace XT_CETC23
                 {   // 单步模式
                     readyForStep = true;
                     continue;
+                } 
+                else
+                {
+                    if (isBusyForStep)
+                    {
+                        continue;
+                    }
                 }
                 lock (lockStep)
                 {
